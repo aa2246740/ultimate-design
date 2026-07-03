@@ -1,0 +1,14 @@
+{
+  "run_id": "example",
+  "scores": {
+    "request_integrity": 13,
+    "contract_quality": 12,
+    "okf_routing": 12,
+    "content_strategy": 8,
+    "visual_craft": 11,
+    "accessibility_responsive": 7,
+    "verification_evidence": 13,
+    "governance_reuse": 4
+  },
+  "notes": "Example only. Replace with evidence-backed scores from a real run."
+}

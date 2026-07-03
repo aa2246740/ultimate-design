@@ -1,0 +1,23 @@
+{
+  "name": "ultimate-design-skill",
+  "version": "0.1.0",
+  "description": "OKF-based design skill for contract-driven AI design.",
+  "type": "module",
+  "private": false,
+  "license": "Apache-2.0",
+  "scripts": {
+    "flow-check": "python3 skill/ultimate-design/scripts/flow_check.py skill/ultimate-design",
+    "scan-release": "! rg -n \"(/Users/|\\\\.agents|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'",
+    "score-okf": "node benchmarks/score-okf-run.mjs"
+  },
+  "keywords": [
+    "codex-skill",
+    "design",
+    "okf",
+    "design-system",
+    "design-to-code",
+    "frontend",
+    "presentation",
+    "visual-verification"
+  ]
+}

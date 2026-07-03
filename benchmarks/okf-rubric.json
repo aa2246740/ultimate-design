@@ -1,0 +1,97 @@
+{
+  "name": "ultimate-design-okf-rubric",
+  "version": "0.1.0",
+  "total_points": 100,
+  "dimensions": [
+    {
+      "id": "request_integrity",
+      "label": "Request integrity",
+      "points": 15,
+      "checks": [
+        "Request Anchor exists",
+        "Original request and latest override preserved",
+        "Deliverable and success criteria stated",
+        "Non-goals and must-preserve constraints recorded",
+        "Final critique maps back to the anchor"
+      ]
+    },
+    {
+      "id": "contract_quality",
+      "label": "Contract quality",
+      "points": 15,
+      "checks": [
+        "DESIGN.md or equivalent exists when persistence matters",
+        "Content model and IA are present",
+        "Visual system and tokens are actionable",
+        "Quality gates and assumptions are present",
+        "Review log records significant changes"
+      ]
+    },
+    {
+      "id": "okf_routing",
+      "label": "OKF routing",
+      "points": 15,
+      "checks": [
+        "Relevant branch references loaded",
+        "Irrelevant branches avoided",
+        "Selected OKF concepts influence decisions",
+        "Routing evidence is visible in notes or trace"
+      ]
+    },
+    {
+      "id": "content_strategy",
+      "label": "Content strategy",
+      "points": 10,
+      "checks": [
+        "Message hierarchy is clear",
+        "Terminology is consistent",
+        "Copy density fits the medium",
+        "State/action language is meaningful where relevant"
+      ]
+    },
+    {
+      "id": "visual_craft",
+      "label": "Visual craft",
+      "points": 15,
+      "checks": [
+        "Hierarchy is intentional",
+        "Typography is readable and expressive",
+        "Color posture fits the theme",
+        "Spacing and composition are controlled",
+        "The artifact avoids generic AI-default aesthetics"
+      ]
+    },
+    {
+      "id": "accessibility_responsive",
+      "label": "Accessibility and responsiveness",
+      "points": 10,
+      "checks": [
+        "Contrast is acceptable",
+        "Semantic structure is preserved",
+        "Responsive behavior is checked",
+        "Text reflow and interaction states are addressed where relevant"
+      ]
+    },
+    {
+      "id": "verification_evidence",
+      "label": "Verification evidence",
+      "points": 15,
+      "checks": [
+        "Every final page, slide, frame, or key state is rendered",
+        "Screenshots or previews are saved",
+        "Overlap, clipping, spacing, line, and alignment checks are run where possible",
+        "Failures are repaired or reported honestly"
+      ]
+    },
+    {
+      "id": "governance_reuse",
+      "label": "Governance and reuse",
+      "points": 5,
+      "checks": [
+        "Changed design decisions are recorded",
+        "Assumptions and open questions are explicit",
+        "A future agent can continue without reverse engineering"
+      ]
+    }
+  ]
+}
