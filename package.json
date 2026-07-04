@@ -4,14 +4,31 @@
   "description": "OKF-based design skill for contract-driven AI design.",
   "type": "module",
   "private": false,
-  "license": "Apache-2.0",
+  "homepage": "https://aa2246740.github.io/ultimate-design/",
+  "license": "MIT",
+  "bin": {
+    "ultimate-design-install-skill": "./scripts/install-agent-skill.mjs"
+  },
   "scripts": {
     "flow-check": "python3 skill/ultimate-design/scripts/flow_check.py skill/ultimate-design",
-    "scan-release": "! rg -n \"(/Users/|\\\\.agents|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'",
+    "install:codex": "node scripts/install-agent-skill.mjs --target codex",
+    "install:claude": "node scripts/install-agent-skill.mjs --target claude-code",
+    "install:pi": "node scripts/install-agent-skill.mjs --target pi-agent",
+    "install:all": "node scripts/install-agent-skill.mjs --target all",
+    "check-integrations": "node scripts/check-agent-integrations.mjs",
+    "scan-release": "! rg -n \"(/Users/|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'",
     "score-okf": "node benchmarks/score-okf-run.mjs"
+  },
+  "pi": {
+    "skills": [
+      "skill/ultimate-design"
+    ]
   },
   "keywords": [
     "codex-skill",
+    "claude-code-skill",
+    "pi-agent-skill",
+    "agent-skills",
     "design",
     "okf",
     "design-system",

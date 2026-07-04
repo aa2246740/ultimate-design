@@ -4,6 +4,25 @@ Use this branch for posters, social graphics, banners, brochures, packaging, bus
 
 Read `design-okf/production/graphic-print.md` when physical production, print readiness, export specs, asset rights, generated imagery rights, or likeness rights matter. That OKF concept is the source of truth for print caveats and final print-ready blockers.
 
+Read `design-okf/systems/brand-identity-media-production.md` when the graphic is part of a brand kit, VI manual, logo system, reusable social/deck/packaging template, asset library, or cross-media delivery package.
+
+Read `design-okf/systems/taste-engine.md` when the graphic needs a distinctive key visual, campaign taste, social-series variety, anti-template critique, visual asset strategy, or when it risks becoming typography plus generic cards.
+
+## Subsurface Routing
+
+Classify the graphic surface before designing:
+
+- Poster/key visual: single dominant message, viewing distance, focal image or headline, event/product/legal details.
+- Social/content series: platform ratio, thumb readability, series consistency, repost/crop safety, caption relationship.
+- Advertising/campaign asset: offer, proof, CTA, channel constraints, mandatory claims, fatigue across variants.
+- Editorial/brochure/catalog: reading sequence, grid system, page rhythm, captions, footnotes, long-copy hierarchy.
+- Infographic/data story: claim, evidence, encoding, legend, annotation, source/citation, scale integrity.
+- Packaging/label: dieline, hierarchy at shelf distance, ingredient/regulatory text, barcode/QR, material and finish.
+- Signage/environmental: wayfinding intent, viewing angle, installation distance, contrast under ambient light, production material.
+- Merchandise/collateral: imprint area, brand mark limits, reproduction method, tactile finish, batch/vendor constraints.
+
+If one subsurface becomes frequent or needs specialized production rules, treat it as a candidate for a future OKF concept rather than expanding this branch indefinitely.
+
 ## Brief
 
 Clarify or infer:
@@ -16,6 +35,7 @@ Clarify or infer:
 - Required copy and legal text.
 - Output format.
 - Licensing constraints for fonts, images, icons, logos, and likenesses.
+- Taste dials and anti-default locks when the graphic is public-facing, campaign-led, social, or brand expressive.
 
 Ask when print production or rights are involved and missing details would invalidate the output.
 
@@ -27,6 +47,7 @@ Ask when print production or rights are involved and missing details would inval
 - Use contrast strongly enough to read as intentional.
 - Let whitespace structure the layout.
 - Do not emphasize one element with size, saturation, bold, shadow, and motion all at once.
+- For multi-frame social or poster series, vary composition by message role while preserving a recognizable system rule.
 
 ## Gestalt Checks
 

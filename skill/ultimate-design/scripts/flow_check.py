@@ -66,11 +66,51 @@ def main() -> int:
         "references/monitoring.md" in skill and "development/testing evidence" in skill,
         "monitoring reference is gated to dev/eval requests",
     )
+    require(
+        "research ingestion reference is dev-only",
+        "## Research Ingestion" in skill
+        and "research-digestion-llm-wiki.md" in skill
+        and "not ordinary design execution" in skill
+        and "promote only stable, operational, checkable knowledge into OKF" in skill,
+        "LLM wiki digestion is gated to research absorption and OKF updates",
+    )
     description = frontmatter(skill) or ""
     require(
         "description front-loads leading word",
         "description: \"Contract-driven" in description,
         "model-invoked trigger begins with contract",
+    )
+    branch_triggers = [
+        "DESIGN.md contracts",
+        "product UI",
+        "marketing pages",
+        "presentation decks",
+        "graphic/print assets",
+        "brand systems",
+        "content/UX writing",
+        "design critique",
+        "rendered verification",
+    ]
+    missing_triggers = [term for term in branch_triggers if term not in description]
+    require(
+        "description has one trigger per branch",
+        not missing_triggers and len(description) <= 320,
+        "all branch triggers present and concise" if not missing_triggers else ", ".join(missing_triggers),
+    )
+    require(
+        "yolo mode is default",
+        "Default to **YOLO mode**" in skill
+        and "Ask only for blockers" in skill
+        and "complete first pass" in skill,
+        "ordinary design requests run low-interruption by default",
+    )
+    require(
+        "pro mode builds consensus",
+        "Use **Pro mode**" in skill
+        and "`--pro`" in skill
+        and "build consensus before making high-impact choices" in skill
+        and "update the Request Anchor after each decision" in skill,
+        "--pro turns the loop into explicit design agreement",
     )
     require(
         "quality gates are always loaded",
@@ -107,6 +147,28 @@ def main() -> int:
         "brief stage records original request, latest override, and validation checks",
     )
     require(
+        "contract is default for non-trivial artifacts",
+        "For any non-trivial design artifact" in skill
+        and "create or update `DESIGN.md` by default" in skill
+        and "compact contract or review note only for one-off" in skill,
+        "agent creates DESIGN.md unless the design is small and low-risk",
+    )
+    require(
+        "semantic zones are marked during implementation",
+        "mark major semantic zones during implementation" in skill
+        and "`data-ud-check`" in skill
+        and "against the semantic zones created during implementation" in skill,
+        "HTML verification markers are created before final verification",
+    )
+    require(
+        "professional bar is behavior-based",
+        "Professional quality is observable behavior" in skill
+        and "Frame the real problem" in skill
+        and "Shape content structure" in skill
+        and "Leave a contract that explains" in skill,
+        "professionalism is defined as checkable design behavior",
+    )
+    require(
         "request anchor is checked before delivery",
         "Request Anchor fit" in skill
         and "user-specific success criteria" in skill
@@ -130,6 +192,13 @@ def main() -> int:
         and "visual personality" in audit,
         "audit-polish critiques content and expressive color before delivery",
     )
+    require(
+        "taste critique loop",
+        "Check taste when relevant" in audit
+        and "design-okf/systems/taste-engine.md" in audit
+        and "Taste Critique" in audit,
+        "audit-polish routes stiff or generic work through taste-engine before delivery",
+    )
 
     monitoring = read(root / "references" / "monitoring.md")
     require(
@@ -139,6 +208,11 @@ def main() -> int:
         and "Static Flow Proof" in monitoring
         and "Runtime Evidence" in monitoring,
         "monitoring separates static proof from runtime traces",
+    )
+    require(
+        "monitoring covers research ingestion proof",
+        "research-ingestion boundary" in monitoring,
+        "static proof includes the research-ingestion boundary",
     )
     require(
         "monitoring includes request anchor trace",
@@ -171,6 +245,111 @@ def main() -> int:
         "content OKF concepts exist",
         not missing_content,
         "content OKF files present" if not missing_content else ", ".join(missing_content),
+    )
+    visual_communication = read(okf_root / "foundations" / "visual-communication-hierarchy.md")
+    require(
+        "visual communication OKF exists",
+        "Design intent" in visual_communication
+        and "information priority" in visual_communication
+        and "message hierarchy" in visual_communication
+        and "visual hierarchy" in visual_communication
+        and "attention" in visual_communication
+        and "reading path" in visual_communication
+        and "understanding" in visual_communication
+        and "action" in visual_communication
+        and "Ethics" in visual_communication
+        and "Done Check" in visual_communication,
+        "first graphic-design research block is represented as a foundation coordination layer",
+    )
+    index = read(okf_root / "index.md")
+    principles = read(root / "references" / "principles.md")
+    require(
+        "visual communication OKF is routed",
+        "foundations/visual-communication-hierarchy.md" in index
+        and "foundations/visual-communication-hierarchy.md" in principles,
+        "OKF index and principles router can reach visual communication hierarchy",
+    )
+    layout_typography = read(okf_root / "foundations" / "layout-typography-composition.md")
+    require(
+        "layout typography composition OKF exists",
+        "composition model" in layout_typography
+        and "Grid And Type Area" in layout_typography
+        and "Alignment" in layout_typography
+        and "Spacing Rhythm" in layout_typography
+        and "Typography" in layout_typography
+        and "Chinese And Mixed-Language Typesetting" in layout_typography
+        and "Editorial And Multi-Page Systems" in layout_typography
+        and "Swiss Style" in layout_typography
+        and "Done Check" in layout_typography,
+        "second graphic-design research block is represented as a layout/type/composition coordination layer",
+    )
+    require(
+        "layout typography composition OKF is routed",
+        "foundations/layout-typography-composition.md" in index
+        and "foundations/layout-typography-composition.md" in principles,
+        "OKF index and principles router can reach layout typography composition",
+    )
+    visual_language = read(okf_root / "systems" / "visual-language-style-system.md")
+    require(
+        "visual language style OKF exists",
+        "visual vocabulary" in visual_language
+        and "Style Versus Decoration" in visual_language
+        and "Perceptual" in visual_language
+        and "Photography" in visual_language
+        and "Illustration" in visual_language
+        and "Iconography" in visual_language
+        and "Symbols And Motifs" in visual_language
+        and "Texture And Material" in visual_language
+        and "Art Direction Workflow" in visual_language
+        and "Anti-Template Check" in visual_language
+        and "Done Check" in visual_language,
+        "third graphic-design research block is represented as a visual-language/style-system coordination layer",
+    )
+    require(
+        "visual language style OKF is routed",
+        "systems/visual-language-style-system.md" in index
+        and "systems/visual-language-style-system.md" in principles,
+        "OKF index and principles router can reach visual language and style system",
+    )
+    taste_engine = read(okf_root / "systems" / "taste-engine.md")
+    require(
+        "taste engine OKF exists",
+        "Design Read" in taste_engine
+        and "Taste Dials" in taste_engine
+        and "Anti-Default Locks" in taste_engine
+        and "Layout-Family Audit" in taste_engine
+        and "Asset Credibility" in taste_engine
+        and "Taste Critique" in taste_engine
+        and "Contract Fields" in taste_engine
+        and "Done Check" in taste_engine,
+        "Taste Skill mechanisms are represented as operational OKF rather than copied templates",
+    )
+    require(
+        "taste engine OKF is routed",
+        "systems/taste-engine.md" in index
+        and "systems/taste-engine.md" in principles
+        and "references/design-okf/systems/taste-engine.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach taste-engine for generic/stiff visual work",
+    )
+    brand_identity_media = read(okf_root / "systems" / "brand-identity-media-production.md")
+    require(
+        "brand identity media production OKF exists",
+        "Core Chain" in brand_identity_media
+        and "Recognition Mechanisms" in brand_identity_media
+        and "Logo System" in brand_identity_media
+        and "Brand Guidelines Model" in brand_identity_media
+        and "Design System To Delivery" in brand_identity_media
+        and "Media Delivery Matrix" in brand_identity_media
+        and "Licensing And Rights" in brand_identity_media
+        and "Ask Or Proceed" in brand_identity_media
+        and "Done Check" in brand_identity_media,
+        "fourth graphic-design research block is represented as a brand-identity/media-production bridge",
+    )
+    require(
+        "brand identity media production OKF is routed",
+        "systems/brand-identity-media-production.md" in index
+        and "systems/brand-identity-media-production.md" in principles,
+        "OKF index and principles router can reach brand identity and media production",
     )
     product_sense = read(okf_root / "methods" / "product-sense.md")
     require(
@@ -211,12 +390,31 @@ def main() -> int:
         "DESIGN.md template includes content model fields",
     )
     require(
+        "contract has taste signature",
+        "## Taste Signature" in contract
+        and "Taste dials" in contract
+        and "Category defaults avoided" in contract
+        and "Layout families or slide archetypes" in contract
+        and "Visual memory feature" in contract,
+        "DESIGN.md template can preserve taste dials, anti-defaults, layout families, and memory features",
+    )
+    require(
         "contract has presentation specs",
         "## Presentation Or Deck Specs" in contract
         and "One-sentence deck conclusion" in contract
         and "Slide claim/evidence/action rule" in contract
         and "Export package" in contract,
         "DESIGN.md template includes presentation/deck continuity fields",
+    )
+    require(
+        "contract has brand identity media specs",
+        "## Brand Identity And Media Production Specs" in contract
+        and "Brand strategy and recognition anchors" in contract
+        and "Logo variants and misuse rules" in contract
+        and "Asset naming and delivery package" in contract
+        and "Licensing and rights register" in contract
+        and "Official platform, vendor, legal, or supplier checks" in contract,
+        "DESIGN.md template includes brand identity and cross-media delivery continuity fields",
     )
     require(
         "contract has Google-compatible DESIGN.md template",
@@ -255,6 +453,50 @@ def main() -> int:
         and "Done Check" in request_integrity,
         "request drift prevention is documented as reusable governance knowledge",
     )
+    research_digestion = read(okf_root / "governance" / "research-digestion-llm-wiki.md")
+    require(
+        "research digestion LLM wiki OKF exists",
+        "Layer Model" in research_digestion
+        and "LLM wiki digestion" in research_digestion
+        and "Wiki Page Types" in research_digestion
+        and "Digest Workflow" in research_digestion
+        and "Promotion Criteria" in research_digestion
+        and "Do Not Promote" in research_digestion
+        and "OKF Candidate Template" in research_digestion
+        and "Coverage Protocol" in research_digestion
+        and "Runtime Boundary" in research_digestion
+        and "Done Check" in research_digestion,
+        "LLM wiki is represented as a build-time digestion layer before OKF promotion",
+    )
+    require(
+        "research digestion LLM wiki OKF is routed",
+        "governance/research-digestion-llm-wiki.md" in index
+        and "governance/research-digestion-llm-wiki.md" in principles
+        and "governance/research-digestion-llm-wiki.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach research digestion when updating knowledge",
+    )
+    okf_taxonomy = read(okf_root / "governance" / "okf-taxonomy-digestion-map.md")
+    require(
+        "existing OKF taxonomy digestion map exists",
+        "Digestion Status" in okf_taxonomy
+        and "Runtime Taxonomy" in okf_taxonomy
+        and "Methods" in okf_taxonomy
+        and "Foundations" in okf_taxonomy
+        and "Content" in okf_taxonomy
+        and "Systems" in okf_taxonomy
+        and "Digital" in okf_taxonomy
+        and "Production" in okf_taxonomy
+        and "Governance" in okf_taxonomy
+        and "Source-Of-Truth Rules" in okf_taxonomy
+        and "Existing OKF Audit" in okf_taxonomy
+        and "Gap Handling" in okf_taxonomy,
+        "existing OKF concepts are classified by runtime layer with digestion and ownership rules",
+    )
+    require(
+        "existing OKF taxonomy digestion map is indexed",
+        "governance/okf-taxonomy-digestion-map.md" in index,
+        "OKF index can reach the existing OKF taxonomy and digestion status",
+    )
 
     quality = read(root / "references" / "quality-gates.md")
     require(
@@ -271,6 +513,59 @@ def main() -> int:
         and "CTAs state action plus result" in quality
         and "Critical meaning is not carried only" in quality,
         "quality-gates includes mandatory content gate",
+    )
+    require(
+        "quality gates include visual communication hierarchy",
+        "strongest visual element maps to the most important communication element" in quality
+        and "intended first focus, reading path, and action/decision endpoint" in quality
+        and "Critical, Important, Useful, and Optional information" in quality
+        and "risk, cost, consequence, or trust information" in quality,
+        "quality-gates check communication priority, attention path, and action path",
+    )
+    require(
+        "quality gates include layout typography composition",
+        "## Layout, Typography, And Composition" in quality
+        and "composition model, grid/type-area logic" in quality
+        and "Optical alignment" in quality
+        and "Chinese text follows one paragraph system" in quality
+        and "Mixed Chinese-English text checks" in quality
+        and "Swiss Style is used as grid-led clarity" in quality,
+        "quality-gates check grid, spacing, type hierarchy, CJK, mixed text, and Swiss method",
+    )
+    require(
+        "quality gates include visual language style system",
+        "## Visual Language And Style System" in quality
+        and "speak the same concept" in quality
+        and "owned visual feature" in quality
+        and "deletion test" in quality
+        and "Visual vocabulary roles" in quality
+        and "Anti-template check" in quality
+        and "Asset rights" in quality,
+        "quality-gates check visual-language coherence, anti-template specificity, and asset governance",
+    )
+    require(
+        "quality gates include taste engine",
+        "## Taste And Anti-Template" in quality
+        and "Taste Signature" in quality
+        and "category default" in quality
+        and "taste dials" in quality
+        and "layout-family or slide-archetype audit" in quality
+        and "Cards are used because" in quality
+        and "what still looks AI-generated" in quality,
+        "quality-gates require dials, anti-defaults, layout-family audit, card justification, and AI-tell repair",
+    )
+    require(
+        "quality gates include brand identity media production",
+        "## Brand Identity And Media Production" in quality
+        and "recognition anchors" in quality
+        and "core rules, application rules, production rules" in quality
+        and "Logo variants" in quality
+        and "Design tokens and assets map" in quality
+        and "Social delivery does not rely on stale memorized dimensions" in quality
+        and "Packaging delivery respects supplier dieline" in quality
+        and "Licensing and rights register" in quality
+        and "final production-ready work" in quality,
+        "quality-gates check brand identity, media production, current-source caveats, and rights governance",
     )
     require(
         "quality gates include product sense",
@@ -323,6 +618,36 @@ def main() -> int:
         and "Presentations capability" in presentation_branch,
         "presentation branch avoids duplicating file-operation responsibility",
     )
+    marketing_branch = read(root / "references" / "branch-marketing-site.md")
+    require(
+        "marketing branch routes taste engine",
+        "design-okf/systems/taste-engine.md" in marketing_branch
+        and "Taste dials" in marketing_branch
+        and "layout-family budget" in marketing_branch,
+        "marketing pages route distinctive taste and section variety to taste-engine",
+    )
+    require(
+        "presentation branch routes taste engine",
+        "design-okf/systems/taste-engine.md" in presentation_branch
+        and "slide-archetype variation" in presentation_branch
+        and "Do not solve every slide as title plus cards" in presentation_branch,
+        "decks route memorable style and slide archetype variety to taste-engine",
+    )
+    brand_branch = read(root / "references" / "branch-brand-system.md")
+    require(
+        "brand branch delegates media production source of truth",
+        "design-okf/systems/brand-identity-media-production.md" in brand_branch
+        and "cross-media brand kits" in brand_branch
+        and "rights registers" in brand_branch,
+        "brand branch routes persistent brand identity and media-delivery work to the OKF concept",
+    )
+    require(
+        "graphic branch routes taste engine",
+        "design-okf/systems/taste-engine.md" in graphic_branch
+        and "Taste dials and anti-default locks" in graphic_branch
+        and "vary composition by message role" in graphic_branch,
+        "graphic and social work route key visual taste and series variety to taste-engine",
+    )
 
     machine = read(okf_root / "governance" / "machine-verification-ci.md")
     require(
@@ -371,6 +696,19 @@ def main() -> int:
         "Design review and QA",
         "Machine-verifiable",
         "Data visualization",
+        "Visual communication chain",
+        "Information priority",
+        "Message hierarchy vs visual hierarchy",
+        "Attention and reading path",
+        "Understanding and action",
+        "Ethical hierarchy",
+        "Layout, typography, and composition system",
+        "Grid, type area, margins, columns, gutters, baseline, and spacing rhythm",
+        "Alignment, optical alignment, visual weight, focal path, and grayscale structure",
+        "Typography hierarchy, legibility, readability, line height, line length, and type tone",
+        "Chinese typography and mixed Chinese-English typesetting",
+        "Editorial layout and multi-page rhythm",
+        "Swiss Style as grid-led method, not style costume",
         "Product problem framing",
         "Product metrics",
         "MVP scope",
@@ -379,6 +717,24 @@ def main() -> int:
         "Commercial PPT",
         "Deck narrative",
         "PPT master/template",
+        "Visual language and style system",
+        "Style versus decoration and anti-template aesthetics",
+        "Taste Skill operational mechanisms",
+        "Layout variety against card-heavy AI output",
+        "Photography, illustration, iconography, symbols, and texture rules",
+        "Art direction, moodboard-to-rules, do/do-not examples, and cross-medium style guide",
+        "Contextual color/symbol meaning and visual-language ethics",
+        "Brand identity, brand image, brand equity, and recognition mechanisms",
+        "Logo variants, clear space, minimum size, color/background rules, and misuse examples",
+        "Brand guidelines: core, application, production, governance, and do/do-not rules",
+        "Design tokens, asset library, naming, delivery package, and DAM-style governance",
+        "Screen, print, social, deck, and packaging media delivery",
+        "Packaging dieline, barcode, regulatory, supplier, and proofing checks",
+        "Licensing, asset rights, copyright, trademark, commissioned work, and rights register",
+        "LLM Wiki digestion layer for raw research before OKF promotion",
+        "Raw research, source summaries, wiki synthesis, OKF candidates, and runtime OKF boundary",
+        "OKF promotion criteria, do-not-promote rules, coverage protocol, and validation path",
+        "Existing OKF taxonomy, runtime-layer classification, and single-source-of-truth boundaries",
     ]
     for term in coverage_terms:
         require(f"research coverage: {term}", term in coverage, "anchor found" if term in coverage else "missing")

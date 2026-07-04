@@ -1,5 +1,5 @@
 interface:
   display_name: "Ultimate Design"
-  short_description: "Professional product, PPT, and visual design workflow"
-  default_prompt: "Use $ultimate-design to run a contract-driven design flow, preserve the request anchor, and verify the result."
+  short_description: "Contract-driven visual design with YOLO and Pro modes"
+  default_prompt: "Use $ultimate-design to create the design contract, make the artifact, critique it, and verify rendered output."
   brand_color: "#0057FF"

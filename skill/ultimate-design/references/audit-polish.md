@@ -23,11 +23,12 @@ Use this loop after creating a design and before final delivery:
 6. Check theme fit: color, typography, imagery, and tone match the audience, product, and desired emotion.
 7. Check IA: primary message, primary task, first-screen clarity, navigation, and content hierarchy.
 8. Check craft: composition, visual hierarchy, spacing, alignment, component states, motion, and anti-slop issues.
-9. Check production: accessibility, responsive behavior, performance risk, slide/PDF export, print/export, i18n, legal/licensing, and data-viz rules when relevant.
-10. For screenshotable visual artifacts, render every final page/slide/state practical to inspect; do not rely on a single sampled screenshot or bounds-only check.
-11. Write findings as P0/P1/P2/P3.
-12. Fix all P0/P1 and easy P2 issues, including any mismatch with the Request Anchor.
-13. Run one more critique pass on the changed artifact.
+9. Check taste when relevant: design read, taste dials, anti-default locks, layout-family audit, asset credibility, visual memory feature, and whether the artifact still serves the Request Anchor.
+10. Check production: accessibility, responsive behavior, performance risk, slide/PDF export, print/export, i18n, legal/licensing, and data-viz rules when relevant.
+11. For screenshotable visual artifacts, render every final page/slide/state practical to inspect; do not rely on a single sampled screenshot or bounds-only check.
+12. Write findings as P0/P1/P2/P3.
+13. Fix all P0/P1 and easy P2 issues, including any mismatch with the Request Anchor.
+14. Run one more critique pass on the changed artifact.
 
 Do not ship after the first critique if it found unresolved P0 or P1 issues, including requirement drift from the Request Anchor.
 
@@ -57,7 +58,8 @@ Apply polish in this order:
 8. Typography: scale, weight, line length, wrapping, overflow.
 9. Color: roles, contrast, state parity, palette coherence, visual personality.
 10. Interaction: states, feedback, recovery, loading/empty/error.
-11. Craft: motion, imagery, details, anti-slop cleanup.
+11. Taste: dial fit, category-default avoidance, layout-family variety, visual memory, and asset credibility.
+12. Craft: motion, imagery, details, anti-slop cleanup.
 
 ## Anti-Slop Checks
 
@@ -73,6 +75,8 @@ Reject and rewrite:
 - Tiny uppercase eyebrows repeated above every section.
 - Numbered section markers where order carries no meaning.
 - Copy that sounds impressive but says nothing specific.
+
+For visible artifacts with style freedom, also apply `design-okf/systems/taste-engine.md`. Treat unanswered Taste Critique questions as polish findings, not as optional commentary.
 
 ## Done Criteria
 

@@ -180,6 +180,18 @@ List concrete, enforceable rules and forbidden patterns.
 - Content hierarchy:
 - Primary CTA rules:
 
+## Taste Signature
+
+Use only when the artifact has meaningful visible style freedom:
+- Design read:
+- Taste dials:
+- Category defaults avoided:
+- Layout families or slide archetypes:
+- Visual memory feature:
+- Asset/reference policy:
+- Anti-default locks:
+- Intentional exceptions:
+
 ## Page Or Asset Specs
 
 For each page, screen, or graphic:
@@ -225,6 +237,20 @@ Use only when relevant:
 - Export format:
 - Font handling:
 - Image/font/logo license notes:
+
+## Brand Identity And Media Production Specs
+
+Use only when relevant:
+- Brand strategy and recognition anchors:
+- Core identity rules:
+- Application rules:
+- Production rules:
+- Logo variants and misuse rules:
+- Cross-media mapping:
+- Asset naming and delivery package:
+- Licensing and rights register:
+- Approval, owner, versioning, and governance:
+- Official platform, vendor, legal, or supplier checks:
 
 ## Data Visualization, I18n, And Legal
 

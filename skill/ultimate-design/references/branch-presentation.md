@@ -4,6 +4,8 @@ Use this branch for PowerPoint, Keynote, Google Slides, business presentations, 
 
 Read `design-okf/production/presentation-deck.md` for the source-of-truth commercial deck model: decision path, density modes, narrative structures, slide claim/evidence/action, page types, master/template rules, accessibility, and delivery checks.
 
+Read `design-okf/systems/taste-engine.md` when the deck needs a memorable style, stronger executive polish, a pitch/campaign identity, slide-archetype variation, anti-template critique, or when the deck risks becoming the same title-plus-card slide repeated.
+
 ## Brief
 
 Clarify or infer:
@@ -25,6 +27,7 @@ Ask only when missing audience, decision goal, or output format would point the 
 - Build the slide list so title-only reading tells the story.
 - Separate mainline slides from appendix, backup data, speaker notes, and data-source files.
 - Match density to mode: live decks need fewer words and larger type; read-alone decks need enough annotation to stand without narration.
+- Set taste dials for the deck. Executive decks usually need controlled variance; pitch, campaign, and brand decks can use stronger visual memory.
 
 ## Slide Rule
 
@@ -44,6 +47,7 @@ If a slide has no claim, merge, rewrite, move to appendix, or delete it.
 - Use emphasis color sparingly for the decision-critical number, risk, or action.
 - Prefer left alignment for dense business content.
 - Use CRAP plus hierarchy: contrast, repetition, alignment, proximity, and reading order.
+- Vary slide archetypes by narrative job: claim, evidence, comparison, process, decision, quote, data, appendix, and transition. Do not solve every slide as title plus cards.
 
 ## Data Slides
 

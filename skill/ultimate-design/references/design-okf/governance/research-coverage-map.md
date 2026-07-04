@@ -14,6 +14,10 @@ Use this concept to audit whether the research packet is represented in the skil
 | Research area | OKF concept or skill reference | Coverage |
 |---|---|---|
 | Senior-designer goal and design priority | `methods/senior-design-process.md`, `governance/senior-proxy-checklist.md` | Covered |
+| LLM Wiki digestion layer for raw research before OKF promotion | `governance/research-digestion-llm-wiki.md`, `SKILL.md`, `flow_check.py` | Covered as build-time governance |
+| Raw research, source summaries, wiki synthesis, OKF candidates, and runtime OKF boundary | `governance/research-digestion-llm-wiki.md`, `design-okf/index.md`, `principles.md` | Covered |
+| OKF promotion criteria, do-not-promote rules, coverage protocol, and validation path | `governance/research-digestion-llm-wiki.md`, `governance/research-coverage-map.md`, `flow_check.py` | Covered |
+| Existing OKF taxonomy, runtime-layer classification, and single-source-of-truth boundaries | `governance/okf-taxonomy-digestion-map.md`, `design-okf/index.md`, `flow_check.py` | Covered |
 | Product problem framing, PM judgment, JTBD, and "problem before solution" | `methods/product-sense.md`, `governance/request-integrity.md` | Covered as conditional product-design lens |
 | Product metrics, success signals, guardrails, and validation methods | `methods/product-sense.md`, `quality-gates.md` | Covered for product-oriented design tasks |
 | MVP scope, hypothesis testing, and prototype/landing/fake-door validation | `methods/product-sense.md`, `branch-marketing-site.md`, `branch-web-product.md` | Covered as design scope and validation guidance |
@@ -23,6 +27,33 @@ Use this concept to audit whether the research packet is represented in the skil
 | Deck narrative, conclusion titles, and claim/evidence/action slide model | `production/presentation-deck.md`, `branch-presentation.md` | Covered |
 | PPT master/template, font embedding, PDF export, accessibility, and approval package | `production/presentation-deck.md`, `quality-gates.md`, `design-contract.md` | Covered with delivery caveats |
 | Design Thinking, Double Diamond, HCD/UCD, Lean UX | `methods/senior-design-process.md` | Covered as operational lenses |
+| Visual communication chain: intent, priority, attention, reading, understanding, action | `foundations/visual-communication-hierarchy.md`, `quality-gates.md` | Covered as a foundation coordination layer |
+| Information priority: user goal, business goal, decision value, risk, urgency, frequency, context | `foundations/visual-communication-hierarchy.md`, `content/message-model.md` | Covered |
+| Message hierarchy vs visual hierarchy | `foundations/visual-communication-hierarchy.md`, `content/message-model.md`, `foundations/visual-hierarchy.md` | Covered with source-of-truth boundaries |
+| Attention and reading path: top-down/bottom-up, F/Z/layer-cake/spotted/modular/task-flow patterns | `foundations/visual-communication-hierarchy.md`, `foundations/gestalt-composition.md` | Covered as context-sensitive heuristics |
+| Understanding and action: perception, grouping, decoding, mapping, CTA, signifiers, feedback, risk reducers | `foundations/visual-communication-hierarchy.md`, `content/ux-writing.md`, `digital/responsive-interaction.md` | Covered |
+| Ethical hierarchy and dark-pattern rejection | `foundations/visual-communication-hierarchy.md`, `quality-gates.md` | Covered |
+| Layout, typography, and composition system | `foundations/layout-typography-composition.md`, `quality-gates.md` | Covered as a foundation coordination layer |
+| Grid, type area, margins, columns, gutters, baseline, and spacing rhythm | `foundations/layout-typography-composition.md`, `systems/tokens-components.md` | Covered |
+| Alignment, optical alignment, visual weight, focal path, and grayscale structure | `foundations/layout-typography-composition.md`, `foundations/gestalt-composition.md`, `foundations/visual-hierarchy.md` | Covered |
+| Typography hierarchy, legibility, readability, line height, line length, and type tone | `foundations/layout-typography-composition.md`, `systems/typography-system.md` | Covered |
+| Chinese typography and mixed Chinese-English typesetting | `foundations/layout-typography-composition.md`, `systems/typography-system.md`, `production/data-viz-i18n-legal.md` | Covered |
+| Editorial layout and multi-page rhythm | `foundations/layout-typography-composition.md`, `production/graphic-print.md`, `production/presentation-deck.md` | Covered |
+| Swiss Style as grid-led method, not style costume | `foundations/layout-typography-composition.md`, `quality-gates.md` | Covered |
+| Visual language and style system | `systems/visual-language-style-system.md`, `branch-brand-system.md`, `quality-gates.md` | Covered as system coordination layer |
+| Style versus decoration and anti-template aesthetics | `systems/visual-language-style-system.md`, `audit-polish.md`, `quality-gates.md` | Covered |
+| Taste Skill operational mechanisms: design read, dials, anti-defaults, layout-family audit, asset credibility, and taste critique | `systems/taste-engine.md`, `quality-gates.md`, `audit-polish.md`, branch references | Covered as adapted runtime OKF, not copied template content |
+| Layout variety against card-heavy AI output | `systems/taste-engine.md`, `branch-marketing-site.md`, `branch-presentation.md`, `graphic-print.md`, `quality-gates.md` | Covered |
+| Photography, illustration, iconography, symbols, and texture rules | `systems/visual-language-style-system.md`, `branch-brand-system.md`, `graphic-print.md` | Covered |
+| Art direction, moodboard-to-rules, do/do-not examples, and cross-medium style guide | `systems/visual-language-style-system.md`, `design-contract.md` | Covered |
+| Contextual color/symbol meaning and visual-language ethics | `systems/visual-language-style-system.md`, `systems/color-system.md`, `production/data-viz-i18n-legal.md` | Covered |
+| Brand identity, brand image, brand equity, and recognition mechanisms | `systems/brand-identity-media-production.md`, `branch-brand-system.md`, `quality-gates.md` | Covered |
+| Logo variants, clear space, minimum size, color/background rules, and misuse examples | `systems/brand-identity-media-production.md`, `branch-brand-system.md`, `quality-gates.md` | Covered |
+| Brand guidelines: core, application, production, governance, and do/do-not rules | `systems/brand-identity-media-production.md`, `design-contract.md`, `quality-gates.md` | Covered |
+| Design tokens, asset library, naming, delivery package, and DAM-style governance | `systems/brand-identity-media-production.md`, `systems/tokens-components.md`, `design-contract.md` | Covered |
+| Screen, print, social, deck, and packaging media delivery | `systems/brand-identity-media-production.md`, `production/graphic-print.md`, `production/presentation-deck.md`, `digital/accessibility-usability.md` | Covered with current-source caveats |
+| Packaging dieline, barcode, regulatory, supplier, and proofing checks | `systems/brand-identity-media-production.md`, `production/graphic-print.md`, `production/data-viz-i18n-legal.md` | Covered as production/legal caveat |
+| Licensing, asset rights, copyright, trademark, commissioned work, and rights register | `systems/brand-identity-media-production.md`, `production/data-viz-i18n-legal.md`, `quality-gates.md` | Covered as flag-and-record guidance |
 | Gestalt principles | `foundations/gestalt-composition.md` | Covered |
 | Visual hierarchy | `foundations/visual-hierarchy.md` | Covered |
 | Content strategy, user need, and message hierarchy | `content/message-model.md`, `content-model.md` | Covered |

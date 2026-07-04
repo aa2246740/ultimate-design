@@ -2,6 +2,8 @@
 
 Use this branch for visual identity, brand refreshes, design languages, art direction, logo usage rules, typography/color systems, campaign look-and-feel, and durable brand guidance.
 
+Read `design-okf/systems/brand-identity-media-production.md` when the work involves brand guidelines, VI manuals, logo usage systems, cross-media brand kits, screen/print/social/PPT/packaging delivery, asset libraries, licensing, rights registers, or governance.
+
 ## Brand Brief
 
 Infer or define:
@@ -68,3 +70,4 @@ Depending on scope, produce:
 - DESIGN.md brand section.
 - Token suggestions.
 - Example applications such as landing hero, social banner, card, button, or poster.
+- Brand guideline, asset-library, naming, licensing, rights, and approval notes when the system must persist across teams or media.

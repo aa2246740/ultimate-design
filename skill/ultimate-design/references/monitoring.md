@@ -20,7 +20,7 @@ python3 scripts/flow_check.py
 python3 /path/to/ultimate-design/scripts/flow_check.py /path/to/ultimate-design
 ```
 
-The checker should pass before claiming the published flowchart matches the skill. It verifies the ordered phases, optional monitoring boundary, critique/repair loop, typed OKF concept files, and research coverage anchors.
+The checker should pass before claiming the published flowchart matches the skill. It verifies the ordered phases, optional monitoring boundary, research-ingestion boundary, critique/repair loop, typed OKF concept files, and research coverage anchors.
 
 Static proof is appropriate when the user asks, "Can you prove the flowchart is what the skill actually says?"
 
@@ -29,6 +29,16 @@ Static proof is appropriate when the user asks, "Can you prove the flowchart is 
 Use a run trace only for evals, regression tests, development debugging, or when the user explicitly asks to monitor a real design run.
 
 When the run creates a screenshotable visual artifact, runtime evidence should include the rendered screenshot folder, contact sheet, visual-validation report, or a clear reason visual verification was not run.
+
+For Pro mode end-to-end evals, consensus confirmation and artifact delivery are separate evidence points:
+
+- The confirmation turn passes only when it asks compact decision questions and does not create artifacts.
+- The post-consensus delivery turn passes only when it creates a visible artifact, a design contract or compact contract update, critique/repair evidence, rendered verification evidence, and a run trace.
+- A post-consensus delivery turn that creates only `DESIGN.md`, or only plans the artifact, is a failed delivery turn even if the contract is high quality.
+- For screenshotable deliverables, the visible artifact skeleton should be created before a full `DESIGN.md` draft. If `DESIGN.md` is the first substantial output and no artifact follows promptly, the run has stalled in contract drafting.
+- The trace should be created early, before long rationale or optional OKF expansion, so timeout failures still show which phase stalled.
+- Update the trace as phases complete. A table that still says `pending` for applicable phases is not runtime proof, even if all phase names appear.
+- After rendered visual verification passes, do not run duplicate visual validators unless diagnosing a failure; spend the remaining budget on repair, contract validation, trace governance, and final delivery.
 
 ## Run Trace Location
 
@@ -71,6 +81,37 @@ Each phase records status and evidence:
 ## Minimum Delivery Rule
 
 In monitored eval mode, do not claim the full workflow ran unless every applicable phase is `pass`, `blocked`, or `not-run` with evidence. No applicable phase should remain `pending` at final response.
+
+For screenshotable artifact evals, `Artifact`, `Critique 1`, `Repair`, `Critique 2`, `Verify`, `Govern`, and `Deliver` are applicable unless the task explicitly excludes implementation. `Verify` is not satisfied by running a validator help command; it requires checking the created artifact or recording why artifact verification could not run.
+
+`Run trace exists and covers all monitored phases` means each applicable phase has a non-`pending` status and evidence. Presence of the phase label alone is insufficient.
+
+## Completion Seal
+
+For automated development tests, create a machine-readable seal after Govern and before the final chat response:
+
+```text
+.ultimate-design/runs/<timestamp>-<slug>.complete.json
+```
+
+Minimum schema:
+
+```json
+{
+  "status": "pass",
+  "trace": ".ultimate-design/runs/<timestamp>-<slug>.md",
+  "artifacts": ["index.html", "DESIGN.md"],
+  "verification": {
+    "visual_report": ".ultimate-design/runs/<timestamp>-visual/visual-report.json",
+    "contract_validator": "pass",
+    "negative_letter_spacing": "pass"
+  },
+  "remaining_risks": [],
+  "final_summary": "Short user-facing delivery summary."
+}
+```
+
+The seal is valid only when the trace has no applicable `pending` phases and the artifact evidence already exists. A development watchdog may stop the process after a valid seal appears; the final chat response is then redundant for proving the workflow.
 
 Do not claim professional quality in any mode if:
 

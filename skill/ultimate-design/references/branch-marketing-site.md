@@ -2,6 +2,8 @@
 
 Use this branch for landing pages, campaign pages, brand websites, content sites, portfolios, homepages, pricing pages, and marketing redesigns.
 
+Read `design-okf/systems/taste-engine.md` when the site needs distinctive taste, stronger style confidence, anti-AI-slop cleanup, visual assets, layout variety, or when the page risks becoming a centered hero followed by repeated card grids.
+
 ## First Decisions
 
 Settle:
@@ -13,6 +15,8 @@ Settle:
 - Trust signals needed.
 - Content sections and scan order.
 - Brand register: quiet, editorial, bold, premium, technical, playful, institutional, or another explicit direction.
+- Taste dials: visual variance, information density, motion depth, brand distinction, and experiment risk.
+- Anti-default locks: category looks, color families, card patterns, fake screenshots, or stock imagery to reject.
 
 Marketing surfaces sell, explain, recruit, or express identity. The first viewport must make the subject and next action obvious.
 
@@ -44,6 +48,7 @@ Use OKLCH when authoring new web tokens unless the existing system uses another 
 - Avoid endless identical card grids.
 - Cards are not the default structure for every section.
 - Use rhythm: vary section density, media, type scale, and whitespace.
+- Keep a layout-family budget for long pages; six or more sections normally need at least four composition families unless strict repetition is intentional.
 - Keep body copy readable and scannable.
 
 ## Copy
