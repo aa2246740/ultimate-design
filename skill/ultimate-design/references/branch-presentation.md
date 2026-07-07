@@ -6,6 +6,8 @@ Read `design-okf/production/presentation-deck.md` for the source-of-truth commer
 
 Read `design-okf/systems/taste-engine.md` when the deck needs a memorable style, stronger executive polish, a pitch/campaign identity, slide-archetype variation, anti-template critique, or when the deck risks becoming the same title-plus-card slide repeated.
 
+Read `design-okf/systems/type-personality.md` when deck typography is part of the visual memory, when choosing deliverable-safe fonts, when Chinese/English mixed slide text matters, or when the deck must travel across devices as PPTX/PDF.
+
 ## Brief
 
 Clarify or infer:
@@ -28,6 +30,7 @@ Ask only when missing audience, decision goal, or output format would point the 
 - Separate mainline slides from appendix, backup data, speaker notes, and data-source files.
 - Match density to mode: live decks need fewer words and larger type; read-alone decks need enough annotation to stand without narration.
 - Set taste dials for the deck. Executive decks usually need controlled variance; pitch, campaign, and brand decks can use stronger visual memory.
+- Decide whether type should recede for distance readability or stand forward for cover/section memory. Do not make body slides expressive at the cost of reading.
 
 ## Slide Rule
 
@@ -44,6 +47,7 @@ If a slide has no claim, merge, rewrite, move to appendix, or delete it.
 - Use one strongest focal point per slide.
 - Keep title, chart, annotation, footer, and source aligned to a grid.
 - Repeat title position, type hierarchy, chart style, icon style, footer, and page number.
+- Treat title, body, chart labels, data numbers, footers, and section dividers as different type roles.
 - Use emphasis color sparingly for the decision-critical number, risk, or action.
 - Prefer left alignment for dense business content.
 - Use CRAP plus hierarchy: contrast, repetition, alignment, proximity, and reading order.

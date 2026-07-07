@@ -23,7 +23,7 @@ Use this loop after creating a design and before final delivery:
 6. Check theme fit: color, typography, imagery, and tone match the audience, product, and desired emotion.
 7. Check IA: primary message, primary task, first-screen clarity, navigation, and content hierarchy.
 8. Check craft: composition, visual hierarchy, spacing, alignment, component states, motion, and anti-slop issues.
-9. Check taste when relevant: design read, taste dials, anti-default locks, layout-family audit, asset credibility, visual memory feature, and whether the artifact still serves the Request Anchor.
+9. Check taste for visible artifacts: design read, taste dials when style freedom exists, anti-default locks, layout-family audit, asset credibility, type personality, visual memory feature, and whether the artifact still serves the Request Anchor.
 10. Check production: accessibility, responsive behavior, performance risk, slide/PDF export, print/export, i18n, legal/licensing, and data-viz rules when relevant.
 11. For screenshotable visual artifacts, render every final page/slide/state practical to inspect; do not rely on a single sampled screenshot or bounds-only check.
 12. Write findings as P0/P1/P2/P3.
@@ -55,10 +55,10 @@ Apply polish in this order:
 5. Request fit: deliverable, core job, success criteria, non-goals, and must-preserve constraints.
 6. Accessibility: contrast, focus, semantics, keyboard, reduced motion.
 7. Layout: alignment, grouping, spacing rhythm, responsive behavior.
-8. Typography: scale, weight, line length, wrapping, overflow.
+8. Typography: scale, weight, line length, wrapping, overflow, type role, mixed-script fit, fallback, and licensing when relevant.
 9. Color: roles, contrast, state parity, palette coherence, visual personality.
 10. Interaction: states, feedback, recovery, loading/empty/error.
-11. Taste: dial fit, category-default avoidance, layout-family variety, visual memory, and asset credibility.
+11. Taste: dial fit, category-default avoidance, layout-family variety, type personality, visual memory, and asset credibility.
 12. Craft: motion, imagery, details, anti-slop cleanup.
 
 ## Anti-Slop Checks
@@ -76,7 +76,7 @@ Reject and rewrite:
 - Numbered section markers where order carries no meaning.
 - Copy that sounds impressive but says nothing specific.
 
-For visible artifacts with style freedom, also apply `design-okf/systems/taste-engine.md`. Treat unanswered Taste Critique questions as polish findings, not as optional commentary.
+For visible artifacts, apply at least the light Taste Checkpoint. For visible artifacts with style freedom, also apply `design-okf/systems/taste-engine.md`. Treat unanswered Taste Critique questions as polish findings, not as optional commentary.
 
 ## Done Criteria
 

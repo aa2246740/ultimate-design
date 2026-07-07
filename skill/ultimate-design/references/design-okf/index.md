@@ -31,6 +31,7 @@ The bundle is descriptive knowledge. It does not override runtime truth: rendere
 * [Taste Engine](systems/taste-engine.md) - Operational taste layer for design read, taste dials, anti-default locks, layout-family audit, asset credibility, and taste critique.
 * [Color System](systems/color-system.md) - Role-first color decisions, contrast, semantic colors, dark mode, and cultural caveats.
 * [Typography System](systems/typography-system.md) - Type scale, line length, mixed Chinese/English checks, tabular figures, and readability defaults.
+* [Type Personality And Typography Art Direction](systems/type-personality.md) - Font-selection model for when type should recede or become memorable, with CJK/Latin voice maps, mixed-script pairing, WebFont/fallback, and licensing caveats.
 * [Tokens And Components](systems/tokens-components.md) - Primitive/semantic/component token layers and component specification requirements.
 
 ## Digital

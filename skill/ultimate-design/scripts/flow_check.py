@@ -118,6 +118,13 @@ def main() -> int:
         "final quality gate pointer is present",
     )
     require(
+        "light taste checkpoint is default for visible artifacts",
+        "For every visible artifact, apply a lightweight **Taste Checkpoint** by default" in skill
+        and "keep the checkpoint brief" in skill
+        and "If no expressive style is needed" in skill,
+        "visible artifacts pass a taste checkpoint without forcing expressive styling everywhere",
+    )
+    require(
         "content model reference is routed",
         "references/content-model.md" in skill
         and "Build the content contract" in skill
@@ -194,7 +201,7 @@ def main() -> int:
     )
     require(
         "taste critique loop",
-        "Check taste when relevant" in audit
+        "Check taste for visible artifacts" in audit
         and "design-okf/systems/taste-engine.md" in audit
         and "Taste Critique" in audit,
         "audit-polish routes stiff or generic work through taste-engine before delivery",
@@ -331,6 +338,33 @@ def main() -> int:
         and "references/design-okf/systems/taste-engine.md" in skill,
         "OKF index, principles router, and SKILL.md can reach taste-engine for generic/stiff visual work",
     )
+    require(
+        "taste engine is default-gated, not template-forced",
+        "Every visible artifact should pass a lightweight Taste Checkpoint" in taste_engine
+        and "Use Levels" in taste_engine
+        and "Quiet Taste" in taste_engine
+        and "Type expressiveness" in taste_engine,
+        "taste-engine defines light/full/quiet levels and includes type expressiveness",
+    )
+    type_personality = read(okf_root / "systems" / "type-personality.md")
+    require(
+        "type personality OKF exists",
+        "Task Mode" in type_personality
+        and "Type Roles" in type_personality
+        and "CJK Voice Map" in type_personality
+        and "Latin Voice Map" in type_personality
+        and "Mixed Chinese-English Strategy" in type_personality
+        and "WebFont, Fallback, And Licensing" in type_personality
+        and "Done Check" in type_personality,
+        "font-personality research is represented as operational OKF",
+    )
+    require(
+        "type personality OKF is routed",
+        "systems/type-personality.md" in index
+        and "systems/type-personality.md" in principles
+        and "references/design-okf/systems/type-personality.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach type-personality",
+    )
     brand_identity_media = read(okf_root / "systems" / "brand-identity-media-production.md")
     require(
         "brand identity media production OKF exists",
@@ -397,6 +431,14 @@ def main() -> int:
         and "Layout families or slide archetypes" in contract
         and "Visual memory feature" in contract,
         "DESIGN.md template can preserve taste dials, anti-defaults, layout families, and memory features",
+    )
+    require(
+        "contract has type personality continuity fields",
+        "type personality" in contract
+        and "fallback stack" in contract
+        and "font-rights status" in contract
+        and "Type personality:" in contract,
+        "DESIGN.md template can preserve type art direction and delivery risks",
     )
     require(
         "contract has presentation specs",
@@ -547,12 +589,21 @@ def main() -> int:
         "quality gates include taste engine",
         "## Taste And Anti-Template" in quality
         and "Taste Signature" in quality
+        and "light Taste Checkpoint" in quality
         and "category default" in quality
         and "taste dials" in quality
         and "layout-family or slide-archetype audit" in quality
         and "Cards are used because" in quality
         and "what still looks AI-generated" in quality,
         "quality-gates require dials, anti-defaults, layout-family audit, card justification, and AI-tell repair",
+    )
+    require(
+        "quality gates include type personality",
+        "Font family choices map to type roles" in quality
+        and "Type either recedes for task clarity or stands forward for memory" in quality
+        and "Mixed Chinese-English typography checks optical size" in quality
+        and "WebFont delivery records WOFF2/fallback strategy" in quality,
+        "quality-gates check font voice, mixed-script fit, and webfont delivery risks",
     )
     require(
         "quality gates include brand identity media production",
@@ -633,6 +684,13 @@ def main() -> int:
         and "Do not solve every slide as title plus cards" in presentation_branch,
         "decks route memorable style and slide archetype variety to taste-engine",
     )
+    require(
+        "presentation branch routes type personality",
+        "design-okf/systems/type-personality.md" in presentation_branch
+        and "distance readability" in presentation_branch
+        and "type roles" in presentation_branch,
+        "decks route font memory, device portability, and reading-distance typography to type-personality",
+    )
     brand_branch = read(root / "references" / "branch-brand-system.md")
     require(
         "brand branch delegates media production source of truth",
@@ -647,6 +705,14 @@ def main() -> int:
         and "Taste dials and anti-default locks" in graphic_branch
         and "vary composition by message role" in graphic_branch,
         "graphic and social work route key visual taste and series variety to taste-engine",
+    )
+    require(
+        "graphic and brand branches route type personality",
+        "design-okf/systems/type-personality.md" in graphic_branch
+        and "headline type should be the visual memory feature" in graphic_branch
+        and "design-okf/systems/type-personality.md" in brand_branch
+        and "Type either recedes for utility or creates brand memory" in brand_branch,
+        "graphic and brand work route typography art direction and font rights to type-personality",
     )
 
     machine = read(okf_root / "governance" / "machine-verification-ci.md")
@@ -706,7 +772,9 @@ def main() -> int:
         "Grid, type area, margins, columns, gutters, baseline, and spacing rhythm",
         "Alignment, optical alignment, visual weight, focal path, and grayscale structure",
         "Typography hierarchy, legibility, readability, line height, line length, and type tone",
+        "Font personality, type art direction, conservative-vs-expressive type decisions, and type roles",
         "Chinese typography and mixed Chinese-English typesetting",
+        "CJK/Latin voice maps, optical pairing, baseline/weight/size checks, numerals, punctuation, and real-content type testing",
         "Editorial layout and multi-page rhythm",
         "Swiss Style as grid-led method, not style costume",
         "Product problem framing",
@@ -731,6 +799,7 @@ def main() -> int:
         "Screen, print, social, deck, and packaging media delivery",
         "Packaging dieline, barcode, regulatory, supplier, and proofing checks",
         "Licensing, asset rights, copyright, trademark, commissioned work, and rights register",
+        "WebFont performance, CJK fallback, font loading, font licensing, and deliverable portability",
         "LLM Wiki digestion layer for raw research before OKF promotion",
         "Raw research, source summaries, wiki synthesis, OKF candidates, and runtime OKF boundary",
         "OKF promotion criteria, do-not-promote rules, coverage protocol, and validation path",

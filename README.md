@@ -105,6 +105,8 @@ Use $ultimate-design to audit this landing page. Find requirement drift, visual 
 
 More examples live in [examples/prompts.md](examples/prompts.md).
 
+Rendered example packages live in [examples/xiaohongshu-carousel](examples/xiaohongshu-carousel), including Chinese and English 9-frame social carousel outputs with source HTML, `DESIGN.md`, exported PNGs, contact sheets, and verification notes.
+
 ## Validation
 
 Run the static flow proof:

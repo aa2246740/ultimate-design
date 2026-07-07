@@ -36,8 +36,10 @@ Use this concept to audit whether the research packet is represented in the skil
 | Layout, typography, and composition system | `foundations/layout-typography-composition.md`, `quality-gates.md` | Covered as a foundation coordination layer |
 | Grid, type area, margins, columns, gutters, baseline, and spacing rhythm | `foundations/layout-typography-composition.md`, `systems/tokens-components.md` | Covered |
 | Alignment, optical alignment, visual weight, focal path, and grayscale structure | `foundations/layout-typography-composition.md`, `foundations/gestalt-composition.md`, `foundations/visual-hierarchy.md` | Covered |
-| Typography hierarchy, legibility, readability, line height, line length, and type tone | `foundations/layout-typography-composition.md`, `systems/typography-system.md` | Covered |
-| Chinese typography and mixed Chinese-English typesetting | `foundations/layout-typography-composition.md`, `systems/typography-system.md`, `production/data-viz-i18n-legal.md` | Covered |
+| Typography hierarchy, legibility, readability, line height, line length, and type tone | `foundations/layout-typography-composition.md`, `systems/typography-system.md`, `systems/type-personality.md` | Covered |
+| Font personality, type art direction, conservative-vs-expressive type decisions, and type roles | `systems/type-personality.md`, `systems/taste-engine.md`, `quality-gates.md`, `design-contract.md` | Covered |
+| Chinese typography and mixed Chinese-English typesetting | `foundations/layout-typography-composition.md`, `systems/typography-system.md`, `systems/type-personality.md`, `production/data-viz-i18n-legal.md` | Covered |
+| CJK/Latin voice maps, optical pairing, baseline/weight/size checks, numerals, punctuation, and real-content type testing | `systems/type-personality.md`, `systems/typography-system.md`, `quality-gates.md` | Covered |
 | Editorial layout and multi-page rhythm | `foundations/layout-typography-composition.md`, `production/graphic-print.md`, `production/presentation-deck.md` | Covered |
 | Swiss Style as grid-led method, not style costume | `foundations/layout-typography-composition.md`, `quality-gates.md` | Covered |
 | Visual language and style system | `systems/visual-language-style-system.md`, `branch-brand-system.md`, `quality-gates.md` | Covered as system coordination layer |
@@ -63,7 +65,8 @@ Use this concept to audit whether the research packet is represented in the skil
 | Layout, composition, graphic design | `foundations/gestalt-composition.md`, `production/graphic-print.md` | Covered |
 | Print caveats | `production/graphic-print.md` | Covered with caveats |
 | Color theory and semantic colors | `systems/color-system.md` | Covered, but deep palette generation may still use `ui-ux-pro-max` or project evidence |
-| Typography and responsive readability | `systems/typography-system.md` | Covered |
+| Typography and responsive readability | `systems/typography-system.md`, `systems/type-personality.md` | Covered |
+| WebFont performance, CJK fallback, font loading, font licensing, and deliverable portability | `systems/type-personality.md`, `systems/brand-identity-media-production.md`, `quality-gates.md` | Covered with current-source caveats for licensing/vendor rules |
 | Web IA | `foundations/information-architecture.md` | Covered |
 | Usability heuristics | `digital/accessibility-usability.md` | Covered |
 | Responsive design | `digital/responsive-interaction.md` | Covered |

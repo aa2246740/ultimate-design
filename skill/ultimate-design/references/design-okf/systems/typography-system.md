@@ -9,6 +9,8 @@ tags: [typography, readability, mixed-language, data]
 
 Use this concept when selecting fonts, defining type tokens, improving readability, or designing dense content.
 
+This concept owns readable type mechanics: scale, line length, line height, weights, mixed-language behavior, and overflow. Use `type-personality.md` when the work depends on font voice, display typography, CJK/Latin family selection, type as a memory feature, WebFont strategy, fallback, or font licensing.
+
 # Defaults
 
 Defaults are starting points, not law:
@@ -29,19 +31,22 @@ Defaults are starting points, not law:
 - Do not use all-caps body copy.
 - Long URLs, product names, and legal text need overflow handling.
 - Check mixed Chinese/English baseline, weight, punctuation, numbers, units, and spacing.
+- Do not choose font families by taste labels alone. Route font voice, fallback, and licensing decisions to `type-personality.md`.
 
 # Contract Fields
 
 Record:
 
 - Font families.
+- Type roles and personality when they affect the visible direction.
 - Type scale.
 - Line heights.
 - Weights.
 - Line-length guidance.
 - Data/table number treatment.
 - Localization and mixed-language notes.
+- Link to type-personality decisions when font voice, fallback, WebFont loading, or rights affect delivery.
 
 # Done Check
 
-The typography pass is done when hierarchy, readability, mixed-language behavior, and overflow handling are explicit.
+The typography pass is done when hierarchy, readability, mixed-language behavior, overflow handling, and any type-personality or font-delivery decisions are explicit.

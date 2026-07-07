@@ -8,6 +8,8 @@ Read `design-okf/systems/brand-identity-media-production.md` when the graphic is
 
 Read `design-okf/systems/taste-engine.md` when the graphic needs a distinctive key visual, campaign taste, social-series variety, anti-template critique, visual asset strategy, or when it risks becoming typography plus generic cards.
 
+Read `design-okf/systems/type-personality.md` when typography is a primary visual element, when designing posters, social covers, packaging, editorial graphics, or brand collateral, or when font rights, print embedding/outlining, or CJK/Latin pairing affects delivery.
+
 ## Subsurface Routing
 
 Classify the graphic surface before designing:
@@ -69,6 +71,7 @@ Ask when print production or rights are involved and missing details would inval
 ## Type And Language
 
 - Match type personality to the message and medium.
+- Decide whether the headline type should be the visual memory feature or whether imagery, symbol, or composition should carry memory instead.
 - Check mixed Chinese/English baselines, punctuation, numbers, units, and weight.
 - Keep small print legible at final size.
 - Avoid all-caps body copy.

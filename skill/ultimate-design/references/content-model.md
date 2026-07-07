@@ -39,4 +39,4 @@ Open `design-okf/index.md` first, then load only the content concepts needed:
 - `design-okf/content/state-language.md` for loading, empty, error, success, disabled, confirmation, and undo copy.
 - `design-okf/content/semantic-binding.md` for component content, semantic HTML, labels, `aria-describedby`, i18n, long text, and text-state accessibility.
 
-Use `design-okf/systems/typography-system.md` for type scale, line height, line length, mixed Chinese/English behavior, and responsive text.
+Use `design-okf/systems/typography-system.md` for type scale, line height, line length, mixed Chinese/English behavior, and responsive text. Use `design-okf/systems/type-personality.md` when the wording needs a distinct typographic voice, display type carries memory, Chinese/English family choice matters, or font licensing/performance/fallback affects delivery.
