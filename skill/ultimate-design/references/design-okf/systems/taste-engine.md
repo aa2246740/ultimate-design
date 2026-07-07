@@ -9,6 +9,8 @@ tags: [taste, anti-slop, art-direction, layout-variety, visual-assets, critique]
 
 Use this concept when an artifact has visible style freedom and could otherwise become generic: marketing sites, portfolios, campaign pages, presentation decks, social graphics, posters, report visualizations, brand systems, redesigns, and any critique where the result feels stiff, templated, or "AI-generated."
 
+Every visible artifact should pass a lightweight Taste Checkpoint. Load this full concept when the artifact is public-facing, expressive, multi-section, multi-slide, multi-frame, brand/marketing/graphic/deck oriented, or when the result risks becoming generic card-based AI output. For tiny fixes or strict existing-system UI work, keep taste decisions quiet and short.
+
 This concept does not define one house style. It converts taste into repeatable operating constraints. The output may be Swiss, editorial, brutalist, quiet, playful, institutional, luxury, dense, or restrained, but the direction must be chosen from the brief and then enforced.
 
 # Core Model
@@ -21,6 +23,7 @@ design read
 -> anti-default locks
 -> layout-family budget
 -> asset credibility
+-> type personality
 -> taste critique
 -> contract record
 ```
@@ -39,8 +42,21 @@ Before choosing style, read the brief through these questions:
 - Category defaults: the common look this artifact must avoid or intentionally use.
 - Evidence assets: real screenshots, product photos, charts, copy, brand assets, data, quotes, or generated assets.
 - Risk tolerance: conservative, memorable, campaign-only, prototype, or experimental.
+- Type role: whether type should recede for clarity or carry memory.
 
 If the brief is weak, infer safe defaults and record them. Ask only when the wrong scene, audience, or rights assumption would invalidate the deliverable.
+
+# Use Levels
+
+Use the lightest level that protects the work:
+
+| Level | Use when | Output |
+|---|---|---|
+| Light Taste Checkpoint | Any visible artifact, including ordinary UI work | one sentence each for design read, anti-default lock, layout family, visual memory, and type posture |
+| Full Taste Engine | Public, expressive, multi-section/slide/frame, brand, marketing, deck, social, poster, or generic-risk work | full dials, layout-family audit, asset credibility, type personality, taste critique, and contract record |
+| Quiet Taste | Tiny fixes, strict existing design systems, dense tools, admin UI | clarity-first decision plus what stays intentionally unexpressive |
+
+Taste is not a license to decorate. Quiet can be the right taste when the user needs to read, compare, decide, or act.
 
 # Taste Dials
 
@@ -52,6 +68,7 @@ Set dials after the design read. Record them in `DESIGN.md` or the run trace whe
 | Information density | Airy, one idea per view | Balanced scanning and detail | Dense, cockpit, analyst/report mode |
 | Motion depth | Static | Purposeful entry/hover/scroll feedback | Cinematic or physics-led, with reduced-motion fallback |
 | Brand distinction | Generic category fit | Recognizable motif or system rule | Ownable visual behavior across media |
+| Type expressiveness | Utility type recedes | Display type has a controlled voice | Type is a primary visual memory feature |
 | Experiment risk | Safe production | Memorable but controlled | Prototype/campaign-level exploration |
 
 Dial guidance:
@@ -61,20 +78,32 @@ Dial guidance:
 - Decks can vary slide archetypes without making every slide theatrical.
 - Motion above a modest level must actually be implemented and must honor reduced motion.
 - High variance must collapse to simple, stable mobile structures.
+- Type expressiveness should rise only when it helps memory, voice, or identity; it should fall when the user needs dense reading, operation, comparison, or trust.
+
+# Typography And Type Personality
+
+Type is one of the strongest taste levers because it changes the voice of the content. Use `type-personality.md` when selecting or changing font families, when type is the visual memory feature, when Chinese/English mixed typography matters, or when font licensing, fallback, WebFont size, or deck portability affects delivery.
+
+Default stance:
+
+- Utility, body, data, and state text usually recede.
+- Display, hero, cover, key visual, and campaign text may stand forward.
+- Strong type choices require real-content tests, fallback strategy, and rights checks.
+- Do not make type expressive just to prove the design is "designed."
 
 # Branch Presets
 
 Use these as starting points, then adjust to the brief:
 
-| Branch | Visual variance | Information density | Motion depth | Brand distinction | Experiment risk |
-|---|---:|---:|---:|---:|---:|
-| Product UI/dashboard | 2-5 | 5-9 | 1-4 | 2-6 | 1-4 |
-| Marketing/portfolio site | 5-8 | 3-6 | 2-7 | 5-9 | 3-7 |
-| Executive/business deck | 3-6 | 4-8 | 0-2 | 3-7 | 1-4 |
-| Pitch/campaign deck | 5-8 | 3-6 | 0-3 | 6-9 | 3-7 |
-| Social/poster/key visual | 6-9 | 2-6 | 0-5 | 6-10 | 4-8 |
-| Report visualization | 3-6 | 6-9 | 0-3 | 3-7 | 2-5 |
-| Brand system | 5-9 | 3-7 | 1-5 | 8-10 | 4-8 |
+| Branch | Visual variance | Information density | Motion depth | Brand distinction | Type expressiveness | Experiment risk |
+|---|---:|---:|---:|---:|---:|---:|
+| Product UI/dashboard | 2-5 | 5-9 | 1-4 | 2-6 | 1-3 | 1-4 |
+| Marketing/portfolio site | 5-8 | 3-6 | 2-7 | 5-9 | 3-7 | 3-7 |
+| Executive/business deck | 3-6 | 4-8 | 0-2 | 3-7 | 2-5 | 1-4 |
+| Pitch/campaign deck | 5-8 | 3-6 | 0-3 | 6-9 | 4-8 | 3-7 |
+| Social/poster/key visual | 6-9 | 2-6 | 0-5 | 6-10 | 6-10 | 4-8 |
+| Report visualization | 3-6 | 6-9 | 0-3 | 3-7 | 2-5 | 2-5 |
+| Brand system | 5-9 | 3-7 | 1-5 | 8-10 | 5-9 | 4-8 |
 
 # Anti-Default Locks
 
@@ -147,8 +176,9 @@ Ask these before delivery or after a user says the work feels stiff:
 3. Which layout families were used, and where did the rhythm intentionally change?
 4. Which dial choices explain the color, type, density, imagery, and motion?
 5. Which asset proves or expresses the idea rather than decorating it?
-6. What still looks like AI filler: equal cards, fake screenshots, generic badges, vague proof, stock imagery, over-rounded panels, or default gradients?
-7. Does the design still solve the Request Anchor, or did taste drift away from the user's core job?
+6. Should type recede or stand forward here, and does the selected type personality match the content, medium, and risk?
+7. What still looks like AI filler: equal cards, fake screenshots, generic badges, vague proof, stock imagery, over-rounded panels, default gradients, or generic typography?
+8. Does the design still solve the Request Anchor, or did taste drift away from the user's core job?
 
 Fix failed answers before final delivery when the artifact is meant to be polished or public-facing.
 
@@ -161,6 +191,7 @@ For durable work, record a compact Taste Signature:
 - Category defaults avoided:
 - Layout families or slide archetypes:
 - Visual memory feature:
+- Type personality:
 - Asset/reference policy:
 - Anti-default locks:
 - Intentional exceptions:

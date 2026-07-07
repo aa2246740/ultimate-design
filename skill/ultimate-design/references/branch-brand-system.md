@@ -4,6 +4,8 @@ Use this branch for visual identity, brand refreshes, design languages, art dire
 
 Read `design-okf/systems/brand-identity-media-production.md` when the work involves brand guidelines, VI manuals, logo usage systems, cross-media brand kits, screen/print/social/PPT/packaging delivery, asset libraries, licensing, rights registers, or governance.
 
+Read `design-okf/systems/type-personality.md` when typography is a brand recognition anchor, when defining brand fonts or fallback stacks, when Chinese/English brand voice must align, or when font licensing affects logo, web, app, deck, print, or client delivery.
+
 ## Brand Brief
 
 Infer or define:
@@ -45,6 +47,7 @@ Include practical rules:
 - Logo safe area and minimum size when relevant.
 - Color usage roles.
 - Type hierarchy.
+- Type roles, type personality, fallback stack, and font-rights status.
 - Image or illustration treatment.
 - Accessibility and contrast.
 - Examples of misuse.
@@ -56,6 +59,7 @@ Never stretch, outline, recolor, shadow, or distort a logo unless the brand syst
 - The direction is not predictable from the product category alone.
 - The palette has named roles, not decorative swatches.
 - Type choices have a reason beyond "modern".
+- Type either recedes for utility or creates brand memory; the system explains which role each family plays.
 - Imagery and icon style share one world.
 - The brand can survive small sizes, dark/light contexts, and common UI components.
 

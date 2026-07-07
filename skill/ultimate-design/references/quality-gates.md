@@ -28,11 +28,14 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Color roles are stable and not merely decorative.
 - Color has a scene, mood, or brand reason; it does not fall back to category-default blue/green/gray unless that is intentional.
 - Typography is readable at the final size and viewport.
+- Font family choices map to type roles: utility, content, brand/display, data, or emotional accent.
+- Expressive display type is limited to places where memory or voice matters; body, UI, data, state, and legal text remain clear.
 - Letter spacing is `0` by default for UI/body/display text; nonzero or negative tracking requires an existing brand rule, logo/wordmark need, or a recorded typographic reason.
 - Important text zones state their expected line behavior when wrapping would change the design, such as max lines, no-wrap, or acceptable truncation.
 - Icons, photos, illustrations, and textures share one visual language.
 - Color, photography, illustration, iconography, symbols, texture, type, layout, and motion speak the same concept rather than acting as isolated decoration.
 - At least one owned visual feature remains recognizable when the logo is removed, when brand distinction matters.
+- Type either recedes for task clarity or stands forward for memory, and that choice matches the content, medium, risk, and audience.
 - Decorative elements pass a deletion test: removing them would weaken meaning, identity, hierarchy, or system coherence.
 - No text overflows its container.
 - Generated HTML or app UI includes `data-ud-check` semantic zones on major user-visible regions so visual verification can inspect intent, not only raw geometry.
@@ -42,6 +45,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 ## Taste And Anti-Template
 
 - For visible artifacts with style freedom, a Taste Signature or equivalent note records design read, taste dials, anti-default locks, layout families or slide archetypes, visual memory feature, and asset/reference policy.
+- Every visible artifact has at least a light Taste Checkpoint: design read, anti-default lock, layout family, visual memory, and type posture. Tiny fixes and strict existing-system UI may choose quiet taste, but the choice is intentional.
 - The result names the category default it avoids or intentionally keeps.
 - The chosen taste dials match the audience, scene, brand posture, and medium; high variance does not weaken usability, accessibility, or the Request Anchor.
 - A long page, deck, carousel, report, or multi-frame graphic has a layout-family or slide-archetype audit; repetition is intentional rather than default.
@@ -74,6 +78,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Grid choice fits the medium: single column, multi-column, modular, baseline, responsive 6/12-column, or hierarchical grid.
 - Type area, margins, columns, gutters, safe areas, and baseline or vertical rhythm are defined when the artifact is persistent, multi-page, dense, editorial, or print-adjacent.
 - Body line length, line height, paragraph rhythm, heading spacing, captions, footnotes, and legal copy are readable at the final medium and viewing distance.
+- Mixed Chinese-English typography checks optical size, weight, baseline, punctuation, numerals, spacing, font coverage, and rights with real content.
 - Editorial or multi-page artifacts define page rhythm, headers/footers, page numbers, section markers, figure/caption/table/source rules, and density variation.
 - Swiss Style is used as grid-led clarity and asymmetry, not as a Helvetica/whitespace costume.
 - Digital text supports zoom/reflow/text-spacing overrides without hidden content or controls; truncation has a full-view path for critical text.
@@ -178,6 +183,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Brand deck delivery preserves master, theme colors, theme fonts, chart styles, placeholders, footer/page number, export fallback, and cross-device stability.
 - Packaging delivery respects supplier dieline, material, layers, fold/glue/trim zones, barcode/GS1 checks, regulatory copy, legal review, proofing, and production tolerance.
 - Licensing and rights register cover fonts, images, video, music, icons, templates, mockups, AI assets, likeness/model/property releases, copyright ownership, commissioned-work terms, trademarks, usage scope, term, territory, and proof documents when publication or transfer matters.
+- WebFont delivery records WOFF2/fallback strategy, loaded families/weights/scripts, CJK subset assumptions when relevant, `font-display` behavior when used, and a fallback-readability check for public web work.
 - If vendor, platform, supplier, legal, or license facts are missing, the output is labeled as a draft or preflight package rather than final production-ready work.
 
 ## Performance

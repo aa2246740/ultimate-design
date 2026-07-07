@@ -119,7 +119,7 @@ Explain each color token's role and constraints. Do not introduce new hex colors
 
 ## Typography
 
-Explain type roles, hierarchy, readability constraints, data-number treatment, and mixed-language behavior.
+Explain type roles, hierarchy, readability constraints, type personality, data-number treatment, mixed-language behavior, fallback stack, WebFont assumptions, and font-rights status when relevant.
 
 ## Layout
 
@@ -188,6 +188,7 @@ Use only when the artifact has meaningful visible style freedom:
 - Category defaults avoided:
 - Layout families or slide archetypes:
 - Visual memory feature:
+- Type personality:
 - Asset/reference policy:
 - Anti-default locks:
 - Intentional exceptions:

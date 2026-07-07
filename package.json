@@ -5,7 +5,25 @@
   "type": "module",
   "private": false,
   "homepage": "https://aa2246740.github.io/ultimate-design/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aa2246740/ultimate-design.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aa2246740/ultimate-design/issues"
+  },
   "license": "MIT",
+  "files": [
+    "skill/ultimate-design",
+    "scripts",
+    "integrations",
+    "benchmarks",
+    "examples/prompts.md",
+    "README.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "NOTICE"
+  ],
   "bin": {
     "ultimate-design-install-skill": "./scripts/install-agent-skill.mjs"
   },

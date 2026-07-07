@@ -2,6 +2,8 @@
 
 Use this branch for dashboards, app UI, product flows, settings, onboarding, forms, tables, components, and design-to-code for task-oriented products.
 
+For product UI, taste is usually quiet: clarity, density, recovery, and trust beat spectacle. Read `design-okf/systems/type-personality.md` only when introducing/changing font families, when onboarding or empty states need a distinct voice, when data numerals or CJK/Latin mixed text matter, or when WebFont/fallback/licensing affects the product.
+
 ## First Decisions
 
 Before visual styling, settle:
@@ -13,6 +15,7 @@ Before visual styling, settle:
 - Navigation: how users move, return, recover, and preserve state.
 - Content priority: what appears first on mobile.
 - Density: compact, comfortable, or spacious.
+- Type posture: usually utility-first, with any expressive display type limited to onboarding, empty-state illustration captions, marketing-adjacent surfaces, or brand moments.
 
 Product surfaces help users repeatedly complete tasks. Favor clarity, predictability, and recovery over spectacle.
 
