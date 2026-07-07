@@ -1,10 +1,12 @@
 # Ultimate Design
 
-OKF-based design skill for contract-driven AI design.
+Self-contained OKF design workflow for AI agents.
 
 Official site: https://aa2246740.github.io/ultimate-design/
 
 Ultimate Design is an Agent Skill for Codex, Claude Code, Pi Agent, and other Agent Skills-compatible harnesses. It turns vague design requests into governed design work: a brief, a `DESIGN.md` contract when persistence matters, routed OKF knowledge, a concrete artifact, critique/repair, rendered verification, and reusable design memory for the next agent.
+
+It is not a template pack, a style preset, or a wrapper around another design skill. The skill carries its own contract loop, content model, Taste Checkpoint, OKF references, quality gates, and validators.
 
 Most frontend design skills optimize for styling or code generation. Ultimate Design optimizes the full professional design loop:
 
@@ -38,7 +40,15 @@ That is the core selling point: **the skill behaves like an indexed design opera
 
 ## Install
 
-Install into a common local agent with the helper script:
+Install from npm:
+
+```bash
+npx ultimate-design-skill@latest --target codex
+npx ultimate-design-skill@latest --target claude-code
+npx ultimate-design-skill@latest --target pi-agent
+```
+
+Or install into a common local agent from a cloned repo:
 
 ```bash
 npm run install:codex

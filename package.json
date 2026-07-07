@@ -1,7 +1,7 @@
 {
   "name": "ultimate-design-skill",
-  "version": "0.1.0",
-  "description": "OKF-based design skill for contract-driven AI design.",
+  "version": "0.1.1",
+  "description": "Self-contained OKF design workflow for AI agents: DESIGN.md contracts, taste checks, critique/repair, and rendered verification.",
   "type": "module",
   "private": false,
   "homepage": "https://aa2246740.github.io/ultimate-design/",

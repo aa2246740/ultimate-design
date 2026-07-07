@@ -8,10 +8,11 @@
 
 1. 它不是模板库，也不是“做高级点”的提示词。
 2. 它是一套面向 AI Agent 的设计工作流。
-3. 它用 DESIGN.md 把需求、内容、方向、质量门和复盘记录下来。
-4. 它能做网页、PPT、产品 UI、平面、品牌和审查打磨。
-5. 它会先 critique and repair，再用真实截图验证。
-6. 参考图是可选输入：有就吸收，没有也继续，不默认生成。
+3. 它是自洽的 skill：不依赖旧工具链，也不要求外部设计 skill 才能工作。
+4. 它用 DESIGN.md 把需求、内容、方向、质量门和复盘记录下来。
+5. 它能做网页、PPT、产品 UI、平面、品牌和审查打磨。
+6. 它会先 critique and repair，再用真实截图验证。
+7. 参考图是可选输入：有就吸收，没有也继续，不默认生成。
 
 ## 中文主线
 
@@ -19,9 +20,9 @@
 
 品牌：Ultimate Design
 
-主张：让 AI 设计有流程、有判断、有交付证据。
+主张：让 AI 设计从生成，升级成交付。
 
-说明：它不是模板包，也不是一句“高级一点”。它把设计需求落到 DESIGN.md 里：先想清楚要讲什么，再定方向，做出页面或 PPT，自己挑毛病，修完，再用真实截图验证。
+说明：它不是模板包，也不是一句“高级一点”，更不是依赖旧工具链的拼装器。它把模糊需求变成 DESIGN.md 合同、内容结构、设计方向、真实产物、批判修复和渲染验证。
 
 按钮：
 
@@ -55,7 +56,7 @@
 
 标题：它不是一个模板库，而是一条设计生产线。
 
-说明：Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味落成规则，把成品拿去验证。
+说明：Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。
 
 四个系统：
 
@@ -101,9 +102,9 @@ $ultimate-design
 
 The English page is a parallel version, not a word-for-word translation.
 
-Hero claim: A design workflow AI agents can finish and prove.
+Hero claim: Turn AI design from generation into delivery.
 
-Lead: Ultimate Design is not a template pack or a request to make things look premium. It turns a design request into a contract: clarify the message, choose a direction, build the artifact, critique it, repair it, and verify the rendered result.
+Lead: Ultimate Design is not a template pack, a style preset, or a wrapper around another design skill. It turns a design request into a contract: clarify the message, choose a direction, build the artifact, critique it, repair it, and verify the rendered result.
 
 Core sections:
 

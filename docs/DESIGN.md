@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Ultimate Design Official Site
-description: Bilingual official homepage explaining Ultimate Design through a content-first, reference-optional, contract-driven workflow.
+description: Bilingual official homepage explaining Ultimate Design as a self-contained, content-first, contract-driven AI design workflow.
 
 colors:
   primary: "#D9281E"
@@ -56,7 +56,7 @@ components:
 
 ## Overview
 
-This is the bilingual official homepage for Ultimate Design. The Chinese page is written from Chinese first, not translated from English sentence structure. The English page is a parallel expression for English readers. The site must explain the workflow clearly, let the user switch languages at the top, and preserve the contract-driven design story.
+This is the bilingual official homepage for Ultimate Design. The Chinese page is written from Chinese first, not translated from English sentence structure. The English page is a parallel expression for English readers. The site must explain the workflow clearly, state that the skill is self-contained rather than dependent on legacy design skills, let the user switch languages at the top, and preserve the contract-driven design story.
 
 ## Colors
 
@@ -95,7 +95,7 @@ Components: header, language switch, hero, contract sheet, optional reference bo
 - Do keep English as a parallel page, not a literal mirror.
 - Do treat reference images as optional user input; do not imply image generation is a standard step.
 - Do keep prompt examples copyable in the active language.
-- Do not use generic SaaS filler, repeated cards, fake dashboards, purple-blue gradients, or glass panels.
+- Do not use generic SaaS filler, repeated cards, fake dashboards, purple-blue gradients, glass panels, or language implying dependence on another design skill.
 
 ## Agent Execution Rules
 
@@ -120,9 +120,9 @@ Components: header, language switch, hero, contract sheet, optional reference bo
 ## Content Model
 
 - User intent: Understand Ultimate Design quickly and learn how to prompt it.
-- Business intent: Present Ultimate Design as a durable design workflow rather than a style prompt or template library.
+- Business intent: Present Ultimate Design as a durable self-contained design workflow rather than a style prompt, template library, or wrapper around other skills.
 - Message hierarchy: 1. Product name and promise. 2. Why AI design fails without process. 3. What the workflow is. 4. How the loop runs. 5. What it can design. 6. How to prompt. 7. What evidence a good run leaves.
-- First-screen answers: Ultimate Design makes AI design work traceable, reviewable, and verifiable.
+- First-screen answers: Ultimate Design turns AI design from generation into traceable, reviewable, verifiable delivery.
 - Primary action meaning: Copy the starter prompt in the active language.
 - Voice and tone: Chinese is concrete, native, and direct. English is plain, confident, and practical.
 - Terminology rules: Use Ultimate Design, DESIGN.md, Request Anchor, Content Contract, Taste Engine, optional reference image, Critique and Repair, Verify and Govern.
@@ -209,6 +209,7 @@ For each page, screen, or graphic:
 
 | Version | Date | Change | Reason | Reviewer |
 |---|---|---|---|---|
+| 0.4 | 2026-07-07 | Updated public positioning to say Ultimate Design is self-contained, not a wrapper around legacy design skills | Public homepage and package copy should match the cleaned skill architecture | Codex |
 | 0.3 | 2026-07-04 | Reworked site into Chinese-first bilingual homepage with top language switch | User found previous copy too translation-like and requested Chinese/English pages | Codex |
 | 0.2 | 2026-07-04 | Removed experimental generated-reference framing and clarified optional reference-image handling | Keep the demo from misrepresenting Ultimate Design's standard workflow | Codex |
 | 0.1 | 2026-07-04 | Created official site contract from finalized content and an experiment-specific visual reference | Explore a content-first Ultimate Design website demo | Codex |
