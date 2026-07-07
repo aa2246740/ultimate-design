@@ -64,7 +64,7 @@ Use this concept to audit whether the research packet is represented in the skil
 | Semantic HTML, long text, i18n, and frontend text binding | `content/semantic-binding.md`, `digital/accessibility-usability.md` | Covered |
 | Layout, composition, graphic design | `foundations/gestalt-composition.md`, `production/graphic-print.md` | Covered |
 | Print caveats | `production/graphic-print.md` | Covered with caveats |
-| Color theory and semantic colors | `systems/color-system.md` | Covered, but deep palette generation may still use `ui-ux-pro-max` or project evidence |
+| Color theory and semantic colors | `systems/color-system.md` | Covered; deep palette generation should use project evidence and the selected color posture |
 | Typography and responsive readability | `systems/typography-system.md`, `systems/type-personality.md` | Covered |
 | WebFont performance, CJK fallback, font loading, font licensing, and deliverable portability | `systems/type-personality.md`, `systems/brand-identity-media-production.md`, `quality-gates.md` | Covered with current-source caveats for licensing/vendor rules |
 | Web IA | `foundations/information-architecture.md` | Covered |

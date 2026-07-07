@@ -142,11 +142,7 @@ Monitoring is an optional add-on, not part of normal design execution. Use it on
 
 Research ingestion is a development task, not ordinary design execution. When absorbing deep research, building a wiki-like synthesis layer, auditing coverage, or promoting knowledge into OKF, read `references/design-okf/governance/research-digestion-llm-wiki.md`. Keep raw sources and long wiki notes out of runtime references; promote only stable, operational, checkable knowledge into OKF, then update the index, router, quality gates, coverage map, and flow proof when affected.
 
-## Use Of Other Design Skills
-
-If `ui-ux-pro-max` is available and the project is new, ambiguous, or needs style/color/type/stack recommendations, query its design-system or domain search before choosing the direction. Treat its output as evidence, not as a substitute for judgment.
-
-If `impeccable` is available and the work touches frontend craft, apply its register split, anti-slop checks, accessibility discipline, typography limits, motion guidance, and browser verification expectations.
+## External Capabilities
 
 If a real `.pptx`, `.ppt`, Google Slides, or PowerPoint-compatible file must be created or edited, use the available Presentations capability for file operations and use this skill for deck strategy, visual system, slide-level critique, and delivery quality gates.
 
