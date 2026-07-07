@@ -17,8 +17,6 @@
     "skill/ultimate-design",
     "scripts",
     "integrations",
-    "benchmarks",
-    "examples/prompts.md",
     "README.md",
     "CONTRIBUTING.md",
     "LICENSE",
@@ -34,8 +32,7 @@
     "install:pi": "node scripts/install-agent-skill.mjs --target pi-agent",
     "install:all": "node scripts/install-agent-skill.mjs --target all",
     "check-integrations": "node scripts/check-agent-integrations.mjs",
-    "scan-release": "! rg -n \"(/Users/|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'",
-    "score-okf": "node benchmarks/score-okf-run.mjs"
+    "scan-release": "! rg -n \"(/Users/|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'"
   },
   "pi": {
     "skills": [

@@ -32,8 +32,8 @@ That is the core selling point: **the skill behaves like an indexed design opera
 │   ├── references/               # Branch references and OKF bundle
 │   └── scripts/                  # Flow, contract, and visual validators
 ├── docs/                         # Bilingual official site for GitHub Pages
-├── benchmarks/                   # Benchmark landscape and OKF eval proposal
-└── examples/                     # Example prompts
+├── integrations/                 # Codex, Claude Code, and Pi Agent usage notes
+└── scripts/                      # Install and integration helpers
 ```
 
 ## Install
@@ -89,7 +89,7 @@ Pi Agent uses skill commands when enabled:
 
 See [integrations/README.md](integrations/README.md) for Codex, Claude Code, Pi Agent, package, symlink, project-scoped, and prompt-only integration options.
 
-## Example Prompts
+## Prompt Examples
 
 ```text
 Use $ultimate-design to redesign this dense validation report as a visual web page for executives.
@@ -102,10 +102,6 @@ Use $ultimate-design to create a 10-slide HTML PPT deck from this research memo.
 ```text
 Use $ultimate-design to audit this landing page. Find requirement drift, visual slop, copy issues, accessibility issues, and fix the high-severity problems.
 ```
-
-More examples live in [examples/prompts.md](examples/prompts.md).
-
-Rendered example packages live in [examples/xiaohongshu-carousel](examples/xiaohongshu-carousel), including Chinese and English 9-frame social carousel outputs with source HTML, `DESIGN.md`, exported PNGs, contact sheets, and verification notes.
 
 ## Validation
 
@@ -132,21 +128,12 @@ Validate screenshotable HTML artifacts:
 ```bash
 node skill/ultimate-design/scripts/validate_html_visual.mjs \
   --input path/to/artifact.html \
-  --out benchmark-runs/visual-check \
+  --out ultimate-design-visual-check \
   --viewports desktop=1440x900,mobile=390x844 \
   --spacing 36
 ```
 
 The visual validator uses Playwright when available. Set `PLAYWRIGHT_MODULE` or install `playwright` in the project if your runtime does not provide it.
-
-## Benchmarks
-
-There is no single public benchmark that fully measures a design skill like this. Existing benchmarks usually test one slice: screenshot-to-code fidelity, text-to-app preference, frontend repair, web grounding, or layout aesthetics. See [benchmarks/README.md](benchmarks/README.md) for the current benchmark landscape and an OKF-specific scoring plan.
-
-The recommended benchmark story is:
-
-- Use public web/UI benchmarks for external comparability.
-- Use the OKF workflow rubric for what makes Ultimate Design different: request integrity, contract quality, routed knowledge, critique/repair, rendered verification, and reusable governance.
 
 ## License
 

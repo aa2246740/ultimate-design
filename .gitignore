@@ -2,7 +2,6 @@
 .env
 api_keys.json
 node_modules/
-benchmark-runs/
 visual-check/
 ultimate-design-visual-check/
 *.log
