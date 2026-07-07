@@ -25,7 +25,7 @@
     "NOTICE"
   ],
   "bin": {
-    "ultimate-design-install-skill": "./scripts/install-agent-skill.mjs"
+    "ultimate-design-install-skill": "scripts/install-agent-skill.mjs"
   },
   "scripts": {
     "flow-check": "python3 skill/ultimate-design/scripts/flow_check.py skill/ultimate-design",
