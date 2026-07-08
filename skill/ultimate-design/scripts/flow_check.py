@@ -35,8 +35,8 @@ def main() -> int:
         "Orient.",
         "Complete the brief.",
         "Build the content contract.",
+        "Run OKF preflight.",
         "Bootstrap the contract.",
-        "Load the branch reference.",
         "Choose a direction.",
         "Make the artifact.",
         "Critique and repair.",
@@ -118,11 +118,37 @@ def main() -> int:
         "final quality gate pointer is present",
     )
     require(
+        "OKF preflight is before artifact work",
+        "For every meaningful visible design run, treat OKF as **preflight**" in skill
+        and "before choosing a direction or making a new artifact" in skill
+        and "active references loaded, constraints extracted, deliberate exceptions, and verification hooks" in skill
+        and positions[3] < positions[4] < positions[5] < positions[6],
+        "OKF is loaded and converted into constraints before Bootstrap, Choose, and Make",
+    )
+    require(
+        "motion display-window default is in main skill",
+        "display-window" in skill
+        and "entry-play" in skill
+        and "view-entry" in skill
+        and "entry-or-view" in skill
+        and "scroll-linked only when progress itself carries meaning" in skill,
+        "Ultimate Design default motion rule can steer future projects without loading deep OKF first",
+    )
+    require(
         "light taste checkpoint is default for visible artifacts",
         "For every visible artifact, apply a lightweight **Taste Checkpoint** by default" in skill
         and "keep the checkpoint brief" in skill
         and "If no expressive style is needed" in skill,
         "visible artifacts pass a taste checkpoint without forcing expressive styling everywhere",
+    )
+    require(
+        "necessary judgment is workflow-gated",
+        "Necessary Judgment" in skill
+        and "necessary-design-judgment.md" in skill
+        and "what can be removed or demoted" in skill
+        and "necessity/care/material-honesty failure" in skill
+        and "necessary judgment when it materially shaped the work" in skill,
+        "main workflow applies necessary judgment during direction, critique, repair, and governance",
     )
     require(
         "content model reference is routed",
@@ -205,6 +231,13 @@ def main() -> int:
         and "design-okf/systems/taste-engine.md" in audit
         and "Taste Critique" in audit,
         "audit-polish routes stiff or generic work through taste-engine before delivery",
+    )
+    require(
+        "necessary judgment critique loop",
+        "Check necessary judgment for polished visible artifacts" in audit
+        and "design-okf/foundations/necessary-design-judgment.md" in audit
+        and "Prefer necessary minimalism" in audit,
+        "audit-polish routes fake minimalism, overdecoration, and template-like styling through necessary judgment",
     )
 
     monitoring = read(root / "references" / "monitoring.md")
@@ -322,6 +355,8 @@ def main() -> int:
     require(
         "taste engine OKF exists",
         "Design Read" in taste_engine
+        and "Necessary Judgment Lens" in taste_engine
+        and "../foundations/necessary-design-judgment.md" in taste_engine
         and "Taste Dials" in taste_engine
         and "Anti-Default Locks" in taste_engine
         and "Layout-Family Audit" in taste_engine
@@ -330,6 +365,28 @@ def main() -> int:
         and "Contract Fields" in taste_engine
         and "Done Check" in taste_engine,
         "Taste Skill mechanisms are represented as operational OKF rather than copied templates",
+    )
+    necessary_judgment = read(okf_root / "foundations" / "necessary-design-judgment.md")
+    require(
+        "necessary design judgment OKF exists",
+        "Core Model" in necessary_judgment
+        and "Delete Test" in necessary_judgment
+        and "Replace Test" in necessary_judgment
+        and "Move Test" in necessary_judgment
+        and "Justification Test" in necessary_judgment
+        and "Care Test" in necessary_judgment
+        and "Material Honesty Test" in necessary_judgment
+        and "Scene Fit Test" in necessary_judgment
+        and "not an Apple-style preset" in necessary_judgment
+        and "Done Check" in necessary_judgment,
+        "Apple/Jony Ive/Rams/Hara research is represented as a checkable judgment lens rather than a style preset",
+    )
+    require(
+        "necessary design judgment OKF is routed",
+        "foundations/necessary-design-judgment.md" in index
+        and "foundations/necessary-design-judgment.md" in principles
+        and "references/design-okf/foundations/necessary-design-judgment.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach necessary design judgment",
     )
     require(
         "taste engine OKF is routed",
@@ -345,6 +402,78 @@ def main() -> int:
         and "Quiet Taste" in taste_engine
         and "Type expressiveness" in taste_engine,
         "taste-engine defines light/full/quiet levels and includes type expressiveness",
+    )
+    require(
+        "taste engine includes necessary judgment",
+        "What was removed or demoted because it was not necessary" in taste_engine
+        and "Which relationships now feel inevitable rather than arbitrary" in taste_engine
+        and "Where did craft tolerance, care, or material honesty improve the design" in taste_engine
+        and "Necessary judgment:" in taste_engine,
+        "taste-engine must apply necessity before style dials and record the result when durable",
+    )
+    motion_language = read(okf_root / "systems" / "motion-language.md")
+    require(
+        "motion language OKF exists",
+        "Motion Purpose" in motion_language
+        and "Motion Budget" in motion_language
+        and "Choreography Layers" in motion_language
+        and "Scroll Motion" in motion_language
+        and "Accessibility And Safety" in motion_language
+        and "Performance Rules" in motion_language
+        and "Contract Fields" in motion_language
+        and "Done Check" in motion_language,
+        "motion research is represented as purpose-led, conditional OKF",
+    )
+    require(
+        "motion language OKF is routed",
+        "systems/motion-language.md" in index
+        and "systems/motion-language.md" in principles
+        and "references/design-okf/systems/motion-language.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach motion-language for meaningful animation",
+    )
+    require(
+        "motion language is conditional, not forced",
+        "Do not load this concept for ordinary static layouts" in motion_language
+        and "Static communication must work first" in motion_language
+        and "If it only says \"this is premium\"" in motion_language,
+        "motion-language keeps static-first design and avoids decorative animation by default",
+    )
+    motion_contract = read(okf_root / "systems" / "motion-contract.md")
+    require(
+        "motion contract OKF exists",
+        "Contract Fields" in motion_contract
+        and "Implementation Routing" in motion_contract
+        and "GSAP Pattern Rules" in motion_contract
+        and "Scroll-Linked SVG Contract" in motion_contract
+        and "Reveal Contract" in motion_contract
+        and "Validation" in motion_contract
+        and "Done Check" in motion_contract,
+        "motion-contract turns animation intent into implementation routing and browser-sampled evidence",
+    )
+    require(
+        "motion contract OKF is routed",
+        "systems/motion-contract.md" in index
+        and "systems/motion-contract.md" in principles
+        and "references/design-okf/systems/motion-contract.md" in skill,
+        "OKF index, principles router, and SKILL.md can reach motion-contract for requested animation behavior",
+    )
+    require(
+        "motion contract is verification-oriented",
+        "Static screenshots are not motion validation" in motion_contract
+        and "data-ud-motion" in motion_contract
+        and "visualSubjectFocusProgress -> strokeRevealProgress" in motion_contract
+        and "display-window" in motion_contract
+        and "entry-play" in motion_contract
+        and "view-entry" in motion_contract
+        and "entry-or-view" in motion_contract
+        and "Timing Bands" in motion_contract
+        and "Timing band" in motion_contract
+        and "Duration and easing tokens" in motion_contract
+        and "focus-complete" in motion_contract
+        and "exit-complete" in motion_contract
+        and "data-ud-motion-end-trigger" in motion_contract
+        and "scripts/validate_motion_contract.mjs" in motion_contract,
+        "motion-contract requires display-window trigger choice, explicit markers, focus-complete, exit guard, and a validation script",
     )
     type_personality = read(okf_root / "systems" / "type-personality.md")
     require(
@@ -424,8 +553,18 @@ def main() -> int:
         "DESIGN.md template includes content model fields",
     )
     require(
+        "contract has OKF preflight",
+        "## OKF Preflight" in contract
+        and "Active references loaded:" in contract
+        and "Constraints extracted:" in contract
+        and "Deliberate exceptions:" in contract
+        and "Verification hooks:" in contract,
+        "DESIGN.md template includes a pre-artifact OKF application record",
+    )
+    require(
         "contract has taste signature",
         "## Taste Signature" in contract
+        and "Necessary judgment:" in contract
         and "Taste dials" in contract
         and "Category defaults avoided" in contract
         and "Layout families or slide archetypes" in contract
@@ -439,6 +578,27 @@ def main() -> int:
         and "font-rights status" in contract
         and "Type personality:" in contract,
         "DESIGN.md template can preserve type art direction and delivery risks",
+    )
+    require(
+        "contract has motion strategy",
+        "## Motion Strategy" in contract
+        and "Motion purpose:" in contract
+        and "Motion budget:" in contract
+        and "Reduced-motion fallback:" in contract
+        and "Performance risks:" in contract,
+        "DESIGN.md template can preserve motion purpose, budget, reduced motion, and performance risk",
+    )
+    require(
+        "contract has motion contract",
+        "## Motion Contract" in contract
+        and "Motion ids and target selectors:" in contract
+        and "Implementation route:" in contract
+        and "Timing band:" in contract
+        and "Duration and easing tokens:" in contract
+        and "Progress mapping:" in contract
+        and "Acceptance samples and tolerance:" in contract
+        and "Validation command and report path:" in contract,
+        "DESIGN.md template can preserve executable animation behavior and evidence paths",
     )
     require(
         "contract has presentation specs",
@@ -598,12 +758,52 @@ def main() -> int:
         "quality-gates require dials, anti-defaults, layout-family audit, card justification, and AI-tell repair",
     )
     require(
+        "quality gates include necessary judgment",
+        "## Necessary Judgment" in quality
+        and "Every prominent element has a task" in quality
+        and "Delete Test" in quality
+        and "Replace Test" in quality
+        and "Move Test" in quality
+        and "Justification Test" in quality
+        and "Material Honesty" in quality
+        and "Scene Fit" in quality
+        and "Apple-like restraint is never treated as a visual preset" in quality,
+        "quality-gates check necessity, inevitability, craft tolerance, care, material honesty, scene fit, and non-imitation",
+    )
+    require(
         "quality gates include type personality",
         "Font family choices map to type roles" in quality
         and "Type either recedes for task clarity or stands forward for memory" in quality
         and "Mixed Chinese-English typography checks optical size" in quality
         and "WebFont delivery records WOFF2/fallback strategy" in quality,
         "quality-gates check font voice, mixed-script fit, and webfont delivery risks",
+    )
+    require(
+        "quality gates include motion language",
+        "## Motion" in quality
+        and "Static communication works before motion" in quality
+        and "named purpose" in quality
+        and "Do-not-move zones" in quality
+        and "Reduced motion is useful" in quality
+        and "transform and opacity" in quality,
+        "quality-gates check motion purpose, budget, do-not-move zones, reduced motion, and performance",
+    )
+    require(
+        "quality gates include motion contract",
+        "motion contract records motion ids" in quality
+        and "entry-play" in quality
+        and "view-entry" in quality
+        and "entry-or-view" in quality
+        and "display-window" in quality
+        and "timing band" in quality
+        and "duration/easing tokens" in quality
+        and "Scroll-linked motion maps user scroll progress" in quality
+        and "focus-complete" in quality
+        and "exit-complete" in quality
+        and "SVG line, border, path" in quality
+        and "Reveal choreography does not flash" in quality
+        and "Browser-sampled motion validation has passed" in quality,
+        "quality-gates check executable motion contracts, display-window trigger choice, sampled SVG progress, focus-complete, exit guard, reveal flash, and validation evidence",
     )
     require(
         "quality gates include brand identity media production",
@@ -677,6 +877,24 @@ def main() -> int:
         and "layout-family budget" in marketing_branch,
         "marketing pages route distinctive taste and section variety to taste-engine",
     )
+    web_branch = read(root / "references" / "branch-web-product.md")
+    responsive_interaction = read(okf_root / "digital" / "responsive-interaction.md")
+    require(
+        "digital branches route motion language",
+        "design-okf/systems/motion-language.md" in marketing_branch
+        and "design-okf/systems/motion-language.md" in web_branch
+        and "design-okf/systems/motion-language.md" in presentation_branch
+        and "../systems/motion-language.md" in responsive_interaction,
+        "marketing, web-product, presentation, and responsive-interaction references route nontrivial motion to motion-language",
+    )
+    require(
+        "digital branches route motion contract",
+        "design-okf/systems/motion-contract.md" in marketing_branch
+        and "design-okf/systems/motion-contract.md" in web_branch
+        and "design-okf/systems/motion-contract.md" in presentation_branch
+        and "../systems/motion-contract.md" in responsive_interaction,
+        "marketing, web-product, presentation, and responsive-interaction references route requested animation behavior to motion-contract",
+    )
     require(
         "presentation branch routes taste engine",
         "design-okf/systems/taste-engine.md" in presentation_branch
@@ -723,6 +941,23 @@ def main() -> int:
         and "Broken token references" in machine,
         "official tooling and local fallback validator are routed",
     )
+    visual_verification = read(root / "references" / "visual-verification.md")
+    require(
+        "visual verification routes motion validation",
+        "Motion Integrity" in visual_verification
+        and "scripts/validate_motion_contract.mjs" in visual_verification
+        and "data-ud-motion" in visual_verification
+        and "data-ud-motion-end-trigger" in visual_verification
+        and "data-ud-motion-subject" in visual_verification
+        and "data-ud-motion-trigger-model" in visual_verification
+        and "entry-or-view" in visual_verification
+        and "data-ud-motion-focus-at" in visual_verification
+        and "display-window" in visual_verification
+        and "focus-complete" in visual_verification
+        and "strokeDashoffset" in visual_verification
+        and "Reduced-motion checks" in visual_verification,
+        "visual-verification routes declared motion contracts to browser-sampled display-window and focus-complete checks",
+    )
     validator_path = root / "scripts" / "validate_design_contract.py"
     validator = read(validator_path)
     require(
@@ -739,6 +974,34 @@ def main() -> int:
         and "Request Anchor field missing" in validator
         and "Request Anchor field is empty" in validator,
         "local validator enforces request anchor in strict mode",
+    )
+    require(
+        "DESIGN.md validator checks OKF preflight",
+        "OKF_PREFLIGHT_FIELDS" in validator
+        and "OKF Preflight section missing" in validator
+        and "OKF Preflight field missing" in validator
+        and "OKF Preflight field is empty" in validator,
+        "local validator enforces OKF preflight in strict mode",
+    )
+    motion_validator_path = root / "scripts" / "validate_motion_contract.mjs"
+    motion_validator = read(motion_validator_path)
+    require(
+        "motion validator script exists",
+        "validate_motion_contract.mjs" in str(motion_validator_path)
+        and "data-ud-motion" in motion_validator
+        and "data-ud-motion-end-trigger" in motion_validator
+        and "data-ud-motion-subject" in motion_validator
+        and "data-ud-motion-trigger-model" in motion_validator
+        and "entry-or-view" in motion_validator
+        and "data-ud-motion-focus-at" in motion_validator
+        and "initialVisibilityRatio" in motion_validator
+        and "focusTiming" in motion_validator
+        and "focusCompleteY" in motion_validator
+        and "exitCompleteY" in motion_validator
+        and "strokeDashoffset" in motion_validator
+        and "reducedMotion" in motion_validator
+        and "motion-validation-report.json" in motion_validator,
+        "local browser validator samples motion contract markers, display-window timing, SVG stroke progress, focus-complete, exit guard, and reduced motion",
     )
 
     coverage = read(root / "references" / "design-okf" / "governance" / "research-coverage-map.md")
@@ -788,6 +1051,11 @@ def main() -> int:
         "Visual language and style system",
         "Style versus decoration and anti-template aesthetics",
         "Taste Skill operational mechanisms",
+        "Apple / Jony Ive / Rams / Hara design judgment philosophy",
+        "Necessity, inevitability, delete/replace/move/justification tests",
+        "Care, craft tolerance, material honesty, hidden complexity, and emotional precision",
+        "Apple visual-surface caveat, brand imitation risk, and source-confidence boundary",
+        "Jony Ive influence and Apple product case studies",
         "Layout variety against card-heavy AI output",
         "Photography, illustration, iconography, symbols, and texture rules",
         "Art direction, moodboard-to-rules, do/do-not examples, and cross-medium style guide",
@@ -804,6 +1072,8 @@ def main() -> int:
         "Raw research, source summaries, wiki synthesis, OKF candidates, and runtime OKF boundary",
         "OKF promotion criteria, do-not-promote rules, coverage protocol, and validation path",
         "Existing OKF taxonomy, runtime-layer classification, and single-source-of-truth boundaries",
+        "Web motion and animation design",
+        "Motion contract, GSAP routing, display-window SVG drawing, focus-complete timing, reveal no-flash behavior, and browser-sampled motion validation",
     ]
     for term in coverage_terms:
         require(f"research coverage: {term}", term in coverage, "anchor found" if term in coverage else "missing")

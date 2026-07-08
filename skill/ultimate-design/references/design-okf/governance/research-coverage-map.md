@@ -45,6 +45,11 @@ Use this concept to audit whether the research packet is represented in the skil
 | Visual language and style system | `systems/visual-language-style-system.md`, `branch-brand-system.md`, `quality-gates.md` | Covered as system coordination layer |
 | Style versus decoration and anti-template aesthetics | `systems/visual-language-style-system.md`, `audit-polish.md`, `quality-gates.md` | Covered |
 | Taste Skill operational mechanisms: design read, dials, anti-defaults, layout-family audit, asset credibility, and taste critique | `systems/taste-engine.md`, `quality-gates.md`, `audit-polish.md`, branch references | Covered as adapted runtime OKF, not copied template content |
+| Apple / Jony Ive / Rams / Hara design judgment philosophy | `foundations/necessary-design-judgment.md`, `systems/taste-engine.md`, `audit-polish.md`, `quality-gates.md` | Covered as necessary judgment lens, not an Apple visual preset |
+| Necessity, inevitability, delete/replace/move/justification tests | `foundations/necessary-design-judgment.md`, `quality-gates.md` | Covered as operational critique tests |
+| Care, craft tolerance, material honesty, hidden complexity, and emotional precision | `foundations/necessary-design-judgment.md`, `quality-gates.md`, `audit-polish.md` | Covered as polish and final validation criteria |
+| Apple visual-surface caveat, brand imitation risk, and source-confidence boundary | `foundations/necessary-design-judgment.md` | Covered with explicit non-imitation and current-source caveats |
+| Jony Ive influence and Apple product case studies | `foundations/necessary-design-judgment.md` | Treated as source notes and judgment vocabulary, not runtime facts or style rules |
 | Layout variety against card-heavy AI output | `systems/taste-engine.md`, `branch-marketing-site.md`, `branch-presentation.md`, `graphic-print.md`, `quality-gates.md` | Covered |
 | Photography, illustration, iconography, symbols, and texture rules | `systems/visual-language-style-system.md`, `branch-brand-system.md`, `graphic-print.md` | Covered |
 | Art direction, moodboard-to-rules, do/do-not examples, and cross-medium style guide | `systems/visual-language-style-system.md`, `design-contract.md` | Covered |
@@ -70,6 +75,8 @@ Use this concept to audit whether the research packet is represented in the skil
 | Web IA | `foundations/information-architecture.md` | Covered |
 | Usability heuristics | `digital/accessibility-usability.md` | Covered |
 | Responsive design | `digital/responsive-interaction.md` | Covered |
+| Web motion and animation design: purpose, choreography, microinteraction, scroll, accessibility, and performance | `systems/motion-language.md`, `digital/responsive-interaction.md`, `quality-gates.md`, branch references | Covered as conditional motion OKF, not a default style layer |
+| Motion contract, GSAP routing, display-window SVG drawing, focus-complete timing, reveal no-flash behavior, and browser-sampled motion validation | `systems/motion-contract.md`, `design-contract.md`, `visual-verification.md`, `quality-gates.md`, `scripts/validate_motion_contract.mjs` | Covered as executable motion contract and validation path |
 | WCAG/accessibility | `digital/accessibility-usability.md`, `quality-gates.md` | Covered |
 | Token hierarchy | `systems/tokens-components.md`, `tokens-components.md` | Covered |
 | Component specification | `systems/tokens-components.md`, `tokens-components.md` | Covered |

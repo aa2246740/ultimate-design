@@ -8,6 +8,10 @@ Read `design-okf/systems/taste-engine.md` when the deck needs a memorable style,
 
 Read `design-okf/systems/type-personality.md` when deck typography is part of the visual memory, when choosing deliverable-safe fonts, when Chinese/English mixed slide text matters, or when the deck must travel across devices as PPTX/PDF.
 
+Read `design-okf/systems/motion-language.md` when the deliverable is an animated HTML deck, live web deck, scroll/paged storytelling experience, or when transitions/sequence animation are explicitly requested. Read-alone, PDF, and portable PPTX decks default static; use motion only when the delivery mode supports it and it helps attention or continuity.
+
+Read `design-okf/systems/motion-contract.md` when an HTML or live deck makes a specific animation promise, such as scroll-linked SVG drawing, progress-bound transitions, timeline sequencing, or no-flash reveal behavior.
+
 ## Brief
 
 Clarify or infer:

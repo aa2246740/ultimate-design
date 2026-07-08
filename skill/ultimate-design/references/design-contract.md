@@ -44,6 +44,7 @@ When creating `DESIGN.md` from scratch:
 - Fill every section with useful first-pass decisions, not placeholders, where evidence supports it.
 - Create a Request Anchor before detailed styling so the original user need stays visible through critique, verification, and final delivery.
 - Build a content model before visual direction: user intent, message hierarchy, primary action meaning, voice/tone, terminology, and state-language rules.
+- Record OKF Preflight before visual direction: active references loaded, constraints extracted, deliberate exceptions, and verification hooks.
 - Put uncertain but non-blocking decisions under `Assumptions`.
 - Put unresolved decisions that should change future work under `Open Questions`.
 - Add a review-log entry explaining that the contract was bootstrapped.
@@ -172,6 +173,14 @@ List concrete, enforceable rules and forbidden patterns.
 - Trust, risk, and help content:
 - Content risks:
 
+## OKF Preflight
+
+Record this before choosing visual direction or making a new artifact:
+- Active references loaded:
+- Constraints extracted:
+- Deliberate exceptions:
+- Verification hooks:
+
 ## Information Architecture
 
 - Core user tasks:
@@ -184,6 +193,7 @@ List concrete, enforceable rules and forbidden patterns.
 
 Use only when the artifact has meaningful visible style freedom:
 - Design read:
+- Necessary judgment:
 - Taste dials:
 - Category defaults avoided:
 - Layout families or slide archetypes:
@@ -192,6 +202,42 @@ Use only when the artifact has meaningful visible style freedom:
 - Asset/reference policy:
 - Anti-default locks:
 - Intentional exceptions:
+
+## Motion Strategy
+
+Use only when meaningful motion, page transitions, animated decks, scroll storytelling, or interactive state choreography are part of the work:
+- Motion purpose:
+- Motion budget:
+- Primary motion focus:
+- Do-not-move zones:
+- Trigger model:
+- Duration and easing rules:
+- Direction and causality rules:
+- Scroll behavior:
+- Reduced-motion fallback:
+- Performance risks:
+
+## Motion Contract
+
+Use when animation is a requested feature or final delivery claim, especially SVG line/border drawing, scroll-linked motion, GSAP/ScrollTrigger behavior, timeline sequencing, or no-flash reveal choreography:
+- Motion ids and target selectors:
+- User-facing promise:
+- Implementation route:
+- Trigger model and trigger range:
+- Display-window:
+- Timing band:
+- Duration and easing tokens:
+- End trigger selector:
+- Progress mapping:
+- Visual subject selector:
+- Focus-complete boundary:
+- Exit-complete guard:
+- Acceptance samples and tolerance:
+- Initial state:
+- Reverse behavior:
+- No-flash rule:
+- Reduced-motion expected state:
+- Validation command and report path:
 
 ## Page Or Asset Specs
 
@@ -276,6 +322,8 @@ Use only when relevant:
 - Accessibility:
 - Responsive:
 - Interaction:
+- Motion:
+- Motion contract:
 - Performance:
 - Print or export:
 - Data visualization:

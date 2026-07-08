@@ -56,24 +56,24 @@
 
 标题：它不是一个模板库，而是一条设计生产线。
 
-说明：Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。
+说明：Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味和必要性落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。
 
 四个系统：
 
 - 合同：记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。
 - 知识：网页、产品、PPT、平面、品牌和内容策略，按任务分支读取。
-- 品味：用 taste dials、反默认锁和版式家族检查，避免 AI 套路感。
-- 验证：用真实截图、语义区检查和二次自评，把低级问题拦在交付前。
+- 品味判断：用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。
+- 验证：用真实截图、语义区检查、遮挡采样、动效证据和二次自评，把低级问题拦在交付前。
 
 ### 工作流
 
 1. Anchor：把原始需求、最新调整、目标受众、成功标准和非目标写下来，防止越做越偏。
 2. Content：先回答用户为什么来、第一屏要懂什么、行动意味着什么，再谈版式。
 3. Contract：没有 DESIGN.md 也没关系，agent 会根据上下文建立第一版合同。
-4. Direction：确定品牌姿态、色彩承诺、字体性格、信息密度、图像策略和版式模型。
+4. Direction：确定品牌姿态、色彩承诺、字体性格、信息密度、图像策略、版式模型和必要性判断。
 5. Optional References：参考图是可选输入。有图就吸收结构、气质和反参考；没图就继续，不默认生成。
 6. Build：做出页面、PPT、图形资产、产品 UI 或品牌系统，而不是只写一段说明。
-7. Critique and Repair：交付前先自查有没有跑题、翻译腔、卡片套路、错位、拥挤和奇怪换行。
+7. Critique and Repair：交付前先自查有没有跑题、翻译腔、卡片套路、错位、拥挤、奇怪换行、假证明和不必要的装饰。
 8. Verify and Govern：保存截图，跑验证，更新合同，让下一位 agent 能接着做。
 
 ### 使用 Prompt
@@ -111,6 +111,7 @@ Core sections:
 - Why it exists: AI design fails less from lack of drawing skill, and more from lack of process.
 - What it is: It is not a template library. It is a design production line.
 - Workflow: Anchor, Content, Contract, Direction, Optional References, Build, Critique and Repair, Verify and Govern.
+- New in 0.2: Necessary Design Judgment, stronger type personality, purpose-led motion, and stricter rendered verification.
 - Capabilities: Marketing Sites, Product UI, PPT / Deck, Graphics / Social, Brand Systems, Audit / Polish.
 - Proof: DESIGN.md, Reference Assets, Rendered Screenshots, Visual Validation, Review Log.
 

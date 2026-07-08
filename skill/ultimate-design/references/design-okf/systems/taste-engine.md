@@ -1,8 +1,8 @@
 ---
 type: Design System Concept
 title: Taste Engine
-description: Turns design taste into operational choices: design read, taste dials, anti-default bans, layout-family audit, asset credibility, and final taste critique.
-tags: [taste, anti-slop, art-direction, layout-variety, visual-assets, critique]
+description: Turns design taste into operational choices: design read, necessary judgment, taste dials, anti-default bans, layout-family audit, asset credibility, and final taste critique.
+tags: [taste, anti-slop, art-direction, layout-variety, visual-assets, critique, necessity]
 ---
 
 # Purpose
@@ -19,6 +19,7 @@ Taste is not a template. Treat it as a chain of commitments:
 
 ```text
 design read
+-> necessary judgment
 -> taste dials
 -> anti-default locks
 -> layout-family budget
@@ -46,6 +47,21 @@ Before choosing style, read the brief through these questions:
 
 If the brief is weak, infer safe defaults and record them. Ask only when the wrong scene, audience, or rights assumption would invalidate the deliverable.
 
+# Necessary Judgment Lens
+
+Before turning taste dials high, test whether the design direction is necessary. Use `../foundations/necessary-design-judgment.md` when the artifact is public, polished, generic-risk, fake-minimal, overdecorated, or being judged for senior taste.
+
+Run a compact lens even when the full concept is not loaded:
+
+- What should be removed or demoted because it does not improve function, understanding, emotion, identity, trust, or action?
+- Which relationships must feel inevitable: heading/body, claim/evidence, chart/legend, product/proof, CTA/outcome, motion/state, image/caption?
+- Which craft tolerances matter most: spacing, alignment, radius, type weight, icon weight, motion ending, image crop, or color-area ratio?
+- Which care states reveal whether the designer thought about real use: loading, empty, error, disabled, undo, first use, long text, small screens, reduced motion, keyboard/focus?
+- What material honesty risk exists: fake screenshot, invented proof, implied capability, false depth, false certainty, or unmarked placeholder?
+- Does the scene call for quiet clarity, memorable expression, dense comparison, or guided teaching?
+
+This lens prevents taste from becoming decoration. The result can still be expressive, but expression should feel earned by the content and scene.
+
 # Use Levels
 
 Use the lightest level that protects the work:
@@ -53,7 +69,7 @@ Use the lightest level that protects the work:
 | Level | Use when | Output |
 |---|---|---|
 | Light Taste Checkpoint | Any visible artifact, including ordinary UI work | one sentence each for design read, anti-default lock, layout family, visual memory, and type posture |
-| Full Taste Engine | Public, expressive, multi-section/slide/frame, brand, marketing, deck, social, poster, or generic-risk work | full dials, layout-family audit, asset credibility, type personality, taste critique, and contract record |
+| Full Taste Engine | Public, expressive, multi-section/slide/frame, brand, marketing, deck, social, poster, or generic-risk work | necessary judgment, full dials, layout-family audit, asset credibility, type personality, taste critique, and contract record |
 | Quiet Taste | Tiny fixes, strict existing design systems, dense tools, admin UI | clarity-first decision plus what stays intentionally unexpressive |
 
 Taste is not a license to decorate. Quiet can be the right taste when the user needs to read, compare, decide, or act.
@@ -76,7 +92,7 @@ Dial guidance:
 - Keep product/admin UI lower variance and higher clarity unless the brand or context demands expression.
 - Let marketing, brand, campaign, social, and pitch surfaces use more variance when the message needs memory.
 - Decks can vary slide archetypes without making every slide theatrical.
-- Motion above a modest level must actually be implemented and must honor reduced motion.
+- Motion above static, and any motion used as a memory feature, must load `motion-language.md`, define a Motion Strategy, be implemented rather than only described, and honor reduced motion.
 - High variance must collapse to simple, stable mobile structures.
 - Type expressiveness should rise only when it helps memory, voice, or identity; it should fall when the user needs dense reading, operation, comparison, or trust.
 
@@ -172,13 +188,16 @@ Do not imitate a reference's logo, protected identity, exact layout, trademarked
 Ask these before delivery or after a user says the work feels stiff:
 
 1. What category default did this avoid?
-2. What is the strongest visual memory after removing the logo?
-3. Which layout families were used, and where did the rhythm intentionally change?
-4. Which dial choices explain the color, type, density, imagery, and motion?
-5. Which asset proves or expresses the idea rather than decorating it?
-6. Should type recede or stand forward here, and does the selected type personality match the content, medium, and risk?
-7. What still looks like AI filler: equal cards, fake screenshots, generic badges, vague proof, stock imagery, over-rounded panels, default gradients, or generic typography?
-8. Does the design still solve the Request Anchor, or did taste drift away from the user's core job?
+2. What was removed or demoted because it was not necessary?
+3. Which relationships now feel inevitable rather than arbitrary?
+4. Where did craft tolerance, care, or material honesty improve the design?
+5. What is the strongest visual memory after removing the logo?
+6. Which layout families were used, and where did the rhythm intentionally change?
+7. Which dial choices explain the color, type, density, imagery, and motion?
+8. Which asset proves or expresses the idea rather than decorating it?
+9. Should type recede or stand forward here, and does the selected type personality match the content, medium, and risk?
+10. What still looks like AI filler: equal cards, fake screenshots, generic badges, vague proof, stock imagery, over-rounded panels, default gradients, or generic typography?
+11. Does the design still solve the Request Anchor, or did taste drift away from the user's core job?
 
 Fix failed answers before final delivery when the artifact is meant to be polished or public-facing.
 
@@ -187,6 +206,7 @@ Fix failed answers before final delivery when the artifact is meant to be polish
 For durable work, record a compact Taste Signature:
 
 - Design read:
+- Necessary judgment:
 - Taste dials:
 - Category defaults avoided:
 - Layout families or slide archetypes:
@@ -198,16 +218,27 @@ For durable work, record a compact Taste Signature:
 
 Keep this compact. It is a continuation aid, not a manifesto.
 
+When motion is above static or part of the memory feature, also record a compact Motion Strategy using `motion-language.md`:
+
+- Motion purpose:
+- Motion budget:
+- Primary motion focus:
+- Do-not-move zones:
+- Reduced-motion fallback:
+
 # Done Check
 
 This concept is applied when another agent can answer:
 
 1. Which taste dials were chosen and why?
-2. Which defaults were rejected, and which were intentionally allowed?
-3. Which layout families or slide archetypes are present?
-4. Which visual asset or system rule gives the artifact memory?
-5. Which checks prevent the result from becoming generic card-based AI output?
-6. Where are the decisions recorded so the next agent can continue?
+2. What was removed or demoted, and which relationships now feel inevitable?
+3. Which care, craft, material honesty, or scene-fit checks changed the design?
+4. Which defaults were rejected, and which were intentionally allowed?
+5. Which layout families or slide archetypes are present?
+6. Which visual asset or system rule gives the artifact memory?
+7. If motion depth is above static, which Motion Strategy governs purpose, budget, and reduced-motion behavior?
+8. Which checks prevent the result from becoming generic card-based AI output?
+9. Where are the decisions recorded so the next agent can continue?
 
 # Source Notes
 

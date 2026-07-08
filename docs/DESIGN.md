@@ -209,6 +209,7 @@ For each page, screen, or graphic:
 
 | Version | Date | Change | Reason | Reviewer |
 |---|---|---|---|---|
+| 0.5 | 2026-07-08 | Updated homepage copy for 0.2 necessary judgment, motion, type, and stricter rendered verification | Public site should reflect the released skill capabilities without redesigning the whole page | Codex |
 | 0.4 | 2026-07-07 | Updated public positioning to say Ultimate Design is self-contained, not a wrapper around legacy design skills | Public homepage and package copy should match the cleaned skill architecture | Codex |
 | 0.3 | 2026-07-04 | Reworked site into Chinese-first bilingual homepage with top language switch | User found previous copy too translation-like and requested Chinese/English pages | Codex |
 | 0.2 | 2026-07-04 | Removed experimental generated-reference framing and clarified optional reference-image handling | Keep the demo from misrepresenting Ultimate Design's standard workflow | Codex |

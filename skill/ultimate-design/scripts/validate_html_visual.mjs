@@ -9,6 +9,9 @@ function parseArgs(argv) {
     slideSelector: ".slide",
     thumbSelector: ".thumb",
     spacing: 36,
+    occlusion: true,
+    occlusionSamples: 9,
+    wait: 1000,
     viewports: "desktop=1440x900,mobile=390x844",
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -16,7 +19,9 @@ function parseArgs(argv) {
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
     const next = argv[i + 1];
-    if (!next || next.startsWith("--")) {
+    if (key === "no-occlusion") {
+      args.occlusion = false;
+    } else if (!next || next.startsWith("--")) {
       args[key] = true;
     } else {
       args[key] = next;
@@ -82,7 +87,7 @@ async function launchChromium(chromium, browserPath) {
 const args = parseArgs(process.argv.slice(2));
 if (!args.input) {
   console.error(
-    "Usage: node scripts/validate_html_visual.mjs --input artifact.html [--out out-dir] [--viewports desktop=1440x900,mobile=390x844] [--spacing 36]",
+    "Usage: node scripts/validate_html_visual.mjs --input artifact.html [--out out-dir] [--viewports desktop=1440x900,mobile=390x844] [--spacing 36] [--wait 1000] [--no-occlusion]",
   );
   process.exit(2);
 }
@@ -92,6 +97,9 @@ const outputDir = path.resolve(String(args.out || path.join(path.dirname(inputPa
 const reportPath = path.join(outputDir, "visual-validation-report.json");
 const screenshotsDir = path.join(outputDir, "screenshots");
 const minSpacingDesignPx = Number(args.spacing || 36);
+const occlusionEnabled = args.occlusion !== false && args.occlusion !== "false";
+const occlusionSamples = Number(args.occlusionSamples || args["occlusion-samples"] || 9);
+const renderWaitMs = Number(args.wait || args["wait-ms"] || 1000);
 const viewports = parseViewports(args.viewports);
 
 mkdirSync(screenshotsDir, { recursive: true });
@@ -104,6 +112,9 @@ const report = {
   checkedAt: new Date().toISOString(),
   selector: args.selector,
   minSpacingDesignPx,
+  occlusionEnabled,
+  occlusionSamples,
+  renderWaitMs,
   viewports,
   results: [],
 };
@@ -112,7 +123,7 @@ for (const viewport of viewports) {
   const page = await browser.newPage({ viewport });
   await page.goto(`file://${inputPath}`);
   await page.waitForLoadState("domcontentloaded");
-  await page.waitForTimeout(250);
+  await page.waitForTimeout(renderWaitMs);
 
   const slideCount = await page.locator(args.slideSelector).count();
   const thumbCount = await page.locator(args.thumbSelector).count();
@@ -142,7 +153,7 @@ for (const viewport of viewports) {
     await page.screenshot({ path: screenshotPath, fullPage: true });
 
     const checks = await page.evaluate(
-      ({ slideSelector, markerSelector, minSpacingDesignPx }) => {
+      async ({ slideSelector, markerSelector, minSpacingDesignPx, occlusionEnabled, occlusionSamples }) => {
         const activeSlide =
           document.querySelector(`${slideSelector}.is-active`) ||
           document.querySelector(`${slideSelector}[aria-hidden="false"]`) ||
@@ -176,6 +187,17 @@ for (const viewport of viewports) {
             const value = el.getAttribute(name);
             return value === "" || value === "true" || value === "1";
           });
+        }
+
+        function allows(el, names) {
+          return names.some((name) => {
+            const value = el.getAttribute(name);
+            return value === "" || value === "true" || value === "1" || value === "allow" || value === "ignore";
+          });
+        }
+
+        function waitForPaint() {
+          return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         }
 
         function countTextLines(el) {
@@ -223,6 +245,9 @@ for (const viewport of viewports) {
             height: r.height,
             clipped: clipsX || clipsY,
             lineCount: countTextLines(el),
+            invisible: Number.parseFloat(style.opacity || "1") <= 0.05,
+            allowsOcclusion: allows(el, ["data-ud-allow-occlusion", "data-allow-occlusion"]),
+            allowsInvisible: allows(el, ["data-ud-allow-invisible", "data-allow-invisible"]),
             specs: {
               minLines: numberAttr(el, ["data-ud-min-lines", "data-min-lines"]),
               maxLines,
@@ -247,7 +272,9 @@ for (const viewport of viewports) {
         );
 
         const clipped = boxes.filter((box) => box.clipped);
+        const invisible = boxes.filter((box) => box.invisible && !box.allowsInvisible);
         const collisions = [];
+        const occluded = [];
         const tightSpacing = [];
         const lineFailures = [];
         const alignmentFailures = [];
@@ -344,18 +371,104 @@ for (const viewport of viewports) {
           }
         }
 
+        function samplePoints(rect, count) {
+          const perAxis = Math.max(2, Math.round(Math.sqrt(Math.max(4, count || 9))));
+          const points = [];
+          for (let yi = 0; yi < perAxis; yi += 1) {
+            for (let xi = 0; xi < perAxis; xi += 1) {
+              const px = (xi + 1) / (perAxis + 1);
+              const py = (yi + 1) / (perAxis + 1);
+              points.push({
+                x: rect.left + rect.width * px,
+                y: rect.top + rect.height * py,
+              });
+            }
+          }
+          return points;
+        }
+
+        function elementName(el) {
+          if (!el) return "";
+          const cls = typeof el.className === "string" && el.className.trim()
+            ? `.${el.className.trim().replace(/\s+/g, ".")}`
+            : "";
+          const check = el.getAttribute?.("data-ud-check") || el.getAttribute?.("data-check") || "";
+          return `${el.tagName.toLowerCase()}${cls}${check ? `[${check}]` : ""}`;
+        }
+
+        if (occlusionEnabled) {
+          const originalScroll = { x: window.scrollX, y: window.scrollY };
+
+          for (let index = 0; index < nodes.length; index += 1) {
+            const el = nodes[index];
+            const box = boxes[index];
+            if (box.allowsOcclusion || box.invisible) continue;
+
+            const absoluteTop = box.top + originalScroll.y;
+            const absoluteLeft = box.left + originalScroll.x;
+            const targetY = Math.max(0, absoluteTop - Math.max(24, (window.innerHeight - box.height) / 2));
+            const targetX = Math.max(0, absoluteLeft - Math.max(24, (window.innerWidth - box.width) / 2));
+            window.scrollTo(targetX, targetY);
+            await waitForPaint();
+
+            const rect = el.getBoundingClientRect();
+            const coveredSamples = [];
+            for (const point of samplePoints(rect, occlusionSamples)) {
+              if (point.x < 0 || point.y < 0 || point.x > window.innerWidth || point.y > window.innerHeight) continue;
+              const stack = document.elementsFromPoint(point.x, point.y);
+              const top = stack[0];
+              const ok = top === el || el.contains(top);
+              if (!ok) {
+                coveredSamples.push({
+                  x: Math.round(point.x),
+                  y: Math.round(point.y),
+                  top: elementName(top),
+                });
+              }
+            }
+
+            if (coveredSamples.length > 0) {
+              occluded.push({
+                label: box.label,
+                text: box.text,
+                rect: {
+                  left: Math.round(rect.left),
+                  top: Math.round(rect.top),
+                  right: Math.round(rect.right),
+                  bottom: Math.round(rect.bottom),
+                  width: Math.round(rect.width),
+                  height: Math.round(rect.height),
+                },
+                coveredSamples,
+                sampleCount: samplePoints(rect, occlusionSamples).length,
+              });
+            }
+          }
+
+          window.scrollTo(originalScroll.x, originalScroll.y);
+          await waitForPaint();
+        }
+
         return {
           title: activeSlide?.dataset?.title || document.title || "",
           markerCount: boxes.length,
           outside,
           clipped,
+          invisible,
           collisions,
+          occluded,
           tightSpacing,
           lineFailures,
           alignmentFailures,
         };
       },
-      { slideSelector: args.slideSelector, markerSelector: args.selector, minSpacingDesignPx },
+      {
+        slideSelector: args.slideSelector,
+        markerSelector: args.selector,
+        minSpacingDesignPx,
+        occlusionEnabled,
+        occlusionSamples,
+      },
     );
 
     report.results.push({
@@ -379,7 +492,9 @@ report.failures = report.results.filter(
     result.markerCount === 0 ||
     result.outside.length > 0 ||
     result.clipped.length > 0 ||
+    result.invisible.length > 0 ||
     result.collisions.length > 0 ||
+    result.occluded.length > 0 ||
     result.tightSpacing.length > 0 ||
     result.lineFailures.length > 0 ||
     result.alignmentFailures.length > 0,
@@ -399,7 +514,9 @@ const summary = {
     markerCount: failure.markerCount,
     outside: failure.outside.length,
     clipped: failure.clipped.length,
+    invisible: failure.invisible.length,
     collisions: failure.collisions.length,
+    occluded: failure.occluded.length,
     tightSpacing: failure.tightSpacing.length,
     lineFailures: failure.lineFailures.length,
     alignmentFailures: failure.alignmentFailures.length,

@@ -8,6 +8,14 @@ Ultimate Design is an Agent Skill for Codex, Claude Code, Pi Agent, and other Ag
 
 It is not a template pack, a style preset, or a wrapper around another design skill. The skill carries its own contract loop, content model, Taste Checkpoint, OKF references, quality gates, and validators.
 
+## What's New In 0.2
+
+- Necessary Design Judgment: a philosophy layer for necessity, inevitability, care, craft tolerance, material honesty, and scene fit. It teaches restraint and precision without copying Apple-style surfaces.
+- Stronger Taste Engine: taste now passes through necessary judgment before style dials, so expression serves the content instead of becoming decoration.
+- Motion Language: purpose-led animation guidance for web pages, HTML decks, scroll storytelling, and microinteractions, with reduced-motion and performance rules.
+- Type Personality: clearer font-selection guidance for utility, content, display, CJK/Latin mixed text, fallback, and licensing risk.
+- Stricter visual validation: semantic-zone checks, occlusion sampling, spacing checks, and stronger final quality gates for obvious layout mistakes.
+
 Most frontend design skills optimize for styling or code generation. Ultimate Design optimizes the full professional design loop:
 
 1. Preserve the original user request with a Request Anchor.

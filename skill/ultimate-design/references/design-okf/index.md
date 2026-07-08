@@ -13,6 +13,7 @@ The bundle is descriptive knowledge. It does not override runtime truth: rendere
 
 * [Visual Communication And Information Hierarchy](foundations/visual-communication-hierarchy.md) - Coordination layer for intent, information priority, message hierarchy, visual hierarchy, attention, reading path, understanding, action, and ethics.
 * [Layout Typography And Composition](foundations/layout-typography-composition.md) - Coordination layer for composition, grid, type area, alignment, spacing rhythm, typography, Chinese and mixed-language typesetting, editorial layout, Swiss Style, and medium output checks.
+* [Necessary Design Judgment](foundations/necessary-design-judgment.md) - Design-philosophy critique lens for necessity, inevitability, craft tolerance, care, material honesty, hidden complexity, and scene fit; learn judgment without copying Apple-style surface.
 * [Information Architecture](foundations/information-architecture.md) - User, task, content hierarchy, navigation, and first-screen clarity.
 * [Gestalt And Composition](foundations/gestalt-composition.md) - Proximity, similarity, continuity, figure/ground, focal point, rhythm, and layout discipline.
 * [Visual Hierarchy](foundations/visual-hierarchy.md) - Size, weight, contrast, position, whitespace, repetition, and emphasis rules.
@@ -29,6 +30,8 @@ The bundle is descriptive knowledge. It does not override runtime truth: rendere
 * [Brand Identity And Media Production](systems/brand-identity-media-production.md) - Bridge from brand strategy, identity, logo rules, guidelines, tokens, and asset systems to screen, print, social, deck, packaging, licensing, rights, and governance.
 * [Visual Language And Style System](systems/visual-language-style-system.md) - Coordination layer for concept, perceptual posture, color, photography, illustration, iconography, symbols, texture, art direction, anti-template checks, and style governance.
 * [Taste Engine](systems/taste-engine.md) - Operational taste layer for design read, taste dials, anti-default locks, layout-family audit, asset credibility, and taste critique.
+* [Motion Language And Choreography](systems/motion-language.md) - Purpose-led motion for feedback, continuity, hierarchy, navigation, storytelling, brand behavior, reduced motion, and performance.
+* [Motion Contract](systems/motion-contract.md) - Executable motion contracts for animation behavior, GSAP/ScrollTrigger routing, display-window SVG drawing, focus-complete timing, no-flash reveal rules, and browser-sampled validation evidence.
 * [Color System](systems/color-system.md) - Role-first color decisions, contrast, semantic colors, dark mode, and cultural caveats.
 * [Typography System](systems/typography-system.md) - Type scale, line length, mixed Chinese/English checks, tabular figures, and readability defaults.
 * [Type Personality And Typography Art Direction](systems/type-personality.md) - Font-selection model for when type should recede or become memorable, with CJK/Latin voice maps, mixed-script pairing, WebFont/fallback, and licensing caveats.

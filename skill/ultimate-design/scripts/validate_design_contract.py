@@ -82,6 +82,7 @@ SECTION_ALIASES = {
 ULTIMATE_SECTIONS = [
     "request anchor",
     "content model",
+    "okf preflight",
     "information architecture",
     "quality gates",
     "assumptions",
@@ -99,6 +100,13 @@ REQUEST_ANCHOR_FIELDS = [
     "Non-goals",
     "Must preserve",
     "Validation must check against",
+]
+
+OKF_PREFLIGHT_FIELDS = [
+    "Active references loaded",
+    "Constraints extracted",
+    "Deliberate exceptions",
+    "Verification hooks",
 ]
 
 DIMENSION_RE = re.compile(r"^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:px|em|rem)$")
@@ -292,6 +300,30 @@ def check_request_anchor(body: str, strict: bool, reporter: Reporter) -> None:
             reporter.error(f"Request Anchor field is empty: {field}")
 
 
+def check_okf_preflight(body: str, strict: bool, reporter: Reporter) -> None:
+    preflight = section_text(body, "OKF Preflight")
+    if preflight is None:
+        message = "OKF Preflight section missing."
+        if strict:
+            reporter.error(message)
+        else:
+            reporter.warn(message)
+        return
+
+    for field in OKF_PREFLIGHT_FIELDS:
+        match = re.search(rf"(?mi)^\s*[-*]\s+{re.escape(field)}\s*:\s*(.*)$", preflight)
+        if not match:
+            message = f"OKF Preflight field missing: {field}"
+            if strict:
+                reporter.error(message)
+            else:
+                reporter.warn(message)
+            continue
+        value = match.group(1).strip()
+        if strict and not value:
+            reporter.error(f"OKF Preflight field is empty: {field}")
+
+
 def validate(path: Path, require_frontmatter: bool, strict_ultimate: bool) -> tuple[int, Reporter, dict[str, Any]]:
     reporter = Reporter()
     text = path.read_text(encoding="utf-8")
@@ -323,6 +355,7 @@ def validate(path: Path, require_frontmatter: bool, strict_ultimate: bool) -> tu
     check_section_order(section_names, reporter)
     check_ultimate_sections(section_names, strict_ultimate, reporter)
     check_request_anchor(body, strict_ultimate, reporter)
+    check_okf_preflight(body, strict_ultimate, reporter)
 
     summary = {
         "path": str(path),

@@ -6,6 +6,10 @@ Read `design-okf/systems/taste-engine.md` by default when the site has style fre
 
 Read `design-okf/systems/type-personality.md` when the hero, brand, pricing, proof, article, or campaign typography needs a clearer voice, when Chinese/English mixed text matters, or when WebFont performance, fallback, or font licensing can affect the site.
 
+Read `design-okf/systems/motion-language.md` when the site uses hero animation, scroll storytelling, page transitions, parallax, section reveals, animated product mechanisms, or a motion-depth taste dial above static. Do not load it for a static marketing page with only ordinary hover states.
+
+Read `design-okf/systems/motion-contract.md` when animation is part of the user's explicit request or final delivery claim, especially SVG line/border drawing, scroll-linked motion, GSAP/ScrollTrigger behavior, or no-flash reveal choreography.
+
 ## First Decisions
 
 Settle:
@@ -70,3 +74,5 @@ Use OKLCH when authoring new web tokens unless the existing system uses another 
 - Media should reserve space and load responsibly.
 - Decorative effects must not undermine scrolling, input, or Core Web Vitals.
 - Reduced motion is required when motion exists.
+- Do not hijack scroll; static reading and conversion must still work when motion is reduced or disabled.
+- When the site claims scroll-linked SVG or line animation, validation must sample motion progress in the browser; static screenshots alone are not enough.

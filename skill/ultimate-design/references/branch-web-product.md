@@ -4,6 +4,10 @@ Use this branch for dashboards, app UI, product flows, settings, onboarding, for
 
 For product UI, taste is usually quiet: clarity, density, recovery, and trust beat spectacle. Read `design-okf/systems/type-personality.md` only when introducing/changing font families, when onboarding or empty states need a distinct voice, when data numerals or CJK/Latin mixed text matter, or when WebFont/fallback/licensing affects the product.
 
+Read `design-okf/systems/motion-language.md` when product work includes nontrivial state transitions, microinteractions, drag/reorder, list update/delete/undo, modal/drawer choreography, route transitions, or loading/success/error motion. For dashboards, forms, payment, compliance, and high-frequency tools, keep the motion budget quiet unless the brief proves a stronger need.
+
+Read `design-okf/systems/motion-contract.md` when product work includes animation that must be implemented and verified, especially SVG drawing, scroll-linked behavior, timeline sequencing, or no-flash reveal states.
+
 ## First Decisions
 
 Before visual styling, settle:
@@ -56,6 +60,7 @@ Product surfaces help users repeatedly complete tasks. Favor clarity, predictabi
 - Every action needs visible feedback.
 - Motion should explain cause, hierarchy, or continuity.
 - Provide a reduced-motion path.
+- Browser validation must prove any motion contract that affects state, sequence, SVG progress, or reduced-motion behavior.
 
 ## Frontend Implementation
 

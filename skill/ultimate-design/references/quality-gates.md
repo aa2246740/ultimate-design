@@ -12,6 +12,13 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Must-preserve source facts, data, copy, brand constraints, assets, or behavior are not lost.
 - Any mismatch with the Request Anchor is fixed, or explicitly reported with the reason.
 
+## OKF Preflight
+
+- Meaningful visible design work records active references before direction choice or artifact creation.
+- The preflight lists active references loaded, constraints extracted, deliberate exceptions, and verification hooks.
+- Major layout, content, visual-system, motion, interaction, and production choices trace to the preflight, an existing design contract, or a deliberate exception.
+- If an obvious branch concept was not loaded, the contract records why it was irrelevant or out of scope.
+
 ## Visual
 
 - The strongest visual element maps to the most important communication element, or the exception is intentional.
@@ -24,7 +31,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Type hierarchy is established through size, weight, space, position, color, or typeface contrast without stacking every emphasis lever on one element.
 - Important image/caption, chart/legend, table/source, heading/body, and CTA/supporting-copy relationships are spaced and aligned as intentional groups.
 - Optical alignment is checked for icons, large punctuation, display type, mixed-script baselines, and numbers/units when visible polish matters.
-- Major semantic zones such as titles, lead copy, cards, charts, tables, controls, and footers do not overlap, touch, or feel visually tangled. Use a documented minimum gap, commonly 36 px in design coordinates for adjacent major zones, unless the contract intentionally groups them tighter.
+- Major semantic zones such as titles, lead copy, cards, charts, tables, controls, callouts, overlays, annotations, sticky bars, and footers do not overlap, touch, hide one another, or feel visually tangled. Use a documented minimum gap, commonly 36 px in design coordinates for adjacent major zones, unless the contract intentionally groups them tighter.
 - Color roles are stable and not merely decorative.
 - Color has a scene, mood, or brand reason; it does not fall back to category-default blue/green/gray unless that is intentional.
 - Typography is readable at the final size and viewport.
@@ -38,7 +45,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Type either recedes for task clarity or stands forward for memory, and that choice matches the content, medium, risk, and audience.
 - Decorative elements pass a deletion test: removing them would weaken meaning, identity, hierarchy, or system coherence.
 - No text overflows its container.
-- Generated HTML or app UI includes `data-ud-check` semantic zones on major user-visible regions so visual verification can inspect intent, not only raw geometry.
+- Generated HTML or app UI includes `data-ud-check` semantic zones on major user-visible regions and readable floating/absolute elements, so visual verification can inspect rendered integrity, not only raw geometry.
 - The final rendered screenshot set or contact sheet has been inspected; passing a DOM/canvas bounds check alone is not enough.
 - No obvious AI-default decoration: generic glass, gradient text, identical icon-card grids, decorative side stripes, over-rounded cards, or stock-looking placeholder art.
 
@@ -54,6 +61,20 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Visual assets prove, clarify, or create the world of the artifact; they are not generic placeholders, fake screenshots, or decorative filler.
 - References are translated into rules rather than copied as surface style.
 - The final critique asks what still looks AI-generated and fixes obvious default-gradient, equal-card, fake-proof, fake-screenshot, decorative-badge, stock-image, or over-rounded-panel tells.
+
+## Necessary Judgment
+
+- Every prominent element has a task, meaning, evidence, emotion, identity, system, or interaction reason.
+- The Delete Test has removed or demoted low-value elements that do not improve function, understanding, emotion, identity, trust, or action.
+- The Replace Test finds that major shape, color, position, type, icon, image, and copy choices are specific to the message and scene rather than interchangeable decoration.
+- The Move Test confirms major placement, grouping, and proportion carry hierarchy and reading-path intent.
+- The Justification Test can name why major spacing, radius, shadow, motion, weight, image crop, and color-area choices exist.
+- Minimalism does not delete information, evidence, states, or recovery paths needed for user decision or trust.
+- Craft tolerances are tight where visible polish matters: spacing, alignment, radius, icon weight, type weight, motion ending, image crop, and mixed-script optical fit.
+- Care states are considered when relevant: waiting, loading, empty, error, disabled, confirmation, undo, first use, permission, reduced motion, keyboard/focus, long text, and small screens.
+- Material Honesty is preserved: visuals do not imply false interactivity, proof, capability, data certainty, depth, real assets, or production readiness.
+- Scene Fit is explicit: density, quietness, type expression, motion, and decoration match marketing, deck, product, dashboard, social, report, teaching, print, or brand-system context.
+- Apple-like restraint is never treated as a visual preset; whitespace, radius, glass, and quiet palettes must serve hierarchy, material, interaction, or scene.
 
 ## Content
 
@@ -114,6 +135,28 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Errors identify the problem and recovery path.
 - Disabled controls are semantically disabled and visually distinct.
 - Popovers, dropdowns, dialogs, and sheets escape clipping and manage focus.
+
+## Motion
+
+- Static communication works before motion: the message, task path, and hierarchy remain understandable when animation is disabled.
+- Every nontrivial motion has a named purpose: feedback, continuity, hierarchy, navigation, storytelling, or brand behavior.
+- If animation is a requested feature or final delivery claim, a motion contract records motion ids, implementation route, trigger model, display-window, timing band, duration/easing tokens, trigger range, end trigger when separate, visual subject, progress mapping, focus-complete boundary, exit-complete guard when relevant, acceptance samples, initial state, reverse behavior, reduced-motion expected state, and validation command.
+- Motion budget fits the surface: quiet for dashboards, forms, high-frequency work, finance, legal, medical, security, and compliance; stronger only for marketing, campaign, live deck, product story, or brand moments that need it.
+- Do-not-move zones are respected: dense reading, data comparison, legal copy, risk decisions, forms, and high-consequence states stay still or near-still.
+- Direction and origin explain causality, spatial continuity, or reading flow rather than random decoration.
+- Duration and easing are consistent enough to feel like a system; repeated work is fast and skippable. Non-scroll entry, reveal, component, and route motion stays inside declared timing bands unless the contract records a reason.
+- Scroll remains user-controlled; parallax, pinned sections, large zoom, rotation, and cinematic sequences are justified by clearer storytelling, not spectacle.
+- SVG drawing chooses the right trigger model: entry-play for initially visible subjects, view-entry for later subjects when scroll progress is not the story, entry-or-view when responsive visibility differs by breakpoint, scroll-linked only when progress carries meaning, and static when motion adds no value.
+- Scroll-linked motion maps user scroll progress to output progress with declared samples; a before/after check alone is not enough.
+- Scroll-linked SVG, border, path, graph, connector, or blueprint drawing stays inside the watched subject's display-window and is focus-complete: it reaches complete state near the first fully framed moment, or center-focused moment when taller than the viewport.
+- SVG line, border, path, graph, connector, or blueprint drawing exposes stable validation markers and has sampled stroke or reveal progress.
+- Reveal choreography does not flash visible -> hidden -> visible, duplicate reveals, or leave content hidden when JavaScript is slow or unavailable unless that behavior is declared and acceptable.
+- Auto-moving, blinking, scrolling, or updating content that lasts more than five seconds can be paused, stopped, hidden, or controlled when required.
+- Motion avoids flashes above three times per second and avoids large vestibular triggers unless the experience is explicitly controlled and nonessential.
+- Reduced motion is useful: it preserves content, state feedback, and navigation without broken hidden reveals.
+- Critical meaning is not carried only by animation.
+- Browser-sampled motion validation has passed for scroll-linked, SVG drawing, reveal no-flash, and reduced-motion claims, or the final response says motion validation was not run with the reason.
+- Implementation prefers transform and opacity, limits simultaneous animation, reserves media dimensions, and avoids scroll/input jank.
 
 ## Product UI
 

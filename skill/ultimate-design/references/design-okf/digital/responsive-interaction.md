@@ -31,11 +31,12 @@ Common breakpoints such as 640, 768, 1024, 1280, and 1536 px are defaults, not p
 
 # Motion Rules
 
-- Motion should express cause, hierarchy, continuity, or feedback.
+- Motion should express cause, hierarchy, continuity, feedback, navigation, story, or brand behavior.
+- For nontrivial motion, animated decks, page transitions, scroll storytelling, or motion depth above static, read `../systems/motion-language.md`.
+- For animation that must be implemented and verified, especially scroll-linked, SVG drawing, timeline, or reveal no-flash behavior, read `../systems/motion-contract.md`.
 - Prefer transform and opacity for performance.
 - Avoid content hidden behind reveal animations that might not fire.
-- Support reduced motion.
-- Keep animations interruptible.
+- Support reduced motion and keep animations interruptible.
 
 # Citations
 

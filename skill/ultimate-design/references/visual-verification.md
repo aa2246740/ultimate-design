@@ -11,8 +11,20 @@ Treat these as P1 unless the overlap is deliberate and documented:
 - Text overlaps, touches, or visually competes with cards, charts, panels, navigation, or controls.
 - Major semantic zones have too little separation for the medium.
 - Sticky or fixed controls cover content or navigation.
+- Absolute or floating callouts exist in the DOM but are hidden behind cards, charts, screenshots, or decorative layers.
+- Reveal, animation, opacity, transform, or z-index choices make meaningful content invisible in the rendered output.
 - Text is clipped, truncated unintentionally, or too dense to scan.
 - A slide, page, or state was generated but not inspected.
+
+## Rendered Integrity
+
+Rendered integrity means a marked semantic zone is actually readable in the pixels a user receives, not merely present in the DOM. It has three parts:
+
+- **Box integrity:** the zone has a nonzero rendered box inside the page/slide/frame.
+- **Visibility integrity:** the zone is not hidden by `display`, `visibility`, near-zero `opacity`, or an unfinished reveal state.
+- **Occlusion integrity:** sampled points inside the zone return the zone itself or its descendants from `document.elementsFromPoint`; unrelated top layers covering the samples are failures.
+
+Use rendered integrity for all readable semantic zones. Intentional overlaps must be documented in `DESIGN.md` and marked with an explicit allow attribute rather than left ambiguous.
 
 ## Required Pass
 
@@ -20,7 +32,8 @@ Treat these as P1 unless the overlap is deliberate and documented:
 2. Save screenshots or rendered previews in an output folder. For decks or PDFs, create a contact sheet or screenshot set that makes every page visible.
 3. Inspect the full screenshot set once as a human visual pass. Look for collisions, too-tight spacing, hidden controls, clipped text, awkward line breaks, and density mismatch.
 4. Run available deterministic checks for the artifact type:
-   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when Playwright or Chrome is available.
+   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when Playwright or Chrome is available. It checks geometry, visibility, and occlusion sampling for marked zones by default.
+   - Motion contracts: use `scripts/validate_motion_contract.mjs` when the artifact claims scroll-linked SVG drawing, reveal no-flash behavior, or reduced-motion animation behavior. It samples rendered motion state in a browser and writes a motion-validation report.
    - PPT/PDF: render every slide/page with the relevant presentation/PDF tools and scan the image set.
    - Static image/graphic: inspect the final bitmap at intended output size.
 5. Repair P0/P1 issues and easy P2 issues, then rerun the visual pass.
@@ -39,6 +52,38 @@ For HTML artifacts, `scripts/validate_html_visual.mjs` uses a real browser rende
 
 This catches objective layout facts. It does not replace human/art-direction judgment about whether the design is beautiful, on-brand, or strategically right.
 
+## Motion Integrity
+
+Motion integrity means the animation state a user receives matches the motion contract over time or scroll, not only at the final frame. Use it for scroll-linked SVG linework, page-level reveal choreography, progress-bound transitions, and reduced-motion fallbacks.
+
+For HTML artifacts, `scripts/validate_motion_contract.mjs` can check elements marked with:
+
+```html
+<path
+  data-ud-motion="hero-route"
+  data-ud-motion-type="svg-draw"
+  data-ud-motion-trigger-model="scroll"
+  data-ud-motion-trigger="#hero"
+  data-ud-motion-end-trigger="#hero-route-panel"
+  data-ud-motion-subject="#hero-route-panel"
+  data-ud-motion-start="top 80%"
+  data-ud-motion-end="bottom 100%"
+  data-ud-motion-focus-at="auto"
+  data-ud-motion-samples="0,0.25,0.5,0.75,1"
+  data-ud-motion-tolerance="0.12"
+/>
+```
+
+For SVG draw checks, the validator reads `stroke-dasharray` and `stroke-dashoffset` after scrolling to each progress point. Prefer real path lengths from `getTotalLength()`; with a validated unit path, expected reveal progress is approximately `1 - strokeDashoffset`.
+
+SVG drawing is checked against the watched subject's **display-window** and focus-complete point. Set `data-ud-motion-trigger-model` to `entry-play`, `view-entry`, `entry-or-view`, `scroll`, or `static`; set `data-ud-motion-subject="#subject-selector"` when the user watches a larger panel or media block. For scroll-linked drawing, the range must end near `auto -> reveal >= 0.95`: subjects shorter than the viewport complete near first full-frame visibility, and taller subjects complete near center-focus. Tune with `data-ud-motion-focus-at`, `data-ud-motion-focus-min`, and `data-ud-motion-focus-window` only when the contract deliberately uses a different focus moment. `data-ud-motion-exit-at` remains a late guard, not the primary completion point.
+
+Use `entry-play` for a subject already meaningfully visible on arrival. Use `view-entry` for a later subject when scroll progress is not the story. Use `entry-or-view` when the same subject is initially visible on some breakpoints but below the fold on others. Use `scroll` only when the line represents a route, sequence, timeline, or other progress-bound meaning.
+
+For reveal checks, mark readable reveal targets with `data-ud-motion-type="reveal"` and `data-ud-motion-no-flash="true"` when first-paint flash or duplicate reveal would violate the contract.
+
+Reduced-motion checks should use the browser's `prefers-reduced-motion: reduce` emulation and confirm content remains visible and SVG drawing reaches the declared static state.
+
 ## HTML Semantic Zones
 
 For generated HTML visual artifacts, mark top-level semantic zones that must not collide:
@@ -49,7 +94,7 @@ For generated HTML visual artifacts, mark top-level semantic zones that must not
 <section data-ud-check="proof-cards" data-ud-align-left="hero-title">...</section>
 ```
 
-Mark sibling zones, not every nested text node. Good zones include title blocks, lead copy, CTA rows, card grids, charts, tables, navigation, footers, slide bodies, and major panels.
+Mark sibling zones, not every nested text node. Good zones include title blocks, lead copy, CTA rows, card grids, charts, tables, navigation, footers, slide bodies, major panels, readable floating notes, badges, chart annotations, overlay panels, sticky bars, and any absolute-positioned text that a user is meant to read.
 
 Use at least 36 px of design-coordinate separation between adjacent major zones unless the design contract states a tighter system. When the artifact scales down, measure this as the equivalent scaled distance.
 
@@ -63,7 +108,9 @@ The HTML checker fails the artifact when any marked zone breaks these standards:
 | Slide navigation mismatch | `.slide` count differs from `.thumb` count when both exist | fail |
 | Out of bounds | Marked zone sits outside the active slide/page bounds | fail |
 | Clipping | overflow is not visible and `scrollWidth > clientWidth` or `scrollHeight > clientHeight` beyond tolerance | fail |
+| Invisible | Marked zone has near-zero opacity or hidden display/visibility | fail unless allowed |
 | Collision | Two sibling marked zones overlap by more than 4 px in both axes, scaled to slide size | fail |
+| Occlusion | Sampled points inside a marked zone are topped by unrelated elements via `elementsFromPoint` | fail unless allowed |
 | Tight spacing | Adjacent marked zones with meaningful axis overlap have less than the minimum gap | default 36 px design coordinates |
 | Unexpected wrapping | `Range.getClientRects()` line count exceeds `data-ud-max-lines`, or `data-ud-nowrap` wraps past 1 line | explicit only |
 | Unexpected unwrapping | line count is below `data-ud-min-lines` | explicit only |
@@ -84,6 +131,8 @@ data-ud-align-bottom="other-zone-name"
 data-ud-align-center-x="other-zone-name"
 data-ud-align-center-y="other-zone-name"
 data-ud-align-tolerance="4"
+data-ud-allow-occlusion
+data-ud-allow-invisible
 ```
 
 If a design intentionally breaks a default, document the reason in `DESIGN.md` and either adjust the threshold or do not mark those zones as collision-checked siblings.
@@ -105,5 +154,6 @@ Visual verification is done only when:
 
 - Every user-visible page/slide/state has a screenshot or rendered preview.
 - The full set was inspected, not only one representative page.
-- Semantic collision/spacing checks passed where available.
+- Semantic geometry, visibility, and occlusion checks passed where available.
+- Motion integrity checks passed for any declared motion contract where available.
 - Any remaining visual risk is documented as accepted or blocked.
