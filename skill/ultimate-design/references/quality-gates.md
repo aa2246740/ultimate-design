@@ -29,6 +29,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Spacing follows the contract or a documented scale.
 - Layout has an explicit composition model, grid/type-area logic, dominant alignment, and spacing rhythm when the artifact is more than a tiny one-off.
 - Type hierarchy is established through size, weight, space, position, color, or typeface contrast without stacking every emphasis lever on one element.
+- Typography tokens use scalar `px`, `rem`, or `em` values; viewport-scaled type such as `vw` or `clamp()` is not used as a token or default sizing shortcut.
 - Important image/caption, chart/legend, table/source, heading/body, and CTA/supporting-copy relationships are spaced and aligned as intentional groups.
 - Optical alignment is checked for icons, large punctuation, display type, mixed-script baselines, and numbers/units when visible polish matters.
 - Major semantic zones such as titles, lead copy, cards, charts, tables, controls, callouts, overlays, annotations, sticky bars, and footers do not overlap, touch, hide one another, or feel visually tangled. Use a documented minimum gap, commonly 36 px in design coordinates for adjacent major zones, unless the contract intentionally groups them tighter.
@@ -46,6 +47,8 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Decorative elements pass a deletion test: removing them would weaken meaning, identity, hierarchy, or system coherence.
 - No text overflows its container.
 - Generated HTML or app UI includes `data-ud-check` semantic zones on major user-visible regions and readable floating/absolute elements, so visual verification can inspect rendered integrity, not only raw geometry.
+- Generated HTML passes the Rendered UI Audit from `scripts/validate_html_visual.mjs`: no active fail findings for marked-zone integrity, horizontal overflow, visible interactive target size, or obvious missing accessible names.
+- Rendered UI Audit warnings remain visible in the report; allowed findings require `data-ud-allow` with reason, owner, and expires instead of disappearing from evidence.
 - The final rendered screenshot set or contact sheet has been inspected; passing a DOM/canvas bounds check alone is not enough.
 - No obvious AI-default decoration: generic glass, gradient text, identical icon-card grids, decorative side stripes, over-rounded cards, or stock-looking placeholder art.
 
@@ -148,6 +151,7 @@ Read this before final delivery. Apply the gates relevant to the artifact. Fix i
 - Scroll remains user-controlled; parallax, pinned sections, large zoom, rotation, and cinematic sequences are justified by clearer storytelling, not spectacle.
 - SVG drawing chooses the right trigger model: entry-play for initially visible subjects, view-entry for later subjects when scroll progress is not the story, entry-or-view when responsive visibility differs by breakpoint, scroll-linked only when progress carries meaning, and static when motion adds no value.
 - Scroll-linked motion maps user scroll progress to output progress with declared samples; a before/after check alone is not enough.
+- Motion markers, contract fields, implementation selectors, and validator samples describe the same visual subject and range; this evidence loop is coupled before delivery.
 - Scroll-linked SVG, border, path, graph, connector, or blueprint drawing stays inside the watched subject's display-window and is focus-complete: it reaches complete state near the first fully framed moment, or center-focused moment when taller than the viewport.
 - SVG line, border, path, graph, connector, or blueprint drawing exposes stable validation markers and has sampled stroke or reveal progress.
 - Reveal choreography does not flash visible -> hidden -> visible, duplicate reveals, or leave content hidden when JavaScript is slow or unavailable unless that behavior is declared and acceptable.

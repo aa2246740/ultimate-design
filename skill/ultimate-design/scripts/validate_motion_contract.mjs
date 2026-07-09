@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 
@@ -16,6 +17,8 @@ function parseArgs(argv) {
     entryMin: 0.5,
     exitAt: "bottom 60%",
     exitMin: 0.95,
+    operationTimeout: 15000,
+    hardTimeout: 90000,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const token = argv[i];
@@ -60,11 +63,45 @@ async function loadPlaywright() {
     "playwright",
     "index.mjs",
   );
+  const nodePathPlaywright = String(process.env.NODE_PATH || "")
+    .split(path.delimiter)
+    .filter(Boolean)
+    .map((entry) => path.resolve(entry, "playwright", "index.mjs"));
+  const codexRuntimePlaywright = [];
+  const codexRuntimeRoot = path.resolve(homedir(), ".cache", "codex-runtimes");
+  const primaryRuntimePlaywright = path.resolve(
+    codexRuntimeRoot,
+    "codex-primary-runtime",
+    "dependencies",
+    "node",
+    "node_modules",
+    "playwright",
+    "index.mjs",
+  );
+  codexRuntimePlaywright.push(primaryRuntimePlaywright);
+  try {
+    for (const name of readdirSync(codexRuntimeRoot)) {
+      const candidate = path.resolve(
+        codexRuntimeRoot,
+        name,
+        "dependencies",
+        "node",
+        "node_modules",
+        "playwright",
+        "index.mjs",
+      );
+      if (existsSync(candidate)) codexRuntimePlaywright.push(candidate);
+    }
+  } catch {
+    // Codex runtime dependencies are optional outside Codex Desktop/CLI.
+  }
   const candidates = [
     process.env.PLAYWRIGHT_MODULE,
     "playwright",
     path.resolve(process.cwd(), "node_modules", "playwright", "index.mjs"),
     runtimePlaywright,
+    ...nodePathPlaywright,
+    ...codexRuntimePlaywright,
   ].filter(Boolean);
   const errors = [];
   for (const candidate of candidates) {
@@ -115,6 +152,8 @@ const defaultEntryMin = Number(args.entryMin || args["entry-min"] || 0.5);
 const defaultExitAt = String(args.exitAt || args["exit-at"] || "bottom 60%");
 const defaultExitMin = Number(args.exitMin || args["exit-min"] || 0.95);
 const sampleWaitMs = Number(args.wait || args["wait-ms"] || 700);
+const operationTimeoutMs = Number(args.operationTimeout || args["operation-timeout"] || 15000);
+const hardTimeoutMs = Number(args.hardTimeout || args["hard-timeout"] || 90000);
 
 mkdirSync(screenshotsDir, { recursive: true });
 
@@ -139,7 +178,23 @@ const report = {
   reducedMotionResults: [],
 };
 
+const watchdog = setTimeout(() => {
+  report.passed = false;
+  report.runtimeError = {
+    type: "hard-timeout",
+    message: `Motion validation exceeded ${hardTimeoutMs}ms.`,
+  };
+  try {
+    writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+  } catch {
+    // Best-effort report write before forced exit.
+  }
+  void browser.close().finally(() => process.exit(124));
+}, hardTimeoutMs);
+
 async function preparePage(page) {
+  page.setDefaultTimeout(operationTimeoutMs);
+  page.setDefaultNavigationTimeout(operationTimeoutMs);
   await page.addInitScript(() => {
     window.__udMotionFrames = [];
     const sample = () => {
@@ -167,8 +222,7 @@ async function preparePage(page) {
     };
     requestAnimationFrame(sample);
   });
-  await page.goto(`file://${inputPath}`);
-  await page.waitForLoadState("domcontentloaded");
+  await page.goto(`file://${inputPath}`, { waitUntil: "domcontentloaded", timeout: operationTimeoutMs });
   await page.addStyleTag({
     content: "html, body { scroll-behavior: auto !important; }",
   });
@@ -587,7 +641,12 @@ for (const viewport of viewports) {
     }
 
     const screenshotPath = path.join(screenshotsDir, `${viewport.name}-${contract.id}.png`);
-    await page.screenshot({ path: screenshotPath, fullPage: true });
+    let screenshotError = null;
+    try {
+      await page.screenshot({ path: screenshotPath, fullPage: true, timeout: operationTimeoutMs });
+    } catch (error) {
+      screenshotError = error.message;
+    }
 
     report.results.push({
       viewport: viewport.name,
@@ -598,7 +657,8 @@ for (const viewport of viewports) {
       samples,
       focusComplete,
       exitComplete,
-      screenshotPath,
+      screenshotPath: screenshotError ? null : screenshotPath,
+      screenshotError,
       passed:
         samples.every((sample) => sample.passed) &&
         (!focusComplete || focusComplete.passed) &&
@@ -654,6 +714,7 @@ for (const viewport of viewports) {
 }
 
 await browser.close();
+clearTimeout(watchdog);
 
 report.passed =
   report.results.length > 0 &&

@@ -40,6 +40,7 @@ When creating `DESIGN.md` from scratch:
 - If brand assets exist, preserve them and derive the system around them.
 - If no brand exists, create a provisional art direction with clear assumptions.
 - Write a Google-compatible YAML front matter token layer when the artifact is a web or UI design system.
+- Typography `fontSize` tokens use a single `px`, `rem`, or `em` value. Do not put `clamp()`, `vw`, `vh`, or viewport-scaled type in the YAML token layer; responsive type decisions belong in page/component specs and must not make text scale directly with viewport width.
 - Write official Markdown sections before ultimate-design extension sections.
 - Fill every section with useful first-pass decisions, not placeholders, where evidence supports it.
 - Create a Request Anchor before detailed styling so the original user need stays visible through critique, verification, and final delivery.
@@ -342,6 +343,7 @@ Use only when relevant:
 - Performance budget:
 - Storybook or component docs:
 - Visual regression:
+- Rendered UI Audit:
 - Accessibility testing:
 - CI checks:
 

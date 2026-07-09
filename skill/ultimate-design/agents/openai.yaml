@@ -1,5 +1,5 @@
 interface:
   display_name: "Ultimate Design"
-  short_description: "Contract-driven visual design with YOLO and Pro modes"
-  default_prompt: "Use $ultimate-design to create the design contract, make the artifact, critique it, and verify rendered output."
+  short_description: "Contract-driven visual design with YOLO, Pro, and proof-run gates"
+  default_prompt: "Use $ultimate-design as an HTML proof run: read SKILL.md and references/proof-run-html.md first, record OKF Preflight paths, create the visible artifact before the full contract, add coupled data-ud-check and data-ud-motion markers when applicable, then run scripts/run_html_proof.mjs or report the exact validator failures."
   brand_color: "#0057FF"

@@ -135,6 +135,22 @@ def main() -> int:
         "Ultimate Design default motion rule can steer future projects without loading deep OKF first",
     )
     require(
+        "proof run gate is machine-checkable for weak/headless agents",
+        "### Proof Run Gate" in skill
+        and "Pi, a local/weak/headless model" in skill
+        and "references/proof-run-html.md" in skill
+        and "read this `SKILL.md` plus the branch references" in skill
+        and "must exist before a full `DESIGN.md` draft" in skill
+        and "evidence loop" in skill
+        and "scripts/run_html_proof.mjs" in skill
+        and "data-ud-motion" in skill
+        and "scripts/validate_design_contract.py" in skill
+        and "scripts/validate_html_visual.mjs" in skill
+        and "scripts/validate_motion_contract.mjs" in skill
+        and "no active fail findings" in skill,
+        "proof runs force skill loading, artifact-first output, coupled motion markers, a unified HTML proof runner, and validator evidence",
+    )
+    require(
         "light taste checkpoint is default for visible artifacts",
         "For every visible artifact, apply a lightweight **Taste Checkpoint** by default" in skill
         and "keep the checkpoint brief" in skill
@@ -241,6 +257,23 @@ def main() -> int:
     )
 
     monitoring = read(root / "references" / "monitoring.md")
+    proof_run_html = read(root / "references" / "proof-run-html.md")
+    require(
+        "HTML proof-run branch exists",
+        "HTML Proof Run" in proof_run_html
+        and "Required Reading" in proof_run_html
+        and "Execution Order" in proof_run_html
+        and "data-ud-check" in proof_run_html
+        and "data-ud-motion" in proof_run_html
+        and "run_html_proof.mjs" in proof_run_html
+        and "repair-brief.md" in proof_run_html
+        and "Coupled SVG Draw Pattern" in proof_run_html
+        and "0% sample would already show a partially drawn path" in proof_run_html
+        and 'data-ud-motion-end="bottom 100%"' in proof_run_html
+        and "Reduced motion must leave SVG drawing visible and complete" in proof_run_html
+        and "Done Signal" in proof_run_html,
+        "weak/headless HTML runs have a compact execution branch with coupled marker and proof-run guidance",
+    )
     require(
         "monitoring doc is dev-only",
         "development/testing mode" in monitoring
@@ -462,6 +495,8 @@ def main() -> int:
         "Static screenshots are not motion validation" in motion_contract
         and "data-ud-motion" in motion_contract
         and "visualSubjectFocusProgress -> strokeRevealProgress" in motion_contract
+        and "Implementation coupling" in motion_contract
+        and "failed evidence loop" in motion_contract
         and "display-window" in motion_contract
         and "entry-play" in motion_contract
         and "view-entry" in motion_contract
@@ -601,6 +636,11 @@ def main() -> int:
         "DESIGN.md template can preserve executable animation behavior and evidence paths",
     )
     require(
+        "contract has rendered UI audit field",
+        "Rendered UI Audit:" in contract,
+        "DESIGN.md template can preserve rendered browser-measurement verification status",
+    )
+    require(
         "contract has presentation specs",
         "## Presentation Or Deck Specs" in contract
         and "One-sentence deck conclusion" in contract
@@ -622,6 +662,7 @@ def main() -> int:
         "contract has Google-compatible DESIGN.md template",
         "Google-compatible" in contract
         and "version: alpha" in contract
+        and "Do not put `clamp()`" in contract
         and "rounded:" in contract
         and '"{colors.primary}"' in contract
         and "Do's and Don'ts" in contract,
@@ -744,6 +785,15 @@ def main() -> int:
         and "Anti-template check" in quality
         and "Asset rights" in quality,
         "quality-gates check visual-language coherence, anti-template specificity, and asset governance",
+    )
+    require(
+        "quality gates include rendered UI audit",
+        "Rendered UI Audit" in quality
+        and "no active fail findings" in quality
+        and "horizontal overflow" in quality
+        and "visible interactive target size" in quality
+        and "data-ud-allow" in quality,
+        "quality-gates require non-visual browser-measured UI audit evidence",
     )
     require(
         "quality gates include taste engine",
@@ -943,6 +993,17 @@ def main() -> int:
     )
     visual_verification = read(root / "references" / "visual-verification.md")
     require(
+        "visual verification documents rendered UI audit",
+        "## Rendered UI Audit" in visual_verification
+        and "ultimate-design.rendered-ui-audit.v1" in visual_verification
+        and "findings[]" in visual_verification
+        and "horizontal overflow" in visual_verification
+        and "visible interactive target size" in visual_verification
+        and "data-ud-allow" in visual_verification
+        and "optional enrichment" in visual_verification,
+        "visual-verification defines the non-visual browser-measured audit contract",
+    )
+    require(
         "visual verification routes motion validation",
         "Motion Integrity" in visual_verification
         and "scripts/validate_motion_contract.mjs" in visual_verification
@@ -985,6 +1046,48 @@ def main() -> int:
     )
     motion_validator_path = root / "scripts" / "validate_motion_contract.mjs"
     motion_validator = read(motion_validator_path)
+    html_validator_path = root / "scripts" / "validate_html_visual.mjs"
+    html_validator = read(html_validator_path)
+    proof_runner_path = root / "scripts" / "run_html_proof.mjs"
+    proof_runner = read(proof_runner_path)
+    require(
+        "HTML proof runner script exists",
+        "run_html_proof.mjs" in str(proof_runner_path)
+        and "ultimate-design.html-proof.v1" in proof_runner
+        and "validate_design_contract.py" in proof_runner
+        and "validate_html_visual.mjs" in proof_runner
+        and "validate_motion_contract.mjs" in proof_runner
+        and "data-ud-motion" in proof_runner
+        and "html-proof-report.json" in proof_runner
+        and "repair-brief.md" in proof_runner,
+        "unified proof runner executes design, rendered UI, and motion validators for weak/headless agents",
+    )
+    require(
+        "rendered UI audit validator script exists",
+        "validate_html_visual.mjs" in str(html_validator_path)
+        and "ultimate-design.rendered-ui-audit.v1" in html_validator
+        and "auditKind" in html_validator
+        and "findings" in html_validator
+        and "horizontal-overflow" in html_validator
+        and "missing-accessible-name" in html_validator
+        and "target-size" in html_validator
+        and "data-ud-allow" in html_validator
+        and "allowance-expired" in html_validator,
+        "local browser validator emits structured Rendered UI Audit findings",
+    )
+    fixture_root = root / "test-fixtures" / "rendered-ui-audit"
+    require(
+        "rendered UI audit fixtures exist",
+        (fixture_root / "clean-pass.html").exists()
+        and (fixture_root / "horizontal-overflow-fail.html").exists()
+        and (fixture_root / "clipping-fail.html").exists()
+        and (fixture_root / "occlusion-fail.html").exists()
+        and (fixture_root / "occlusion-allowed-warn.html").exists()
+        and (fixture_root / "icon-button-missing-name-fail.html").exists()
+        and (fixture_root / "small-target-fail.html").exists()
+        and (fixture_root / "decorative-overlay-pass.html").exists(),
+        "fixture suite covers pass, overflow, clipping, occlusion, allowed occlusion, a11y name, target size, and decorative overlay",
+    )
     require(
         "motion validator script exists",
         "validate_motion_contract.mjs" in str(motion_validator_path)

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Clean Pass</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: #f7f5ef; color: #111; }
+    main { width: min(760px, calc(100vw - 48px)); margin: 64px auto; padding: 32px; border: 1px solid #222; }
+    h1 { margin: 0 0 20px; font-size: 40px; line-height: 1.05; }
+    p { margin: 0 0 28px; font-size: 18px; line-height: 1.5; }
+    button { min-width: 160px; min-height: 48px; font: inherit; border: 1px solid #111; background: #111; color: white; }
+  </style>
+</head>
+<body>
+  <main data-ud-check="main-panel">
+    <h1>Readable measured layout</h1>
+    <p>This fixture should pass because marked content is visible, inside the viewport, not clipped, and not covered.</p>
+    <button type="button">Start audit</button>
+  </main>
+</body>
+</html>

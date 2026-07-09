@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Horizontal Overflow Fail</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    main { width: 720px; margin: 40px; padding: 24px; border: 1px solid #222; }
+    button { min-width: 120px; min-height: 44px; }
+  </style>
+</head>
+<body>
+  <main data-ud-check="wide-panel">
+    <h1>Wide panel</h1>
+    <p>This panel intentionally exceeds a mobile viewport and should create a horizontal-overflow finding.</p>
+    <button type="button">Named action</button>
+  </main>
+</body>
+</html>

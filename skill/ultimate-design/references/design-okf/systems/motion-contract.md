@@ -158,6 +158,8 @@ If a visual subject is already meaningfully visible on initial arrival, do not p
 
 Prefer real path lengths from `getTotalLength()` and map `strokeDashoffset` from length to zero. Use `pathLength="1"` only when browser validation proves progress remains linear. Mark animated paths with `data-ud-motion="svg-route-draw"` or another stable id so validation can find them. Add `data-ud-motion-subject` when the watched subject is not the path's nearest SVG.
 
+Implementation coupling is part of the contract. The selectors recorded in `data-ud-motion-trigger`, `data-ud-motion-end-trigger`, and `data-ud-motion-subject` must exist, and the implementation must use the same subject and range for progress mapping. With ScrollTrigger, that means the trigger/endTrigger/start/end mirror the contract. With custom browser APIs, compute progress from the declared visual subject's display-window. Hard-coded viewport constants that ignore the contract markers are a failed evidence loop even when a line visibly animates.
+
 # Reveal Contract
 
 For section reveals, prevent reveal flash:

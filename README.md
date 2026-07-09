@@ -8,6 +8,14 @@ Ultimate Design is an Agent Skill for Codex, Claude Code, Pi Agent, and other Ag
 
 It is not a template pack, a style preset, or a wrapper around another design skill. The skill carries its own contract loop, content model, Taste Checkpoint, OKF references, quality gates, and validators.
 
+## What's New In 0.3
+
+- Proof Run Gate: compact HTML proof branch for Pi, weak/local/headless models, CLI evals, and debug runs.
+- Unified HTML proof command: `run_html_proof.mjs` runs contract validation, Rendered UI Audit, and motion validation, then writes a repair brief when a gate fails.
+- Rendered UI Audit v1: structured browser-measured findings for marked-zone integrity, horizontal overflow, visible interactive target size, missing accessible names, clipping, and occlusion allowances.
+- Coupled evidence loop: `data-ud-check`, `data-ud-motion`, contract fields, implementation selectors, and validator reports must describe the same artifact behavior.
+- Validation fixtures: small public HTML cases that prove pass/fail coverage for overflow, clipping, occlusion, accessible names, target size, and decorative overlays.
+
 ## What's New In 0.2
 
 - Necessary Design Judgment: a philosophy layer for necessity, inevitability, care, craft tolerance, material honesty, and scene fit. It teaches restraint and precision without copying Apple-style surfaces.

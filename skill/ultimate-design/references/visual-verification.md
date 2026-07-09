@@ -26,13 +26,21 @@ Rendered integrity means a marked semantic zone is actually readable in the pixe
 
 Use rendered integrity for all readable semantic zones. Intentional overlaps must be documented in `DESIGN.md` and marked with an explicit allow attribute rather than left ambiguous.
 
+## Rendered UI Audit
+
+Rendered UI Audit is the non-visual browser measurement gate for generated HTML. It lets any model audit structured browser facts instead of relying on screenshot interpretation. The default implementation is `scripts/validate_html_visual.mjs`; it writes `schemaVersion: "ultimate-design.rendered-ui-audit.v1"`, `status`, `summary`, `facts`, and normalized `findings[]`, while keeping older `results[]` and `failures[]` fields for compatibility.
+
+The audit checks marked `data-ud-check` zones plus minimal page-level facts: horizontal overflow, visible interactive target size, and obvious missing accessible names. A finding with active `severity: "fail"` fails the command; warn/info findings remain visible in the report and do not fail the command. Allowances reduce or contextualize findings; they do not remove evidence from the report.
+
+Use `data-ud-allow="<rule-id>"` with `data-ud-allow-reason`, `data-ud-allow-owner`, and `data-ud-allow-expires` for intentional exceptions. Legacy `data-ud-allow-occlusion` and `data-ud-allow-invisible` still work, but the structured allowance form is preferred.
+
 ## Required Pass
 
 1. Render every final page, slide, frame, or key responsive state that the user will see. Do not rely on a sampled screenshot when the artifact has multiple slides/pages.
 2. Save screenshots or rendered previews in an output folder. For decks or PDFs, create a contact sheet or screenshot set that makes every page visible.
 3. Inspect the full screenshot set once as a human visual pass. Look for collisions, too-tight spacing, hidden controls, clipped text, awkward line breaks, and density mismatch.
 4. Run available deterministic checks for the artifact type:
-   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when Playwright or Chrome is available. It checks geometry, visibility, and occlusion sampling for marked zones by default.
+   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when Playwright or Chrome is available. It runs the Rendered UI Audit: geometry, visibility, and occlusion sampling for marked zones, plus page-level horizontal overflow and visible interactive-control basics.
    - Motion contracts: use `scripts/validate_motion_contract.mjs` when the artifact claims scroll-linked SVG drawing, reveal no-flash behavior, or reduced-motion animation behavior. It samples rendered motion state in a browser and writes a motion-validation report.
    - PPT/PDF: render every slide/page with the relevant presentation/PDF tools and scan the image set.
    - Static image/graphic: inspect the final bitmap at intended output size.
@@ -49,12 +57,15 @@ For HTML artifacts, `scripts/validate_html_visual.mjs` uses a real browser rende
 - It measures text clipping with `scrollWidth/clientWidth` and `scrollHeight/clientHeight` when overflow is not visible.
 - It estimates rendered text line count from `Range.getClientRects()`.
 - It scales spacing thresholds from the 1280 px design coordinate system to the actual rendered slide size.
+- It emits structured `findings[]` with `ruleId`, `severity`, `viewport`, selector/zone, bounding box, evidence, and allowance metadata so non-visual models can rank and explain issues without reading screenshots.
 
 This catches objective layout facts. It does not replace human/art-direction judgment about whether the design is beautiful, on-brand, or strategically right.
 
 ## Motion Integrity
 
 Motion integrity means the animation state a user receives matches the motion contract over time or scroll, not only at the final frame. Use it for scroll-linked SVG linework, page-level reveal choreography, progress-bound transitions, and reduced-motion fallbacks.
+
+The motion evidence loop must stay coupled: the selectors named in `data-ud-motion-trigger`, `data-ud-motion-end-trigger`, and `data-ud-motion-subject` must resolve in the DOM, and the JavaScript/ScrollTrigger implementation must use those same selectors and progress boundaries. A path with contract attributes but hard-coded viewport math unrelated to those attributes is not a valid implementation.
 
 For HTML artifacts, `scripts/validate_motion_contract.mjs` can check elements marked with:
 
@@ -96,7 +107,15 @@ For generated HTML visual artifacts, mark top-level semantic zones that must not
 
 Mark sibling zones, not every nested text node. Good zones include title blocks, lead copy, CTA rows, card grids, charts, tables, navigation, footers, slide bodies, major panels, readable floating notes, badges, chart annotations, overlay panels, sticky bars, and any absolute-positioned text that a user is meant to read.
 
+Avoid marking both a broad parent container and all of its child text zones unless the parent itself has a readable boundary that must be checked. Over-marking creates noisy spacing and occlusion failures and hides the real repair target. Prefer one intentional hierarchy level per region, such as `hero-title`, `hero-lead`, and `hero-cta-row`, or a single `hero-panel` when the panel itself is the visual subject.
+
 Use at least 36 px of design-coordinate separation between adjacent major zones unless the design contract states a tighter system. When the artifact scales down, measure this as the equivalent scaled distance.
+
+For weak/headless proof runs, use the unified HTML proof command when available:
+
+```bash
+node <ultimate-design>/scripts/run_html_proof.mjs --html index.html --design DESIGN.md --out .ultimate-design/proof
+```
 
 ## Machine-Judged Standards
 
@@ -106,11 +125,15 @@ The HTML checker fails the artifact when any marked zone breaks these standards:
 |---|---|---|
 | Missing markers | No `data-ud-check` / `data-check` zones found | fail |
 | Slide navigation mismatch | `.slide` count differs from `.thumb` count when both exist | fail |
+| Horizontal overflow | Document or body scroll width exceeds viewport width beyond tolerance | fail, tiny subpixel overflow warns |
 | Out of bounds | Marked zone sits outside the active slide/page bounds | fail |
 | Clipping | overflow is not visible and `scrollWidth > clientWidth` or `scrollHeight > clientHeight` beyond tolerance | fail |
 | Invisible | Marked zone has near-zero opacity or hidden display/visibility | fail unless allowed |
 | Collision | Two sibling marked zones overlap by more than 4 px in both axes, scaled to slide size | fail |
 | Occlusion | Sampled points inside a marked zone are topped by unrelated elements via `elementsFromPoint` | fail unless allowed |
+| Missing accessible name | A visible interactive control has no obvious text, ARIA label, associated label, title, value, placeholder, or SVG title | fail for obvious cases |
+| Small target | A visible interactive control is below 24 by 24 CSS px | fail; 24-43 px warns |
+| Allowance governance | `data-ud-allow` is missing reason, owner, or expires; uses `all`; or has expired | warn or fail |
 | Tight spacing | Adjacent marked zones with meaningful axis overlap have less than the minimum gap | default 36 px design coordinates |
 | Unexpected wrapping | `Range.getClientRects()` line count exceeds `data-ud-max-lines`, or `data-ud-nowrap` wraps past 1 line | explicit only |
 | Unexpected unwrapping | line count is below `data-ud-min-lines` | explicit only |
@@ -131,6 +154,10 @@ data-ud-align-bottom="other-zone-name"
 data-ud-align-center-x="other-zone-name"
 data-ud-align-center-y="other-zone-name"
 data-ud-align-tolerance="4"
+data-ud-allow="occlusion"
+data-ud-allow-reason="Intentional sticky nav overlap during transition"
+data-ud-allow-owner="ultimate-design"
+data-ud-allow-expires="2026-09-30"
 data-ud-allow-occlusion
 data-ud-allow-invisible
 ```
@@ -147,6 +174,8 @@ The checker can prove rendered facts; it cannot prove the artifact is strategica
 - Whether the composition feels balanced beyond measurable alignment and spacing.
 
 For these, inspect the screenshot set or contact sheet and record the judgment.
+
+Accessibility engines such as axe-core, Pa11y, or Lighthouse and screenshot diff tools such as Playwright baselines, BackstopJS, Percy, or Chromatic may enrich the report later when dependencies and failure policy are explicitly declared. They are optional enrichment, not the default Ultimate Design hard gate.
 
 ## Done Signal
 

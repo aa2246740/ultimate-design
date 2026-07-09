@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Allowed Occlusion</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    main { width: min(620px, calc(100vw - 48px)); margin: 80px auto; padding: 40px; border: 1px solid #222; }
+    .cover { position: fixed; inset: 90px auto auto 50%; width: 280px; height: 120px; transform: translateX(-50%); background: rgba(0, 0, 0, .88); z-index: 10; }
+  </style>
+</head>
+<body>
+  <main
+    data-ud-check="covered-panel"
+    data-ud-allow="occlusion"
+    data-ud-allow-reason="Fixture verifies allowed occlusion remains reported but does not fail."
+    data-ud-allow-owner="ultimate-design"
+    data-ud-allow-expires="2099-12-31">
+    <h1>Allowed covered content</h1>
+    <p>This content is covered but explicitly allowed with governance metadata.</p>
+  </main>
+  <div class="cover"></div>
+</body>
+</html>

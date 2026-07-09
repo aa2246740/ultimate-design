@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Missing Name Fail</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    main { width: min(520px, calc(100vw - 48px)); margin: 64px auto; padding: 32px; border: 1px solid #222; }
+    button { width: 48px; height: 48px; border: 1px solid #222; background: white; }
+    svg { width: 20px; height: 20px; }
+  </style>
+</head>
+<body>
+  <main data-ud-check="button-panel">
+    <button type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"></circle></svg></button>
+  </main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "name": "ultimate-design-skill",
-  "version": "0.2.0",
-  "description": "Self-contained OKF design workflow for AI agents: DESIGN.md contracts, taste and necessary-judgment checks, critique/repair, motion guidance, and rendered verification.",
+  "version": "0.3.0",
+  "description": "Self-contained OKF design workflow for AI agents: DESIGN.md contracts, proof-run gates, rendered UI audit, motion validation, critique/repair, and governed delivery.",
   "type": "module",
   "private": false,
   "homepage": "https://aa2246740.github.io/ultimate-design/",
@@ -32,7 +32,7 @@
     "install:pi": "node scripts/install-agent-skill.mjs --target pi-agent",
     "install:all": "node scripts/install-agent-skill.mjs --target all",
     "check-integrations": "node scripts/check-agent-integrations.mjs",
-    "scan-release": "! rg -n \"(/Users/|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'"
+    "scan-release": "! rg -n \"(/Users/|npm_[A-Za-z0-9]|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'"
   },
   "pi": {
     "skills": [

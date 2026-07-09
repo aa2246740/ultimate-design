@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Clipping Fail</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    .box { width: min(520px, calc(100vw - 48px)); height: 42px; margin: 64px auto; padding: 12px; overflow: hidden; border: 1px solid #222; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="box" data-ud-check="clipped-copy">
+    This marked zone has enough text to overflow its fixed height and should fail the clipping rule when rendered in the browser.
+  </div>
+</body>
+</html>
