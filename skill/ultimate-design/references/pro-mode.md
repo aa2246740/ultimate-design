@@ -35,4 +35,4 @@ In monitored eval mode, a run that creates only `DESIGN.md` fails. No applicable
 
 Pro delivery is done when the artifact implements the frozen snapshot, every active OKF concept has a verified decision binding, critique/repair has no unresolved P0/P1, rendered evidence exists where practical, and the governed contract lets another agent continue without reopening settled choices.
 
-When a restricted process cannot launch the pinned browser, use the cmux + Computer Use fallback when available so visible defects are still inspected. Record it separately from machine proof; Pro mode must not relabel a blocked Rendered UI Audit as passed.
+When a restricted process cannot launch the pinned browser, use the host Agent's available browser, renderer, screenshot, or accessibility capability so visible defects are still inspected. In a Codex environment, cmux + Computer Use is one optional implementation. Record visible review separately from machine proof; Pro mode must not relabel a blocked Rendered UI Audit as passed.

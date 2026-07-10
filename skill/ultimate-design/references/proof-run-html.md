@@ -40,7 +40,7 @@ node <ultimate-design>/scripts/run_html_proof.mjs --html index.html --design DES
 
 The unified runner clears its generated `rendered-ui-audit/` and `motion-audit/` subdirectories before each run. Treat a validator report as evidence only when the proof step records `reportFresh: true`; a subprocess failure that produces no current report must never inherit findings or screenshots from an earlier run.
 
-If the failing layer is browser launch rather than an artifact finding, and cmux plus Computer Use are available, run the visible-browser fallback in `visual-verification.md`. Save that evidence beside the proof output, but keep the Rendered UI Audit step failed or blocked until a fresh machine report exists.
+If the failing layer is browser launch rather than an artifact finding, use the host Agent's available browser, renderer, screenshot, or accessibility capability for the visible-review fallback in `visual-verification.md`. In a Codex environment, cmux plus Computer Use is one optional implementation. Save that evidence beside the proof output, but keep the Rendered UI Audit step failed or blocked until a fresh machine report exists.
 
 ## Motion Choice
 

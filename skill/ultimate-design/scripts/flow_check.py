@@ -1085,14 +1085,16 @@ def main() -> int:
         "visual-verification routes declared motion contracts to browser-sampled display-window and focus-complete checks",
     )
     require(
-        "visual verification defines cmux Computer Use fallback",
-        "## Cmux + Computer Use Fallback" in visual_verification
+        "visual verification defines agent-native fallback with optional Codex recipe",
+        "## Agent-Native Visible Review" in visual_verification
+        and "host Agent" in visual_verification
+        and "### Codex / cmux + Computer Use Implementation" in visual_verification
+        and "not a dependency of Ultimate Design" in visual_verification
         and "ultimate-design.computer-use-visual-fallback.v1" in visual_verification
         and "must not set `reportFresh`" in visual_verification
-        and "Restore the user's cmux workspace" in visual_verification
-        and "cmux + Computer Use fallback" in read(root / "references" / "pro-mode.md")
-        and "visible-browser fallback" in read(root / "references" / "proof-run-html.md"),
-        "browser-launch failures route to visible cmux evidence without impersonating machine proof",
+        and "host Agent's available browser" in read(root / "references" / "pro-mode.md")
+        and "host Agent's available browser" in read(root / "references" / "proof-run-html.md"),
+        "browser-launch failures preserve agent-native visible evidence without impersonating machine proof; cmux is optional",
     )
     validator_path = root / "scripts" / "validate_design_contract.py"
     validator = read(validator_path)

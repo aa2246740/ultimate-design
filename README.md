@@ -8,13 +8,21 @@ Ultimate Design is an Agent Skill for Codex, Claude Code, Pi Agent, and other Ag
 
 It is not a template pack, a style preset, or a wrapper around another design skill. The skill carries its own contract loop, content model, Taste Checkpoint, OKF references, quality gates, and validators.
 
+## What's New In 0.4.1
+
+- Cross-agent verification clarification: the evidence protocol is agent-neutral. The bundled pinned browser runtime and the cmux + Computer Use procedure are optional implementation adapters, not requirements for using Ultimate Design.
+
+## Development Evidence
+
+Ultimate Design's 0.4 hardening loop used GPT-5.6 SOL Ultra as a high-agency evaluator: it generated and inspected real artifacts, exposed proof-path failures, and drove repair cycles. That model was used during development and evaluation, not as a runtime dependency. Any supported Agent can use the resulting skill and its evidence protocol.
+
 ## What's New In 0.4
 
 - Decision-bound OKF: active concepts must change a concrete decision, artifact target, and verification hook; graph and usage validators catch orphaned or decorative knowledge.
 - Pro mode hardening: `--pro` freezes a compact decision snapshot, creates the visible artifact early, and requires critique, repair, verification, and governance before delivery.
 - Stronger Rendered UI Audit: calibrated semantic-zone spacing, related-zone handling, visibility and occlusion sampling, stale-report rejection, and stricter proof freshness.
 - Purpose-led motion proof: display-window timing, scroll-linked completion, reveal behavior, and reduced-motion claims are tied to the same selectors used by the artifact.
-- Portable browser policy: automated visual checks use one explicitly provisioned pinned runtime; cmux plus Computer Use remains a separately reported visible-browser fallback when machine proof is blocked.
+- Evidence integrity: fresh automated reports and visible review evidence are recorded separately, so a fallback can never masquerade as deterministic proof.
 
 ## What's New In 0.3
 
@@ -176,9 +184,9 @@ node skill/ultimate-design/scripts/validate_html_visual.mjs \
   --spacing 36
 ```
 
-Browser-backed validators require a separately provisioned pinned runtime: Playwright `1.61.1` with Chromium Headless Shell revision `1228`. They resolve `ULTIMATE_DESIGN_PLAYWRIGHT_RUNTIME`, then `CODEX_PLAYWRIGHT_RUNTIME`, then `~/.codex/playwright-runtime`. The selected directory must expose `runtime.mjs` with `pinnedRuntime` metadata and `launchPinnedChromium()`.
+The bundled deterministic HTML validators are one optional implementation. They require a separately provisioned pinned runtime: Playwright `1.61.1` with Chromium Headless Shell revision `1228`. They resolve `ULTIMATE_DESIGN_PLAYWRIGHT_RUNTIME`, then `CODEX_PLAYWRIGHT_RUNTIME`, then `~/.codex/playwright-runtime`. The selected directory must expose `runtime.mjs` with `pinnedRuntime` metadata and `launchPinnedChromium()`.
 
-The validators never install a browser, create a project-local Playwright copy, or fall back to system Chrome. A missing or mismatched runtime blocks machine proof. When cmux plus Computer Use is available, the visible-browser fallback may be recorded separately, but it never becomes a fresh machine-audit pass.
+Ultimate Design itself does not require this runtime or Codex. In another Agent environment, use that Agent's approved renderer, browser, screenshot, or accessibility capability and record its visible-review evidence and limits separately. The bundled validators never install a browser, create a project-local Playwright copy, or fall back to system Chrome. A missing compatible runtime blocks only that deterministic proof path; it never turns a visible review into a fresh machine-audit pass.
 
 For monitored HTML proof runs, use the coupled gate so the artifact, contract, OKF usage, rendered layout, and applicable motion evidence fail together:
 
