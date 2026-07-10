@@ -68,3 +68,7 @@ Do not build the entire list if the project does not need it. Use it as a gap ch
 - New component variants need state and edge-case examples.
 - Significant visual changes update the contract review log.
 - If Storybook, visual regression, or CI exists, update it with the changed states.
+
+## Done Criteria
+
+Token/component work is ready when each value has one layer and semantic role, components consume shared tokens, relevant variants/states/content/accessibility/responsive behavior are specified, migrations or deprecations are recorded, the contract and examples match implementation, and available regression or CI checks pass.

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { launchPinnedChromium } from "./pinned_playwright.mjs";
 
 function parseArgs(argv) {
   const args = {
@@ -13,6 +13,7 @@ function parseArgs(argv) {
     occlusion: true,
     occlusionSamples: 9,
     wait: 1000,
+    pageSpacing: 12,
     viewports: "desktop=1440x900,mobile=390x844",
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -44,85 +45,10 @@ function parseViewports(value) {
     });
 }
 
-async function loadPlaywright() {
-  const runtimePlaywright = path.resolve(
-    path.dirname(process.execPath),
-    "..",
-    "node_modules",
-    "playwright",
-    "index.mjs",
-  );
-  const nodePathPlaywright = String(process.env.NODE_PATH || "")
-    .split(path.delimiter)
-    .filter(Boolean)
-    .map((entry) => path.resolve(entry, "playwright", "index.mjs"));
-  const codexRuntimePlaywright = [];
-  const codexRuntimeRoot = path.resolve(homedir(), ".cache", "codex-runtimes");
-  const primaryRuntimePlaywright = path.resolve(
-    codexRuntimeRoot,
-    "codex-primary-runtime",
-    "dependencies",
-    "node",
-    "node_modules",
-    "playwright",
-    "index.mjs",
-  );
-  codexRuntimePlaywright.push(primaryRuntimePlaywright);
-  try {
-    for (const name of readdirSync(codexRuntimeRoot)) {
-      const candidate = path.resolve(
-        codexRuntimeRoot,
-        name,
-        "dependencies",
-        "node",
-        "node_modules",
-        "playwright",
-        "index.mjs",
-      );
-      if (existsSync(candidate)) codexRuntimePlaywright.push(candidate);
-    }
-  } catch {
-    // Codex runtime dependencies are optional outside Codex Desktop/CLI.
-  }
-  const candidates = [
-    process.env.PLAYWRIGHT_MODULE,
-    "playwright",
-    path.resolve(process.cwd(), "node_modules", "playwright", "index.mjs"),
-    runtimePlaywright,
-    ...nodePathPlaywright,
-    ...codexRuntimePlaywright,
-  ].filter(Boolean);
-  const errors = [];
-  for (const candidate of candidates) {
-    try {
-      return await import(candidate);
-    } catch (error) {
-      errors.push(`${candidate}: ${error.message}`);
-    }
-  }
-  throw new Error(`Could not import Playwright. Tried:\n${errors.join("\n")}`);
-}
-
-async function launchChromium(chromium, browserPath) {
-  const candidates = [
-    browserPath,
-    process.env.CHROME_PATH,
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  ].filter(Boolean);
-  for (const executablePath of candidates) {
-    try {
-      return await chromium.launch({ headless: true, executablePath });
-    } catch {
-      // Try the next local browser path.
-    }
-  }
-  return chromium.launch({ headless: true });
-}
-
 const args = parseArgs(process.argv.slice(2));
 if (!args.input) {
   console.error(
-    "Usage: node scripts/validate_html_visual.mjs --input artifact.html [--out out-dir] [--viewports desktop=1440x900,mobile=390x844] [--spacing 36] [--wait 1000] [--no-occlusion]",
+    "Usage: node scripts/validate_html_visual.mjs --input artifact.html [--out out-dir] [--viewports desktop=1440x900,mobile=390x844] [--spacing 36] [--page-spacing 12] [--wait 1000] [--no-occlusion]",
   );
   process.exit(2);
 }
@@ -132,6 +58,7 @@ const outputDir = path.resolve(String(args.out || path.join(path.dirname(inputPa
 const reportPath = path.join(outputDir, "visual-validation-report.json");
 const screenshotsDir = path.join(outputDir, "screenshots");
 const minSpacingDesignPx = Number(args.spacing || 36);
+const pageMinSpacingPx = Number(args.pageSpacing || args["page-spacing"] || 12);
 const occlusionEnabled = args.occlusion !== false && args.occlusion !== "false";
 const occlusionSamples = Number(args.occlusionSamples || args["occlusion-samples"] || 9);
 const renderWaitMs = Number(args.wait || args["wait-ms"] || 1000);
@@ -139,8 +66,7 @@ const viewports = parseViewports(args.viewports);
 
 mkdirSync(screenshotsDir, { recursive: true });
 
-const { chromium } = await loadPlaywright();
-const browser = await launchChromium(chromium, args.browserPath);
+const browser = await launchPinnedChromium(args.browserPath || args["browser-path"]);
 
 const report = {
   schemaVersion: "ultimate-design.rendered-ui-audit.v1",
@@ -151,12 +77,14 @@ const report = {
   config: {
     selector: args.selector,
     minSpacingDesignPx,
+    pageMinSpacingPx,
     occlusionEnabled,
     occlusionSamples,
     renderWaitMs,
   },
   selector: args.selector,
   minSpacingDesignPx,
+  pageMinSpacingPx,
   occlusionEnabled,
   occlusionSamples,
   renderWaitMs,
@@ -217,7 +145,7 @@ for (const viewport of viewports) {
     await page.screenshot({ path: screenshotPath, fullPage: true });
 
     const checks = await page.evaluate(
-      async ({ slideSelector, markerSelector, minSpacingDesignPx, occlusionEnabled, occlusionSamples }) => {
+      async ({ slideSelector, markerSelector, minSpacingDesignPx, pageMinSpacingPx, occlusionEnabled, occlusionSamples }) => {
         const activeSlide =
           document.querySelector(`${slideSelector}.is-active`) ||
           document.querySelector(`${slideSelector}[aria-hidden="false"]`) ||
@@ -225,7 +153,7 @@ for (const viewport of viewports) {
         const scope = activeSlide || document.documentElement;
         const sr = scope.getBoundingClientRect();
         const scale = activeSlide && sr.width ? sr.width / 1280 : 1;
-        const minGap = minSpacingDesignPx * scale;
+        const defaultMinGap = activeSlide ? minSpacingDesignPx * scale : pageMinSpacingPx;
 
         function numberAttr(el, names) {
           for (const name of names) {
@@ -416,6 +344,7 @@ for (const viewport of viewports) {
               minLines: numberAttr(el, ["data-ud-min-lines", "data-min-lines"]),
               maxLines,
               noWrap,
+              minGap: numberAttr(el, ["data-ud-min-gap", "data-min-gap"]),
               alignLeft: stringAttr(el, ["data-ud-align-left", "data-align-left"]),
               alignRight: stringAttr(el, ["data-ud-align-right", "data-align-right"]),
               alignTop: stringAttr(el, ["data-ud-align-top", "data-align-top"]),
@@ -570,6 +499,12 @@ for (const viewport of viewports) {
             const bNode = nodes[j];
             if (aNode.contains(bNode) || bNode.contains(aNode)) continue;
 
+            const explicitMinGaps = [a.specs.minGap, b.specs.minGap].filter((value) => Number.isFinite(value));
+            const pairScale = activeSlide ? scale : 1;
+            const pairMinGap = explicitMinGaps.length
+              ? Math.max(...explicitMinGaps) * pairScale
+              : defaultMinGap;
+
             const xOverlap = Math.min(a.right, b.right) - Math.max(a.left, b.left);
             const yOverlap = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
             const xOverlapRatio = xOverlap / Math.max(1, Math.min(a.width, b.width));
@@ -582,15 +517,15 @@ for (const viewport of viewports) {
 
             if (xOverlapRatio > 0.2 && yOverlap <= 0) {
               const gap = Math.max(a.top, b.top) - Math.min(a.bottom, b.bottom);
-              if (gap >= 0 && gap < minGap) {
-                tightSpacing.push({ direction: "vertical", a, b, gap: Math.round(gap), minGap: Math.round(minGap) });
+              if (gap >= 0 && gap < pairMinGap) {
+                tightSpacing.push({ direction: "vertical", a, b, gap: Math.round(gap), minGap: Math.round(pairMinGap) });
               }
             }
 
             if (yOverlapRatio > 0.2 && xOverlap <= 0) {
               const gap = Math.max(a.left, b.left) - Math.min(a.right, b.right);
-              if (gap >= 0 && gap < minGap) {
-                tightSpacing.push({ direction: "horizontal", a, b, gap: Math.round(gap), minGap: Math.round(minGap) });
+              if (gap >= 0 && gap < pairMinGap) {
+                tightSpacing.push({ direction: "horizontal", a, b, gap: Math.round(gap), minGap: Math.round(pairMinGap) });
               }
             }
           }
@@ -756,6 +691,7 @@ for (const viewport of viewports) {
         slideSelector: args.slideSelector,
         markerSelector: args.selector,
         minSpacingDesignPx,
+        pageMinSpacingPx,
         occlusionEnabled,
         occlusionSamples,
       },

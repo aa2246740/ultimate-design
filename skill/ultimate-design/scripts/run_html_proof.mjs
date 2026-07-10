@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,6 +39,7 @@ function commandText(command, args) {
 }
 
 function runStep({ id, label, command, args, cwd, timeoutMs, reportPath }) {
+  const startedAtMs = Date.now();
   const startedAt = new Date().toISOString();
   const result = spawnSync(command, args, {
     cwd,
@@ -47,7 +48,16 @@ function runStep({ id, label, command, args, cwd, timeoutMs, reportPath }) {
     maxBuffer: 1024 * 1024 * 8,
   });
   const timedOut = result.error?.code === "ETIMEDOUT";
-  const exitCode = timedOut ? 124 : result.status ?? (result.error ? 127 : 1);
+  let exitCode = timedOut ? 124 : result.status ?? (result.error ? 127 : 1);
+  let stderrTail = tail(result.stderr || result.error?.message || "");
+  let reportFresh = null;
+  if (reportPath) {
+    reportFresh = existsSync(reportPath) && statSync(reportPath).mtimeMs >= startedAtMs - 1000;
+    if (exitCode === 0 && !reportFresh) {
+      exitCode = 1;
+      stderrTail = tail(`${stderrTail}\nValidator exited 0 without a fresh report: ${reportPath}`);
+    }
+  }
   return {
     id,
     label,
@@ -56,10 +66,11 @@ function runStep({ id, label, command, args, cwd, timeoutMs, reportPath }) {
     timedOut,
     command: commandText(command, args),
     reportPath,
+    reportFresh,
     startedAt,
     endedAt: new Date().toISOString(),
     stdoutTail: tail(result.stdout),
-    stderrTail: tail(result.stderr || result.error?.message || ""),
+    stderrTail,
   };
 }
 
@@ -132,11 +143,11 @@ function summarizeMotion(report) {
 
 function enrichStep(step) {
   if (step.id === "rendered-ui-audit") {
-    const findings = summarizeVisual(readJson(step.reportPath));
+    const findings = step.reportFresh ? summarizeVisual(readJson(step.reportPath)) : [];
     if (findings.length) step.firstFindings = findings;
   }
   if (step.id === "motion-contract") {
-    const findings = summarizeMotion(readJson(step.reportPath));
+    const findings = step.reportFresh ? summarizeMotion(readJson(step.reportPath)) : [];
     if (findings.length) step.firstFindings = findings;
   }
 }
@@ -155,6 +166,7 @@ function writeRepairBrief(report, filePath) {
     lines.push(`- Status: ${step.status}`);
     lines.push(`- Exit code: ${step.exitCode}`);
     if (step.reportPath) lines.push(`- Report: ${step.reportPath}`);
+    if (step.reportFresh !== null && step.reportFresh !== undefined) lines.push(`- Fresh report: ${step.reportFresh}`);
     if (step.stderrTail) lines.push(`- Error: ${String(step.stderrTail).split("\n").slice(-4).join(" ")}`);
     if (step.stdoutTail && step.status === "fail") {
       lines.push(`- Output: ${String(step.stdoutTail).split("\n").slice(-6).join(" ")}`);
@@ -179,11 +191,14 @@ const cwd = path.dirname(htmlPath);
 const designPath = path.resolve(cwd, String(args.design || "DESIGN.md"));
 const outDir = path.resolve(cwd, String(args.out || ".ultimate-design/proof"));
 const viewports = String(args.viewports || "desktop=1440x1000,tablet=768x1000,mobile=390x844");
+const spacing = String(args.spacing || "36");
+const pageSpacing = String(args["page-spacing"] || args.pageSpacing || "12");
 const samples = String(args.samples || "0,0.25,0.5,0.75,1");
 const wait = String(args.wait || "500");
 const motionWait = String(args["motion-wait"] || "300");
 const hardTimeout = String(args["hard-timeout"] || "60000");
 const skipDesign = Boolean(args["skip-design"]);
+const requireOkfUsage = Boolean(args["require-okf-usage"]);
 const timeoutMs = Number(args.timeout || 120000);
 
 mkdirSync(outDir, { recursive: true });
@@ -245,19 +260,53 @@ if (skipDesign) {
   }));
 }
 
+if (requireOkfUsage) {
+  if (skipDesign || !existsSync(designPath)) {
+    report.steps.push({
+      id: "okf-usage",
+      label: "OKF decision binding validation",
+      status: "fail",
+      exitCode: 1,
+      command: "--require-okf-usage",
+      stderrTail: "OKF usage validation requires an existing DESIGN.md.",
+    });
+  } else {
+    report.steps.push(runStep({
+      id: "okf-usage",
+      label: "OKF decision binding validation",
+      command: "python3",
+      args: [path.join(scriptDir, "validate_okf_usage.py"), designPath],
+      cwd,
+      timeoutMs,
+    }));
+  }
+} else {
+  report.steps.push({
+    id: "okf-usage",
+    label: "OKF decision binding validation",
+    status: "skipped",
+    exitCode: 0,
+    command: "enable with --require-okf-usage in proof/eval runs",
+  });
+}
+
 if (existsSync(htmlPath)) {
   const visualOut = path.join(outDir, "rendered-ui-audit");
+  rmSync(visualOut, { recursive: true, force: true });
+  const visualArgs = [
+    path.join(scriptDir, "validate_html_visual.mjs"),
+    "--input", htmlPath,
+    "--out", visualOut,
+    "--viewports", viewports,
+    "--spacing", spacing,
+    "--page-spacing", pageSpacing,
+    "--wait", wait,
+  ];
   report.steps.push(runStep({
     id: "rendered-ui-audit",
     label: "Rendered UI Audit",
     command: process.execPath,
-    args: [
-      path.join(scriptDir, "validate_html_visual.mjs"),
-      "--input", htmlPath,
-      "--out", visualOut,
-      "--viewports", viewports,
-      "--wait", wait,
-    ],
+    args: visualArgs,
     cwd,
     timeoutMs,
     reportPath: path.join(visualOut, "visual-validation-report.json"),
@@ -267,19 +316,21 @@ if (existsSync(htmlPath)) {
   const hasMotionMarkers = /\bdata-(?:ud-motion|motion-contract)\s*=/.test(html);
   if (hasMotionMarkers) {
     const motionOut = path.join(outDir, "motion-audit");
+    rmSync(motionOut, { recursive: true, force: true });
+    const motionArgs = [
+      path.join(scriptDir, "validate_motion_contract.mjs"),
+      "--input", htmlPath,
+      "--out", motionOut,
+      "--viewports", viewports.replace(/tablet=[^,]+,?/, "").replace(/,,/g, ",").replace(/,$/, ""),
+      "--samples", samples,
+      "--wait", motionWait,
+      "--hard-timeout", hardTimeout,
+    ];
     report.steps.push(runStep({
       id: "motion-contract",
       label: "Motion Contract Audit",
       command: process.execPath,
-      args: [
-        path.join(scriptDir, "validate_motion_contract.mjs"),
-        "--input", htmlPath,
-        "--out", motionOut,
-        "--viewports", viewports.replace(/tablet=[^,]+,?/, "").replace(/,,/g, ",").replace(/,$/, ""),
-        "--samples", samples,
-        "--wait", motionWait,
-        "--hard-timeout", hardTimeout,
-      ],
+      args: motionArgs,
       cwd,
       timeoutMs: Math.max(timeoutMs, Number(hardTimeout) + 10000),
       reportPath: path.join(motionOut, "motion-validation-report.json"),
@@ -336,6 +387,7 @@ console.log(JSON.stringify({
     status: step.status,
     exitCode: step.exitCode,
     reportPath: step.reportPath,
+    reportFresh: step.reportFresh,
     firstFindings: step.firstFindings,
   })),
 }, null, 2));

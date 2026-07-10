@@ -75,3 +75,7 @@ Depending on scope, produce:
 - Token suggestions.
 - Example applications such as landing hero, social banner, card, button, or poster.
 - Brand guideline, asset-library, naming, licensing, rights, and approval notes when the system must persist across teams or media.
+
+## Done Criteria
+
+A brand system is ready when its recognition anchors, color/type/image/shape/motion/copy rules, do/do-not guidance, accessible variants, representative applications, asset naming and ownership, approval/versioning path, and unresolved rights or production risks are clear enough for another agent or team to apply without inventing a second visual language.

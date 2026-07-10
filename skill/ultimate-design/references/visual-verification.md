@@ -32,6 +32,8 @@ Rendered UI Audit is the non-visual browser measurement gate for generated HTML.
 
 The audit checks marked `data-ud-check` zones plus minimal page-level facts: horizontal overflow, visible interactive target size, and obvious missing accessible names. A finding with active `severity: "fail"` fails the command; warn/info findings remain visible in the report and do not fail the command. Allowances reduce or contextualize findings; they do not remove evidence from the report.
 
+Evidence must also be fresh. The unified proof runner removes prior generated audit output before launch and records `reportFresh`; only `reportFresh: true` may support a pass, repair brief, or finding summary. If a browser process fails before writing a report, report the launch failure and do not reuse old JSON or screenshots.
+
 Use `data-ud-allow="<rule-id>"` with `data-ud-allow-reason`, `data-ud-allow-owner`, and `data-ud-allow-expires` for intentional exceptions. Legacy `data-ud-allow-occlusion` and `data-ud-allow-invisible` still work, but the structured allowance form is preferred.
 
 ## Required Pass
@@ -40,23 +42,42 @@ Use `data-ud-allow="<rule-id>"` with `data-ud-allow-reason`, `data-ud-allow-owne
 2. Save screenshots or rendered previews in an output folder. For decks or PDFs, create a contact sheet or screenshot set that makes every page visible.
 3. Inspect the full screenshot set once as a human visual pass. Look for collisions, too-tight spacing, hidden controls, clipped text, awkward line breaks, and density mismatch.
 4. Run available deterministic checks for the artifact type:
-   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when Playwright or Chrome is available. It runs the Rendered UI Audit: geometry, visibility, and occlusion sampling for marked zones, plus page-level horizontal overflow and visible interactive-control basics.
+   - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when the pinned Playwright runtime is available. Never launch the user's system Chrome as a headless fallback. It runs the Rendered UI Audit: geometry, visibility, and occlusion sampling for marked zones, plus page-level horizontal overflow and visible interactive-control basics.
    - Motion contracts: use `scripts/validate_motion_contract.mjs` when the artifact claims scroll-linked SVG drawing, reveal no-flash behavior, or reduced-motion animation behavior. It samples rendered motion state in a browser and writes a motion-validation report.
    - PPT/PDF: render every slide/page with the relevant presentation/PDF tools and scan the image set.
    - Static image/graphic: inspect the final bitmap at intended output size.
 5. Repair P0/P1 issues and easy P2 issues, then rerun the visual pass.
 6. If visual verification could not run, say `Not run` in the final response and give the reason.
 
+## Cmux + Computer Use Fallback
+
+Use this fallback only when the automated Rendered UI Audit cannot launch because of sandbox, Mach-port, runtime, or browser-process restrictions and both cmux and Computer Use are available. It is a visible-browser inspection path, not a substitute data source for machine geometry.
+
+1. Start a loopback-only server for the final artifact and open a fresh cmux browser tab or pane. Do not reuse or disturb an unrelated browser task.
+2. Inspect a desktop-width state and a narrow state created by resizing or splitting the pane. For fixed-canvas work, inspect the intended canvas plus any required scaled preview.
+3. Inspect the first viewport, one dense middle region, and the final region. Scroll rather than judging only the first screen.
+4. Exercise representative interactions: anchor navigation, tabs, slide controls, forms, menus, hover/focus behavior, or reduced-motion state when applicable.
+5. Read the accessibility tree for headings, landmarks, control names, table/list structure, and reading order. Use the screenshot for visual judgment and the tree for semantic confirmation.
+6. Save screenshots and a compact evidence JSON using `schemaVersion: "ultimate-design.computer-use-visual-fallback.v1"`, including checked states, pass/fail judgments, limitations, and artifact URL.
+7. Restore the user's cmux workspace, close the temporary browser tab or split, and stop the local server after evidence is saved.
+
+Evidence policy:
+
+- This fallback may satisfy the human/visible inspection portion of the visual gate.
+- It must not set `reportFresh`, overwrite a Rendered UI Audit report, or claim deterministic collision, occlusion, clipping, overflow, line-count, target-size, or alignment measurements.
+- Keep the machine step `blocked` or `not run` when acceptance explicitly requires it. Report both outcomes separately, for example: `Computer Use visual fallback: pass; Rendered UI Audit: blocked by sandbox`.
+- If the fallback finds a problem, repair it and repeat the affected visible states. Do not use the machine-audit blocker as a reason to ignore a visible defect.
+
 ## Measurement Model
 
 For HTML artifacts, `scripts/validate_html_visual.mjs` uses a real browser render, not static DOM guessing:
 
-- It opens the final file in Chrome/Playwright at the configured viewports.
+- It opens the final file in the pinned Chromium Headless Shell at the configured viewports.
 - It waits for the DOM to render, switches each `.slide` through `.thumb[data-slide]` when present, and saves screenshots.
 - It measures rendered boxes with `getBoundingClientRect()`.
 - It measures text clipping with `scrollWidth/clientWidth` and `scrollHeight/clientHeight` when overflow is not visible.
 - It estimates rendered text line count from `Range.getClientRects()`.
-- It scales spacing thresholds from the 1280 px design coordinate system to the actual rendered slide size.
+- It scales fixed-canvas slide spacing thresholds from the 1280 px design coordinate system to the actual rendered slide size, while normal web pages use CSS-pixel spacing.
 - It emits structured `findings[]` with `ruleId`, `severity`, `viewport`, selector/zone, bounding box, evidence, and allowance metadata so non-visual models can rank and explain issues without reading screenshots.
 
 This catches objective layout facts. It does not replace human/art-direction judgment about whether the design is beautiful, on-brand, or strategically right.
@@ -109,7 +130,7 @@ Mark sibling zones, not every nested text node. Good zones include title blocks,
 
 Avoid marking both a broad parent container and all of its child text zones unless the parent itself has a readable boundary that must be checked. Over-marking creates noisy spacing and occlusion failures and hides the real repair target. Prefer one intentional hierarchy level per region, such as `hero-title`, `hero-lead`, and `hero-cta-row`, or a single `hero-panel` when the panel itself is the visual subject.
 
-Use at least 36 px of design-coordinate separation between adjacent major zones unless the design contract states a tighter system. When the artifact scales down, measure this as the equivalent scaled distance.
+For normal web pages, the default hard minimum between sibling marked zones is 12 CSS px so intentional title/lead and label/value relationships do not become false failures; major page sections should usually use 24-36 px or more. Fixed-canvas slides keep a 36 px design-coordinate default, scaled with the canvas. When the design contract intentionally needs a different local rhythm, set `data-ud-min-gap` on either zone; the stricter explicit value wins for that pair.
 
 For weak/headless proof runs, use the unified HTML proof command when available:
 
@@ -134,7 +155,7 @@ The HTML checker fails the artifact when any marked zone breaks these standards:
 | Missing accessible name | A visible interactive control has no obvious text, ARIA label, associated label, title, value, placeholder, or SVG title | fail for obvious cases |
 | Small target | A visible interactive control is below 24 by 24 CSS px | fail; 24-43 px warns |
 | Allowance governance | `data-ud-allow` is missing reason, owner, or expires; uses `all`; or has expired | warn or fail |
-| Tight spacing | Adjacent marked zones with meaningful axis overlap have less than the minimum gap | default 36 px design coordinates |
+| Tight spacing | Adjacent marked zones with meaningful axis overlap have less than the applicable minimum gap | pages: 12 CSS px; fixed-canvas slides: 36 design px; explicit `data-ud-min-gap` overrides |
 | Unexpected wrapping | `Range.getClientRects()` line count exceeds `data-ud-max-lines`, or `data-ud-nowrap` wraps past 1 line | explicit only |
 | Unexpected unwrapping | line count is below `data-ud-min-lines` | explicit only |
 | Misalignment | left/right/top/bottom/center differs from the named target by more than tolerance | explicit only, default 4 px design coordinates |
@@ -147,6 +168,7 @@ data-ud-role="title|lead|card-grid|chart|footer|nav|panel"
 data-ud-max-lines="2"
 data-ud-min-lines="1"
 data-ud-nowrap
+data-ud-min-gap="24"
 data-ud-align-left="other-zone-name"
 data-ud-align-right="other-zone-name"
 data-ud-align-top="other-zone-name"

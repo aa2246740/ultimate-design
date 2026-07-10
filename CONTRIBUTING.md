@@ -21,6 +21,7 @@ Contributions should preserve the core premise: Ultimate Design is an OKF-based 
 
 ```bash
 npm run flow-check
+npm run okf-graph-check
 npm run scan-release
 ```
 

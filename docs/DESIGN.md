@@ -130,6 +130,34 @@ Components: header, language switch, hero, contract sheet, optional reference bo
 - Trust, risk, and help content: Proof ledger lists the artifacts and checks that make a run reviewable.
 - Content risks: Avoid claiming guaranteed expert-level taste. Avoid implying reference images or generated images are mandatory.
 
+## OKF Preflight
+
+### Active OKF Concepts
+
+- `design-okf/content/message-model.md`: make the Chinese and English narratives parallel in meaning without forcing sentence-level translation.
+- `design-okf/systems/taste-engine.md`: use varied editorial layout families and explicit anti-default locks so the design workflow is demonstrated rather than merely described.
+
+### Support References
+
+- `references/branch-marketing-site.md`
+- `references/content-model.md`
+- `references/design-contract.md`
+- `references/visual-verification.md`
+- `references/quality-gates.md`
+
+### Decision Record
+
+- Constraints extracted: content hierarchy leads styling; the page stays bilingual, self-contained, and clear that references are optional.
+- Deliberate exceptions: prompt examples may use bordered panels because code-like text needs a stable scanning container.
+- Verification hooks: switch both language states, inspect all marked semantic zones at desktop and mobile widths, and run the Rendered UI Audit with a fresh report.
+
+## OKF Decision Bindings
+
+| Reference | Decision | Artifact target | Verification |
+|---|---|---|---|
+| `design-okf/content/message-model.md` | Write Chinese from Chinese intent and maintain a parallel English expression instead of literal translation | Hero, systems explanation, workflow, prompts, and the `data-i18n` dictionary | Review both language states for equivalent message hierarchy, native phrasing, CTA meaning, and complete keys |
+| `design-okf/systems/taste-engine.md` | Use editorial hero, contract sheet, workflow rail, split diagnosis, system lanes, capability matrix, prompt console, and proof ledger instead of one repeated card family | Section layouts, CSS grid families, Taste Signature, and anti-default locks | Render desktop and mobile states; inspect semantic zones for repetition, collision, crowding, clipping, awkward wraps, and generic AI defaults |
+
 ## Information Architecture
 
 - Core user tasks: Understand, compare modes, copy a prompt, inspect proof.
@@ -209,6 +237,7 @@ For each page, screen, or graphic:
 
 | Version | Date | Change | Reason | Reviewer |
 |---|---|---|---|---|
+| 0.6 | 2026-07-10 | Updated the public knowledge lane for 0.4 decision-bound OKF and verification | The official site should explain that routed knowledge must change the artifact and its checks | Codex |
 | 0.5 | 2026-07-08 | Updated homepage copy for 0.2 necessary judgment, motion, type, and stricter rendered verification | Public site should reflect the released skill capabilities without redesigning the whole page | Codex |
 | 0.4 | 2026-07-07 | Updated public positioning to say Ultimate Design is self-contained, not a wrapper around legacy design skills | Public homepage and package copy should match the cleaned skill architecture | Codex |
 | 0.3 | 2026-07-04 | Reworked site into Chinese-first bilingual homepage with top language switch | User found previous copy too translation-like and requested Chinese/English pages | Codex |

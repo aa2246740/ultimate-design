@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Related Page Zones Pass</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    main { width: min(720px, calc(100vw - 48px)); margin: 64px auto; }
+    h1 { margin: 0; font-size: 40px; line-height: 1.1; }
+    p { margin: 16px 0 0; font-size: 18px; line-height: 1.5; }
+    nav { margin-top: 24px; min-height: 44px; }
+    a { display: inline-flex; min-height: 44px; align-items: center; }
+    section { margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 data-ud-check="hero-title">A related title and lead</h1>
+    <p data-ud-check="hero-lead">Sixteen pixels is an intentional page rhythm, not a collision.</p>
+    <nav data-ud-check="section-navigation" aria-label="Sections"><a href="#content">Continue</a></nav>
+    <section id="content" data-ud-check="content" data-ud-min-gap="24"><h2>Content</h2></section>
+  </main>
+</body>
+</html>

@@ -32,6 +32,10 @@ Defaults are starting points, not law:
 - Long URLs, product names, and legal text need overflow handling.
 - Check mixed Chinese/English baseline, weight, punctuation, numbers, units, and spacing.
 - Do not choose font families by taste labels alone. Route font voice, fallback, and licensing decisions to `type-personality.md`.
+- Use optical sizing when the selected variable font supports it, then verify the rendered result rather than assuming the axis improves every size.
+- Treat tracking and leading as size- and script-dependent. Keep letter spacing at `0` by default; record a typographic reason for nonzero tracking and test it with real text at the delivery size.
+- Let larger display sizes use tighter leading when glyphs remain clear; let body and small text use enough leading for sustained reading and script-specific marks.
+- Respect browser/user text scaling. Layout, spacing, controls, and containers must survive larger text instead of holding typography inside fixed pixel boxes.
 
 # Contract Fields
 
@@ -46,7 +50,12 @@ Record:
 - Data/table number treatment.
 - Localization and mixed-language notes.
 - Link to type-personality decisions when font voice, fallback, WebFont loading, or rights affect delivery.
+- Optical-sizing, tracking/leading, and user text-scaling decisions when they materially affect the artifact.
 
 # Done Check
 
 The typography pass is done when hierarchy, readability, mixed-language behavior, overflow handling, and any type-personality or font-delivery decisions are explicit.
+
+# Source Notes
+
+Optical sizing, variable-font behavior, size-specific tracking/leading, system fonts, and scalable layout are informed by Apple's official *The details of UI typography* guidance and general web typography practice. Apple platform defaults are examples; browser rendering, CJK behavior, brand rules, and real-content proof remain authoritative for the artifact.

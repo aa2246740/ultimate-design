@@ -83,6 +83,7 @@ ULTIMATE_SECTIONS = [
     "request anchor",
     "content model",
     "okf preflight",
+    "okf decision bindings",
     "information architecture",
     "quality gates",
     "assumptions",
@@ -312,6 +313,21 @@ def check_okf_preflight(body: str, strict: bool, reporter: Reporter) -> None:
 
     for field in OKF_PREFLIGHT_FIELDS:
         match = re.search(rf"(?mi)^\s*[-*]\s+{re.escape(field)}\s*:\s*(.*)$", preflight)
+        if field == "Active references loaded" and not match:
+            explicit = re.search(
+                r"(?ims)^###\s+Active OKF Concepts\s*$\n(?P<body>.*?)(?=^###\s+|\Z)",
+                preflight,
+            )
+            if explicit:
+                if strict and not explicit.group("body").strip():
+                    reporter.error("OKF Preflight subsection is empty: Active OKF Concepts")
+                if not re.search(r"(?mi)^###\s+Support References\s*$", preflight):
+                    message = "OKF Preflight subsection missing: Support References"
+                    if strict:
+                        reporter.error(message)
+                    else:
+                        reporter.warn(message)
+                continue
         if not match:
             message = f"OKF Preflight field missing: {field}"
             if strict:

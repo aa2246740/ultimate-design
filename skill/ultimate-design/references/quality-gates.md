@@ -1,293 +1,104 @@
 # Quality Gates
 
-Read this before final delivery. Apply the gates relevant to the artifact. Fix issues before handing off when practical.
+Read this before final delivery. Apply this core gate, the selected branch's Done Criteria, and the Done Checks of active OKF concepts. Branch files own medium-specific rules; this file owns the cross-branch delivery bar.
 
-## Request Anchor
+## Request Fit
 
-- The artifact matches the deliverable named in the Request Anchor.
-- The primary user-facing view supports the core job to be done.
-- The latest user override is reflected in scope, style, priority, and constraints.
-- User-specific success criteria are checked before final delivery.
-- Non-goals are respected; the artifact does not spend effort on excluded work.
-- Must-preserve source facts, data, copy, brand constraints, assets, or behavior are not lost.
-- Any mismatch with the Request Anchor is fixed, or explicitly reported with the reason.
+- The artifact matches the Request Anchor's deliverable, audience, core job, success criteria, latest override, must-preserve constraints, and non-goals.
+- The primary user-facing view supports the intended task or message.
+- Source facts, data, copy, assets, brand constraints, and behavior are preserved unless a recorded decision changes them.
+- A mismatch is fixed or reported with the reason. Requirement drift that changes the deliverable or core job is P0/P1.
 
-## OKF Preflight
+## OKF Evidence
 
-- Meaningful visible design work records active references before direction choice or artifact creation.
-- The preflight lists active references loaded, constraints extracted, deliberate exceptions, and verification hooks.
-- Major layout, content, visual-system, motion, interaction, and production choices trace to the preflight, an existing design contract, or a deliberate exception.
-- If an obvious branch concept was not loaded, the contract records why it was irrelevant or out of scope.
+- Preflight happened before direction and artifact decisions, not as post-rationalization.
+- Active references, constraints, deliberate exceptions, and verification hooks are recorded.
+- Every active `design-okf/` concept has an `OKF Decision Bindings` row: `Reference | Decision | Artifact target | Verification`.
+- A concept that changed no decision is removed from Active references.
+- Major content, layout, visual-system, interaction, motion, and production choices trace to the Request Anchor, existing contract, or a binding.
+- In monitored mode, `scripts/validate_okf_usage.py` passes.
 
-## Visual
+## Content And Hierarchy
 
-- The strongest visual element maps to the most important communication element, or the exception is intentional.
-- The intended first focus, reading path, and action/decision endpoint can be named.
-- The page or graphic has one primary focal point.
-- Information hierarchy is clear through size, weight, spacing, position, and contrast.
-- Alignment is intentional.
-- Spacing follows the contract or a documented scale.
-- Layout has an explicit composition model, grid/type-area logic, dominant alignment, and spacing rhythm when the artifact is more than a tiny one-off.
-- Type hierarchy is established through size, weight, space, position, color, or typeface contrast without stacking every emphasis lever on one element.
-- Typography tokens use scalar `px`, `rem`, or `em` values; viewport-scaled type such as `vw` or `clamp()` is not used as a token or default sizing shortcut.
-- Important image/caption, chart/legend, table/source, heading/body, and CTA/supporting-copy relationships are spaced and aligned as intentional groups.
-- Optical alignment is checked for icons, large punctuation, display type, mixed-script baselines, and numbers/units when visible polish matters.
-- Major semantic zones such as titles, lead copy, cards, charts, tables, controls, callouts, overlays, annotations, sticky bars, and footers do not overlap, touch, hide one another, or feel visually tangled. Use a documented minimum gap, commonly 36 px in design coordinates for adjacent major zones, unless the contract intentionally groups them tighter.
-- Color roles are stable and not merely decorative.
-- Color has a scene, mood, or brand reason; it does not fall back to category-default blue/green/gray unless that is intentional.
-- Typography is readable at the final size and viewport.
-- Font family choices map to type roles: utility, content, brand/display, data, or emotional accent.
-- Expressive display type is limited to places where memory or voice matters; body, UI, data, state, and legal text remain clear.
-- Letter spacing is `0` by default for UI/body/display text; nonzero or negative tracking requires an existing brand rule, logo/wordmark need, or a recorded typographic reason.
-- Important text zones state their expected line behavior when wrapping would change the design, such as max lines, no-wrap, or acceptable truncation.
-- Icons, photos, illustrations, and textures share one visual language.
-- Color, photography, illustration, iconography, symbols, texture, type, layout, and motion speak the same concept rather than acting as isolated decoration.
-- At least one owned visual feature remains recognizable when the logo is removed, when brand distinction matters.
-- Type either recedes for task clarity or stands forward for memory, and that choice matches the content, medium, risk, and audience.
-- Decorative elements pass a deletion test: removing them would weaken meaning, identity, hierarchy, or system coherence.
-- No text overflows its container.
-- Generated HTML or app UI includes `data-ud-check` semantic zones on major user-visible regions and readable floating/absolute elements, so visual verification can inspect rendered integrity, not only raw geometry.
-- Generated HTML passes the Rendered UI Audit from `scripts/validate_html_visual.mjs`: no active fail findings for marked-zone integrity, horizontal overflow, visible interactive target size, or obvious missing accessible names.
-- Rendered UI Audit warnings remain visible in the report; allowed findings require `data-ud-allow` with reason, owner, and expires instead of disappearing from evidence.
-- The final rendered screenshot set or contact sheet has been inspected; passing a DOM/canvas bounds check alone is not enough.
-- No obvious AI-default decoration: generic glass, gradient text, identical icon-card grids, decorative side stripes, over-rounded cards, or stock-looking placeholder art.
+- The artifact makes clear what this is, why it matters, what the user can do next, and what happens after action.
+- Message order follows the user's decision or task path rather than internal organization.
+- Voice, terminology, CTAs, labels, states, trust, risk, and help content follow the content contract.
+- Primary, secondary, and tertiary information are visually distinct through size, weight, position, spacing, contrast, or rhythm.
+- Critical meaning is not carried only by color, image, motion, hover, tooltip, truncation, or hidden text.
 
-## Taste And Anti-Template
+## Necessary Taste
 
-- For visible artifacts with style freedom, a Taste Signature or equivalent note records design read, taste dials, anti-default locks, layout families or slide archetypes, visual memory feature, and asset/reference policy.
-- Every visible artifact has at least a light Taste Checkpoint: design read, anti-default lock, layout family, visual memory, and type posture. Tiny fixes and strict existing-system UI may choose quiet taste, but the choice is intentional.
-- The result names the category default it avoids or intentionally keeps.
-- The chosen taste dials match the audience, scene, brand posture, and medium; high variance does not weaken usability, accessibility, or the Request Anchor.
-- A long page, deck, carousel, report, or multi-frame graphic has a layout-family or slide-archetype audit; repetition is intentional rather than default.
-- Cards are used because elevation or modular scanning carries meaning, not because every idea needs a rounded container.
-- At least one owned visual memory feature remains after removing logo and generic copy when brand distinction matters.
-- Visual assets prove, clarify, or create the world of the artifact; they are not generic placeholders, fake screenshots, or decorative filler.
-- References are translated into rules rather than copied as surface style.
-- The final critique asks what still looks AI-generated and fixes obvious default-gradient, equal-card, fake-proof, fake-screenshot, decorative-badge, stock-image, or over-rounded-panel tells.
+- The design read, type personality, layout-family budget, visual memory feature, and category defaults kept or rejected are explicit when style freedom exists.
+- The artifact does not fall back to repeated generic cards, default gradients, vague premium styling, or decoration that cannot survive the Delete Test.
+- Major choices pass necessity, replacement, move, justification, care, material honesty, and scene-fit tests when polished judgment matters.
+- Delight emerges from clarity, agency, craft, and coherence; it is not an added flourish that competes with the task.
+- At least one owned visual feature remains recognizable without the logo when distinction matters.
 
-## Necessary Judgment
+## Typography
 
-- Every prominent element has a task, meaning, evidence, emotion, identity, system, or interaction reason.
-- The Delete Test has removed or demoted low-value elements that do not improve function, understanding, emotion, identity, trust, or action.
-- The Replace Test finds that major shape, color, position, type, icon, image, and copy choices are specific to the message and scene rather than interchangeable decoration.
-- The Move Test confirms major placement, grouping, and proportion carry hierarchy and reading-path intent.
-- The Justification Test can name why major spacing, radius, shadow, motion, weight, image crop, and color-area choices exist.
-- Minimalism does not delete information, evidence, states, or recovery paths needed for user decision or trust.
-- Craft tolerances are tight where visible polish matters: spacing, alignment, radius, icon weight, type weight, motion ending, image crop, and mixed-script optical fit.
-- Care states are considered when relevant: waiting, loading, empty, error, disabled, confirmation, undo, first use, permission, reduced motion, keyboard/focus, long text, and small screens.
-- Material Honesty is preserved: visuals do not imply false interactivity, proof, capability, data certainty, depth, real assets, or production readiness.
-- Scene Fit is explicit: density, quietness, type expression, motion, and decoration match marketing, deck, product, dashboard, social, report, teaching, print, or brand-system context.
-- Apple-like restraint is never treated as a visual preset; whitespace, radius, glass, and quiet palettes must serve hierarchy, material, interaction, or scene.
+- Body, UI, data, state, and legal text remain readable; Expressive type is reserved for places where memory or voice helps.
+- Hierarchy uses deliberate size, weight, line-height, space, position, color, and family choices without stacking every emphasis lever.
+- Letter spacing is `0` by default; nonzero or negative tracking requires a brand rule, optical-size need, logo/wordmark need, or recorded typographic reason.
+- Mixed Chinese/English work checks optical size, weight, baseline, punctuation, numerals, spacing, coverage, fallback, and rights with real content.
+- Text zoom, long words, long Chinese strings, localization expansion, and fallback fonts do not break layout.
+- WebFont loading, CJK payload, `font-display`, portability, and license status are recorded when relevant.
 
-## Content
+## Accessibility And Interaction
 
-- The artifact has one primary message, supported by secondary explanation, evidence/trust, and a clear action when action is expected.
-- Critical, Important, Useful, and Optional information are visually treated at appropriate priority.
-- The first screen answers what this is, why it matters, and what the user can do next.
-- Content is ordered by the user's task or decision path, not by internal structure.
-- CTAs state action plus result when the action has consequence.
-- Labels are visible; placeholders do not replace labels.
-- Error states explain the problem and how to fix it.
-- Empty states explain the current state and next step.
-- Loading, success, disabled, confirmation, undo, permission, and partial-data states have useful copy when relevant.
-- Same concept uses the same term across the artifact.
-- Critical meaning is not carried only by color, image, tooltip, hover, truncation, or hidden text.
-- Long text, mixed language, numbers, dates, currencies, localization expansion, and RTL are considered when relevant.
-- Chinese text follows one paragraph system; line-start/line-end punctuation, unbroken ellipses/dashes, simplified/traditional punctuation, and vertical writing assumptions are checked when relevant.
-- Mixed Chinese-English text checks visual size, baseline, spacing, number/unit treatment, full-width/half-width punctuation, font coverage, and rights.
+- Semantic structure, keyboard access, visible focus, accessible names, labels, errors, status feedback, contrast, reflow, and reduced motion are checked where applicable.
+- Touch and pointer targets are usable for the intended device and interaction frequency.
+- Loading, empty, error, partial, permission, success, disabled, confirmation, and undo states are covered when the workflow can reach them.
+- Frequent actions stay immediate and quiet. Direct-manipulation interactions track input continuously, remain interruptible, and preserve recovery or cancellation.
+- Color, motion, sound, or haptics never carry the only copy of critical meaning.
 
-## Layout, Typography, And Composition
+## Rendered Integrity
 
-- The layout still reads in grayscale or low fidelity before color and decoration.
-- Grid choice fits the medium: single column, multi-column, modular, baseline, responsive 6/12-column, or hierarchical grid.
-- Type area, margins, columns, gutters, safe areas, and baseline or vertical rhythm are defined when the artifact is persistent, multi-page, dense, editorial, or print-adjacent.
-- Body line length, line height, paragraph rhythm, heading spacing, captions, footnotes, and legal copy are readable at the final medium and viewing distance.
-- Mixed Chinese-English typography checks optical size, weight, baseline, punctuation, numerals, spacing, font coverage, and rights with real content.
-- Editorial or multi-page artifacts define page rhythm, headers/footers, page numbers, section markers, figure/caption/table/source rules, and density variation.
-- Swiss Style is used as grid-led clarity and asymmetry, not as a Helvetica/whitespace costume.
-- Digital text supports zoom/reflow/text-spacing overrides without hidden content or controls; truncation has a full-view path for critical text.
-
-## Accessibility
-
-- Normal text contrast is at least 4.5:1.
-- Large text contrast is at least 3:1.
-- UI components and meaningful non-text graphics are at least 3:1.
-- Focus states are visible.
-- Keyboard navigation reaches every interactive element in a logical order.
-- Inputs have labels.
-- Icon-only controls have accessible names.
-- Images have useful alt text; decorative images use empty alt.
-- Color is not the only way to communicate state.
-- Reduced motion is supported when motion exists.
-
-## Responsive
-
-- No page-level horizontal scroll at 320 px.
-- Check small phone, large phone, tablet, and desktop when practical.
-- Navigation has a mobile strategy.
-- Tables have a mobile strategy: horizontal scroll, cards, column priority, or another documented approach.
-- Images and media reserve dimensions and scale predictably.
-- Sticky or fixed elements do not cover content.
-
-## Interaction
-
-- Actions provide feedback within a perceptible time.
-- Primary actions state what happens next; risk, cost, consequence, or trust information is close to high-consequence decisions.
-- Async actions have loading, success, and failure states.
-- Destructive actions require confirmation or undo.
-- Errors identify the problem and recovery path.
-- Disabled controls are semantically disabled and visually distinct.
-- Popovers, dropdowns, dialogs, and sheets escape clipping and manage focus.
+- Every final page, slide, frame, export, or key responsive state practical to inspect has rendered evidence. Generated HTML also has Rendered UI Audit evidence when browser measurement is available.
+- The full set was inspected for overlap, occlusion, clipping, awkward wraps, density, hidden controls, misleading depth, and first/last-frame problems.
+- Generated HTML uses sparse `data-ud-check` markers at one intentional hierarchy level.
+- `scripts/validate_html_visual.mjs` has no active fail findings when browser measurement is available.
+- Intentional overlaps use documented `data-ud-allow` allowances with reason, owner, and expiry rather than disappearing from evidence.
+- A passing DOM or bounds check never substitutes for screenshot/contact-sheet inspection of the final pixels.
 
 ## Motion
 
-- Static communication works before motion: the message, task path, and hierarchy remain understandable when animation is disabled.
-- Every nontrivial motion has a named purpose: feedback, continuity, hierarchy, navigation, storytelling, or brand behavior.
-- If animation is a requested feature or final delivery claim, a motion contract records motion ids, implementation route, trigger model, display-window, timing band, duration/easing tokens, trigger range, end trigger when separate, visual subject, progress mapping, focus-complete boundary, exit-complete guard when relevant, acceptance samples, initial state, reverse behavior, reduced-motion expected state, and validation command.
-- Motion budget fits the surface: quiet for dashboards, forms, high-frequency work, finance, legal, medical, security, and compliance; stronger only for marketing, campaign, live deck, product story, or brand moments that need it.
-- Do-not-move zones are respected: dense reading, data comparison, legal copy, risk decisions, forms, and high-consequence states stay still or near-still.
-- Direction and origin explain causality, spatial continuity, or reading flow rather than random decoration.
-- Duration and easing are consistent enough to feel like a system; repeated work is fast and skippable. Non-scroll entry, reveal, component, and route motion stays inside declared timing bands unless the contract records a reason.
-- Scroll remains user-controlled; parallax, pinned sections, large zoom, rotation, and cinematic sequences are justified by clearer storytelling, not spectacle.
-- SVG drawing chooses the right trigger model: entry-play for initially visible subjects, view-entry for later subjects when scroll progress is not the story, entry-or-view when responsive visibility differs by breakpoint, scroll-linked only when progress carries meaning, and static when motion adds no value.
-- Scroll-linked motion maps user scroll progress to output progress with declared samples; a before/after check alone is not enough.
-- Motion markers, contract fields, implementation selectors, and validator samples describe the same visual subject and range; this evidence loop is coupled before delivery.
-- Scroll-linked SVG, border, path, graph, connector, or blueprint drawing stays inside the watched subject's display-window and is focus-complete: it reaches complete state near the first fully framed moment, or center-focused moment when taller than the viewport.
-- SVG line, border, path, graph, connector, or blueprint drawing exposes stable validation markers and has sampled stroke or reveal progress.
-- Reveal choreography does not flash visible -> hidden -> visible, duplicate reveals, or leave content hidden when JavaScript is slow or unavailable unless that behavior is declared and acceptable.
-- Auto-moving, blinking, scrolling, or updating content that lasts more than five seconds can be paused, stopped, hidden, or controlled when required.
-- Motion avoids flashes above three times per second and avoids large vestibular triggers unless the experience is explicitly controlled and nonessential.
-- Reduced motion is useful: it preserves content, state feedback, and navigation without broken hidden reveals.
-- Critical meaning is not carried only by animation.
-- Browser-sampled motion validation has passed for scroll-linked, SVG drawing, reveal no-flash, and reduced-motion claims, or the final response says motion validation was not run with the reason.
-- Implementation prefers transform and opacity, limits simultaneous animation, reserves media dimensions, and avoids scroll/input jank.
+Apply this section only when meaningful motion is active:
 
-## Product UI
+- Static communication and operation work before animation.
+- Every nontrivial animation has one primary purpose and a frequency-appropriate motion budget.
+- Direction, origin, duration/easing, interruption, input mapping, and reduced-motion behavior fit the interaction and scene.
+- Gesture-driven motion starts from the live presentation state, can be redirected, and hands off velocity or boundary resistance when physical continuity requires it.
+- Scroll remains user-controlled; large zoom, rotation, parallax, pinning, blur, and cinematic sequences earn their attention cost.
+- Transform/opacity are preferred for predictable performance; other properties require measured justification.
+- `scripts/validate_motion_contract.mjs` passes for declared scroll-linked, SVG drawing, reveal no-flash, or reduced-motion claims, or the missing evidence is reported.
 
-- The design states or preserves the product problem, target user, core job, and intended user outcome.
-- The primary task path maps to a success signal, metric, or observable user behavior when the work is product-oriented.
-- Scope is deliberate: v1, prototype, dashboard, or landing page does not imply unrelated features or unvalidated commitments.
-- Tradeoffs and non-goals are explicit when the design optimizes for speed, trust, conversion, efficiency, learning, or business outcome.
-- The primary task path is clear.
-- State coverage includes loading, empty, error, partial, permission, and success where relevant.
-- Navigation preserves orientation and return paths.
-- Forms include labels, validation, errors, required-field treatment, and recovery paths.
-- Data tables or charts include accessible labels, readable numbers, and responsive behavior.
+## Production Integrity
 
-## Marketing Site
+- Responsive behavior, performance risk, export stability, data meaning, localization, legal claims, confidentiality, and asset/font/image/icon rights are checked when relevant.
+- Current platform, vendor, printer, supplier, legal, and license facts are verified from current authoritative sources rather than stale memorized values.
+- Unknown production facts make the result a draft or preflight package, not a false production-ready claim.
+- Mockups, generated assets, placeholders, inferred claims, and illustrative data remain materially honest.
 
-- The first viewport identifies the offer or subject, audience relevance, and next action.
-- The page flow answers likely user objections.
-- Trust, proof, specificity, or credibility elements are present when useful.
-- CTAs are placed where the page naturally creates intent.
-- The design avoids category-default aesthetics and repeated card scaffolds.
-- Layout families vary across the page unless strict repetition is a stated brand or campaign rule.
+## Branch Gates
 
-## Presentation Deck
+Apply the selected branch's Done Criteria rather than loading unrelated medium rules:
 
-- The deck has a clear audience, delivery mode, business goal, and decision or action request.
-- The narrative chain is coherent: title-only reading tells the story.
-- Every core slide has one claim, evidence that supports it, and an action or implication.
-- Slide archetypes vary by narrative job; the deck is not a sequence of identical title-plus-card pages.
-- Density matches mode: live, read-alone, executive/board, sales/pitch, training, or internal execution.
-- Slide titles are unique and preferably conclusion/action titles.
-- Every final slide/page has been rendered or screenshot. Do not inspect only representative slides when delivering a deck or HTML deck.
-- Charts state the insight, use the right chart type, show source/unit/period when needed, and avoid misleading visual encodings.
-- Master/template rules are consistent: logo, footer, page number, typography, colors, and chart style.
-- Export and accessibility checks are addressed: PDF stability, font embedding or safe fonts, reading order, alt text, contrast, and color-independent meaning.
-- External-sharing risks are confirmed or flagged: confidential data, financial numbers, legal claims, brand approval, and font/image/icon rights.
+- `branch-web-product.md`: task path, states, components/forms, accessibility, responsive behavior, design-to-code consistency.
+- `branch-marketing-site.md`: first viewport, objection flow, proof, conversion, layout variety, performance.
+- `branch-presentation.md`: title story, claim/evidence/action, density, charts, master, accessibility, export.
+- `graphic-print.md`: output size, viewing distance, hierarchy, crop/safe area, production and rights preflight.
+- `branch-brand-system.md`: distinctiveness, identity coherence, reusable rules, applications, governance and rights.
+- `tokens-components.md`: token layers, component states, adoption, migration and regression coverage.
+- `audit-polish.md`: severity-ranked findings, repair, second critique and accepted remaining risk.
 
-## Brand System
+## Contract And Delivery
 
-- The visual direction is specific, not generic.
-- Color, type, imagery, shape, motion, and copy voice reinforce one coherent direction.
-- Rules are practical enough for future agents to apply.
-- Guardrails include do and do-not examples.
-- Logo and asset constraints are preserved or clearly marked unknown.
-- Three to five recognition anchors are named when the task is brand-oriented.
-- Core identity rules, application rules, and production rules are separated when a brand system must survive multiple media.
+- `DESIGN.md` matches the final artifact, stays lean, and records Request Anchor, content model, OKF Preflight, decision bindings, direction, assumptions, open questions, and review evidence.
+- Reusable systems update tokens, components, agent rules, or review logs where continuity requires it.
+- Critique 1 findings are severity-ranked; all P0/P1 and easy P2 findings are repaired.
+- Critique 2 confirms no unresolved P0/P1, Request Anchor drift, active binding failure, or rendered-integrity failure.
+- Verification failures are repaired or reported as `Not run`/blocked with a reason. The final response does not claim what evidence cannot support.
 
-## Visual Language And Style System
+## Done Signal
 
-- Concept sentence, positive keywords, and anti-keywords are explicit when style is a deliverable.
-- Visual vocabulary roles are defined: color, photography, illustration, icons, symbols, texture, type/layout, and motion.
-- Photography, illustration, iconography, and texture rules include do/do-not examples or clear constraints when those assets are used.
-- Color psychology, symbols, and imagery are checked for cultural and contextual meaning rather than treated as universal.
-- Icons remain clear at target size and have labels or accessible names when meaning is not obvious.
-- Texture does not harm readability, performance, or print reproduction.
-- Anti-template check names category defaults avoided and owned visual features created.
-- Asset rights, likeness rights, font/image/icon licensing, and generated-asset assumptions are recorded.
-- Cross-medium applications stay coherent when the style is meant to persist.
-
-## Brand Identity And Media Production
-
-- Logo variants, clear-space logic, minimum-size assumptions, color/background rules, and misuse examples are defined or marked unknown when logo usage matters.
-- Brand guidelines act as an operating manual: core rules, application rules, production rules, do/do-not examples, owner, approval path, and versioning are recorded when relevant.
-- Design tokens and assets map to the intended media: web/app, design tools, deck, print, social, packaging, or other required surfaces.
-- Screen delivery checks pixel/DPR strategy, SVG/bitmap format choice, sRGB/RGB, contrast, alt text, performance, dark mode, reduced motion, and webfont licensing when relevant.
-- Print delivery does not claim final readiness until printer trim, bleed, safe area, color profile, effective resolution, font handling, PDF/export format, proofing, and special finishes are confirmed or flagged.
-- Social delivery does not rely on stale memorized dimensions; current platform specs, safe zones, compression behavior, thumbnail/first-frame readability, subtitles, and music/media rights are verified or flagged.
-- Brand deck delivery preserves master, theme colors, theme fonts, chart styles, placeholders, footer/page number, export fallback, and cross-device stability.
-- Packaging delivery respects supplier dieline, material, layers, fold/glue/trim zones, barcode/GS1 checks, regulatory copy, legal review, proofing, and production tolerance.
-- Licensing and rights register cover fonts, images, video, music, icons, templates, mockups, AI assets, likeness/model/property releases, copyright ownership, commissioned-work terms, trademarks, usage scope, term, territory, and proof documents when publication or transfer matters.
-- WebFont delivery records WOFF2/fallback strategy, loaded families/weights/scripts, CJK subset assumptions when relevant, `font-display` behavior when used, and a fallback-readability check for public web work.
-- If vendor, platform, supplier, legal, or license facts are missing, the output is labeled as a draft or preflight package rather than final production-ready work.
-
-## Performance
-
-- Reserve image/media space to avoid layout shift.
-- Avoid heavy decorative effects that hurt scroll or input.
-- Lazy-load below-fold media when appropriate.
-- Avoid unnecessary client-side JavaScript for static content.
-- For web apps, watch Core Web Vitals risk: LCP, INP, and CLS.
-
-## Graphic And Print
-
-- Final size/aspect ratio is correct.
-- Copy is proofread and legible at output size.
-- Bleed, safe area, color profile, resolution, and export format are confirmed or flagged.
-- Font, image, logo, and icon rights are confirmed or flagged.
-- Special finishes, spot colors, die cuts, overprint, and rich black are specified when relevant.
-
-## Audit And Polish
-
-- Findings are severity-ranked.
-- Each recommendation maps to user, business, accessibility, or design-system impact.
-- Fixes distinguish quick wins from structural changes.
-- Proposed changes are concrete enough to implement.
-- A critique pass compares the artifact to the Request Anchor and original user need, not only to generic rules.
-- Content clarity, UX writing, terminology, and state language are checked before visual polish.
-- P0/P1 findings are fixed before final delivery or explicitly reported as blocked.
-- Requirement drift from the Request Anchor is treated as P0/P1 when it changes the requested deliverable or core job.
-- Theme fit is checked: color, type, imagery, density, and tone support the intended audience and task.
-- A second pass confirms the repair did not introduce new high-severity issues.
-
-## Data Visualization, I18n, And Legal
-
-- Charts use the right chart type for the data relationship.
-- Chart meaning is not conveyed by color alone.
-- Axis labels, legends, units, tooltips, and data summaries are present where useful.
-- Locale-sensitive numbers, dates, currencies, and text expansion are considered.
-- RTL support is recorded when relevant.
-- Font, image, icon, logo, likeness, and generated-asset rights are verified or flagged.
-
-## Contract
-
-- `DESIGN.md` or equivalent exists when the project needs continuity.
-- Request Anchor exists when the task is long, content-heavy, multi-file, or drift-prone.
-- `DESIGN.md` passes the bundled contract validator when the validator is available and the work created or materially changed the contract.
-- New assumptions are recorded.
-- Open questions are not hidden.
-- Tokens/components/page specs changed by this work are updated.
-- The review log has a meaningful entry for significant changes.
-- In monitored eval mode, the run trace has no applicable `pending` statuses and includes evidence for critique, repair, verification, and governance.
-
-## Final Reporting
-
-Report verification honestly:
-
-- "Verified" means you checked it.
-- "Assumed" means you chose a default and recorded it.
-- "Not run" means you did not check it and you state why.
-
-If the environment lacks a browser, renderer, screenshot, export, or inspection tool, use the checklist as a fallback and mark visual verification as not run.
+Delivery passes only when Request Fit, active OKF bindings, selected branch Done Criteria, critique/repair, and relevant rendered/production checks pass. Remaining lower-severity risks are named, and another agent can continue from the governed contract without reverse-engineering the decisions.

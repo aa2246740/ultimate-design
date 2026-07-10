@@ -45,7 +45,7 @@ When creating `DESIGN.md` from scratch:
 - Fill every section with useful first-pass decisions, not placeholders, where evidence supports it.
 - Create a Request Anchor before detailed styling so the original user need stays visible through critique, verification, and final delivery.
 - Build a content model before visual direction: user intent, message hierarchy, primary action meaning, voice/tone, terminology, and state-language rules.
-- Record OKF Preflight before visual direction: active references loaded, constraints extracted, deliberate exceptions, and verification hooks.
+- Record OKF Preflight before visual direction, then bind every active OKF concept to a decision, artifact target, and verification hook. A reference that changes no decision is not active knowledge.
 - Put uncertain but non-blocking decisions under `Assumptions`.
 - Put unresolved decisions that should change future work under `Open Questions`.
 - Add a review-log entry explaining that the contract was bootstrapped.
@@ -177,10 +177,28 @@ List concrete, enforceable rules and forbidden patterns.
 ## OKF Preflight
 
 Record this before choosing visual direction or making a new artifact:
-- Active references loaded:
+
+### Active OKF Concepts
+
+- List only task-facing `design-okf/` concepts that change a concrete decision.
+
+### Support References
+
+- List branch, workflow, index, governance, contract, and verification files read for execution or traceability. These are not active OKF unless promoted into the section above.
+
+### Decision Record
+
 - Constraints extracted:
 - Deliberate exceptions:
 - Verification hooks:
+
+## OKF Decision Bindings
+
+Add one row for every active `design-okf/` concept. Branch and verification references may remain in Preflight without a row.
+
+| Reference | Decision | Artifact target | Verification |
+|---|---|---|---|
+| `design-okf/...` | Concrete choice changed by this concept | Page, component, slide, asset, token, copy, or interaction | Rendered check, contract check, test, or review evidence |
 
 ## Information Architecture
 

@@ -112,6 +112,20 @@ def main() -> int:
         and "update the Request Anchor after each decision" in skill,
         "--pro turns the loop into explicit design agreement",
     )
+    pro_mode = read(root / "references" / "pro-mode.md")
+    require(
+        "pro mode branch is complete and bounded",
+        "references/pro-mode.md" in skill
+        and "## Consensus" in pro_mode
+        and "## Decision Snapshot" in pro_mode
+        and "## Post-Consensus Gate" in pro_mode
+        and "at most two directly relevant task-facing OKF concepts" in pro_mode
+        and "### Active OKF Concepts" in pro_mode
+        and "### Support References" in pro_mode
+        and "Support references do not consume the active concept budget" in pro_mode
+        and "## Done Criteria" in pro_mode,
+        "the conditional consensus branch is loadable without bloating the default workflow",
+    )
     require(
         "quality gates are always loaded",
         "references/quality-gates.md" in skill and "before final delivery, always" in skill,
@@ -121,9 +135,10 @@ def main() -> int:
         "OKF preflight is before artifact work",
         "For every meaningful visible design run, treat OKF as **preflight**" in skill
         and "before choosing a direction or making a new artifact" in skill
-        and "active references loaded, constraints extracted, deliberate exceptions, and verification hooks" in skill
+        and "OKF Decision Bindings" in skill
+        and "Reference | Decision | Artifact target | Verification" in skill
         and positions[3] < positions[4] < positions[5] < positions[6],
-        "OKF is loaded and converted into constraints before Bootstrap, Choose, and Make",
+        "OKF is loaded and bound to decisions before Bootstrap, Choose, and Make",
     )
     require(
         "motion display-window default is in main skill",
@@ -139,16 +154,12 @@ def main() -> int:
         "### Proof Run Gate" in skill
         and "Pi, a local/weak/headless model" in skill
         and "references/proof-run-html.md" in skill
-        and "read this `SKILL.md` plus the branch references" in skill
-        and "must exist before a full `DESIGN.md` draft" in skill
-        and "evidence loop" in skill
-        and "scripts/run_html_proof.mjs" in skill
-        and "data-ud-motion" in skill
-        and "scripts/validate_design_contract.py" in skill
-        and "scripts/validate_html_visual.mjs" in skill
-        and "scripts/validate_motion_contract.mjs" in skill
-        and "no active fail findings" in skill,
-        "proof runs force skill loading, artifact-first output, coupled motion markers, a unified HTML proof runner, and validator evidence",
+        and "artifact-first order" in skill
+        and "OKF decision bindings" in skill
+        and "unified proof command" in skill
+        and "rendered UI" in skill
+        and "motion reports" in skill,
+        "proof runs route to one compact branch with artifact, OKF, rendered, and motion evidence",
     )
     require(
         "light taste checkpoint is default for visible artifacts",
@@ -184,8 +195,9 @@ def main() -> int:
         "product sense reference is routed",
         "references/design-okf/methods/product-sense.md" in skill
         and "product/problem framing" in skill
-        and "success signal" in skill,
-        "product-oriented design tasks load the product sense OKF",
+        and "success signal" in skill
+        and "Do not load it solely because the artifact is product UI" in skill,
+        "product-sense loads for unresolved product judgment rather than every product UI",
     )
     require(
         "request anchor is created in brief",
@@ -219,10 +231,29 @@ def main() -> int:
     )
     require(
         "request anchor is checked before delivery",
-        "Request Anchor fit" in skill
-        and "user-specific success criteria" in skill
+        "Request Anchor" in skill
+        and "user success criteria" in skill
         and "How the result maps back" in skill,
         "verify and final response must map back to user request",
+    )
+
+    principles = read(root / "references" / "principles.md")
+    direct_route_targets = [
+        "design-okf/foundations/gestalt-composition.md",
+        "design-okf/foundations/visual-hierarchy.md",
+        "design-okf/systems/color-system.md",
+        "design-okf/systems/typography-system.md",
+        "design-okf/digital/accessibility-usability.md",
+        "design-okf/digital/responsive-interaction.md",
+        "design-okf/production/data-viz-i18n-legal.md",
+        "design-okf/governance/design-to-code-governance.md",
+        "design-okf/governance/machine-verification-ci.md",
+    ]
+    missing_direct_routes = [target for target in direct_route_targets if target not in principles]
+    require(
+        "high-value OKF concepts have direct routes",
+        not missing_direct_routes,
+        "all direct routes present" if not missing_direct_routes else ", ".join(missing_direct_routes),
     )
 
     audit = read(root / "references" / "audit-polish.md")
@@ -270,6 +301,8 @@ def main() -> int:
         and "Coupled SVG Draw Pattern" in proof_run_html
         and "0% sample would already show a partially drawn path" in proof_run_html
         and 'data-ud-motion-end="bottom 100%"' in proof_run_html
+        and "OKF Decision Bindings" in proof_run_html
+        and "--require-okf-usage" in proof_run_html
         and "Reduced motion must leave SVG drawing visible and complete" in proof_run_html
         and "Done Signal" in proof_run_html,
         "weak/headless HTML runs have a compact execution branch with coupled marker and proof-run guidance",
@@ -293,6 +326,14 @@ def main() -> int:
         and "no Request Anchor was recorded" in monitoring
         and "checked against the Request Anchor" in monitoring,
         "runtime traces preserve request integrity",
+    )
+    require(
+        "monitoring measures OKF utilization beyond file reads",
+        "OKF Utilization Funnel" in monitoring
+        and "indexed -> routed -> read -> decision-bound -> artifact-bound -> verified -> lifted" in monitoring
+        and "validate_okf_usage.py" in monitoring
+        and "Workflow-only output versus full OKF output" in monitoring,
+        "monitoring separates indexing, routing, decision binding, verification, and outcome lift",
     )
 
     okf_root = root / "references" / "design-okf"
@@ -403,6 +444,11 @@ def main() -> int:
     require(
         "necessary design judgment OKF exists",
         "Core Model" in necessary_judgment
+        and "Human Value Lens" in necessary_judgment
+        and "Purpose:" in necessary_judgment
+        and "Agency:" in necessary_judgment
+        and "Responsibility:" in necessary_judgment
+        and "Delight:" in necessary_judgment
         and "Delete Test" in necessary_judgment
         and "Replace Test" in necessary_judgment
         and "Move Test" in necessary_judgment
@@ -448,6 +494,10 @@ def main() -> int:
     require(
         "motion language OKF exists",
         "Motion Purpose" in motion_language
+        and "Exposure And Response" in motion_language
+        and "Fluid Interaction" in motion_language
+        and "live presentation state" in motion_language
+        and "release velocity" in motion_language
         and "Motion Budget" in motion_language
         and "Choreography Layers" in motion_language
         and "Scroll Motion" in motion_language
@@ -475,6 +525,10 @@ def main() -> int:
     require(
         "motion contract OKF exists",
         "Contract Fields" in motion_contract
+        and "Gesture Contract" in motion_contract
+        and "Response point" in motion_contract
+        and "Interruption model" in motion_contract
+        and "Velocity and momentum" in motion_contract
         and "Implementation Routing" in motion_contract
         and "GSAP Pattern Rules" in motion_contract
         and "Scroll-Linked SVG Contract" in motion_contract
@@ -528,6 +582,13 @@ def main() -> int:
         and "systems/type-personality.md" in principles
         and "references/design-okf/systems/type-personality.md" in skill,
         "OKF index, principles router, and SKILL.md can reach type-personality",
+    )
+    require(
+        "type personality does not absorb typography mechanics",
+        "Do not load it for mixed-script mechanics alone" in skill
+        and "use `typography-system.md` for scale" in skill
+        and "Mixed-script layout mechanics alone route to `typography-system.md`" in principles,
+        "font voice/pairing and typography mechanics have separate triggers",
     )
     brand_identity_media = read(okf_root / "systems" / "brand-identity-media-production.md")
     require(
@@ -590,11 +651,20 @@ def main() -> int:
     require(
         "contract has OKF preflight",
         "## OKF Preflight" in contract
-        and "Active references loaded:" in contract
+        and "### Active OKF Concepts" in contract
+        and "### Support References" in contract
+        and "### Decision Record" in contract
         and "Constraints extracted:" in contract
         and "Deliberate exceptions:" in contract
         and "Verification hooks:" in contract,
         "DESIGN.md template includes a pre-artifact OKF application record",
+    )
+    require(
+        "contract has OKF decision bindings",
+        "## OKF Decision Bindings" in contract
+        and "| Reference | Decision | Artifact target | Verification |" in contract
+        and "A reference that changes no decision is not active knowledge" in contract,
+        "DESIGN.md binds active OKF concepts to concrete decisions, targets, and evidence",
     )
     require(
         "contract has taste signature",
@@ -744,143 +814,115 @@ def main() -> int:
     quality = read(root / "references" / "quality-gates.md")
     require(
         "quality gates include request anchor",
-        "## Request Anchor" in quality
-        and "latest user override" in quality
-        and "User-specific success criteria" in quality
+        "## Request Fit" in quality
+        and "latest override" in quality
+        and "success criteria" in quality
         and "Requirement drift" in quality,
         "quality-gates checks artifact against user-specific request",
     )
     require(
         "quality gates include content",
-        "## Content" in quality
-        and "CTAs state action plus result" in quality
+        "## Content And Hierarchy" in quality
+        and "CTAs" in quality
         and "Critical meaning is not carried only" in quality,
         "quality-gates includes mandatory content gate",
     )
     require(
         "quality gates include visual communication hierarchy",
-        "strongest visual element maps to the most important communication element" in quality
-        and "intended first focus, reading path, and action/decision endpoint" in quality
-        and "Critical, Important, Useful, and Optional information" in quality
-        and "risk, cost, consequence, or trust information" in quality,
+        "Message order follows the user's decision or task path" in quality
+        and "Primary, secondary, and tertiary information" in quality
+        and "size, weight, position, spacing, contrast, or rhythm" in quality,
         "quality-gates check communication priority, attention path, and action path",
     )
     require(
         "quality gates include layout typography composition",
-        "## Layout, Typography, And Composition" in quality
-        and "composition model, grid/type-area logic" in quality
-        and "Optical alignment" in quality
-        and "Chinese text follows one paragraph system" in quality
-        and "Mixed Chinese-English text checks" in quality
-        and "Swiss Style is used as grid-led clarity" in quality,
+        "## Typography" in quality
+        and "Mixed Chinese/English" in quality
+        and "optical-size need" in quality
+        and "foundations/layout-typography-composition.md" in principles,
         "quality-gates check grid, spacing, type hierarchy, CJK, mixed text, and Swiss method",
     )
     require(
         "quality gates include visual language style system",
-        "## Visual Language And Style System" in quality
-        and "speak the same concept" in quality
+        "## Necessary Taste" in quality
         and "owned visual feature" in quality
-        and "deletion test" in quality
-        and "Visual vocabulary roles" in quality
-        and "Anti-template check" in quality
-        and "Asset rights" in quality,
+        and "generic cards" in quality
+        and "category defaults" in quality
+        and "asset/font/image/icon rights" in quality,
         "quality-gates check visual-language coherence, anti-template specificity, and asset governance",
     )
     require(
         "quality gates include rendered UI audit",
-        "Rendered UI Audit" in quality
+        "## Rendered Integrity" in quality
+        and "Rendered UI Audit" in quality
         and "no active fail findings" in quality
-        and "horizontal overflow" in quality
-        and "visible interactive target size" in quality
         and "data-ud-allow" in quality,
         "quality-gates require non-visual browser-measured UI audit evidence",
     )
     require(
         "quality gates include taste engine",
-        "## Taste And Anti-Template" in quality
-        and "Taste Signature" in quality
-        and "light Taste Checkpoint" in quality
-        and "category default" in quality
-        and "taste dials" in quality
-        and "layout-family or slide-archetype audit" in quality
-        and "Cards are used because" in quality
-        and "what still looks AI-generated" in quality,
+        "## Necessary Taste" in quality
+        and "design read" in quality
+        and "type personality" in quality
+        and "layout-family budget" in quality
+        and "visual memory feature" in quality
+        and "category defaults" in quality,
         "quality-gates require dials, anti-defaults, layout-family audit, card justification, and AI-tell repair",
     )
     require(
         "quality gates include necessary judgment",
-        "## Necessary Judgment" in quality
-        and "Every prominent element has a task" in quality
-        and "Delete Test" in quality
-        and "Replace Test" in quality
-        and "Move Test" in quality
-        and "Justification Test" in quality
-        and "Material Honesty" in quality
-        and "Scene Fit" in quality
-        and "Apple-like restraint is never treated as a visual preset" in quality,
+        "## Necessary Taste" in quality
+        and "necessity, replacement, move, justification, care, material honesty, and scene-fit tests" in quality
+        and "Delight emerges from clarity, agency, craft, and coherence" in quality,
         "quality-gates check necessity, inevitability, craft tolerance, care, material honesty, scene fit, and non-imitation",
     )
     require(
         "quality gates include type personality",
-        "Font family choices map to type roles" in quality
-        and "Type either recedes for task clarity or stands forward for memory" in quality
-        and "Mixed Chinese-English typography checks optical size" in quality
-        and "WebFont delivery records WOFF2/fallback strategy" in quality,
+        "Expressive type is reserved" in quality
+        and "Mixed Chinese/English work checks optical size" in quality
+        and "WebFont loading" in quality
+        and "license status" in quality,
         "quality-gates check font voice, mixed-script fit, and webfont delivery risks",
     )
     require(
         "quality gates include motion language",
         "## Motion" in quality
-        and "Static communication works before motion" in quality
-        and "named purpose" in quality
-        and "Do-not-move zones" in quality
-        and "Reduced motion is useful" in quality
-        and "transform and opacity" in quality,
+        and "Static communication and operation work before animation" in quality
+        and "one primary purpose" in quality
+        and "frequency-appropriate motion budget" in quality
+        and "reduced-motion behavior" in quality
+        and "Transform/opacity" in quality,
         "quality-gates check motion purpose, budget, do-not-move zones, reduced motion, and performance",
     )
     require(
         "quality gates include motion contract",
-        "motion contract records motion ids" in quality
-        and "entry-play" in quality
-        and "view-entry" in quality
-        and "entry-or-view" in quality
-        and "display-window" in quality
-        and "timing band" in quality
-        and "duration/easing tokens" in quality
-        and "Scroll-linked motion maps user scroll progress" in quality
-        and "focus-complete" in quality
-        and "exit-complete" in quality
-        and "SVG line, border, path" in quality
-        and "Reveal choreography does not flash" in quality
-        and "Browser-sampled motion validation has passed" in quality,
+        "Gesture-driven motion starts from the live presentation state" in quality
+        and "Scroll remains user-controlled" in quality
+        and "scripts/validate_motion_contract.mjs" in quality
+        and "scroll-linked, SVG drawing, reveal no-flash, or reduced-motion claims" in quality,
         "quality-gates check executable motion contracts, display-window trigger choice, sampled SVG progress, focus-complete, exit guard, reveal flash, and validation evidence",
     )
     require(
         "quality gates include brand identity media production",
-        "## Brand Identity And Media Production" in quality
-        and "recognition anchors" in quality
-        and "core rules, application rules, production rules" in quality
-        and "Logo variants" in quality
-        and "Design tokens and assets map" in quality
-        and "Social delivery does not rely on stale memorized dimensions" in quality
-        and "Packaging delivery respects supplier dieline" in quality
-        and "Licensing and rights register" in quality
-        and "final production-ready work" in quality,
+        "## Production Integrity" in quality
+        and "platform, vendor, printer, supplier, legal, and license facts" in quality
+        and "asset/font/image/icon rights" in quality
+        and "branch-brand-system.md" in quality
+        and "graphic-print.md" in quality,
         "quality-gates check brand identity, media production, current-source caveats, and rights governance",
     )
     require(
         "quality gates include product sense",
-        "product problem" in quality
-        and "success signal" in quality
-        and "Tradeoffs and non-goals" in quality,
+        "branch-web-product.md" in quality
+        and "intended task" in quality
+        and "non-goals" in quality,
         "quality-gates checks product fit for product-oriented design",
     )
     require(
         "quality gates include presentation deck",
-        "## Presentation Deck" in quality
-        and "title-only reading tells the story" in quality
-        and "claim, evidence" in quality
-        and "PDF stability" in quality,
+        "branch-presentation.md" in quality
+        and "title story, claim/evidence/action, density, charts, master, accessibility, export" in quality
+        and "selected branch's Done Criteria" in quality,
         "quality-gates checks commercial deck narrative and delivery",
     )
 
@@ -910,6 +952,14 @@ def main() -> int:
         and "design-okf/production/graphic-print.md" in graphic_branch
         and "Blockers For Final Print-Ready Claims" in graphic_okf,
         "graphic branch avoids duplicating print-production caveats",
+    )
+    require(
+        "graphic branch routes palette creation without duplicating composition",
+        "design-okf/systems/color-system.md" in graphic_branch
+        and "creating or materially changing the palette" in graphic_branch
+        and "composition rules below own a conventional single-message poster" in graphic_branch
+        and "only when grouping" in graphic_branch,
+        "graphic work spends OKF budget on color when needed and loads Gestalt only for a real composition problem",
     )
     presentation_branch = read(root / "references" / "branch-presentation.md")
     require(
@@ -982,6 +1032,21 @@ def main() -> int:
         and "Type either recedes for utility or creates brand memory" in brand_branch,
         "graphic and brand work route typography art direction and font rights to type-personality",
     )
+    branch_docs = {
+        "web-product": web_branch,
+        "marketing-site": marketing_branch,
+        "presentation": presentation_branch,
+        "graphic-print": graphic_branch,
+        "brand-system": brand_branch,
+        "tokens-components": tokens_branch,
+        "audit-polish": audit,
+    }
+    missing_done = [name for name, text in branch_docs.items() if "## Done Criteria" not in text]
+    require(
+        "every execution branch owns Done Criteria",
+        not missing_done,
+        "all branches have local completion criteria" if not missing_done else ", ".join(missing_done),
+    )
 
     machine = read(okf_root / "governance" / "machine-verification-ci.md")
     require(
@@ -1019,6 +1084,16 @@ def main() -> int:
         and "Reduced-motion checks" in visual_verification,
         "visual-verification routes declared motion contracts to browser-sampled display-window and focus-complete checks",
     )
+    require(
+        "visual verification defines cmux Computer Use fallback",
+        "## Cmux + Computer Use Fallback" in visual_verification
+        and "ultimate-design.computer-use-visual-fallback.v1" in visual_verification
+        and "must not set `reportFresh`" in visual_verification
+        and "Restore the user's cmux workspace" in visual_verification
+        and "cmux + Computer Use fallback" in read(root / "references" / "pro-mode.md")
+        and "visible-browser fallback" in read(root / "references" / "proof-run-html.md"),
+        "browser-launch failures route to visible cmux evidence without impersonating machine proof",
+    )
     validator_path = root / "scripts" / "validate_design_contract.py"
     validator = read(validator_path)
     require(
@@ -1044,6 +1119,28 @@ def main() -> int:
         and "OKF Preflight field is empty" in validator,
         "local validator enforces OKF preflight in strict mode",
     )
+    okf_usage_validator_path = root / "scripts" / "validate_okf_usage.py"
+    okf_usage_validator = read(okf_usage_validator_path)
+    require(
+        "OKF usage validator exists",
+        okf_usage_validator_path.exists()
+        and "ultimate-design.okf-usage.v1" in okf_usage_validator
+        and "OKF Decision Bindings" in okf_usage_validator
+        and "Active OKF concept has no decision binding" in okf_usage_validator,
+        "local validator rejects active OKF concepts that do not bind to a decision, artifact target, and verification hook",
+    )
+    okf_graph_validator_path = root / "scripts" / "validate_okf_graph.py"
+    okf_graph_validator = read(okf_graph_validator_path)
+    require(
+        "OKF graph validator exists",
+        okf_graph_validator_path.exists()
+        and "ultimate-design.okf-graph.v1" in okf_graph_validator
+        and "missing_from_index" in okf_graph_validator
+        and "broken_links" in okf_graph_validator
+        and "direct_runtime_route_count" in okf_graph_validator
+        and "unexpected_index_only_concepts" in okf_graph_validator,
+        "the shipped bundle can prove index completeness, link integrity, metadata, and direct route reachability",
+    )
     motion_validator_path = root / "scripts" / "validate_motion_contract.mjs"
     motion_validator = read(motion_validator_path)
     html_validator_path = root / "scripts" / "validate_html_visual.mjs"
@@ -1055,12 +1152,23 @@ def main() -> int:
         "run_html_proof.mjs" in str(proof_runner_path)
         and "ultimate-design.html-proof.v1" in proof_runner
         and "validate_design_contract.py" in proof_runner
+        and "validate_okf_usage.py" in proof_runner
         and "validate_html_visual.mjs" in proof_runner
         and "validate_motion_contract.mjs" in proof_runner
         and "data-ud-motion" in proof_runner
+        and "reportFresh" in proof_runner
+        and "rmSync(visualOut" in proof_runner
+        and "rmSync(motionOut" in proof_runner
         and "html-proof-report.json" in proof_runner
         and "repair-brief.md" in proof_runner,
         "unified proof runner executes design, rendered UI, and motion validators for weak/headless agents",
+    )
+    require(
+        "HTML proof runner can require OKF usage evidence",
+        "--require-okf-usage" in proof_runner
+        and "OKF decision binding validation" in proof_runner
+        and "requireOkfUsage" in proof_runner,
+        "monitored proof runs can fail when routed knowledge is not bound to the artifact",
     )
     require(
         "rendered UI audit validator script exists",
@@ -1072,6 +1180,8 @@ def main() -> int:
         and "missing-accessible-name" in html_validator
         and "target-size" in html_validator
         and "data-ud-allow" in html_validator
+        and "pageMinSpacingPx" in html_validator
+        and "data-ud-min-gap" in html_validator
         and "allowance-expired" in html_validator,
         "local browser validator emits structured Rendered UI Audit findings",
     )
@@ -1085,8 +1195,10 @@ def main() -> int:
         and (fixture_root / "occlusion-allowed-warn.html").exists()
         and (fixture_root / "icon-button-missing-name-fail.html").exists()
         and (fixture_root / "small-target-fail.html").exists()
-        and (fixture_root / "decorative-overlay-pass.html").exists(),
-        "fixture suite covers pass, overflow, clipping, occlusion, allowed occlusion, a11y name, target size, and decorative overlay",
+        and (fixture_root / "decorative-overlay-pass.html").exists()
+        and (fixture_root / "page-related-zones-pass.html").exists()
+        and (fixture_root / "page-tight-spacing-fail.html").exists(),
+        "fixture suite covers pass, overflow, clipping, occlusion, allowed occlusion, a11y name, target size, decorative overlay, and page spacing calibration",
     )
     require(
         "motion validator script exists",

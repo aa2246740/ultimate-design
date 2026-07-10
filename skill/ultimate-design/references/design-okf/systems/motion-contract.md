@@ -41,8 +41,14 @@ Record these fields in `DESIGN.md` under `## Motion Strategy` or a dedicated `##
 - Motion id: stable name used by code, validation report, and notes.
 - User-facing promise: plain-language behavior the user asked for.
 - Purpose: feedback, continuity, hierarchy, navigation, storytelling, or brand.
+- Exposure: keyboard/high-frequency, repeated, occasional, or rare; state why the motion budget fits.
 - Implementation route: CSS transition, GSAP core, GSAP ScrollTrigger, framework adapter, or custom browser API.
 - Trigger model: entry-play, view-entry, entry-or-view, scroll, hover, focus, press, drag, route change, or explicit play.
+- Response point: pointer/touch down, continuous input, release, state commit, or system completion.
+- Input mapping: for direct manipulation, define pointer/touch position, grab offset, intent threshold, and output value.
+- Interruption model: live presentation value, retarget behavior, input lock policy, and reversal behavior.
+- Velocity and momentum: release-velocity handoff, projected endpoint, snap logic, or why none applies.
+- Boundary behavior: clamp, friction, rubber-band, overscroll, cancel zone, or why none applies.
 - Display-window: when the watched subject first becomes meaningfully visible and when it becomes fully framed or center-focused.
 - Timing band: expected duration range for non-scroll motion, chosen from the motion budget and context rather than one-off taste.
 - Duration and easing tokens: named values or ranges used by implementation, for example `entry-fast: 180-260ms power2.out`.
@@ -60,6 +66,7 @@ Record these fields in `DESIGN.md` under `## Motion Strategy` or a dedicated `##
 - No-flash rule: whether visible -> hidden -> visible or duplicate reveal is allowed. Default: not allowed.
 - Performance budget: properties allowed to animate and concurrency limits.
 - Validation command: script or manual evidence path required before delivery.
+- Device evidence: target browser/device or real-device gesture check when direct manipulation is consequential.
 
 # Implementation Routing
 
@@ -117,6 +124,21 @@ Choose the trigger from the watched visual subject, not from the page section by
 | Subject is initially visible on some breakpoints and below the fold on others | entry-or-view | Resolve per viewport: entry-play when initial visibility passes the entry threshold, otherwise view-entry. |
 | Drawing represents a route, sequence, timeline, or process where scroll progress carries meaning | scroll | Map scroll progress to drawing progress inside the display-window. |
 | Static export, reduced motion, or animation would add no meaning | static | Render complete and keep the visual still. |
+
+# Gesture Contract
+
+When `press`, `drag`, `swipe`, or another direct-manipulation trigger is active, record and verify:
+
+- Feedback begins at the declared response point and does not wait for an unrelated animation.
+- Pointer/touch movement maps continuously to the visual subject after the intent threshold.
+- The subject preserves the grab offset rather than snapping to its center.
+- Pointer capture or an equivalent mechanism keeps tracking stable outside the original bounds.
+- Interrupting the settling animation starts from the live rendered value without a jump.
+- Release velocity, momentum projection, snap points, and boundary resistance agree with the contract.
+- Cancel, reverse, undo, keyboard, and reduced-motion alternatives remain usable.
+- A real target device is used when simulator/browser evidence cannot represent gesture feel, latency, or haptics accurately.
+
+Do not require springs, momentum, or rubber-banding for every interaction. They are contract options for touchable physical behavior, not a style preset.
 
 # Scroll-Linked SVG Contract
 
@@ -186,6 +208,7 @@ Minimum evidence:
 - Reduced-motion result.
 - No-flash or duplicate-reveal result when requested.
 - Screenshots or traces when the validator supports them.
+- For gesture contracts, an input/state trace or recorded manual device result covering response, continuous tracking, interruption, release, boundary, and cancellation.
 
 # Done Check
 

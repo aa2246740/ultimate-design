@@ -14,7 +14,15 @@ Read only this short branch plus:
 - `quality-gates.md`
 - `design-okf/systems/motion-contract.md` only when animation is requested or claimed
 
-Record these exact paths in `DESIGN.md` under `## OKF Preflight`.
+Record task-facing OKF concepts in `DESIGN.md` under `## OKF Preflight` -> `### Active OKF Concepts`. Record `SKILL.md`, branch, workflow, contract, governance, index, and verification reads under `### Support References`; support reads are trace evidence, not active knowledge. For every active `design-okf/` concept, add one row under `## OKF Decision Bindings`:
+
+```md
+| Reference | Decision | Artifact target | Verification |
+|---|---|---|---|
+| `design-okf/systems/motion-contract.md` | Complete the route at first full-frame focus | `#scope-map path` | Motion audit focus-complete sample |
+```
+
+Remove a concept from Active OKF Concepts when it has no decision row. Branch, index, contract-governance, and final-verification files belong under Support References and do not need OKF binding rows unless they directly change the artifact.
 
 ## Execution Order
 
@@ -25,10 +33,14 @@ Record these exact paths in `DESIGN.md` under `## OKF Preflight`.
 5. Run the unified proof command:
 
 ```bash
-node <ultimate-design>/scripts/run_html_proof.mjs --html index.html --design DESIGN.md --out .ultimate-design/proof
+node <ultimate-design>/scripts/run_html_proof.mjs --html index.html --design DESIGN.md --out .ultimate-design/proof --require-okf-usage
 ```
 
 6. If the command fails, read `.ultimate-design/proof/repair-brief.md` first, then `.ultimate-design/proof/html-proof-report.json` only if more detail is needed. Repair the failing layer and rerun once before final response. A proof run that cannot pass must report `failed` and link the report path.
+
+The unified runner clears its generated `rendered-ui-audit/` and `motion-audit/` subdirectories before each run. Treat a validator report as evidence only when the proof step records `reportFresh: true`; a subprocess failure that produces no current report must never inherit findings or screenshots from an earlier run.
+
+If the failing layer is browser launch rather than an artifact finding, and cmux plus Computer Use are available, run the visible-browser fallback in `visual-verification.md`. Save that evidence beside the proof output, but keep the Rendered UI Audit step failed or blocked until a fresh machine report exists.
 
 ## Motion Choice
 
@@ -116,7 +128,7 @@ Reduced motion must leave SVG drawing visible and complete: set `strokeDashoffse
 The run is done only when:
 
 - `index.html` exists.
-- `DESIGN.md` has `## Request Anchor` and `## OKF Preflight`.
+- `DESIGN.md` has `## Request Anchor`, `## OKF Preflight`, and a complete `## OKF Decision Bindings` table for every active OKF concept.
 - `run_html_proof.mjs` exits `0`, or the final response clearly says the proof run failed.
 - The proof report path is recorded.
 - If the proof failed, `.ultimate-design/proof/repair-brief.md` was read before deciding whether to repair or report failure.

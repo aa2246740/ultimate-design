@@ -4,11 +4,15 @@ Use this branch for posters, social graphics, banners, brochures, packaging, bus
 
 Read `design-okf/production/graphic-print.md` when physical production, print readiness, export specs, asset rights, generated imagery rights, or likeness rights matter. That OKF concept is the source of truth for print caveats and final print-ready blockers.
 
+Read `design-okf/systems/color-system.md` when creating or materially changing the palette, translating one palette across print and screen, assigning semantic or campaign color roles, or checking contrast and category-default color choices.
+
 Read `design-okf/systems/brand-identity-media-production.md` when the graphic is part of a brand kit, VI manual, logo system, reusable social/deck/packaging template, asset library, or cross-media delivery package.
 
 Read `design-okf/systems/taste-engine.md` when the graphic needs a distinctive key visual, campaign taste, social-series variety, anti-template critique, visual asset strategy, or when it risks becoming typography plus generic cards.
 
 Read `design-okf/systems/type-personality.md` when typography is a primary visual element, when designing posters, social covers, packaging, editorial graphics, or brand collateral, or when font rights, print embedding/outlining, or CJK/Latin pairing affects delivery.
+
+The composition rules below own a conventional single-message poster or social graphic. Read `design-okf/foundations/gestalt-composition.md` only when grouping, focal path, alignment, figure/ground, multi-focal structure, or rhythm remains unclear, or when repairing a composition that failed review. Read `design-okf/production/data-viz-i18n-legal.md` when the graphic carries data, localization, RTL, claims, citations, or legal/licensing risk.
 
 ## Subsurface Routing
 
@@ -51,15 +55,6 @@ Ask when print production or rights are involved and missing details would inval
 - Do not emphasize one element with size, saturation, bold, shadow, and motion all at once.
 - For multi-frame social or poster series, vary composition by message role while preserving a recognizable system rule.
 
-## Gestalt Checks
-
-- Proximity: related items sit together.
-- Similarity: same role means same treatment.
-- Figure/ground: foreground and background separate clearly.
-- Continuity: the eye can follow the intended path.
-- Closure: simplified marks remain recognizable.
-- Common fate: elements moving or changing together mean they are related.
-
 ## Brand And Assets
 
 - Never stretch, outline, recolor, shadow, or distort a logo unless the brand system explicitly allows it.
@@ -80,3 +75,7 @@ Ask when print production or rights are involved and missing details would inval
 ## Print Preflight
 
 Before claiming print-ready output, apply `design-okf/production/graphic-print.md` and confirm the vendor-specific production details it lists. If those details are unknown, deliver a design draft and a preflight checklist, not a final print-ready claim.
+
+## Done Criteria
+
+A graphic is ready when size/aspect ratio, viewing distance, focal hierarchy, copy, crop/safe area, series consistency, type and asset treatment, export format, and rights are verified for its medium. Physical output is print-ready only when vendor-specific trim, bleed, color, resolution, font, proofing, material, and finishing requirements are confirmed; otherwise deliver a clearly labeled design draft with preflight risks.

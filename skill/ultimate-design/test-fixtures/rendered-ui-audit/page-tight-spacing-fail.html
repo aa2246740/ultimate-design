@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendered UI Audit Page Tight Spacing Fail</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    main { width: min(720px, calc(100vw - 48px)); margin: 64px auto; }
+    h1 { margin: 0; font-size: 40px; line-height: 1.1; }
+    p { margin: 4px 0 0; font-size: 18px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 data-ud-check="hero-title">Crowded title</h1>
+    <p data-ud-check="hero-lead">This four-pixel gap should fail the calibrated page threshold.</p>
+  </main>
+</body>
+</html>

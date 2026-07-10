@@ -122,6 +122,13 @@
       font-weight: 800;
     }
 
+    .nav-links a {
+      display: inline-flex;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+    }
+
     .header-actions {
       display: flex;
       justify-content: end;
@@ -134,11 +141,12 @@
       grid-template-columns: 1fr 1fr;
       border: 1px solid var(--ink);
       background: var(--paper);
-      min-height: 42px;
+      min-height: 44px;
     }
 
     .lang-switch button {
       min-width: 48px;
+      min-height: 44px;
       border: 0;
       border-right: 1px solid var(--ink);
       background: transparent;
@@ -362,6 +370,7 @@
       right: 0;
       bottom: 18px;
       width: 64%;
+      margin: 0;
       aspect-ratio: 1.07;
       border: 2px solid var(--ink);
       background: var(--ink);
@@ -736,11 +745,11 @@
     }
 
     .copy-button {
-      min-height: 34px;
+      min-height: 44px;
       border: 1px solid rgba(244, 239, 228, 0.3);
       color: var(--paper);
       background: transparent;
-      padding: 6px 10px;
+      padding: 10px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 800;
@@ -935,6 +944,14 @@
         transform: none;
       }
 
+      .contract-sheet::before {
+        inset: 8px 0 -8px 8px;
+      }
+
+      .contract-sheet::after {
+        inset: 16px 0 -16px 16px;
+      }
+
       .image-board {
         position: relative;
         width: 100%;
@@ -1120,7 +1137,7 @@
         </article>
         <article class="system-lane">
           <span class="lane-index">02</span>
-          <div><h3 data-i18n="systems.2.title">知识</h3><p data-i18n="systems.2.text">网页、产品、PPT、平面、品牌和内容策略，按任务分支读取。</p></div>
+          <div><h3 data-i18n="systems.2.title">知识</h3><p data-i18n="systems.2.text">网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。</p></div>
         </article>
         <article class="system-lane">
           <span class="lane-index">03</span>
@@ -1280,7 +1297,7 @@
         "systems.1.title": "合同",
         "systems.1.text": "记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。",
         "systems.2.title": "知识",
-        "systems.2.text": "网页、产品、PPT、平面、品牌和内容策略，按任务分支读取。",
+        "systems.2.text": "网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。",
         "systems.3.title": "品味判断",
         "systems.3.text": "用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。",
         "systems.4.title": "验证",
@@ -1385,7 +1402,7 @@
         "systems.1.title": "Contract",
         "systems.1.text": "Record the user ask, content model, visual system, component rules, assumptions, and risks.",
         "systems.2.title": "Knowledge",
-        "systems.2.text": "Load only the branch needed for websites, products, decks, graphics, brands, or content.",
+        "systems.2.text": "Load only the branch needed for websites, products, decks, graphics, brands, or content, then bind it to concrete decisions and checks.",
         "systems.3.title": "Taste Judgment",
         "systems.3.text": "Use taste dials, necessary judgment, anti-default locks, and layout-family checks to resist AI sameness.",
         "systems.4.title": "Verification",

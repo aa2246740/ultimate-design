@@ -10,7 +10,7 @@ Start here:
 
 - `design-okf/index.md` for the bundle map.
 - `design-okf/methods/senior-design-process.md` when creating a new `DESIGN.md` or design direction from scratch.
-- `design-okf/methods/product-sense.md` when the artifact is a product UI, feature flow, dashboard, onboarding, pricing page, AI product UX, PRD/MVP/prototype, growth or validation landing page, or when product problem, user outcome, metrics, or prioritization shape the design.
+- `design-okf/methods/product-sense.md` only when product problem, user outcome, success signal, scope, prioritization, business/user tradeoff, or validation remains unresolved enough to change the design. Product UI alone is not a trigger.
 - `design-okf/production/presentation-deck.md` when designing or auditing PPT/PowerPoint/Google Slides/Keynote decks, executive or board presentations, pitch decks, training decks, or slide templates.
 - `design-okf/governance/request-integrity.md` when the task is long, content-heavy, multi-file, likely to exceed short-term attention, or when final validation must prove the artifact still answers the user's original request.
 - `design-okf/governance/research-digestion-llm-wiki.md` when absorbing deep research, building a wiki-like synthesis layer, auditing coverage, or promoting raw knowledge into OKF. Do not load it during ordinary design execution.
@@ -24,6 +24,15 @@ Start here:
 - `design-okf/foundations/necessary-design-judgment.md` when the user asks for design philosophy, taste, Apple/Jony Ive/Rams/Hara-style judgment, or senior critique, and when a visible artifact feels styled-but-not-inevitable, fake-minimal, overdecorated, template-like, or surface-premium. Use it to test necessity, inevitability, craft tolerance, care, material honesty, and scene fit before styling hardens.
 - `design-okf/systems/motion-language.md` when the artifact includes meaningful animation, microinteractions, page transitions, scroll storytelling, animated HTML decks, or a motion-depth taste dial above static.
 - `design-okf/systems/motion-contract.md` when animation is a requested feature or delivery claim, especially SVG line/border drawing, scroll-linked or scrubbed animation, reveal choreography, GSAP/ScrollTrigger work, or motion validation requirements.
-- `design-okf/systems/type-personality.md` when font choice is part of the art direction, when type carries visual memory, when changing font families, when Chinese/English mixed typography matters, or when WebFont size, fallback, font rights, deck portability, or CJK coverage can affect delivery.
+- `design-okf/systems/type-personality.md` when font choice or Chinese/English family pairing is part of the art direction, type carries visual memory, families are changing, or WebFont size, fallback, font rights, deck portability, or CJK coverage can affect delivery. Mixed-script layout mechanics alone route to `typography-system.md`.
 - `design-okf/foundations/information-architecture.md` before designing any page, screen, or graphic.
+- `design-okf/foundations/gestalt-composition.md` when grouping, focal path, alignment, figure/ground, or composition feels unclear.
+- `design-okf/foundations/visual-hierarchy.md` when primary, secondary, and tertiary emphasis cannot be identified at a glance.
+- `design-okf/systems/color-system.md` when creating or materially changing palette roles, themes, semantic color, or chart color.
+- `design-okf/systems/typography-system.md` when type scale, line length, line height, overflow, optical sizing, or user text scaling needs explicit rules.
+- `design-okf/digital/accessibility-usability.md` for interactive digital surfaces, forms, keyboard/focus work, accessibility review, or consequential states.
+- `design-okf/digital/responsive-interaction.md` for multi-device layout, tables, sticky/fixed UI, gestures, or adaptive interaction states.
+- `design-okf/production/data-viz-i18n-legal.md` when data, localization, RTL, claims, citations, or legal/licensing risk affects the artifact.
+- `design-okf/governance/design-to-code-governance.md` when a design system must survive implementation, Storybook, regression tests, or CI.
+- `design-okf/governance/machine-verification-ci.md` when contract/token checks or automated release gates are part of delivery.
 - `design-okf/governance/senior-proxy-checklist.md` before claiming professional quality.

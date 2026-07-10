@@ -8,6 +8,14 @@ Ultimate Design is an Agent Skill for Codex, Claude Code, Pi Agent, and other Ag
 
 It is not a template pack, a style preset, or a wrapper around another design skill. The skill carries its own contract loop, content model, Taste Checkpoint, OKF references, quality gates, and validators.
 
+## What's New In 0.4
+
+- Decision-bound OKF: active concepts must change a concrete decision, artifact target, and verification hook; graph and usage validators catch orphaned or decorative knowledge.
+- Pro mode hardening: `--pro` freezes a compact decision snapshot, creates the visible artifact early, and requires critique, repair, verification, and governance before delivery.
+- Stronger Rendered UI Audit: calibrated semantic-zone spacing, related-zone handling, visibility and occlusion sampling, stale-report rejection, and stricter proof freshness.
+- Purpose-led motion proof: display-window timing, scroll-linked completion, reveal behavior, and reduced-motion claims are tied to the same selectors used by the artifact.
+- Portable browser policy: automated visual checks use one explicitly provisioned pinned runtime; cmux plus Computer Use remains a separately reported visible-browser fallback when machine proof is blocked.
+
 ## What's New In 0.3
 
 - Proof Run Gate: compact HTML proof branch for Pi, weak/local/headless models, CLI evals, and debug runs.
@@ -137,6 +145,12 @@ Run the static flow proof:
 python3 skill/ultimate-design/scripts/flow_check.py skill/ultimate-design
 ```
 
+Check that every OKF concept is indexed, linked, and reachable from an execution route:
+
+```bash
+npm run okf-graph-check
+```
+
 Verify cross-agent installation entrypoints:
 
 ```bash
@@ -147,7 +161,10 @@ Validate a generated `DESIGN.md` contract:
 
 ```bash
 python3 skill/ultimate-design/scripts/validate_design_contract.py path/to/DESIGN.md --strict-ultimate
+python3 skill/ultimate-design/scripts/validate_okf_usage.py path/to/DESIGN.md
 ```
+
+The second command rejects an active OKF concept unless the contract binds it to a concrete decision, artifact target, and verification hook.
 
 Validate screenshotable HTML artifacts:
 
@@ -159,7 +176,18 @@ node skill/ultimate-design/scripts/validate_html_visual.mjs \
   --spacing 36
 ```
 
-The visual validator uses Playwright when available. Set `PLAYWRIGHT_MODULE` or install `playwright` in the project if your runtime does not provide it.
+Browser-backed validators require a separately provisioned pinned runtime: Playwright `1.61.1` with Chromium Headless Shell revision `1228`. They resolve `ULTIMATE_DESIGN_PLAYWRIGHT_RUNTIME`, then `CODEX_PLAYWRIGHT_RUNTIME`, then `~/.codex/playwright-runtime`. The selected directory must expose `runtime.mjs` with `pinnedRuntime` metadata and `launchPinnedChromium()`.
+
+The validators never install a browser, create a project-local Playwright copy, or fall back to system Chrome. A missing or mismatched runtime blocks machine proof. When cmux plus Computer Use is available, the visible-browser fallback may be recorded separately, but it never becomes a fresh machine-audit pass.
+
+For monitored HTML proof runs, use the coupled gate so the artifact, contract, OKF usage, rendered layout, and applicable motion evidence fail together:
+
+```bash
+node skill/ultimate-design/scripts/run_html_proof.mjs \
+  --html path/to/artifact.html \
+  --design path/to/DESIGN.md \
+  --require-okf-usage
+```
 
 ## License
 

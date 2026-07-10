@@ -61,7 +61,7 @@
 四个系统：
 
 - 合同：记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。
-- 知识：网页、产品、PPT、平面、品牌和内容策略，按任务分支读取。
+- 知识：网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。
 - 品味判断：用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。
 - 验证：用真实截图、语义区检查、遮挡采样、动效证据和二次自评，把低级问题拦在交付前。
 
@@ -111,7 +111,7 @@ Core sections:
 - Why it exists: AI design fails less from lack of drawing skill, and more from lack of process.
 - What it is: It is not a template library. It is a design production line.
 - Workflow: Anchor, Content, Contract, Direction, Optional References, Build, Critique and Repair, Verify and Govern.
-- New in 0.2: Necessary Design Judgment, stronger type personality, purpose-led motion, and stricter rendered verification.
+- New in 0.4: decision-bound OKF, hardened Pro mode, calibrated semantic-zone checks, proof freshness, and purpose-led motion evidence.
 - Capabilities: Marketing Sites, Product UI, PPT / Deck, Graphics / Social, Brand Systems, Audit / Polish.
 - Proof: DESIGN.md, Reference Assets, Rendered Screenshots, Visual Validation, Review Log.
 

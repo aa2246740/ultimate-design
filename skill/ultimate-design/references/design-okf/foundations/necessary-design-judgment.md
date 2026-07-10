@@ -25,6 +25,21 @@ necessity
 
 Taste can create memory, but necessary design creates trust. A strong design should feel like it could not be much else without becoming less clear, less humane, less truthful, or less useful.
 
+# Human Value Lens
+
+Use these eight questions as a cross-check, not an Apple visual preset:
+
+- **Purpose:** Is this worth the user's time, attention, and trust? What was deliberately left out?
+- **Agency:** Can the user understand, choose, cancel, reverse, undo, or recover in proportion to the consequence?
+- **Responsibility:** Does the design protect privacy, safety, truth, and vulnerable users instead of optimizing only for conversion or spectacle?
+- **Familiarity:** Does it build on useful conventions and real-world mappings? When it breaks one, is the improvement tested rather than assumed?
+- **Flexibility:** Does it adapt to device, language, ability, expertise, and context without forcing one brittle path?
+- **Simplicity:** Is the common path clear without confusing minimal appearance with actual ease of use?
+- **Craft:** Are spacing, type, alignment, motion, states, and edge cases deliberate enough to earn trust over repeated use?
+- **Delight:** Does the intended feeling emerge from the other seven qualities rather than from decorative confetti or novelty?
+
+Record only the questions that change the artifact. If the lens produces no decision, do not preserve it as ceremonial rationale.
+
 # Trigger
 
 Load this concept when:
@@ -100,6 +115,7 @@ When this lens materially shapes durable work, record a compact Necessary Judgme
 
 - Dieter Rams and Vitsœ principles are stable high-confidence source material for restraint, usefulness, honesty, and thoroughness.
 - Apple HIG and style guidance are official but current platform details should be verified from current official sources when building platform UI.
+- Apple's official *Principles of great design* framework is high-confidence source material for purpose, agency, responsibility, familiarity, flexibility, simplicity, craft, and delight. Use it as human-value judgment, not trade-dress guidance.
 - Jony Ive influence, Apple product case studies, and Hara-style readings are useful source notes, but many public accounts are interpretive. Treat them as judgment vocabulary, not binding facts.
 - Avoid brand imitation and protected trade dress. This concept teaches decision quality, not Apple appearance.
 

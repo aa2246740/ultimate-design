@@ -11,6 +11,33 @@ There are two kinds of evidence:
 
 Neither kind proves that the design is excellent. Visual quality still depends on rendered output, accessibility checks, tests, stakeholder review, and user feedback.
 
+## OKF Utilization Funnel
+
+Do not report a concept as "used" merely because it appears in the index or was read. Measure these states separately:
+
+```text
+indexed -> routed -> read -> decision-bound -> artifact-bound -> verified -> lifted
+```
+
+- **Indexed:** the concept has one canonical OKF file and appears in `design-okf/index.md`.
+- **Routed:** a branch, router, or explicit task condition can reach it.
+- **Read:** the runtime trace proves the file was opened.
+- **Decision-bound:** the preflight names a concrete decision changed by the concept.
+- **Artifact-bound:** the decision points to a page, component, slide, asset, token, copy block, or interaction.
+- **Verified:** rendered evidence, tests, contract checks, or review evidence checked that target.
+- **Lifted:** a baseline or ablation comparison shows the concept improved the outcome.
+
+Ordinary design runs need only compact decision bindings in the contract. Development evals should also record routing precision/recall, decision-binding rate, verification-binding rate, orphan concepts, time/tokens, and baseline or ablation lift.
+
+Validate graph reachability and a monitored contract with:
+
+```bash
+python3 scripts/validate_okf_graph.py
+python3 scripts/validate_okf_usage.py DESIGN.md
+```
+
+The graph validator checks index completeness, local links, metadata, and direct runtime routes. The usage validator requires every active `design-okf/` concept in `## OKF Preflight` to have a non-empty row in `## OKF Decision Bindings` with `Reference | Decision | Artifact target | Verification`.
+
 ## Static Flow Proof
 
 Run the bundled checker from the skill root or pass the skill path explicitly:
@@ -61,6 +88,7 @@ Each phase records status and evidence:
 | Request Anchor | pending/pass/blocked/not-run | original request, latest override, deliverable, core job, success criteria, non-goals, must-preserve, validation checks | |
 | Contract | pending/pass/blocked/not-run | DESIGN.md created/updated or reason skipped | |
 | OKF | pending/pass/blocked/not-run | concepts loaded from design-okf | |
+| OKF bindings | pending/pass/blocked/not-run | concept-to-decision-to-artifact-to-verification rows and validator result | |
 | Branch | pending/pass/blocked/not-run | branch reference loaded | |
 | Direction | pending/pass/blocked/not-run | chosen strategy | |
 | Artifact | pending/pass/blocked/not-run | files/assets/specs created | |
@@ -127,6 +155,8 @@ Do not claim professional quality in any mode if:
 For actual skill validation, use realistic tasks and compare outputs:
 
 - With-skill output versus baseline output.
+- Workflow-only output versus full OKF output when measuring OKF lift.
+- Full output versus a concept ablation when measuring one OKF concept's contribution.
 - Human review of visual output.
 - Checks for DESIGN.md quality, phase trace completeness, critique/repair evidence, responsive/a11y notes, and final artifact quality.
 

@@ -46,6 +46,7 @@ Use this concept to audit whether the research packet is represented in the skil
 | Style versus decoration and anti-template aesthetics | `systems/visual-language-style-system.md`, `audit-polish.md`, `quality-gates.md` | Covered |
 | Taste Skill operational mechanisms: design read, dials, anti-defaults, layout-family audit, asset credibility, and taste critique | `systems/taste-engine.md`, `quality-gates.md`, `audit-polish.md`, branch references | Covered as adapted runtime OKF, not copied template content |
 | Apple / Jony Ive / Rams / Hara design judgment philosophy | `foundations/necessary-design-judgment.md`, `systems/taste-engine.md`, `audit-polish.md`, `quality-gates.md` | Covered as necessary judgment lens, not an Apple visual preset |
+| Apple human-value principles: purpose, agency, responsibility, familiarity, flexibility, simplicity, craft, and delight | `foundations/necessary-design-judgment.md`, `quality-gates.md` | Covered as a cross-check that must change a decision, not a visual preset |
 | Necessity, inevitability, delete/replace/move/justification tests | `foundations/necessary-design-judgment.md`, `quality-gates.md` | Covered as operational critique tests |
 | Care, craft tolerance, material honesty, hidden complexity, and emotional precision | `foundations/necessary-design-judgment.md`, `quality-gates.md`, `audit-polish.md` | Covered as polish and final validation criteria |
 | Apple visual-surface caveat, brand imitation risk, and source-confidence boundary | `foundations/necessary-design-judgment.md` | Covered with explicit non-imitation and current-source caveats |
@@ -76,6 +77,8 @@ Use this concept to audit whether the research packet is represented in the skil
 | Usability heuristics | `digital/accessibility-usability.md` | Covered |
 | Responsive design | `digital/responsive-interaction.md` | Covered |
 | Web motion and animation design: purpose, choreography, microinteraction, scroll, accessibility, and performance | `systems/motion-language.md`, `digital/responsive-interaction.md`, `quality-gates.md`, branch references | Covered as conditional motion OKF, not a default style layer |
+| Fluid interaction: immediate response, direct manipulation, live-state interruption, velocity handoff, momentum, spatial consistency, gesture thresholds, and soft boundaries | `systems/motion-language.md`, `systems/motion-contract.md`, `digital/responsive-interaction.md`, `branch-web-product.md` | Covered conditionally for gesture-driven UI; platform equations remain examples |
+| Optical sizing, variable-font behavior, size-specific tracking/leading, and user text scaling | `systems/typography-system.md`, `systems/type-personality.md`, `quality-gates.md` | Covered with real-content and mixed-script proof requirements |
 | Motion contract, GSAP routing, display-window SVG drawing, focus-complete timing, reveal no-flash behavior, and browser-sampled motion validation | `systems/motion-contract.md`, `design-contract.md`, `visual-verification.md`, `quality-gates.md`, `scripts/validate_motion_contract.mjs` | Covered as executable motion contract and validation path |
 | WCAG/accessibility | `digital/accessibility-usability.md`, `quality-gates.md` | Covered |
 | Token hierarchy | `systems/tokens-components.md`, `tokens-components.md` | Covered |

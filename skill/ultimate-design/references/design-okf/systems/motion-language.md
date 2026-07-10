@@ -23,8 +23,39 @@ Before adding motion, name:
 
 - What changes.
 - Why the user needs to notice it.
+- How often the same user will encounter it.
 - Where the motion starts and ends.
 - Whether the user can ignore, interrupt, or reduce it.
+
+# Exposure And Response
+
+Frequency changes the motion budget. Repeated actions accumulate delay and irritation even when one animation looks polished:
+
+| Exposure | Posture |
+|---|---|
+| Keyboard-driven or hundreds of times per day | Immediate state change or near-static feedback |
+| Tens of times per day | Short micro feedback; remove ornamental entrances |
+| Occasional modal, drawer, toast, or workflow change | Standard continuity or state motion |
+| Rare onboarding, launch, celebration, or explanatory moment | More expressive motion may earn attention |
+
+Treat these as exposure bands, not fixed counts. The question is whether repeated viewing makes the interface feel slower or less direct.
+
+Response begins when input begins. Press, drag, slider, and sheet interactions should acknowledge pointer/touch down and update continuously when that improves direct manipulation. Do not delay visible acknowledgement until the final click or gesture release.
+
+# Fluid Interaction
+
+For gesture-driven or directly manipulated UI, preserve physical continuity:
+
+- Track input 1:1 and preserve the offset where the user grabbed the object.
+- Start interruption from the live presentation state, not a stale logical target.
+- Keep input available while an animation settles; the user can reverse or retarget it.
+- Hand off release velocity when a drag becomes a spring or momentum animation.
+- Project momentum before choosing a snap point when the gesture represents a flick or throw.
+- Use a small intent threshold before committing to a drag direction, then track continuously.
+- At boundaries, progressive resistance or rubber-banding may feel more responsive than a hard stop when the platform and task support it.
+- Enter and exit along spatially consistent paths; origin-aware surfaces emerge from the control or object that caused them.
+
+These rules apply to touchable, interruptible objects. Predetermined explanatory animation, static graphics, and high-risk workflows do not need simulated physics.
 
 # When To Use Motion
 
@@ -136,12 +167,12 @@ Repeated work needs shorter durations. Brand or story moments can be longer only
 # Easing Grammar
 
 - Ease-out: entry, reveal, object arriving at rest.
-- Ease-in: exit, dismissal, object leaving attention.
+- Ease-in: sometimes useful for an object accelerating away, but avoid it when the slow start delays system response.
 - Ease-in-out: large movement, route transitions, spatial continuity.
 - Linear: progress indicators, looping rotation, time-based media.
 - Spring: playful microinteractions, drag release, consumer/social personality. Use sparingly and avoid for finance, medical, legal, enterprise risk, and dense tools.
 
-Use a small set of named motion tokens. Do not invent one-off curves for every section.
+Use a small set of named motion tokens. Choose curves from response, spatial path, interruption, and brand posture rather than treating one easing as universally correct.
 
 # Scene Presets
 
@@ -197,6 +228,7 @@ Motion should make the state legible; copy still explains consequence and recove
 - Reserve media dimensions to avoid layout shift.
 - Pause offscreen or hidden loops.
 - Do not stack video, particles, parallax, blur, and scroll effects without a measured performance reason.
+- CSS, WAAPI, and JavaScript can all miss frames when they animate layout or paint. Prefer compositor-friendly properties, then verify under realistic page load and input rather than assuming an API is automatically off the main thread.
 
 # Contract Fields
 
@@ -240,4 +272,4 @@ This concept is applied when another agent can answer:
 
 # Source Notes
 
-This concept distills the provided motion-design research into runtime OKF and cross-checks it against current official accessibility and web-performance references: WCAG 2.2.2 Pause, Stop, Hide; WCAG 2.3.1 Three Flashes or Below Threshold; WCAG 2.3.3 Animation from Interactions; MDN `prefers-reduced-motion`; and web.dev animation performance guidance. It is an operating model, not a template.
+This concept distills the provided motion-design research and selected interaction principles from Apple's official *Designing Fluid Interfaces* material: immediate response, direct manipulation, interruptibility, velocity continuity, momentum, spatial consistency, and soft boundaries. It cross-checks those principles against WCAG 2.2.2 Pause, Stop, Hide; WCAG 2.3.1 Three Flashes or Below Threshold; WCAG 2.3.3 Animation from Interactions; MDN `prefers-reduced-motion`; and web.dev animation-performance guidance. Platform-specific equations and material effects remain examples, not universal web defaults.

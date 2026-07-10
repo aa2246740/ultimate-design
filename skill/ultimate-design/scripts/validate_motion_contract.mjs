@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { launchPinnedChromium } from "./pinned_playwright.mjs";
 
 function parseArgs(argv) {
   const args = {
@@ -55,81 +55,6 @@ function parseSamples(value) {
     .map((n) => Math.max(0, Math.min(1, n)));
 }
 
-async function loadPlaywright() {
-  const runtimePlaywright = path.resolve(
-    path.dirname(process.execPath),
-    "..",
-    "node_modules",
-    "playwright",
-    "index.mjs",
-  );
-  const nodePathPlaywright = String(process.env.NODE_PATH || "")
-    .split(path.delimiter)
-    .filter(Boolean)
-    .map((entry) => path.resolve(entry, "playwright", "index.mjs"));
-  const codexRuntimePlaywright = [];
-  const codexRuntimeRoot = path.resolve(homedir(), ".cache", "codex-runtimes");
-  const primaryRuntimePlaywright = path.resolve(
-    codexRuntimeRoot,
-    "codex-primary-runtime",
-    "dependencies",
-    "node",
-    "node_modules",
-    "playwright",
-    "index.mjs",
-  );
-  codexRuntimePlaywright.push(primaryRuntimePlaywright);
-  try {
-    for (const name of readdirSync(codexRuntimeRoot)) {
-      const candidate = path.resolve(
-        codexRuntimeRoot,
-        name,
-        "dependencies",
-        "node",
-        "node_modules",
-        "playwright",
-        "index.mjs",
-      );
-      if (existsSync(candidate)) codexRuntimePlaywright.push(candidate);
-    }
-  } catch {
-    // Codex runtime dependencies are optional outside Codex Desktop/CLI.
-  }
-  const candidates = [
-    process.env.PLAYWRIGHT_MODULE,
-    "playwright",
-    path.resolve(process.cwd(), "node_modules", "playwright", "index.mjs"),
-    runtimePlaywright,
-    ...nodePathPlaywright,
-    ...codexRuntimePlaywright,
-  ].filter(Boolean);
-  const errors = [];
-  for (const candidate of candidates) {
-    try {
-      return await import(candidate);
-    } catch (error) {
-      errors.push(`${candidate}: ${error.message}`);
-    }
-  }
-  throw new Error(`Could not import Playwright. Tried:\n${errors.join("\n")}`);
-}
-
-async function launchChromium(chromium, browserPath) {
-  const candidates = [
-    browserPath,
-    process.env.CHROME_PATH,
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  ].filter(Boolean);
-  for (const executablePath of candidates) {
-    try {
-      return await chromium.launch({ headless: true, executablePath });
-    } catch {
-      // Try the next local browser path.
-    }
-  }
-  return chromium.launch({ headless: true });
-}
-
 const args = parseArgs(process.argv.slice(2));
 if (!args.input) {
   console.error(
@@ -157,8 +82,7 @@ const hardTimeoutMs = Number(args.hardTimeout || args["hard-timeout"] || 90000);
 
 mkdirSync(screenshotsDir, { recursive: true });
 
-const { chromium } = await loadPlaywright();
-const browser = await launchChromium(chromium, args.browserPath);
+const browser = await launchPinnedChromium(args.browserPath || args["browser-path"]);
 
 const report = {
   inputPath,
