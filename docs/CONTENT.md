@@ -1,125 +1,123 @@
-# Ultimate Design 官网内容定稿
+# Ultimate Design 官网内容
 
-## 内容目标
+## 这页要完成什么
 
-这是一版从中文出发的官网首页，不再使用英译中的表达。中文页面先把话说顺、说具体；英文页面不是逐字翻译，而是面向英文读者的平行表达。
+让第一次见到 Ultimate Design 的人，在一两分钟内知道三件事：
 
-页面要让第一次接触 Ultimate Design 的人明白：
+1. 它不只生成一个看起来完整的页面；它把需求、内容、设计判断和复核过程留下来。
+2. 用户不需要先准备 `DESIGN.md`；Agent 会从已有材料和上下文做出第一版。
+3. 默认可以直接做；想共同决定关键选择时，再使用 `--pro`。
 
-1. 它不是模板库，也不是“做高级点”的提示词。
-2. 它是一套面向 AI Agent 的设计工作流。
-3. 它是自洽的 skill：不依赖旧工具链，也不要求外部设计 skill 才能工作。
-4. 它用 DESIGN.md 把需求、内容、方向、质量门和复盘记录下来。
-5. 它能做网页、PPT、产品 UI、平面、品牌和审查打磨。
-6. 它会先 critique and repair，再用真实截图验证。
-7. 参考图是可选输入：有就吸收，没有也继续，不默认生成。
+不把它写成“万能设计师”或“高级提示词”。不拿其他 skill 当陪衬。不承诺不可验证的设计水平。
 
-## 中文主线
+## 叙事顺序
 
 ### 第一屏
 
 品牌：Ultimate Design
 
-主张：让 AI 设计从生成，升级成交付。
+主张：把设计做出来，也把判断留下来。
 
-说明：它不是模板包，也不是一句“高级一点”，更不是依赖旧工具链的拼装器。它把模糊需求变成 DESIGN.md 合同、内容结构、设计方向、真实产物、批判修复和渲染验证。
+说明：收到一段模糊需求时，先把目标和内容理顺；页面做完后，再看真实结果，修掉跑题、错位和含糊的表达。最后留下下一位 Agent 能接着用的记录。
 
-按钮：
+动作：
 
-- 看完整流程
-- 复制官网 Prompt
+- 看它怎么工作
+- 复制起步 Prompt
 
-模式提示：
+模式：
 
-- YOLO mode：默认少打扰，先交付一版完整结果。
-- --pro mode：需要精细把关时，先把关键选择谈清楚。
+- 默认：先做出一版完整结果。
+- `--pro`：关键选择先对齐，再开始做。
 
 ### 为什么需要它
 
-标题：AI 设计常翻车，不是因为不会画，而是因为没有过程。
+标题：一张页面，常常只完成了一半。
 
-说明：很多页面看上去完整，其实没有回答需求；看上去热闹，其实信息层级乱了。Ultimate Design 先管住问题，再开始做视觉。
+说明：画面做出来以后，真正的问题才露出来：需求在中途变了，内容没讲清，下一位接手的人不知道哪些是刻意选择。
 
-问题一：没有合同，设计会一路漂移。
+三个具体问题：
 
-- 任务越长，越容易忘记用户到底要什么。
-- 页面做完了，却说不清每一块为什么存在。
-- 下个 agent 接手时，只能重新猜风格和规则。
+- 原始诉求被后续细节盖住了。
+- 内容和版式一起开工，重要的话没有位置。
+- 交付只剩截图，没人知道为什么这样取舍。
 
-问题二：没有自评，默认审美会自动接管。
+### 它留下什么
 
-- 居中大标题、三张卡片、紫蓝渐变、假截图。
-- 文字像翻译，按钮像占位，证据像装饰。
-- 最后才看一眼，重叠、贴边和怪换行已经混进成品。
+标题：每一次设计，都留下能继续使用的东西。
 
-### 它是什么
+三个对象：
 
-标题：它不是一个模板库，而是一条设计生产线。
+- `Request Anchor`：这次到底要解决什么，谁来用，什么不能丢。
+- `DESIGN.md`：内容顺序、视觉方向、假设和待确认项。
+- Rendered review：真实页面、截图和复核结果。
 
-说明：Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味和必要性落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。
+### 工作方式
 
-四个系统：
+标题：先把事情说清，再把画面做对。
 
-- 合同：记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。
-- 知识：网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。
-- 品味判断：用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。
-- 验证：用真实截图、语义区检查、遮挡采样、动效证据和二次自评，把低级问题拦在交付前。
+五步：
 
-### 工作流
+1. 读需求：保留原始诉求、最新调整和验收标准。
+2. 理内容：确定先让人看懂什么，哪些话必须准确。
+3. 定方向：选择合适的色彩、字体、密度、版式和参考策略。
+4. 做成品：落到网页、产品界面、PPT、图形或品牌材料。
+5. 回看交付：检查真实输出，修问题，补上下一位能读懂的记录。
 
-1. Anchor：把原始需求、最新调整、目标受众、成功标准和非目标写下来，防止越做越偏。
-2. Content：先回答用户为什么来、第一屏要懂什么、行动意味着什么，再谈版式。
-3. Contract：没有 DESIGN.md 也没关系，agent 会根据上下文建立第一版合同。
-4. Direction：确定品牌姿态、色彩承诺、字体性格、信息密度、图像策略、版式模型和必要性判断。
-5. Optional References：参考图是可选输入。有图就吸收结构、气质和反参考；没图就继续，不默认生成。
-6. Build：做出页面、PPT、图形资产、产品 UI 或品牌系统，而不是只写一段说明。
-7. Critique and Repair：交付前先自查有没有跑题、翻译腔、卡片套路、错位、拥挤、奇怪换行、假证明和不必要的装饰。
-8. Verify and Govern：保存截图，跑验证，更新合同，让下一位 agent 能接着做。
+### 适用的工作
 
-### 使用 Prompt
+- 官网、营销页和内容页
+- 产品界面、表单、Dashboard、流程
+- HTML Deck、汇报和培训材料
+- 海报、社媒图、报告封面、信息图
+- 品牌规则与已有页面的审查打磨
 
-普通页面：
+### 怎么开始
+
+普通模式的提示词要短，表达结果，不要把流程背给用户：
 
 ```text
-$ultimate-design 从零开始帮我设计这个页面。请先定内容和 DESIGN.md；如果我提供参考图，就作为可选输入吸收；没有参考图也继续选择方向。然后实现、critique、修复并验证。
+$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。
 ```
 
-专业确认模式：
+`--pro` 只用于关键选择确实需要共同决定的工作：
 
 ```text
 $ultimate-design --pro
-我要设计一个面向投资人的产品官网。请先跟我确认受众、信息层级、品牌姿态、颜色、字体、版式、参考图和验收标准，再开始实现。
+我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。
 ```
 
-带参考图：
+### 交付时看什么
 
-```text
-$ultimate-design
-我会提供一张参考图。请只提取它的结构、氛围、色彩和节奏，不要照抄文字或坏排版；如果我没发图，就按内容和上下文继续设计。
-```
+标题：交出去的，不只有一个链接。
+
+- 需求和取舍写在 `DESIGN.md`。
+- 参考资料有来源和用途。
+- 页面、幻灯片或图形按实际尺寸检查过。
+- 未解决的风险被如实写下。
+
+## 文案规则
+
+- 中文从中文的判断顺序出发；英文是独立的平行表达，不逐句翻译。
+- 用具体对象和动作替代“体系、赋能、升级、重要、专业、品质”等抽象评价。
+- 不使用“不是……而是……”作为整页骨架；不用“首先、其次、最后、综上所述”撑结构。
+- 每段至少交代一个事实、动作、限制或可见结果；没有新增信息的句子删掉。
+- 不编造案例、数字、客户或结果。没有证据的主张就缩小。
+- 保留正常的句长和语气变化，但不为了“去 AI 味”故意写得散乱。
 
 ## English Page
 
-The English page is a parallel version, not a word-for-word translation.
+The English page is a parallel expression, not a sentence-by-sentence translation.
 
-Hero claim: Turn AI design from generation into delivery.
+Hero claim: Build the design. Keep the judgment.
 
-Lead: Ultimate Design is not a template pack, a style preset, or a wrapper around another design skill. It turns a design request into a contract: clarify the message, choose a direction, build the artifact, critique it, repair it, and verify the rendered result.
+Lead: Ultimate Design helps an Agent turn a vague ask into a clear brief, a real artifact, and a record another person or Agent can continue from. It checks the rendered result before handoff.
 
-Core sections:
+The English version should be plain, specific, and useful. Avoid “transform,” “elevate,” “empower,” “seamless,” “world-class,” and generic contrast formulas.
 
-- Why it exists: AI design fails less from lack of drawing skill, and more from lack of process.
-- What it is: It is not a template library. It is a design production line.
-- Workflow: Anchor, Content, Contract, Direction, Optional References, Build, Critique and Repair, Verify and Govern.
-- New in 0.4: decision-bound OKF, hardened Pro mode, calibrated semantic-zone checks, proof freshness, and purpose-led motion evidence.
-- Capabilities: Marketing Sites, Product UI, PPT / Deck, Graphics / Social, Brand Systems, Audit / Polish.
-- Proof: DESIGN.md, Reference Assets, Rendered Screenshots, Visual Validation, Review Log.
+## Interaction Requirements
 
-## 交互要求
-
-- 顶部提供中 / EN 切换。
-- 默认中文。
-- `index-en.html` 打开英文版本。
-- 复制按钮按当前语言复制对应 prompt。
-- 参考图只作为可选输入，不绑定生成图流程。
-- 页面必须通过桌面和移动端渲染验证。
+- Chinese is the default; the top switch changes the whole page to English.
+- The copy button copies the prompt in the active language.
+- The reference image remains optional and is not presented as a mandatory step.
+- Desktop and mobile must both show a clean reading path; no section should compete with the hero for attention.

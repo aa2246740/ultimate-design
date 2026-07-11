@@ -3,1543 +3,658 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ultimate Design - 让 AI 设计从生成升级成交付</title>
-  <meta name="description" content="Ultimate Design 是一套自洽的 AI Agent 设计工作流：用 DESIGN.md、Taste Checkpoint、Necessary Judgment、OKF 路由、批判修复、动效规则和真实渲染验证，把模糊需求变成可交付设计。" />
+  <title>Ultimate Design - 把设计做出来，也把判断留下来</title>
+  <meta name="description" content="Ultimate Design 帮助 AI Agent 把模糊需求做成可检查、可继续的设计工作。" />
   <style>
     :root {
-      --paper: #f4efe4;
-      --paper-2: #e9dfca;
-      --ink: #0b0e12;
-      --muted: #5d584e;
-      --line: rgba(11, 14, 18, 0.2);
-      --red: #d9281e;
-      --indigo: #121b4d;
-      --green: #c7f20e;
-      --ochre: #d7a831;
-      --white: #fffaf0;
-      --max: 1320px;
+      --surface: #f2f3ee;
+      --surface-strong: #e7e9e1;
+      --ink: #10120e;
+      --muted: #62675f;
+      --rule: rgba(16, 18, 14, 0.2);
+      --red: #df3a22;
+      --teal: #0e6e6b;
+      --chartreuse: #d7de49;
+      --white: #fbfcf8;
+      --max: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--paper);
-    }
-
+    * { box-sizing: border-box; }
+    html { background: var(--surface); scroll-behavior: smooth; }
     body {
       margin: 0;
+      background: var(--surface);
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(11, 14, 18, 0.035) 1px, transparent 1px) 0 0 / 78px 78px,
-        linear-gradient(180deg, rgba(11, 14, 18, 0.03) 1px, transparent 1px) 0 0 / 78px 78px,
-        radial-gradient(circle at 74% 18%, rgba(199, 242, 14, 0.16), transparent 18%),
-        var(--paper);
       font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      font-size: 16px;
       line-height: 1.72;
       letter-spacing: 0;
     }
+    button { font: inherit; letter-spacing: 0; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--chartreuse); outline-offset: 3px; }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-      letter-spacing: 0;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    a:focus-visible,
-    button:focus-visible {
-      outline: 3px solid var(--green);
-      outline-offset: 3px;
-    }
-
+    .shell { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
     .site-header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(244, 239, 228, 0.94);
-      backdrop-filter: blur(12px);
+      background: var(--surface);
       border-bottom: 1px solid var(--ink);
     }
-
-    .header-inner {
-      width: min(var(--max), calc(100% - 40px));
-      min-height: 76px;
-      margin: 0 auto;
+    .header-grid {
+      min-height: 68px;
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: minmax(210px, 1fr) auto auto;
       align-items: center;
       gap: 28px;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 240px;
-    }
-
+    .brand { display: inline-flex; min-width: 0; min-height: 44px; align-items: center; gap: 10px; }
     .brand-mark {
-      width: 50px;
-      height: 50px;
       display: grid;
+      width: 30px;
+      height: 30px;
       place-items: center;
       background: var(--ink);
-      color: var(--paper);
+      color: var(--white);
       font-family: Georgia, serif;
-      font-size: 24px;
+      font-size: 15px;
       font-weight: 800;
     }
-
-    .brand strong {
-      display: block;
-      font-family: "Songti SC", STSong, Georgia, serif;
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    .brand span span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.2;
-      margin-top: 5px;
-    }
-
-    .nav-links {
-      display: flex;
-      justify-content: center;
-      gap: clamp(14px, 2.4vw, 34px);
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .nav-links a {
-      display: inline-flex;
-      min-width: 44px;
-      min-height: 44px;
-      align-items: center;
-    }
-
-    .header-actions {
-      display: flex;
-      justify-content: end;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .lang-switch {
-      display: inline-grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--ink);
-      background: var(--paper);
-      min-height: 44px;
-    }
-
+    .brand-copy { display: grid; gap: 1px; }
+    .brand strong { font-family: "Songti SC", STSong, Georgia, serif; font-size: 18px; line-height: 1; }
+    .brand small { color: var(--muted); font-size: 11px; line-height: 1.25; }
+    .site-nav { display: flex; gap: 22px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    .site-nav a { display: inline-flex; min-height: 44px; align-items: center; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .lang-switch { display: grid; min-height: 44px; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--ink); }
     .lang-switch button {
-      min-width: 48px;
+      min-width: 44px;
       min-height: 44px;
       border: 0;
       border-right: 1px solid var(--ink);
       background: transparent;
       color: var(--ink);
       cursor: pointer;
-      font-size: 12px;
-      font-weight: 900;
+      font-size: 11px;
+      font-weight: 800;
     }
+    .lang-switch button:last-child { border-right: 0; }
+    .lang-switch button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
 
-    .lang-switch button:last-child {
-      border-right: 0;
-    }
-
-    .lang-switch button[aria-pressed="true"] {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    .button {
+    .button, .quiet-button, .copy-button {
       display: inline-flex;
+      min-height: 44px;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
       border: 1px solid var(--ink);
-      background: var(--ink);
-      color: var(--paper);
-      padding: 10px 16px;
-      font-weight: 900;
+      padding: 9px 14px;
       cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
     }
+    .button { background: var(--ink); color: var(--white); }
+    .button:hover { background: var(--red); border-color: var(--red); }
+    .quiet-button { background: transparent; color: var(--ink); }
+    .quiet-button:hover { background: var(--surface-strong); }
+    .header-copy { min-height: 44px; padding-inline: 11px; font-size: 12px; }
 
-    .button.secondary {
-      background: var(--paper);
-      color: var(--ink);
-    }
-
-    .page {
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    .hero {
-      min-height: calc(100vh - 76px);
-      display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 0.82fr) minmax(245px, 0.36fr);
-      gap: 42px;
-      align-items: center;
-      padding: 54px 0 38px;
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .index-mark {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
+    .eyebrow, .section-index, .record-kicker {
+      margin: 0;
       color: var(--red);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
-      font-size: 12px;
-      margin-bottom: 26px;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.3;
       text-transform: uppercase;
     }
+    .eyebrow { display: flex; align-items: center; gap: 10px; }
+    .eyebrow::before { width: 30px; height: 2px; background: var(--red); content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Songti SC", STSong, "Hiragino Mincho ProN", Georgia, serif; letter-spacing: 0; }
 
-    .index-mark::after {
-      content: "";
-      width: 64px;
-      height: 2px;
-      background: var(--red);
+    .hero {
+      display: grid;
+      min-height: 690px;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.76fr);
+      gap: 88px;
+      align-items: center;
+      padding: 76px 0 70px;
+      border-bottom: 2px solid var(--ink);
     }
-
-    h1,
-    h2,
-    h3 {
-      margin: 0;
-      font-family: "Songti SC", STSong, "Hiragino Mincho ProN", Georgia, serif;
-      letter-spacing: 0;
-      line-height: 1.04;
-    }
-
-    h1 {
-      font-size: clamp(62px, 10vw, 138px);
-      line-height: 0.93;
-    }
-
+    h1 { margin: 22px 0 0; font-size: 98px; font-weight: 800; line-height: 0.9; }
     .hero-offer {
-      max-width: 720px;
-      margin: 22px 0 0;
+      max-width: 700px;
+      margin: 28px 0 0;
       color: var(--red);
-      font-family: "Songti SC", STSong, "Hiragino Mincho ProN", Georgia, serif;
-      font-size: clamp(32px, 4.15vw, 62px);
+      font-size: 49px;
       font-weight: 800;
       line-height: 1.08;
     }
-
-    .lead {
-      max-width: 680px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: clamp(17px, 1.55vw, 21px);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .mode-strip {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 10px;
-      max-width: 570px;
-      margin-top: 24px;
-      font-size: 14px;
-    }
-
-    .mode-strip > span {
-      border: 1px solid var(--line);
-      background: rgba(255, 250, 240, 0.68);
-      padding: 14px;
-      min-height: 70px;
-    }
-
-    .mode-strip b {
-      display: block;
-      font-size: 16px;
-      color: var(--ink);
-    }
-
-    .mode-strip i {
-      font-style: normal;
-      color: var(--red);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
-    }
-
-    .visual-stack {
-      position: relative;
-      display: grid;
-      gap: 18px;
-      align-self: stretch;
-      align-content: center;
-    }
-
-    .contract-sheet {
-      position: relative;
-      z-index: 2;
-      width: 78%;
-      min-height: 332px;
-      padding: 26px;
-      background: var(--white);
-      border: 1px solid rgba(11, 14, 18, 0.35);
-      transform: rotate(-2deg);
-    }
-
-    .contract-sheet::before,
-    .contract-sheet::after {
-      content: "";
-      position: absolute;
-      inset: 12px -16px -12px 16px;
-      z-index: -1;
-      background: #e6d3b1;
-      border: 1px solid rgba(11, 14, 18, 0.18);
-    }
-
-    .contract-sheet::after {
-      inset: 24px -28px -24px 28px;
-      background: #d7c39c;
-    }
-
-    .sheet-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 2px solid var(--ink);
-      padding-bottom: 14px;
-      margin-bottom: 16px;
-    }
-
-    .sheet-title b {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      background: var(--ink);
-      color: var(--paper);
-      font-family: Georgia, serif;
-    }
-
-    .sheet-title strong {
-      font-family: Georgia, serif;
-      font-size: 24px;
-    }
-
-    .sheet-list {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      font-size: 13px;
-    }
-
-    .sheet-list li {
-      display: grid;
-      grid-template-columns: 46px 1fr;
-      gap: 12px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 8px;
-    }
-
-    .sheet-list code {
-      color: var(--red);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    .image-board {
-      position: absolute;
-      right: 0;
-      bottom: 18px;
-      width: 64%;
-      margin: 0;
-      aspect-ratio: 1.07;
-      border: 2px solid var(--ink);
-      background: var(--ink);
-      overflow: hidden;
-    }
-
-    .image-board img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 64% 41%;
-      filter: saturate(1.05) contrast(1.05);
-      display: block;
-    }
-
-    .workflow-rail {
-      align-self: center;
-      border-left: 2px solid var(--ink);
-      padding-left: 22px;
-    }
-
-    .rail-title {
-      margin-bottom: 18px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    .rail-list {
-      display: grid;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .rail-list li {
-      display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 12px;
-      min-height: 58px;
-      align-items: center;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .rail-list b {
-      display: grid;
-      place-items: center;
-      width: 26px;
-      height: 26px;
-      background: var(--paper);
-      border: 1px solid var(--ink);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-    }
-
-    .rail-list strong {
-      display: block;
-      line-height: 1.1;
-    }
-
-    .rail-list span span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 2px;
-    }
-
-    .below-hero {
-      display: grid;
-      grid-template-columns: 1fr repeat(4, minmax(0, 0.72fr));
-      border-bottom: 2px solid var(--ink);
-      min-height: 92px;
-    }
-
-    .proof-line,
-    .proof-item {
-      display: grid;
-      align-content: center;
-      padding: 20px 24px;
-      border-right: 1px solid var(--line);
-    }
-
-    .proof-item:last-child {
-      border-right: 0;
-    }
-
-    .proof-line {
-      font-size: 15px;
-    }
-
-    .proof-line b {
-      display: block;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    .proof-item strong {
-      font-size: 17px;
-    }
-
-    .proof-item span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .section {
-      padding: 96px 0;
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: 0.72fr 1fr;
-      gap: 72px;
-      align-items: end;
-      margin-bottom: 52px;
-    }
-
-    .kicker {
-      margin: 0 0 10px;
-      color: var(--red);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    h2 {
-      font-size: clamp(42px, 5.7vw, 82px);
-    }
-
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 20px;
-    }
-
-    .diagnosis {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 48px;
-    }
-
-    .black-panel {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 34px;
-      min-height: 420px;
-      display: grid;
-      align-content: space-between;
-    }
-
-    .black-panel.red {
-      background: var(--red);
-    }
-
-    .black-panel h3 {
-      font-size: clamp(34px, 4.1vw, 60px);
-      color: var(--paper);
-    }
-
-    .failure-list {
-      display: grid;
-      gap: 14px;
-      margin: 30px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .failure-list li {
-      display: grid;
-      grid-template-columns: 20px 1fr;
-      gap: 12px;
-      color: rgba(244, 239, 228, 0.84);
-    }
-
-    .failure-list li::before {
-      content: "";
-      width: 13px;
-      height: 13px;
-      margin-top: 8px;
-      background: var(--red);
-    }
-
-    .black-panel.red .failure-list li::before {
-      background: var(--green);
-    }
-
-    .systems {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 2px solid var(--ink);
-    }
-
-    .system-lane {
-      min-height: 410px;
-      padding: 28px;
-      border-right: 1px solid var(--line);
-      display: grid;
-      align-content: space-between;
-    }
-
-    .system-lane:last-child {
-      border-right: 0;
-    }
-
-    .system-lane h3 {
-      font-size: clamp(30px, 3.4vw, 46px);
-    }
-
-    .system-lane p {
-      color: var(--muted);
-      margin: 18px 0 0;
-    }
-
-    .lane-index {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: var(--ink);
-      color: var(--paper);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
-    }
-
-    .workflow {
-      display: grid;
-      grid-template-columns: 0.36fr 1fr;
-      gap: 56px;
-      align-items: start;
-    }
-
-    .workflow-stick {
-      position: sticky;
-      top: 108px;
-      padding: 26px;
-      background: var(--red);
-      color: var(--paper);
-      min-height: 240px;
-    }
-
-    .workflow-stick h2 {
-      font-size: clamp(34px, 4vw, 58px);
-    }
-
-    .flow-steps {
-      display: grid;
-      border-top: 2px solid var(--ink);
-    }
-
-    .flow-step {
-      display: grid;
-      grid-template-columns: 90px 0.78fr 1fr;
-      gap: 28px;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--line);
-      align-items: start;
-    }
-
-    .flow-step b {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--red);
-      font-size: 24px;
-    }
-
-    .flow-step h3 {
-      font-size: clamp(26px, 3.2vw, 40px);
-    }
-
-    .flow-step p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .capability-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 2px solid var(--ink);
-    }
-
-    .capability {
-      min-height: 206px;
-      padding: 28px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      display: grid;
-      align-content: space-between;
-    }
-
-    .capability:nth-child(3n) {
-      border-right: 0;
-    }
-
-    .capability:nth-last-child(-n+3) {
-      border-bottom: 0;
-    }
-
-    .capability h3 {
-      font-size: clamp(26px, 3vw, 38px);
-    }
-
-    .capability p {
-      color: var(--muted);
-      margin: 14px 0 0;
-    }
-
-    .prompt-section {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 54px;
-      align-items: start;
-    }
-
-    .prompt-console {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 28px;
-      min-height: 560px;
-      border: 2px solid var(--ink);
-    }
-
-    .console-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: center;
-      border-bottom: 1px solid rgba(244, 239, 228, 0.22);
-      padding-bottom: 14px;
-      margin-bottom: 22px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 900;
+    .lead { max-width: 600px; margin: 25px 0 0; color: var(--muted); font-size: 19px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+    .mode-note { max-width: 570px; margin: 20px 0 0; padding-top: 15px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
+    .mode-note b { color: var(--ink); }
+
+    .run-record { border: 2px solid var(--ink); background: var(--white); box-shadow: 12px 12px 0 var(--teal); }
+    .record-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; padding: 22px 24px 18px; border-bottom: 2px solid var(--ink); }
+    .record-head strong { display: block; margin-top: 7px; font-family: "Songti SC", STSong, Georgia, serif; font-size: 27px; line-height: 1.1; }
+    .record-state { padding: 4px 8px; background: var(--chartreuse); color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; font-weight: 800; white-space: nowrap; }
+    .record-list { margin: 0; padding: 0; list-style: none; }
+    .record-list li { display: grid; grid-template-columns: 38px 1fr; gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--rule); }
+    .record-list li:last-child { border-bottom: 0; }
+    .record-list code { color: var(--red); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; font-weight: 800; }
+    .record-list b, .record-list span { display: block; }
+    .record-list b { font-size: 15px; line-height: 1.35; }
+    .record-list span { margin-top: 2px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .record-foot { display: flex; justify-content: space-between; gap: 12px; padding: 13px 24px; border-top: 2px solid var(--ink); background: var(--ink); color: var(--white); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; text-transform: uppercase; }
+
+    .section { padding: 104px 0; border-bottom: 1px solid var(--ink); }
+    .section-head { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.7fr); gap: 64px; align-items: end; margin-bottom: 54px; }
+    .section-head h2, .section-intro h2 { max-width: 720px; margin: 13px 0 0; font-size: 52px; font-weight: 800; line-height: 1.06; }
+    .section-head > p, .section-intro > p { margin: 0; color: var(--muted); font-size: 17px; }
+
+    .observations { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+    .observation { min-height: 240px; padding: 22px 24px 20px 0; border-right: 1px solid var(--rule); }
+    .observation + .observation { padding-left: 24px; }
+    .observation:last-child { border-right: 0; }
+    .observation b, .output-row b, .workflow-list b, .handoff-list b { color: var(--red); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; }
+    .observation h3 { margin: 54px 0 10px; font-size: 30px; line-height: 1.15; }
+    .observation p { max-width: 300px; margin: 0; color: var(--muted); font-size: 15px; }
+
+    .outputs { background: var(--ink); color: var(--white); }
+    .outputs .section-index { color: var(--chartreuse); }
+    .output-layout { display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(440px, 1.28fr); gap: 94px; align-items: start; }
+    .outputs h2 { margin: 13px 0 0; color: var(--white); font-size: 52px; line-height: 1.06; }
+    .outputs .section-intro p { margin: 25px 0 0; color: rgba(251, 252, 248, 0.68); font-size: 17px; }
+    .output-list { border-top: 1px solid rgba(251, 252, 248, 0.35); }
+    .output-row { display: grid; grid-template-columns: 64px minmax(150px, 0.72fr) 1.4fr; gap: 20px; padding: 27px 0; border-bottom: 1px solid rgba(251, 252, 248, 0.26); }
+    .output-row b { color: var(--chartreuse); }
+    .output-row h3 { margin: 0; color: var(--white); font-size: 25px; line-height: 1.1; }
+    .output-row p { margin: 0; color: rgba(251, 252, 248, 0.74); font-size: 15px; }
+
+    .workflow-frame, .handoff-layout { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(460px, 1.25fr); gap: 82px; align-items: start; }
+    .workflow-frame .section-intro p, .handoff-layout .section-intro p { margin: 24px 0 0; color: var(--muted); font-size: 17px; }
+    .workflow-list, .handoff-list { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--ink); }
+    .workflow-list li { display: grid; grid-template-columns: 56px minmax(160px, 0.65fr) 1.35fr; gap: 20px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+    .workflow-list h3 { margin: 0; font-size: 25px; line-height: 1.1; }
+    .workflow-list p { margin: 0; color: var(--muted); font-size: 15px; }
+    .reference-note { display: grid; grid-template-columns: 116px 1fr; gap: 16px; align-items: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); }
+    .reference-note figure { width: 116px; height: 84px; margin: 0; overflow: hidden; border: 1px solid var(--ink); background: var(--ink); }
+    .reference-note img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 58% 45%; }
+    .reference-note p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+    .capability-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+    .capability { min-height: 154px; padding: 21px 22px 22px 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .capability:nth-child(3n + 2), .capability:nth-child(3n + 3) { padding-left: 22px; }
+    .capability:nth-child(3n) { border-right: 0; }
+    .capability:nth-last-child(-n + 3) { border-bottom: 0; }
+    .capability h3 { margin: 0; font-size: 25px; line-height: 1.12; }
+    .capability p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+
+    .prompt-section { background: var(--teal); color: var(--white); }
+    .prompt-layout { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(480px, 1.3fr); gap: 84px; align-items: start; }
+    .prompt-section .section-index { color: var(--chartreuse); }
+    .prompt-section h2 { margin: 13px 0 0; color: var(--white); font-size: 52px; line-height: 1.06; }
+    .prompt-section .section-intro p { margin: 24px 0 0; color: rgba(251, 252, 248, 0.76); font-size: 17px; }
+    .prompt-console { border: 2px solid var(--ink); background: var(--ink); box-shadow: 10px 10px 0 var(--chartreuse); }
+    .console-bar { display: flex; justify-content: space-between; gap: 18px; padding: 13px 18px; border-bottom: 1px solid rgba(251, 252, 248, 0.24); color: rgba(251, 252, 248, 0.76); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; }
+    .copy-status { color: var(--chartreuse); }
+    .prompt-card { padding: 21px 20px; border-bottom: 1px solid rgba(251, 252, 248, 0.2); }
+    .prompt-card:last-child { border-bottom: 0; }
+    .prompt-card h3 { margin: 0 0 11px; color: var(--white); font-size: 20px; }
+    .prompt-card pre { margin: 0; color: rgba(251, 252, 248, 0.76); white-space: pre-wrap; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; line-height: 1.72; }
+    .copy-row { margin-top: 15px; }
+    .copy-button { min-height: 44px; border-color: rgba(251, 252, 248, 0.48); background: transparent; color: var(--white); padding: 7px 10px; font-size: 12px; }
+    .copy-button:hover { background: var(--chartreuse); border-color: var(--chartreuse); color: var(--ink); }
+
+    .handoff-list li { display: grid; grid-template-columns: 32px 170px 1fr; gap: 16px; padding: 17px 0; border-bottom: 1px solid var(--rule); }
+    .handoff-list strong { font-size: 15px; }
+    .handoff-list span { color: var(--muted); font-size: 14px; }
+    .final-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 50px; align-items: center; padding: 74px 0; }
+    .final-cta h2 { max-width: 810px; margin: 0; font-size: 48px; line-height: 1.08; }
+    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 26px 0 36px; border-top: 1px solid var(--ink); color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; text-transform: uppercase; }
+    [data-lang="en"] h1, [data-lang="en"] h2, [data-lang="en"] h3, [data-lang="en"] .hero-offer, [data-lang="en"] .brand strong, [data-lang="en"] .record-head strong { font-family: Georgia, "Times New Roman", serif; }
+    [data-lang="en"] .hero-offer { max-width: 630px; }
+
+    @media (max-width: 1020px) {
+      .hero, .output-layout, .workflow-frame, .prompt-layout, .handoff-layout { grid-template-columns: 1fr; }
+      .hero { min-height: auto; gap: 52px; }
+      .hero-copy { max-width: 760px; }
+      .run-record, .prompt-console { max-width: 680px; }
+      .output-layout, .workflow-frame, .prompt-layout, .handoff-layout { gap: 46px; }
     }
-
-    .prompt-block {
-      display: grid;
-      gap: 14px;
-      margin-top: 22px;
-    }
-
-    .prompt-card {
-      border: 1px solid rgba(244, 239, 228, 0.25);
-      padding: 18px;
-      background: rgba(244, 239, 228, 0.04);
-    }
-
-    .prompt-card h3 {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--green);
-      font-size: 15px;
-      margin-bottom: 10px;
-    }
-
-    pre {
-      margin: 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 13px;
-      line-height: 1.62;
-      color: rgba(244, 239, 228, 0.88);
-    }
-
-    .copy-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .copy-button {
-      min-height: 44px;
-      border: 1px solid rgba(244, 239, 228, 0.3);
-      color: var(--paper);
-      background: transparent;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .proof-ledger {
-      display: grid;
-      grid-template-columns: 0.72fr 1.28fr;
-      gap: 54px;
-      align-items: start;
-    }
-
-    .ledger-table {
-      border-top: 2px solid var(--ink);
-    }
-
-    .ledger-row {
-      display: grid;
-      grid-template-columns: 0.42fr 1fr 0.28fr;
-      gap: 18px;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--line);
-      align-items: start;
-    }
-
-    .ledger-row b {
-      color: var(--red);
-    }
-
-    .ledger-row span {
-      color: var(--muted);
-    }
-
-    .cta-band {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 48px;
-      align-items: center;
-      padding: 80px 0;
-      border-bottom: 0;
-    }
-
-    .cta-band h2 {
-      max-width: 900px;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      padding: 30px 0 44px;
-      color: var(--muted);
-      border-top: 2px solid var(--ink);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    .copy-status {
-      min-height: 20px;
-      color: var(--green);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12px;
-    }
-
-    [data-lang="en"] .hero-offer,
-    [data-lang="en"] h2,
-    [data-lang="en"] h3 {
-      font-family: Georgia, "Times New Roman", serif;
-    }
-
-    @media (max-width: 1180px) {
-      .header-inner {
-        grid-template-columns: 1fr auto;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-
-      .visual-stack {
-        min-height: 620px;
-      }
-
-      .workflow-rail {
-        border-left: 0;
-        padding-left: 0;
-      }
-
-      .below-hero,
-      .systems,
-      .capability-grid,
-      .prompt-section,
-      .proof-ledger,
-      .cta-band {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .proof-line {
-        grid-column: span 2;
-      }
-
-      .capability:nth-child(3n) {
-        border-right: 1px solid var(--line);
-      }
-
-      .capability:nth-child(2n) {
-        border-right: 0;
-      }
-
-      .capability:nth-last-child(-n+3) {
-        border-bottom: 1px solid var(--line);
-      }
-
-      .capability:nth-last-child(-n+2) {
-        border-bottom: 0;
-      }
-    }
-
     @media (max-width: 760px) {
-      body {
-        background:
-          linear-gradient(90deg, rgba(11, 14, 18, 0.035) 1px, transparent 1px) 0 0 / 52px 52px,
-          linear-gradient(180deg, rgba(11, 14, 18, 0.03) 1px, transparent 1px) 0 0 / 52px 52px,
-          var(--paper);
-      }
-
-      .header-inner,
-      .page {
-        width: min(100% - 28px, var(--max));
-      }
-
-      .header-inner {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 12px 0;
-      }
-
-      .header-actions {
-        justify-content: stretch;
-      }
-
-      .header-actions .button,
-      .lang-switch {
-        flex: 1;
-      }
-
-      .brand {
-        min-width: 0;
-      }
-
-      .hero {
-        padding-top: 42px;
-      }
-
-      h1 {
-        font-size: clamp(54px, 19vw, 82px);
-      }
-
-      .hero-offer {
-        font-size: clamp(33px, 10.5vw, 50px);
-      }
-
-      .mode-strip,
-      .below-hero,
-      .section-head,
-      .diagnosis,
-      .systems,
-      .workflow,
-      .capability-grid,
-      .prompt-section,
-      .proof-ledger,
-      .cta-band {
-        grid-template-columns: 1fr;
-      }
-
-      .mode-strip i {
-        display: none;
-      }
-
-      .visual-stack {
-        min-height: auto;
-      }
-
-      .contract-sheet {
-        width: 100%;
-        transform: none;
-      }
-
-      .contract-sheet::before {
-        inset: 8px 0 -8px 8px;
-      }
-
-      .contract-sheet::after {
-        inset: 16px 0 -16px 16px;
-      }
-
-      .image-board {
-        position: relative;
-        width: 100%;
-        right: auto;
-        bottom: auto;
-        aspect-ratio: 1.22;
-      }
-
-      .workflow-rail,
-      .black-panel,
-      .workflow-stick,
-      .prompt-console {
-        min-height: auto;
-      }
-
-      .proof-item,
-      .system-lane,
-      .capability {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .proof-item:last-child,
-      .system-lane:last-child,
-      .capability:last-child {
-        border-bottom: 0;
-      }
-
-      .section {
-        padding: 68px 0;
-      }
-
-      .flow-step {
-        grid-template-columns: 58px 1fr;
-        gap: 18px;
-      }
-
-      .flow-step p {
-        grid-column: 2;
-      }
-
-      .ledger-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
-
-      .cta-band .button {
-        width: 100%;
-      }
-
-      .footer {
-        flex-direction: column;
-      }
+      .shell { width: min(100% - 28px, var(--max)); }
+      .header-grid { min-height: 58px; grid-template-columns: 1fr auto; gap: 12px; }
+      .site-nav, .header-copy { display: none; }
+      .brand strong { font-size: 16px; }
+      .brand small { font-size: 10px; }
+      .hero { gap: 44px; padding: 48px 0 54px; }
+      h1 { font-size: 63px; }
+      .hero-offer { margin-top: 23px; font-size: 38px; }
+      .lead { margin-top: 20px; font-size: 17px; }
+      .mode-note { font-size: 13px; }
+      .record-head { padding: 18px; }
+      .record-head strong { font-size: 23px; }
+      .record-list li { padding: 14px 18px; }
+      .record-foot { padding: 11px 18px; font-size: 9px; }
+      .section { padding: 68px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 20px; margin-bottom: 36px; }
+      .section-head h2, .section-intro h2, .outputs h2, .prompt-section h2 { font-size: 39px; }
+      .section-head > p, .section-intro > p, .workflow-frame .section-intro p, .handoff-layout .section-intro p, .prompt-section .section-intro p, .outputs .section-intro p { font-size: 16px; }
+      .observations, .capability-grid { grid-template-columns: 1fr; }
+      .observation, .observation + .observation, .capability, .capability:nth-child(3n + 2), .capability:nth-child(3n + 3) { min-height: 0; padding: 19px 0; border-right: 0; border-bottom: 1px solid var(--rule); }
+      .observation h3 { margin-top: 28px; font-size: 27px; }
+      .capability:nth-last-child(-n + 3) { border-bottom: 1px solid var(--rule); }
+      .capability:last-child { border-bottom: 0; }
+      .output-row, .workflow-list li, .handoff-list li { grid-template-columns: 38px 1fr; gap: 12px; }
+      .output-row p, .workflow-list p, .handoff-list span { grid-column: 2; }
+      .output-row h3, .workflow-list h3 { font-size: 23px; }
+      .reference-note { grid-template-columns: 92px 1fr; }
+      .reference-note figure { width: 92px; height: 70px; }
+      .prompt-console { box-shadow: 7px 7px 0 var(--chartreuse); }
+      .final-cta { grid-template-columns: 1fr; gap: 24px; padding: 58px 0; }
+      .final-cta h2 { font-size: 38px; }
+      .final-cta .button { width: 100%; }
+      .footer { flex-direction: column; gap: 6px; }
     }
   </style>
 </head>
 <body data-lang="zh">
-  <header class="site-header">
-    <div class="header-inner">
+  <header class="site-header" data-ud-check="site-header">
+    <div class="shell header-grid">
       <a class="brand" href="#top" aria-label="Ultimate Design home">
         <span class="brand-mark">UD</span>
-        <span><strong>Ultimate Design</strong><span data-i18n="brand.tagline">AI 设计工作流</span></span>
+        <span class="brand-copy"><strong>Ultimate Design</strong><small data-i18n="brand.tagline">给 AI Agent 的设计工作流</small></span>
       </a>
-      <nav class="nav-links" aria-label="主导航">
-        <a href="#workflow" data-i18n="nav.workflow">工作流</a>
-        <a href="#capabilities" data-i18n="nav.capabilities">能做什么</a>
-        <a href="#prompts" data-i18n="nav.prompts">怎么用</a>
-        <a href="#proof" data-i18n="nav.proof">交付证据</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#method" data-i18n="nav.method">怎么工作</a>
+        <a href="#uses" data-i18n="nav.uses">能做什么</a>
+        <a href="#prompts" data-i18n="nav.prompts">怎么开始</a>
+        <a href="#handoff" data-i18n="nav.handoff">交付什么</a>
       </nav>
       <div class="header-actions">
         <div class="lang-switch" aria-label="Language switch">
           <button type="button" data-lang-button="zh" aria-pressed="true">中</button>
           <button type="button" data-lang-button="en" aria-pressed="false">EN</button>
         </div>
-        <button class="button" type="button" data-copy="starter" data-i18n="header.copy">复制起步 Prompt</button>
+        <button class="button header-copy" type="button" data-copy="starter" data-i18n="header.copy">复制 Prompt</button>
       </div>
     </div>
   </header>
 
-  <main id="top" class="page">
-    <section class="hero">
-      <div class="hero-copy" data-ud-check="hero-copy">
-        <span class="index-mark">Official Site / 01</span>
-        <h1>Ultimate Design</h1>
-        <p class="hero-offer" data-i18n="hero.offer">让 AI 设计从生成，升级成交付。</p>
-        <p class="lead" data-i18n="hero.lead">它不是模板包，也不是一句“高级一点”，更不是依赖旧工具链的拼装器。它把模糊需求变成 DESIGN.md 合同、内容结构、设计方向、真实产物、批判修复和渲染验证。</p>
-        <div class="hero-actions">
-          <a class="button" href="#workflow" data-i18n="hero.primary">看完整流程</a>
-          <button class="button secondary" type="button" data-copy="starter" data-i18n="hero.secondary">复制官网 Prompt</button>
+  <main id="top">
+    <section class="shell hero">
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">面向网页、界面、PPT 与视觉内容</p>
+        <h1 data-ud-check="hero-title">Ultimate<br />Design</h1>
+        <p class="hero-offer" data-i18n="hero.offer">把设计做出来，<br />也把判断留下来。</p>
+        <p class="lead" data-ud-check="hero-lead" data-i18n="hero.lead">先把模糊需求理成可执行的任务；完成后看真实页面，修掉跑题、错位和含糊的表达。交付时，不只留下一个链接。</p>
+        <div class="hero-actions" data-ud-check="hero-actions">
+          <a class="button" href="#method" data-i18n="hero.primary">看它怎么工作</a>
+          <button class="quiet-button" type="button" data-copy="starter" data-i18n="hero.secondary">复制起步 Prompt</button>
         </div>
-        <div class="mode-strip" aria-label="interaction modes">
-          <span><b>YOLO mode</b><span data-i18n="hero.yolo">默认少打扰，先交付一版完整结果。</span></span>
-          <i>-></i>
-          <span><b>--pro mode</b><span data-i18n="hero.pro">需要精细把关时，先把关键选择谈清楚。</span></span>
-        </div>
+        <p class="mode-note" data-i18n="hero.mode"><b>默认</b>先给你一版完整结果。关键选择需要共同决定时，再用 <b>--pro</b>。</p>
       </div>
 
-      <div class="visual-stack" data-ud-check="visual-stack">
-        <article class="contract-sheet" aria-label="DESIGN.md contract sheet">
-          <div class="sheet-title"><b>UD</b><strong>DESIGN.md</strong></div>
-          <ul class="sheet-list">
-            <li><code>[01]</code><span data-i18n="sheet.1">需求锚点<br />原始诉求、最新调整、验收标准</span></li>
-            <li><code>[02]</code><span data-i18n="sheet.2">内容合同<br />先讲什么、后讲什么、哪些词不能乱</span></li>
-            <li><code>[03]</code><span data-i18n="sheet.3">设计方向<br />色彩、字体、版式、密度和视觉记忆点</span></li>
-            <li><code>[04]</code><span data-i18n="sheet.4">质量门<br />响应式、可访问性、截图验证、交付格式</span></li>
-            <li><code>[05]</code><span data-i18n="sheet.5">复盘记录<br />改了什么、为什么改、还剩什么风险</span></li>
-          </ul>
-        </article>
-        <figure class="image-board">
-          <img src="./assets/imagegen-homepage-reference.png" alt="Optional visual reference asset for this Ultimate Design homepage demo, showing a contract sheet, abstract visual board, workflow rail, prompt console, and proof ledger." />
-        </figure>
-      </div>
-
-      <aside class="workflow-rail" data-ud-check="workflow-rail">
-        <div class="rail-title" data-i18n="rail.title">Workflow rail</div>
-        <ol class="rail-list">
-          <li><b>01</b><span><strong>Anchor</strong><span data-i18n="rail.1">先把需求钉住</span></span></li>
-          <li><b>02</b><span><strong>Content</strong><span data-i18n="rail.2">先确定要讲什么</span></span></li>
-          <li><b>03</b><span><strong>Contract</strong><span data-i18n="rail.3">写入 DESIGN.md</span></span></li>
-          <li><b>04</b><span><strong>Direction</strong><span data-i18n="rail.4">选择设计方向</span></span></li>
-          <li><b>05</b><span><strong>References</strong><span data-i18n="rail.5">有参考就吸收，没有就继续</span></span></li>
-          <li><b>06</b><span><strong>Build</strong><span data-i18n="rail.6">做出真实产物</span></span></li>
-          <li><b>07</b><span><strong>Critique</strong><span data-i18n="rail.7">先挑毛病再交付</span></span></li>
-          <li><b>08</b><span><strong>Verify</strong><span data-i18n="rail.8">截图验证并留痕</span></span></li>
+      <aside class="run-record" data-ud-check="hero-run-record" aria-label="What a design run leaves behind">
+        <div class="record-head">
+          <div><p class="record-kicker" data-i18n="record.kicker">一次设计，交出去什么？</p><strong data-i18n="record.title">能接着用的四样东西</strong></div>
+          <span class="record-state" data-i18n="record.state">RUN COMPLETE</span>
+        </div>
+        <ol class="record-list">
+          <li><code>01</code><div><b data-i18n="record.1.title">需求卡</b><span data-i18n="record.1.text">原始诉求、最新调整、验收标准。</span></div></li>
+          <li><code>02</code><div><b>DESIGN.md</b><span data-i18n="record.2.text">内容顺序、设计方向、假设和待确认项。</span></div></li>
+          <li><code>03</code><div><b data-i18n="record.3.title">真实成品</b><span data-i18n="record.3.text">网页、界面、PPT、图形或品牌材料。</span></div></li>
+          <li><code>04</code><div><b data-i18n="record.4.title">复核记录</b><span data-i18n="record.4.text">截图、发现的问题和仍需注意的风险。</span></div></li>
         </ol>
+        <div class="record-foot"><span>Brief → Build</span><span>Review → Handoff</span></div>
       </aside>
     </section>
 
-    <section class="below-hero">
-      <div class="proof-line" data-ud-check="proof-strip"><b>Design is a contract, not a vibe</b><span data-i18n="strip.line">把一次模糊需求，变成可继续、可检查、可交付的设计</span></div>
-      <div class="proof-item"><strong>Contract</strong><span data-i18n="strip.1">设计有依据</span></div>
-      <div class="proof-item"><strong>Content</strong><span data-i18n="strip.2">信息先成立</span></div>
-      <div class="proof-item"><strong>Taste + Judgment</strong><span data-i18n="strip.3">拒绝默认套路</span></div>
-      <div class="proof-item"><strong>Verify</strong><span data-i18n="strip.4">结果能被检查</span></div>
+    <section id="method" class="shell section">
+      <header class="section-head">
+        <div><p class="section-index">01 / WHERE WORK BREAKS</p><h2 data-i18n="observations.title">一张页面，常常只完成了一半。</h2></div>
+        <p data-i18n="observations.lead">画面做出来以后，真正的问题才露出来：需求在中途变了，内容没讲清，下一位接手的人不知道哪些是刻意选择。</p>
+      </header>
+      <div class="observations" data-ud-check="observation-list">
+        <article class="observation"><b>01</b><h3 data-i18n="observation.1.title">需求在途中换了</h3><p data-i18n="observation.1.text">原始诉求被新细节盖住，最后做出的东西已经不是一开始要解决的问题。</p></article>
+        <article class="observation"><b>02</b><h3 data-i18n="observation.2.title">重要的话没有位置</h3><p data-i18n="observation.2.text">内容和版式一起开工，真正需要被看懂的部分反而被装饰和组件挤到后面。</p></article>
+        <article class="observation"><b>03</b><h3 data-i18n="observation.3.title">交付只剩一张图</h3><p data-i18n="observation.3.text">没有取舍记录，也没有真实状态的检查，下一位只能从头猜一遍。</p></article>
+      </div>
     </section>
 
-    <section id="why" class="section">
-      <header class="section-head">
-        <div>
-          <p class="kicker">Why it exists</p>
-          <h2 data-i18n="why.title">AI 设计常翻车，不是因为不会画，而是因为没有过程。</h2>
+    <section class="section outputs">
+      <div class="shell output-layout">
+        <div class="section-intro" data-ud-check="outputs-intro"><p class="section-index">02 / WHAT STAYS</p><h2 data-i18n="outputs.title">每一次设计，都留下能继续使用的东西。</h2><p data-i18n="outputs.lead">需求变了，看需求卡；换人接手，读 DESIGN.md；出现问题，回到真实页面和截图。</p></div>
+        <div class="output-list" data-ud-check="outputs-list">
+          <article class="output-row"><b>01</b><h3>Request Anchor</h3><p data-i18n="output.1">这次要解决什么，谁来用，什么不能丢。</p></article>
+          <article class="output-row"><b>02</b><h3>DESIGN.md</h3><p data-i18n="output.2">内容顺序、视觉方向、假设和待确认项写在一起。</p></article>
+          <article class="output-row"><b>03</b><h3 data-i18n="output.3.title">真实复核</h3><p data-i18n="output.3">用真实页面和截图看内容、层级、换行和细节是否站得住。</p></article>
         </div>
-        <p data-i18n="why.lead">很多页面看上去完整，其实没有回答需求；看上去热闹，其实信息层级乱了。Ultimate Design 先管住问题，再开始做视觉。</p>
-      </header>
-      <div class="diagnosis">
-        <article class="black-panel" data-ud-check="why-contract-panel">
-          <div>
-            <h3 data-i18n="why.panel1.title">没有合同，设计会一路漂移。</h3>
-            <ul class="failure-list">
-              <li data-i18n="why.panel1.1">任务越长，越容易忘记用户到底要什么。</li>
-              <li data-i18n="why.panel1.2">页面做完了，却说不清每一块为什么存在。</li>
-              <li data-i18n="why.panel1.3">下个 agent 接手时，只能重新猜风格和规则。</li>
-            </ul>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <div class="workflow-frame">
+        <div class="section-intro"><p class="section-index">03 / THE RUN</p><h2 data-i18n="workflow.title">先把事情说清，再把画面做对。</h2><p data-i18n="workflow.lead">五步会留下五个可回看的点：需求、内容、方向、成品和复核。</p></div>
+        <div>
+          <ol class="workflow-list" data-ud-check="workflow-list">
+            <li><b>01</b><h3 data-i18n="workflow.1.title">读需求</h3><p data-i18n="workflow.1.text">保留原始诉求、最新调整和验收标准。</p></li>
+            <li><b>02</b><h3 data-i18n="workflow.2.title">理内容</h3><p data-i18n="workflow.2.text">确定先让人看懂什么，哪些话必须准确。</p></li>
+            <li><b>03</b><h3 data-i18n="workflow.3.title">定方向</h3><p data-i18n="workflow.3.text">选择合适的色彩、字体、密度、版式和参考策略。</p></li>
+            <li><b>04</b><h3 data-i18n="workflow.4.title">做成品</h3><p data-i18n="workflow.4.text">落到网页、产品界面、PPT、图形或品牌材料。</p></li>
+            <li><b>05</b><h3 data-i18n="workflow.5.title">回看交付</h3><p data-i18n="workflow.5.text">检查真实输出，修问题，补上下一位能读懂的记录。</p></li>
+          </ol>
+          <div class="reference-note" data-ud-check="reference-input">
+            <figure><img src="./assets/imagegen-homepage-reference.png" alt="Optional visual reference thumbnail for an Ultimate Design run" /></figure>
+            <p data-i18n="reference.note">有参考图就用它判断结构、气质和节奏；没有也照样继续。它是输入，不是流程的前提。</p>
           </div>
-          <p data-i18n="why.panel1.foot">DESIGN.md 不是形式，它是设计判断的账本。</p>
-        </article>
-        <article class="black-panel red" data-ud-check="why-taste-panel">
-          <div>
-            <h3 data-i18n="why.panel2.title">没有自评，默认审美会自动接管。</h3>
-            <ul class="failure-list">
-              <li data-i18n="why.panel2.1">居中大标题、三张卡片、紫蓝渐变、假截图。</li>
-              <li data-i18n="why.panel2.2">文字像翻译，按钮像占位，证据像装饰。</li>
-              <li data-i18n="why.panel2.3">最后才看一眼，重叠、贴边和怪换行已经混进成品。</li>
-            </ul>
-          </div>
-          <p data-i18n="why.panel2.foot">所以它要求先 critique，再 repair，最后才交付。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <header class="section-head">
-        <div>
-          <p class="kicker">What it is</p>
-          <h2 data-i18n="systems.title">它不是一个模板库，而是一条设计生产线。</h2>
         </div>
-        <p data-i18n="systems.lead">Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味和必要性落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。</p>
-      </header>
-      <div class="systems" data-ud-check="systems-lanes">
-        <article class="system-lane">
-          <span class="lane-index">01</span>
-          <div><h3 data-i18n="systems.1.title">合同</h3><p data-i18n="systems.1.text">记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。</p></div>
-        </article>
-        <article class="system-lane">
-          <span class="lane-index">02</span>
-          <div><h3 data-i18n="systems.2.title">知识</h3><p data-i18n="systems.2.text">网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。</p></div>
-        </article>
-        <article class="system-lane">
-          <span class="lane-index">03</span>
-          <div><h3 data-i18n="systems.3.title">品味判断</h3><p data-i18n="systems.3.text">用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。</p></div>
-        </article>
-        <article class="system-lane">
-          <span class="lane-index">04</span>
-          <div><h3 data-i18n="systems.4.title">验证</h3><p data-i18n="systems.4.text">用真实截图、语义区检查、遮挡采样、动效证据和二次自评，把低级问题拦在交付前。</p></div>
-        </article>
       </div>
     </section>
 
-    <section id="workflow" class="section workflow">
-      <aside class="workflow-stick" data-ud-check="workflow-anchor">
-        <p class="kicker" style="color: var(--paper);">Operating loop</p>
-        <h2 data-i18n="workflow.title">从一句模糊需求，到一个能交付的设计。</h2>
-      </aside>
-      <div class="flow-steps" data-ud-check="workflow-steps">
-        <article class="flow-step"><b>01</b><h3>Anchor</h3><p data-i18n="workflow.1">把原始需求、最新调整、目标受众、成功标准和非目标写下来，防止越做越偏。</p></article>
-        <article class="flow-step"><b>02</b><h3>Content</h3><p data-i18n="workflow.2">先回答用户为什么来、第一屏要懂什么、行动意味着什么，再谈版式。</p></article>
-        <article class="flow-step"><b>03</b><h3>Contract</h3><p data-i18n="workflow.3">没有 DESIGN.md 也没关系，agent 会根据上下文建立第一版合同。</p></article>
-        <article class="flow-step"><b>04</b><h3>Direction</h3><p data-i18n="workflow.4">确定品牌姿态、色彩承诺、字体性格、信息密度、图像策略、版式模型和必要性判断。</p></article>
-        <article class="flow-step"><b>05</b><h3>Optional References</h3><p data-i18n="workflow.5">参考图是可选输入。有图就吸收结构、气质和反参考；没图就继续，不默认生成。</p></article>
-        <article class="flow-step"><b>06</b><h3>Build</h3><p data-i18n="workflow.6">做出页面、PPT、图形资产、产品 UI 或品牌系统，而不是只写一段说明。</p></article>
-        <article class="flow-step"><b>07</b><h3>Critique and Repair</h3><p data-i18n="workflow.7">交付前先自查：有没有跑题、翻译腔、卡片套路、错位、拥挤、奇怪换行、假证明和不必要的装饰。</p></article>
-        <article class="flow-step"><b>08</b><h3>Verify and Govern</h3><p data-i18n="workflow.8">保存截图，跑验证，更新合同，让下一位 agent 能接着做。</p></article>
-      </div>
-    </section>
-
-    <section id="capabilities" class="section">
+    <section id="uses" class="shell section">
       <header class="section-head">
-        <div>
-          <p class="kicker">Capabilities</p>
-          <h2 data-i18n="cap.title">网页、产品、PPT、平面、品牌，都可以用同一套纪律来做。</h2>
-        </div>
-        <p data-i18n="cap.lead">不同媒介会读取不同分支知识，但共同点不变：先定义内容和判断，再做视觉和实现，最后验证。</p>
+        <div><p class="section-index">04 / WHERE IT HELPS</p><h2 data-i18n="uses.title">不同媒介，仍然可以用同一套判断。</h2></div>
+        <p data-i18n="uses.lead">做的东西不同，看的问题不同；但内容、方向、成品和复核的顺序不需要变。</p>
       </header>
-      <div class="capability-grid" data-ud-check="capability-grid">
-        <article class="capability"><h3 data-i18n="cap.1.title">官网和营销页</h3><p data-i18n="cap.1.text">从调研、想法或产品说明，做成能讲清楚价值的页面。</p></article>
-        <article class="capability"><h3 data-i18n="cap.2.title">产品 UI</h3><p data-i18n="cap.2.text">Dashboard、表单、onboarding、pricing、流程和原型。</p></article>
-        <article class="capability"><h3 data-i18n="cap.3.title">PPT / Deck</h3><p data-i18n="cap.3.text">路演、汇报、培训、产品讲解和 HTML deck。</p></article>
-        <article class="capability"><h3 data-i18n="cap.4.title">平面和社媒</h3><p data-i18n="cap.4.text">海报、banner、小红书九图、报告封面和信息图。</p></article>
-        <article class="capability"><h3 data-i18n="cap.5.title">品牌系统</h3><p data-i18n="cap.5.text">色彩、字体、识别锚点、视觉语言和跨媒介规则。</p></article>
-        <article class="capability"><h3 data-i18n="cap.6.title">审查和打磨</h3><p data-i18n="cap.6.text">检查已有设计，找出问题，修完再验证。</p></article>
+      <div class="capability-grid" data-ud-check="capability-list">
+        <article class="capability"><h3 data-i18n="use.1.title">官网与内容页</h3><p data-i18n="use.1.text">把调研、想法或产品说明，整理成读得懂的页面。</p></article>
+        <article class="capability"><h3 data-i18n="use.2.title">产品界面</h3><p data-i18n="use.2.text">Dashboard、表单、引导、定价页、流程和原型。</p></article>
+        <article class="capability"><h3 data-i18n="use.3.title">PPT / Deck</h3><p data-i18n="use.3.text">汇报、路演、培训、产品讲解和 HTML Deck。</p></article>
+        <article class="capability"><h3 data-i18n="use.4.title">平面与社媒</h3><p data-i18n="use.4.text">海报、九图、报告封面、横幅和信息图。</p></article>
+        <article class="capability"><h3 data-i18n="use.5.title">品牌规则</h3><p data-i18n="use.5.text">色彩、字体、识别点和跨媒介的使用边界。</p></article>
+        <article class="capability"><h3 data-i18n="use.6.title">审查与打磨</h3><p data-i18n="use.6.text">检查已有设计，修掉影响理解和使用的问题。</p></article>
       </div>
     </section>
 
     <section id="prompts" class="section prompt-section">
-      <div data-ud-check="prompt-intro">
-        <p class="kicker">How to prompt</p>
-        <h2 data-i18n="prompts.title">可以这样开口。</h2>
-        <p class="lead" data-i18n="prompts.lead">默认少问，先做完整初稿。你要更专业的对齐过程，就加 --pro。你有参考图就发，没有也不影响它继续设计。</p>
-      </div>
-      <div class="prompt-console" data-ud-check="prompt-console">
-        <div class="console-top"><span>$ ultimate-design</span><span id="copy-status" class="copy-status" aria-live="polite"></span></div>
-        <div class="prompt-block">
-          <article class="prompt-card">
-            <h3 data-i18n="prompt.1.title">普通页面</h3>
-            <pre id="prompt-starter" data-i18n="prompt.1.text">$ultimate-design 从零开始帮我设计这个页面。请先定内容和 DESIGN.md；如果我提供参考图，就作为可选输入吸收；没有参考图也继续选择方向。然后实现、critique、修复并验证。</pre>
-            <div class="copy-row"><button class="copy-button" type="button" data-copy-target="prompt-starter" data-i18n="prompt.copy1">复制起步 Prompt</button></div>
-          </article>
-          <article class="prompt-card">
-            <h3 data-i18n="prompt.2.title">专业确认模式</h3>
-            <pre id="prompt-pro" data-i18n="prompt.2.text">$ultimate-design --pro
-我要设计一个面向投资人的产品官网。请先跟我确认受众、信息层级、品牌姿态、颜色、字体、版式、参考图和验收标准，再开始实现。</pre>
-            <div class="copy-row"><button class="copy-button" type="button" data-copy-target="prompt-pro" data-i18n="prompt.copy2">复制 --pro Prompt</button></div>
-          </article>
-          <article class="prompt-card">
-            <h3 data-i18n="prompt.3.title">带参考图</h3>
-            <pre id="prompt-reference" data-i18n="prompt.3.text">$ultimate-design
-我会提供一张参考图。请只提取它的结构、氛围、色彩和节奏，不要照抄文字或坏排版；如果我没发图，就按内容和上下文继续设计。</pre>
-            <div class="copy-row"><button class="copy-button" type="button" data-copy-target="prompt-reference" data-i18n="prompt.copy3">复制参考图 Prompt</button></div>
-          </article>
+      <div class="shell prompt-layout">
+        <div class="section-intro" data-ud-check="prompt-intro"><p class="section-index">05 / START HERE</p><h2 data-i18n="prompts.title">用一句明确的话开始。</h2><p data-i18n="prompts.lead">普通工作直接说你要做什么。需要共同决定方向时，再加 <code>--pro</code>。</p></div>
+        <div class="prompt-console" data-ud-check="prompt-console">
+          <div class="console-bar"><span>$ ultimate-design</span><span id="copy-status" class="copy-status" aria-live="polite"></span></div>
+          <article class="prompt-card"><h3 data-i18n="prompt.1.title">先做一版</h3><pre id="prompt-starter" data-i18n="prompt.1.text">$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。</pre><div class="copy-row"><button class="copy-button" type="button" data-copy="starter" data-i18n="prompt.copy1">复制起步 Prompt</button></div></article>
+          <article class="prompt-card"><h3 data-i18n="prompt.2.title">先对齐关键选择</h3><pre id="prompt-pro" data-i18n="prompt.2.text">$ultimate-design --pro
+我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。</pre><div class="copy-row"><button class="copy-button" type="button" data-copy="pro" data-i18n="prompt.copy2">复制 --pro Prompt</button></div></article>
         </div>
       </div>
     </section>
 
-    <section id="proof" class="section proof-ledger">
-      <div data-ud-check="proof-intro">
-        <p class="kicker">Evidence</p>
-        <h2 data-i18n="proof.title">好的交付，应该留下证据。</h2>
-        <p class="lead" data-i18n="proof.lead">Ultimate Design 的成品不只是一段 HTML。它会留下合同、截图、验证结果、假设和剩余风险，让设计能被审查，也能被继续。</p>
-      </div>
-      <div class="ledger-table" data-ud-check="proof-ledger-table">
-        <div class="ledger-row"><b>DESIGN.md</b><span data-i18n="ledger.1">记录需求锚点、内容模型、视觉系统和质量门。</span><strong data-i18n="ledger.need">必需</strong></div>
-        <div class="ledger-row"><b>Reference Assets</b><span data-i18n="ledger.2">用户提供的参考图、品牌图、截图或视觉资产；没有也不阻塞流程。</span><strong data-i18n="ledger.optional">可选</strong></div>
-        <div class="ledger-row"><b>Rendered Screenshots</b><span data-i18n="ledger.3">桌面、移动端、slide 或关键状态截图，证明用户实际会看到什么。</span><strong data-i18n="ledger.need2">必需</strong></div>
-        <div class="ledger-row"><b>Visual Validation</b><span data-i18n="ledger.4">检查语义区碰撞、裁切、贴边、换行和间距。</span><strong data-i18n="ledger.need3">必需</strong></div>
-        <div class="ledger-row"><b>Review Log</b><span data-i18n="ledger.5">记录做了什么、为什么改、还有什么风险。</span><strong data-i18n="ledger.need4">必需</strong></div>
+    <section id="handoff" class="shell section">
+      <div class="handoff-layout">
+        <div class="section-intro" data-ud-check="handoff-intro"><p class="section-index">06 / HANDOFF</p><h2 data-i18n="handoff.title">交出去的，不只有一个链接。</h2><p data-i18n="handoff.lead">工作完成后，下一位人或 Agent 能看到做了什么、为什么这样做，以及还有什么没解决。</p></div>
+        <ol class="handoff-list" data-ud-check="handoff-list">
+          <li><b>01</b><strong>DESIGN.md</strong><span data-i18n="handoff.1">需求、取舍、假设和质量门写在同一个可继续的合同里。</span></li>
+          <li><b>02</b><strong data-i18n="handoff.2.title">参考输入</strong><span data-i18n="handoff.2">参考资料保留来源和用途；没有参考图也会写清楚。</span></li>
+          <li><b>03</b><strong data-i18n="handoff.3.title">真实检查</strong><span data-i18n="handoff.3">页面、幻灯片或图形按实际尺寸看过，而不是只看代码。</span></li>
+          <li><b>04</b><strong data-i18n="handoff.4.title">未解决风险</strong><span data-i18n="handoff.4">没有解决的限制和待确认项如实留下。</span></li>
+        </ol>
       </div>
     </section>
 
-    <section class="section cta-band">
-      <h2 data-ud-check="cta-headline" data-i18n="cta.title">把一句模糊需求，做成一个讲得清、看得见、验得过的设计。</h2>
+    <section class="shell final-cta">
+      <h2 data-ud-check="cta-headline" data-i18n="cta.title">从一个明确的任务开始，后面的取舍也有据可查。</h2>
       <button class="button" type="button" data-copy="starter" data-ud-check="cta-button" data-i18n="cta.copy">复制起步 Prompt</button>
     </section>
-
-    <footer class="footer">
-      <span>Ultimate Design · Official Site</span>
-      <span>Content -> DESIGN.md -> Build -> Critique -> Verify</span>
-    </footer>
   </main>
 
+  <footer class="shell footer"><span>Ultimate Design</span><span>Brief → Direction → Build → Review</span></footer>
+
   <script>
-    const copyPrompts = {
-      zh: "$ultimate-design 从零开始帮我设计这个页面。请先定内容和 DESIGN.md；如果我提供参考图，就作为可选输入吸收；没有参考图也继续选择方向。然后实现、critique、修复并验证。",
-      en: "$ultimate-design Design this page from zero. Start with the content contract and DESIGN.md. If I provide reference images, treat them as optional input; if I do not, continue from the brief and context. Then implement, critique, repair, and verify."
+    const prompts = {
+      zh: {
+        starter: "$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。",
+        pro: "$ultimate-design --pro\n我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。"
+      },
+      en: {
+        starter: "$ultimate-design Turn this research into a web page people can actually read. Shape the content and direction first, then build it, review it, and fix the obvious problems.",
+        pro: "$ultimate-design --pro\nI am making a product site for investors. First align with me on the audience, key message, brand posture, and acceptance criteria; then build it."
+      }
     };
 
     const dict = {
       zh: {
-        "brand.tagline": "AI 设计工作流",
-        "nav.workflow": "工作流",
-        "nav.capabilities": "能做什么",
-        "nav.prompts": "怎么用",
-        "nav.proof": "交付证据",
-        "header.copy": "复制起步 Prompt",
-        "hero.offer": "让 AI 设计从生成，升级成交付。",
-        "hero.lead": "它不是模板包，也不是一句“高级一点”，更不是依赖旧工具链的拼装器。它把模糊需求变成 DESIGN.md 合同、内容结构、设计方向、真实产物、批判修复和渲染验证。",
-        "hero.primary": "看完整流程",
-        "hero.secondary": "复制官网 Prompt",
-        "hero.yolo": "默认少打扰，先交付一版完整结果。",
-        "hero.pro": "需要精细把关时，先把关键选择谈清楚。",
-        "sheet.1": "需求锚点<br />原始诉求、最新调整、验收标准",
-        "sheet.2": "内容合同<br />先讲什么、后讲什么、哪些词不能乱",
-        "sheet.3": "设计方向<br />色彩、字体、版式、密度和视觉记忆点",
-        "sheet.4": "质量门<br />响应式、可访问性、截图验证、交付格式",
-        "sheet.5": "复盘记录<br />改了什么、为什么改、还剩什么风险",
-        "rail.title": "Workflow rail",
-        "rail.1": "先把需求钉住",
-        "rail.2": "先确定要讲什么",
-        "rail.3": "写入 DESIGN.md",
-        "rail.4": "选择设计方向",
-        "rail.5": "有参考就吸收，没有就继续",
-        "rail.6": "做出真实产物",
-        "rail.7": "先挑毛病再交付",
-        "rail.8": "截图验证并留痕",
-        "strip.line": "把一次模糊需求，变成可继续、可检查、可交付的设计",
-        "strip.1": "设计有依据",
-        "strip.2": "信息先成立",
-        "strip.3": "拒绝默认套路",
-        "strip.4": "结果能被检查",
-        "why.title": "AI 设计常翻车，不是因为不会画，而是因为没有过程。",
-        "why.lead": "很多页面看上去完整，其实没有回答需求；看上去热闹，其实信息层级乱了。Ultimate Design 先管住问题，再开始做视觉。",
-        "why.panel1.title": "没有合同，设计会一路漂移。",
-        "why.panel1.1": "任务越长，越容易忘记用户到底要什么。",
-        "why.panel1.2": "页面做完了，却说不清每一块为什么存在。",
-        "why.panel1.3": "下个 agent 接手时，只能重新猜风格和规则。",
-        "why.panel1.foot": "DESIGN.md 不是形式，它是设计判断的账本。",
-        "why.panel2.title": "没有自评，默认审美会自动接管。",
-        "why.panel2.1": "居中大标题、三张卡片、紫蓝渐变、假截图。",
-        "why.panel2.2": "文字像翻译，按钮像占位，证据像装饰。",
-        "why.panel2.3": "最后才看一眼，重叠、贴边和怪换行已经混进成品。",
-        "why.panel2.foot": "所以它要求先 critique，再 repair，最后才交付。",
-        "systems.title": "它不是一个模板库，而是一条设计生产线。",
-        "systems.lead": "Ultimate Design 把设计拆成四件事：把需求说清楚，把知识按需调出来，把品味和必要性落成规则，把成品拿去验证。它自带这套纪律，不要求用户再安装另一套设计 skill。",
-        "systems.1.title": "合同",
-        "systems.1.text": "记录用户诉求、内容模型、视觉系统、组件规则、假设和风险。",
-        "systems.2.title": "知识",
-        "systems.2.text": "网页、产品、PPT、平面、品牌和内容策略按任务分支读取，并绑定到具体设计决策和验证方法。",
-        "systems.3.title": "品味判断",
-        "systems.3.text": "用 taste dials、必要性判断、反默认锁和版式家族检查，避免 AI 套路感。",
-        "systems.4.title": "验证",
-        "systems.4.text": "用真实截图、语义区检查、遮挡采样、动效证据和二次自评，把低级问题拦在交付前。",
-        "workflow.title": "从一句模糊需求，到一个能交付的设计。",
-        "workflow.1": "把原始需求、最新调整、目标受众、成功标准和非目标写下来，防止越做越偏。",
-        "workflow.2": "先回答用户为什么来、第一屏要懂什么、行动意味着什么，再谈版式。",
-        "workflow.3": "没有 DESIGN.md 也没关系，agent 会根据上下文建立第一版合同。",
-        "workflow.4": "确定品牌姿态、色彩承诺、字体性格、信息密度、图像策略、版式模型和必要性判断。",
-        "workflow.5": "参考图是可选输入。有图就吸收结构、气质和反参考；没图就继续，不默认生成。",
-        "workflow.6": "做出页面、PPT、图形资产、产品 UI 或品牌系统，而不是只写一段说明。",
-        "workflow.7": "交付前先自查：有没有跑题、翻译腔、卡片套路、错位、拥挤、奇怪换行、假证明和不必要的装饰。",
-        "workflow.8": "保存截图，跑验证，更新合同，让下一位 agent 能接着做。",
-        "cap.title": "网页、产品、PPT、平面、品牌，都可以用同一套纪律来做。",
-        "cap.lead": "不同媒介会读取不同分支知识，但共同点不变：先定义内容和判断，再做视觉和实现，最后验证。",
-        "cap.1.title": "官网和营销页",
-        "cap.1.text": "从调研、想法或产品说明，做成能讲清楚价值的页面。",
-        "cap.2.title": "产品 UI",
-        "cap.2.text": "Dashboard、表单、onboarding、pricing、流程和原型。",
-        "cap.3.title": "PPT / Deck",
-        "cap.3.text": "路演、汇报、培训、产品讲解和 HTML deck。",
-        "cap.4.title": "平面和社媒",
-        "cap.4.text": "海报、banner、小红书九图、报告封面和信息图。",
-        "cap.5.title": "品牌系统",
-        "cap.5.text": "色彩、字体、识别锚点、视觉语言和跨媒介规则。",
-        "cap.6.title": "审查和打磨",
-        "cap.6.text": "检查已有设计，找出问题，修完再验证。",
-        "prompts.title": "可以这样开口。",
-        "prompts.lead": "默认少问，先做完整初稿。你要更专业的对齐过程，就加 --pro。你有参考图就发，没有也不影响它继续设计。",
-        "prompt.1.title": "普通页面",
-        "prompt.1.text": "$ultimate-design 从零开始帮我设计这个页面。请先定内容和 DESIGN.md；如果我提供参考图，就作为可选输入吸收；没有参考图也继续选择方向。然后实现、critique、修复并验证。",
+        title: "Ultimate Design - 把设计做出来，也把判断留下来",
+        description: "Ultimate Design 帮助 AI Agent 把模糊需求做成可检查、可继续的设计工作。",
+        "brand.tagline": "给 AI Agent 的设计工作流",
+        "nav.method": "怎么工作",
+        "nav.uses": "能做什么",
+        "nav.prompts": "怎么开始",
+        "nav.handoff": "交付什么",
+        "header.copy": "复制 Prompt",
+        "hero.eyebrow": "面向网页、界面、PPT 与视觉内容",
+        "hero.offer": "把设计做出来，<br />也把判断留下来。",
+        "hero.lead": "先把模糊需求理成可执行的任务；完成后看真实页面，修掉跑题、错位和含糊的表达。交付时，不只留下一个链接。",
+        "hero.primary": "看它怎么工作",
+        "hero.secondary": "复制起步 Prompt",
+        "hero.mode": "<b>默认</b>先给你一版完整结果。关键选择需要共同决定时，再用 <b>--pro</b>。",
+        "record.kicker": "一次设计，交出去什么？",
+        "record.title": "能接着用的四样东西",
+        "record.state": "RUN COMPLETE",
+        "record.1.title": "需求卡",
+        "record.1.text": "原始诉求、最新调整、验收标准。",
+        "record.2.text": "内容顺序、设计方向、假设和待确认项。",
+        "record.3.title": "真实成品",
+        "record.3.text": "网页、界面、PPT、图形或品牌材料。",
+        "record.4.title": "复核记录",
+        "record.4.text": "截图、发现的问题和仍需注意的风险。",
+        "observations.title": "一张页面，常常只完成了一半。",
+        "observations.lead": "画面做出来以后，真正的问题才露出来：需求在中途变了，内容没讲清，下一位接手的人不知道哪些是刻意选择。",
+        "observation.1.title": "需求在途中换了",
+        "observation.1.text": "原始诉求被新细节盖住，最后做出的东西已经不是一开始要解决的问题。",
+        "observation.2.title": "重要的话没有位置",
+        "observation.2.text": "内容和版式一起开工，真正需要被看懂的部分反而被装饰和组件挤到后面。",
+        "observation.3.title": "交付只剩一张图",
+        "observation.3.text": "没有取舍记录，也没有真实状态的检查，下一位只能从头猜一遍。",
+        "outputs.title": "每一次设计，都留下能继续使用的东西。",
+        "outputs.lead": "需求变了，看需求卡；换人接手，读 DESIGN.md；出现问题，回到真实页面和截图。",
+        "output.1": "这次要解决什么，谁来用，什么不能丢。",
+        "output.2": "内容顺序、视觉方向、假设和待确认项写在一起。",
+        "output.3.title": "真实复核",
+        "output.3": "用真实页面和截图看内容、层级、换行和细节是否站得住。",
+        "workflow.title": "先把事情说清，再把画面做对。",
+        "workflow.lead": "五步会留下五个可回看的点：需求、内容、方向、成品和复核。",
+        "workflow.1.title": "读需求",
+        "workflow.1.text": "保留原始诉求、最新调整和验收标准。",
+        "workflow.2.title": "理内容",
+        "workflow.2.text": "确定先让人看懂什么，哪些话必须准确。",
+        "workflow.3.title": "定方向",
+        "workflow.3.text": "选择合适的色彩、字体、密度、版式和参考策略。",
+        "workflow.4.title": "做成品",
+        "workflow.4.text": "落到网页、产品界面、PPT、图形或品牌材料。",
+        "workflow.5.title": "回看交付",
+        "workflow.5.text": "检查真实输出，修问题，补上下一位能读懂的记录。",
+        "reference.note": "有参考图就用它判断结构、气质和节奏；没有也照样继续。它是输入，不是流程的前提。",
+        "uses.title": "不同媒介，仍然可以用同一套判断。",
+        "uses.lead": "做的东西不同，看的问题不同；但内容、方向、成品和复核的顺序不需要变。",
+        "use.1.title": "官网与内容页",
+        "use.1.text": "把调研、想法或产品说明，整理成读得懂的页面。",
+        "use.2.title": "产品界面",
+        "use.2.text": "Dashboard、表单、引导、定价页、流程和原型。",
+        "use.3.title": "PPT / Deck",
+        "use.3.text": "汇报、路演、培训、产品讲解和 HTML Deck。",
+        "use.4.title": "平面与社媒",
+        "use.4.text": "海报、九图、报告封面、横幅和信息图。",
+        "use.5.title": "品牌规则",
+        "use.5.text": "色彩、字体、识别点和跨媒介的使用边界。",
+        "use.6.title": "审查与打磨",
+        "use.6.text": "检查已有设计，修掉影响理解和使用的问题。",
+        "prompts.title": "用一句明确的话开始。",
+        "prompts.lead": "普通工作直接说你要做什么。需要共同决定方向时，再加 <code>--pro</code>。",
+        "prompt.1.title": "先做一版",
+        "prompt.1.text": "$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。",
         "prompt.copy1": "复制起步 Prompt",
-        "prompt.2.title": "专业确认模式",
-        "prompt.2.text": "$ultimate-design --pro\n我要设计一个面向投资人的产品官网。请先跟我确认受众、信息层级、品牌姿态、颜色、字体、版式、参考图和验收标准，再开始实现。",
+        "prompt.2.title": "先对齐关键选择",
+        "prompt.2.text": "$ultimate-design --pro\n我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。",
         "prompt.copy2": "复制 --pro Prompt",
-        "prompt.3.title": "带参考图",
-        "prompt.3.text": "$ultimate-design\n我会提供一张参考图。请只提取它的结构、氛围、色彩和节奏，不要照抄文字或坏排版；如果我没发图，就按内容和上下文继续设计。",
-        "prompt.copy3": "复制参考图 Prompt",
-        "proof.title": "好的交付，应该留下证据。",
-        "proof.lead": "Ultimate Design 的成品不只是一段 HTML。它会留下合同、截图、验证结果、假设和剩余风险，让设计能被审查，也能被继续。",
-        "ledger.1": "记录需求锚点、内容模型、视觉系统和质量门。",
-        "ledger.2": "用户提供的参考图、品牌图、截图或视觉资产；没有也不阻塞流程。",
-        "ledger.3": "桌面、移动端、slide 或关键状态截图，证明用户实际会看到什么。",
-        "ledger.4": "检查语义区碰撞、裁切、贴边、换行和间距。",
-        "ledger.5": "记录做了什么、为什么改、还有什么风险。",
-        "ledger.need": "必需",
-        "ledger.need2": "必需",
-        "ledger.need3": "必需",
-        "ledger.need4": "必需",
-        "ledger.optional": "可选",
-        "cta.title": "把一句模糊需求，做成一个讲得清、看得见、验得过的设计。",
+        "handoff.title": "交出去的，不只有一个链接。",
+        "handoff.lead": "工作完成后，下一位人或 Agent 能看到做了什么、为什么这样做，以及还有什么没解决。",
+        "handoff.1": "需求、取舍、假设和质量门写在同一个可继续的合同里。",
+        "handoff.2.title": "参考输入",
+        "handoff.2": "参考资料保留来源和用途；没有参考图也会写清楚。",
+        "handoff.3.title": "真实检查",
+        "handoff.3": "页面、幻灯片或图形按实际尺寸看过，而不是只看代码。",
+        "handoff.4.title": "未解决风险",
+        "handoff.4": "没有解决的限制和待确认项如实留下。",
+        "cta.title": "从一个明确的任务开始，后面的取舍也有据可查。",
         "cta.copy": "复制起步 Prompt",
         "status.copied": "已复制",
         "status.failed": "复制失败"
       },
       en: {
-        "brand.tagline": "AI design workflow",
-        "nav.workflow": "Workflow",
-        "nav.capabilities": "Capabilities",
+        title: "Ultimate Design - Build the design. Keep the judgment.",
+        description: "Ultimate Design helps AI agents turn vague asks into design work people can inspect, revise, and hand off.",
+        "brand.tagline": "A design workflow for AI agents",
+        "nav.method": "Method",
+        "nav.uses": "Uses",
         "nav.prompts": "Prompts",
-        "nav.proof": "Proof",
-        "header.copy": "Copy Starter Prompt",
-        "hero.offer": "Turn AI design from generation into delivery.",
-        "hero.lead": "Ultimate Design is not a template pack, a style preset, or a wrapper around another design skill. It turns a design request into a contract: clarify the message, choose a direction, build the artifact, critique it, repair it, and verify the rendered result.",
-        "hero.primary": "See The Workflow",
-        "hero.secondary": "Copy Site Prompt",
-        "hero.yolo": "Default mode: infer first, ship a complete draft.",
-        "hero.pro": "Use --pro when key choices need explicit agreement.",
-        "sheet.1": "Request Anchor<br />Original ask, latest override, acceptance criteria",
-        "sheet.2": "Content Contract<br />Message order, terminology, copy risks",
-        "sheet.3": "Design Direction<br />Color, type, layout, density, memory feature",
-        "sheet.4": "Quality Gates<br />Responsive, accessibility, screenshots, export",
-        "sheet.5": "Review Log<br />What changed, why, remaining risks",
-        "rail.title": "Workflow rail",
-        "rail.1": "Pin the request",
-        "rail.2": "Shape the content",
-        "rail.3": "Write DESIGN.md",
-        "rail.4": "Choose direction",
-        "rail.5": "Use references if supplied",
-        "rail.6": "Build the artifact",
-        "rail.7": "Critique before delivery",
-        "rail.8": "Verify and preserve",
-        "strip.line": "Turn a fuzzy request into design work that can be continued, checked, and shipped",
-        "strip.1": "Choices have reasons",
-        "strip.2": "Content leads",
-        "strip.3": "Defaults are challenged",
-        "strip.4": "Output is checked",
-        "why.title": "AI design fails less from lack of drawing skill, and more from lack of process.",
-        "why.lead": "Many pages look complete without answering the brief. Many visuals feel busy while the hierarchy is unclear. Ultimate Design controls the problem before styling the surface.",
-        "why.panel1.title": "Without a contract, design drifts.",
-        "why.panel1.1": "Long tasks make agents forget what the user actually wanted.",
-        "why.panel1.2": "A page can be finished while each section has no clear reason to exist.",
-        "why.panel1.3": "The next agent has to guess the style, rules, and intent all over again.",
-        "why.panel1.foot": "DESIGN.md is not ceremony. It is the ledger for design judgment.",
-        "why.panel2.title": "Without critique, default taste takes over.",
-        "why.panel2.1": "Centered hero, three cards, purple gradients, fake screenshots.",
-        "why.panel2.2": "Copy feels translated, buttons feel like placeholders, proof feels decorative.",
-        "why.panel2.3": "If review happens at the end, overlaps and awkward wraps slip into the final output.",
-        "why.panel2.foot": "That is why the loop requires critique, repair, and then delivery.",
-        "systems.title": "It is not a template library. It is a design production line.",
-        "systems.lead": "Ultimate Design splits design into four operations: clarify the ask, load the right knowledge, turn taste and necessity into rules, and verify the finished artifact. The workflow is self-contained; it does not require another design skill to be useful.",
-        "systems.1.title": "Contract",
-        "systems.1.text": "Record the user ask, content model, visual system, component rules, assumptions, and risks.",
-        "systems.2.title": "Knowledge",
-        "systems.2.text": "Load only the branch needed for websites, products, decks, graphics, brands, or content, then bind it to concrete decisions and checks.",
-        "systems.3.title": "Taste Judgment",
-        "systems.3.text": "Use taste dials, necessary judgment, anti-default locks, and layout-family checks to resist AI sameness.",
-        "systems.4.title": "Verification",
-        "systems.4.text": "Use rendered screenshots, semantic-zone checks, occlusion sampling, motion evidence, and second-pass critique before delivery.",
-        "workflow.title": "From a fuzzy request to a design that can ship.",
-        "workflow.1": "Write down the original ask, latest override, audience, success criteria, and non-goals before the work drifts.",
-        "workflow.2": "Answer why the user is here, what the first screen must explain, and what the action means before layout.",
-        "workflow.3": "A missing DESIGN.md is normal. The agent creates the first contract from the prompt and context.",
-        "workflow.4": "Choose brand posture, color commitment, type personality, density, imagery, layout model, and necessary judgment.",
-        "workflow.5": "Reference images are optional. Use them when supplied; continue without generating one by default.",
-        "workflow.6": "Build the website, deck, graphic, product UI, or brand system instead of stopping at a description.",
-        "workflow.7": "Before delivery, check for drift, translation-sounding copy, card sameness, collisions, crowding, awkward wraps, fake proof, and unnecessary decoration.",
-        "workflow.8": "Save screenshots, run checks, update the contract, and leave evidence for the next agent.",
-        "cap.title": "Websites, product UI, decks, graphics, and brands can share the same discipline.",
-        "cap.lead": "Each medium loads different branch knowledge, but the sequence stays the same: define meaning, choose direction, build, critique, and verify.",
-        "cap.1.title": "Marketing Sites",
-        "cap.1.text": "Turn research, ideas, or product notes into pages that explain value clearly.",
-        "cap.2.title": "Product UI",
-        "cap.2.text": "Dashboards, forms, onboarding, pricing, flows, and prototypes.",
-        "cap.3.title": "PPT / Deck",
-        "cap.3.text": "Pitch decks, business reviews, training, product explainers, and HTML decks.",
-        "cap.4.title": "Graphics / Social",
-        "cap.4.text": "Posters, banners, carousel posts, report covers, and infographics.",
-        "cap.5.title": "Brand Systems",
-        "cap.5.text": "Color, type, identity anchors, visual language, and cross-media rules.",
-        "cap.6.title": "Audit / Polish",
-        "cap.6.text": "Review an existing design, fix issues, and verify the repaired result.",
-        "prompts.title": "Start with prompts like these.",
-        "prompts.lead": "Default mode asks less and ships a complete first pass. Add --pro when you want agreement on key choices. Send reference images if you have them; the workflow continues without them.",
-        "prompt.1.title": "Regular Page",
-        "prompt.1.text": "$ultimate-design Design this page from zero. Start with the content contract and DESIGN.md. If I provide reference images, treat them as optional input; if I do not, continue from the brief and context. Then implement, critique, repair, and verify.",
-        "prompt.copy1": "Copy Starter Prompt",
-        "prompt.2.title": "Pro Mode",
-        "prompt.2.text": "$ultimate-design --pro\nI am designing a product site for investors. First align with me on audience, hierarchy, brand posture, color, type, layout, reference images, and acceptance criteria; then implement.",
-        "prompt.copy2": "Copy --pro Prompt",
-        "prompt.3.title": "With References",
-        "prompt.3.text": "$ultimate-design\nI will provide a reference image. Extract only its structure, mood, color, and rhythm. Do not copy its text or broken layout. If I do not send the image, continue from the content and context.",
-        "prompt.copy3": "Copy Reference Prompt",
-        "proof.title": "Good delivery leaves evidence.",
-        "proof.lead": "Ultimate Design does not stop at HTML. It leaves a contract, screenshots, validation results, assumptions, and remaining risks, so the work can be reviewed and continued.",
-        "ledger.1": "Records the request anchor, content model, visual system, and quality gates.",
-        "ledger.2": "User-supplied references, brand assets, screenshots, or visual assets. Optional, never blocking by default.",
-        "ledger.3": "Desktop, mobile, slide, or key-state screenshots that show what users will actually see.",
-        "ledger.4": "Checks collisions, clipping, cramped spacing, wrapping, and semantic-zone layout.",
-        "ledger.5": "Records what changed, why it changed, and what risk remains.",
-        "ledger.need": "Required",
-        "ledger.need2": "Required",
-        "ledger.need3": "Required",
-        "ledger.need4": "Required",
-        "ledger.optional": "Optional",
-        "cta.title": "Turn a fuzzy request into design that reads clearly, renders correctly, and can be verified.",
-        "cta.copy": "Copy Starter Prompt",
+        "nav.handoff": "Handoff",
+        "header.copy": "Copy prompt",
+        "hero.eyebrow": "For web, product UI, decks, and visual work",
+        "hero.offer": "Build the design.<br />Keep the judgment.",
+        "hero.lead": "Turn a vague ask into a workable task. Then inspect the real output, fix drift and obvious failures, and hand over more than a link.",
+        "hero.primary": "See the method",
+        "hero.secondary": "Copy starter prompt",
+        "hero.mode": "<b>Default</b> ships a complete first pass. Use <b>--pro</b> when the important choices need agreement first.",
+        "record.kicker": "What leaves one design run?",
+        "record.title": "Four things someone can use next",
+        "record.state": "RUN COMPLETE",
+        "record.1.title": "Brief",
+        "record.1.text": "Original ask, latest change, acceptance criteria.",
+        "record.2.text": "Content order, direction, assumptions, and open questions.",
+        "record.3.title": "Artifact",
+        "record.3.text": "A page, interface, deck, graphic, or brand deliverable.",
+        "record.4.title": "Review record",
+        "record.4.text": "Screenshots, findings, and risks that still need attention.",
+        "observations.title": "A page can look finished and still be only half done.",
+        "observations.lead": "The real problems often show up after the first build: the brief moved, the message stayed blurry, or the next person cannot tell which choices mattered.",
+        "observation.1.title": "The brief moved",
+        "observation.1.text": "New detail covers the original job until the result solves something else.",
+        "observation.2.title": "The message has no place",
+        "observation.2.text": "Content and layout start together, so the point people need to understand gets crowded out.",
+        "observation.3.title": "Handoff is only an image",
+        "observation.3.text": "There is no record of trade-offs or real-state review. The next person has to guess again.",
+        "outputs.title": "Each run leaves material the next one can use.",
+        "outputs.lead": "When the brief changes, check the brief. When the work moves, read DESIGN.md. When something breaks, return to the page and its screenshots.",
+        "output.1": "What this run must solve, who it serves, and what cannot be lost.",
+        "output.2": "Content order, visual direction, assumptions, and open questions in one place.",
+        "output.3.title": "Rendered review",
+        "output.3": "The real page and its screenshots show whether content, hierarchy, wrapping, and details hold up.",
+        "workflow.title": "Clarify the work, then make the page.",
+        "workflow.lead": "The five steps leave five places to return to: the ask, content, direction, artifact, and review.",
+        "workflow.1.title": "Read the ask",
+        "workflow.1.text": "Keep the original request, latest change, and acceptance criteria.",
+        "workflow.2.title": "Shape the content",
+        "workflow.2.text": "Decide what people need to understand first and what language must stay exact.",
+        "workflow.3.title": "Set direction",
+        "workflow.3.text": "Choose color, type, density, layout, and a reference strategy that fit the task.",
+        "workflow.4.title": "Make the artifact",
+        "workflow.4.text": "Build the page, product UI, deck, graphic, or brand material.",
+        "workflow.5.title": "Review and hand off",
+        "workflow.5.text": "Check the real output, repair issues, and leave a record someone else can read.",
+        "reference.note": "Use a reference image for structure, mood, color, or rhythm when it helps. Continue without one when it does not.",
+        "uses.title": "Different media. The same useful checks.",
+        "uses.lead": "The deliverable changes. The order of content, direction, artifact, and review does not.",
+        "use.1.title": "Marketing and content",
+        "use.1.text": "Turn research, ideas, or product notes into a page people can follow.",
+        "use.2.title": "Product UI",
+        "use.2.text": "Dashboards, forms, onboarding, pricing, flows, and prototypes.",
+        "use.3.title": "PPT / decks",
+        "use.3.text": "Reviews, pitches, training, explainers, and HTML decks.",
+        "use.4.title": "Graphics and social",
+        "use.4.text": "Posters, carousels, report covers, banners, and infographics.",
+        "use.5.title": "Brand rules",
+        "use.5.text": "Color, type, identity anchors, and cross-medium boundaries.",
+        "use.6.title": "Audit and polish",
+        "use.6.text": "Review existing work and repair what blocks understanding or use.",
+        "prompts.title": "Start with one clear sentence.",
+        "prompts.lead": "For ordinary work, say what you need made. Add <code>--pro</code> only when the direction needs agreement first.",
+        "prompt.1.title": "Make a first pass",
+        "prompt.1.text": "$ultimate-design Turn this research into a web page people can actually read. Shape the content and direction first, then build it, review it, and fix the obvious problems.",
+        "prompt.copy1": "Copy starter prompt",
+        "prompt.2.title": "Align the important choices",
+        "prompt.2.text": "$ultimate-design --pro\nI am making a product site for investors. First align with me on the audience, key message, brand posture, and acceptance criteria; then build it.",
+        "prompt.copy2": "Copy --pro prompt",
+        "handoff.title": "Handoff is more than a link.",
+        "handoff.lead": "When the work is done, the next person or Agent can see what changed, why, and what remains unresolved.",
+        "handoff.1": "The brief, trade-offs, assumptions, and quality gates live in one contract that can be continued.",
+        "handoff.2.title": "Reference input",
+        "handoff.2": "References keep their source and purpose. The absence of an image is recorded too.",
+        "handoff.3.title": "Rendered checks",
+        "handoff.3": "The page, deck, or graphic is reviewed at the size people will actually see.",
+        "handoff.4.title": "Open risks",
+        "handoff.4": "Limits and unresolved questions stay visible instead of being silently dropped.",
+        "cta.title": "Start with a clear task. Keep the later choices traceable.",
+        "cta.copy": "Copy starter prompt",
         "status.copied": "Copied",
         "status.failed": "Copy failed"
       }
     };
 
+    function selectedLanguage() {
+      const fromUrl = new URLSearchParams(window.location.search).get("lang");
+      if (fromUrl === "zh" || fromUrl === "en") return fromUrl;
+      const saved = window.localStorage.getItem("ultimate-design-lang");
+      return saved === "zh" || saved === "en" ? saved : "zh";
+    }
+
     function setStatus(message) {
       const status = document.getElementById("copy-status");
-      if (!status) return;
       status.textContent = message;
       window.clearTimeout(setStatus.timer);
-      setStatus.timer = window.setTimeout(() => {
-        status.textContent = "";
-      }, 2200);
+      setStatus.timer = window.setTimeout(() => { status.textContent = ""; }, 1800);
     }
 
-    function languageFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const lang = params.get("lang");
-      if (lang === "en" || lang === "zh") return lang;
-      const saved = window.localStorage.getItem("ultimate-design-lang");
-      return saved === "en" || saved === "zh" ? saved : "zh";
-    }
-
-    function applyLanguage(lang) {
-      const active = dict[lang] ? lang : "zh";
-      const table = dict[active];
-      document.documentElement.lang = active === "zh" ? "zh-CN" : "en";
-      document.body.dataset.lang = active;
-      document.title = active === "zh"
-        ? "Ultimate Design - 让 AI 设计从生成升级成交付"
-        : "Ultimate Design - A Contract-Driven AI Design Workflow";
-      document.querySelectorAll("[data-i18n]").forEach((node) => {
-        const value = table[node.dataset.i18n];
-        if (typeof value !== "string") return;
-        if (value.includes("<br")) {
-          node.innerHTML = value;
-        } else {
-          node.textContent = value;
-        }
+    function applyLanguage(language) {
+      const lang = dict[language] ? language : "zh";
+      const copy = dict[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.body.dataset.lang = lang;
+      document.title = copy.title;
+      document.querySelector('meta[name="description"]').setAttribute("content", copy.description);
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const value = copy[element.dataset.i18n];
+        if (value !== undefined) element.innerHTML = value;
       });
       document.querySelectorAll("[data-lang-button]").forEach((button) => {
-        const selected = button.dataset.langButton === active;
-        button.setAttribute("aria-pressed", String(selected));
+        button.setAttribute("aria-pressed", String(button.dataset.langButton === lang));
       });
-      window.localStorage.setItem("ultimate-design-lang", active);
+      window.localStorage.setItem("ultimate-design-lang", lang);
     }
 
-    async function copyText(text) {
-      const table = dict[document.body.dataset.lang] || dict.zh;
+    async function copyPrompt(kind) {
+      const lang = document.body.dataset.lang === "en" ? "en" : "zh";
+      const value = prompts[lang][kind];
       try {
-        if (!navigator.clipboard) throw new Error("Clipboard API unavailable");
-        await navigator.clipboard.writeText(text);
-        setStatus(table["status.copied"]);
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+        } else {
+          const field = document.createElement("textarea");
+          field.value = value;
+          field.setAttribute("readonly", "");
+          field.style.position = "fixed";
+          field.style.opacity = "0";
+          document.body.appendChild(field);
+          field.select();
+          const copied = document.execCommand("copy");
+          field.remove();
+          if (!copied) throw new Error("Clipboard fallback was rejected");
+        }
+        setStatus(dict[lang]["status.copied"]);
       } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        const ok = document.execCommand("copy");
-        textarea.remove();
-        setStatus(ok ? table["status.copied"] : table["status.failed"]);
+        setStatus(dict[lang]["status.failed"]);
       }
     }
 
     document.querySelectorAll("[data-lang-button]").forEach((button) => {
-      button.addEventListener("click", () => {
-        applyLanguage(button.dataset.langButton);
-      });
+      button.addEventListener("click", () => applyLanguage(button.dataset.langButton));
     });
-
     document.querySelectorAll("[data-copy]").forEach((button) => {
-      button.addEventListener("click", () => copyText(copyPrompts[document.body.dataset.lang] || copyPrompts.zh));
+      button.addEventListener("click", () => copyPrompt(button.dataset.copy));
     });
-
-    document.querySelectorAll("[data-copy-target]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const target = document.getElementById(button.dataset.copyTarget);
-        if (target) copyText(target.textContent.trim());
-      });
-    });
-
-    applyLanguage(languageFromUrl());
+    applyLanguage(selectedLanguage());
   </script>
 </body>
 </html>
