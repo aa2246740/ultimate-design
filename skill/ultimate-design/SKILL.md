@@ -1,6 +1,6 @@
 ---
 name: ultimate-design
-description: "Contract-driven design workflow for durable visual work. Use for: DESIGN.md contracts, product UI, marketing pages, presentation decks, graphic/print assets, brand systems, content/UX writing, design critique, and rendered verification."
+description: "Contract-driven design workflow for durable visual work. Use for: DESIGN.md contracts, product UI, marketing pages, presentation decks, graphic/print assets, brand systems, content/UX writing, motion audits, design critique, and rendered verification."
 ---
 
 # Ultimate Design
@@ -47,7 +47,7 @@ If the missing detail is not a blocker, do not interrupt the user in YOLO mode. 
 
 ## Operating Loop
 
-1. **Orient.** Determine the surface: product UI, marketing website, presentation/PPT deck, graphic/print collateral, brand system, audit/polish, or design-system work. Read any existing `DESIGN.md`, design-system files, CSS/theme/tokens, representative components, screenshots, slide masters/templates, and relevant assets.
+1. **Orient.** Determine the surface: product UI, marketing website, presentation/PPT deck, graphic/print collateral, brand system, motion audit, audit/polish, or design-system work. Read any existing `DESIGN.md`, design-system files, CSS/theme/tokens, representative components, screenshots, slide masters/templates, and relevant assets.
    Completion: you can state the user, task, surface, constraints, existing visual language, and what artifact you are expected to change or create.
 
 2. **Complete the brief.** Fill the smallest useful design brief: audience, primary task, success criteria, brand tone, platform, accessibility target, technical stack, assets, optional user-supplied reference images, and output format. For presentation decks, also state audience role, meeting or reading mode, decision or action requested, duration, delivery format, brand/template constraints, and compliance risks. For product, feature, flow, dashboard, onboarding, pricing, or validation-page work, also state the product problem, user situation, desired behavior or outcome, success signal, and main tradeoff. Reference images are optional input: use them when supplied; in Pro mode ask once in a compact way whether the user has any; in YOLO mode do not block or generate one by default when none is supplied. Create a compact **Request Anchor** with the original user request, latest user override, deliverable, primary audience, core job to be done, success criteria, non-goals, must-preserve constraints, and validation checks. Use existing evidence before asking.
@@ -65,6 +65,7 @@ If the missing detail is not a blocker, do not interrupt the user in YOLO mode. 
    - `references/design-okf/systems/type-personality.md` when selecting or changing font families, type is a visual memory feature, the Chinese/English family voice or pairing is itself an art-direction decision, the user asks for stronger typography, or font licensing, CJK WebFont size, fallback, or deliverable portability may affect the result. Do not load it for mixed-script mechanics alone; use `typography-system.md` for scale, line length, line height, wrapping, overflow, optical sizing, and user text scaling.
    - `references/design-okf/systems/motion-language.md` when a visible artifact includes meaningful animation, microinteractions, page transitions, scroll storytelling, animated HTML decks, or when motion depth is above static. Do not load it for ordinary static layouts or tiny hover-only polish.
    - `references/design-okf/systems/motion-contract.md` when animation is a requested feature or delivery claim, especially SVG line/border drawing, scroll-linked or scrubbed motion, page-level reveal choreography, GSAP/ScrollTrigger work, reduced-motion behavior, or when browser evidence must prove animation correctness.
+   - `references/branch-motion-audit.md` for repo- or product-area-wide audits of existing animation: inventory, consistency, accessibility, performance, or repair. It owns the **Evidence Gate**, project audit sequence, and decision to load additional motion references. Keep a single new animation on `motion-language.md` and `motion-contract.md`.
    - `references/proof-run-html.md` when the run is in Pi, a weak/local/headless model, a non-interactive CLI, or an eval/debug mode and the requested artifact is HTML. It is the compact execution branch for artifact-first output, semantic-zone marking, coupled motion markers, and unified browser proof.
    - `references/content-model.md` when the artifact has meaningful text, UX writing, report visualization, dense content, forms, component states, localization, or when bootstrapping `DESIGN.md`.
    - `references/branch-presentation.md` for PowerPoint, Keynote, Google Slides, business presentations, investor/board/executive decks, sales or pitch decks, training decks, read-alone decks, slide redesigns, and PPTX/PDF deck delivery.

@@ -88,6 +88,7 @@ Apply the selected branch's Done Criteria rather than loading unrelated medium r
 - `branch-presentation.md`: title story, claim/evidence/action, density, charts, master, accessibility, export.
 - `graphic-print.md`: output size, viewing distance, hierarchy, crop/safe area, production and rights preflight.
 - `branch-brand-system.md`: distinctiveness, identity coherence, reusable rules, applications, governance and rights.
+- `branch-motion-audit.md`: apply its Evidence Gate and Done Criteria; finish with scoped inventory, confirmed findings, separate opportunities, selected repairs, and before/after replay.
 - `tokens-components.md`: token layers, component states, adoption, migration and regression coverage.
 - `audit-polish.md`: severity-ranked findings, repair, second critique and accepted remaining risk.
 

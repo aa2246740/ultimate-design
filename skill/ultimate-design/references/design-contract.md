@@ -258,6 +258,24 @@ Use when animation is a requested feature or final delivery claim, especially SV
 - Reduced-motion expected state:
 - Validation command and report path:
 
+## Motion Audit Summary
+
+Use only for project-level, multi-route, or multi-component motion audits:
+- Audit scope and exclusions:
+- Stack, libraries, and existing motion tokens:
+- Representative routes, components, and interactions:
+- Frequency evidence and assumptions:
+- Runtime baseline evidence:
+- Static inventory report path:
+- Evidence Gate status counts and blockers:
+- Confirmed findings and selected repairs:
+- Additive opportunities kept separate:
+- Performance evidence:
+- Reduced-motion evidence:
+- Post-fix replay evidence:
+- Detailed report or plan paths:
+- Remaining risks:
+
 ## Page Or Asset Specs
 
 For each page, screen, or graphic:

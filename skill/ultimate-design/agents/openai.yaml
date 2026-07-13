@@ -1,5 +1,5 @@
 interface:
   display_name: "Ultimate Design"
-  short_description: "Contract-driven design for UI, web, decks, graphics, brands, and critique"
+  short_description: "Contract-driven design, motion audits, and rendered verification"
   default_prompt: "Use $ultimate-design for this design task. Identify the surface, preserve the user's Request Anchor, load only the matching branch and OKF concepts, bind active knowledge to concrete decisions, create or update a compact DESIGN.md when the work is non-trivial, make the artifact, critique and repair it, then verify the final rendered output with the relevant branch gates."
   brand_color: "#0057FF"

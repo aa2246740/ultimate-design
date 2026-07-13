@@ -31,6 +31,7 @@ Use `--pro` when you want to agree on the important design choices before implem
 - HTML decks and presentation strategy
 - Posters, social graphics, and print direction
 - Brand systems, design audits, and content design
+- Project-wide motion audits and evidence-backed repair
 
 ## How It Works
 

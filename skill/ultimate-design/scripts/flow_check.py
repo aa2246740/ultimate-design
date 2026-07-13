@@ -88,6 +88,7 @@ def main() -> int:
         "graphic/print assets",
         "brand systems",
         "content/UX writing",
+        "motion audits",
         "design critique",
         "rendered verification",
     ]
@@ -903,6 +904,14 @@ def main() -> int:
         "quality-gates check executable motion contracts, display-window trigger choice, sampled SVG progress, focus-complete, exit guard, reveal flash, and validation evidence",
     )
     require(
+        "quality gates delegate project motion audit evidence",
+        "branch-motion-audit.md" in quality
+        and "Evidence Gate and Done Criteria" in quality
+        and "before/after replay" in quality
+        and "For project-level motion audits" not in quality,
+        "project motion audit judgment has one source of truth instead of a duplicate quality-gate checklist",
+    )
+    require(
         "quality gates include brand identity media production",
         "## Production Integrity" in quality
         and "platform, vendor, printer, supplier, legal, and license facts" in quality
@@ -995,6 +1004,81 @@ def main() -> int:
         and "../systems/motion-contract.md" in responsive_interaction,
         "marketing, web-product, presentation, and responsive-interaction references route requested animation behavior to motion-contract",
     )
+    motion_audit = read(root / "references" / "branch-motion-audit.md")
+    workflow_section = re.search(
+        r"^## Workflow\n\n(?P<body>.*?)(?=^## )",
+        motion_audit,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    workflow_rows = re.findall(
+        r"^\|\s*(\d+)\.\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*$",
+        workflow_section.group("body") if workflow_section else "",
+        flags=re.MULTILINE,
+    )
+    require(
+        "project motion audit branch is routed",
+        "references/branch-motion-audit.md" in skill
+        and "repo- or product-area-wide audits of existing animation" in skill
+        and "It owns the **Evidence Gate**, project audit sequence, and decision to load additional motion references" in skill
+        and "Keep a single new animation" in skill,
+        "existing codebases can route to a bounded motion governance workflow",
+    )
+    require(
+        "motion audit reuses motion sources of truth",
+        "design-okf/systems/motion-language.md" in motion_audit
+        and "design-okf/systems/motion-contract.md" in motion_audit
+        and "single source of truth for the project motion-audit process" in motion_audit
+        and "only after a repair is selected or an existing interaction contract must be browser-validated" in motion_audit
+        and "Keep duration, easing, and spring rules in those motion sources" in motion_audit,
+        "the audit branch adds process without duplicating motion knowledge",
+    )
+    require(
+        "motion audit has an explicit evidence gate",
+        "## Evidence Gate" in motion_audit
+        and "| **Candidate** |" in motion_audit
+        and "| **Vetted** |" in motion_audit
+        and "| **Confirmed** |" in motion_audit
+        and "| **Unverified** |" in motion_audit
+        and "trace, frame observation, or reproducible load condition" in motion_audit,
+        "claims advance from inventory to findings only when their required evidence exists",
+    )
+    require(
+        "motion audit steps have checkable completion criteria",
+        "| Step | Action | Completion criterion |" in motion_audit
+        and [row[0] for row in workflow_rows] == [str(number) for number in range(1, 11)]
+        and all(action.strip() and completion.strip() for _, _, action, completion in workflow_rows),
+        "each audit step ends in an exhaustive, observable completion condition",
+    )
+    require(
+        "motion audit supports bounded interaction modes",
+        "**YOLO:**" in motion_audit
+        and "**Pro:**" in motion_audit
+        and "**Audit only:**" in motion_audit
+        and "motion-plans/NNN-short-name.md" in motion_audit
+        and "only for selected deferred work" in motion_audit,
+        "the branch can repair, align, or report without plan sprawl",
+    )
+    require(
+        "design contract can persist motion audit state",
+        "## Motion Audit Summary" in read(root / "references" / "design-contract.md")
+        and "Frequency evidence and assumptions" in read(root / "references" / "design-contract.md")
+        and "Post-fix replay evidence" in read(root / "references" / "design-contract.md"),
+        "project-level motion decisions and evidence have a durable contract home",
+    )
+    motion_inventory_path = root / "scripts" / "inventory_motion.py"
+    motion_inventory = read(motion_inventory_path)
+    require(
+        "motion inventory script is non-judgmental and deterministic",
+        motion_inventory_path.exists()
+        and "ultimate-design.motion-surface.v1" in motion_inventory
+        and "Static signals are inventory only" in motion_inventory
+        and "candidate-transition-all" in motion_inventory
+        and "candidate-layout-property" in motion_inventory
+        and "review-transition-all" not in motion_inventory
+        and "prefers-reduced-motion" in motion_inventory
+        and '"root": root.name or "."' in motion_inventory,
+        "the bundled scanner inventories motion surfaces and candidates without assigning findings or exposing an absolute project root",
+    )
     require(
         "presentation branch routes taste engine",
         "design-okf/systems/taste-engine.md" in presentation_branch
@@ -1038,6 +1122,7 @@ def main() -> int:
         "presentation": presentation_branch,
         "graphic-print": graphic_branch,
         "brand-system": brand_branch,
+        "motion-audit": motion_audit,
         "tokens-components": tokens_branch,
         "audit-polish": audit,
     }
@@ -1291,6 +1376,7 @@ def main() -> int:
         "Existing OKF taxonomy, runtime-layer classification, and single-source-of-truth boundaries",
         "Web motion and animation design",
         "Motion contract, GSAP routing, display-window SVG drawing, focus-complete timing, reveal no-flash behavior, and browser-sampled motion validation",
+        "Project-wide motion audit: surface inventory, runtime baseline, evidence vetting, leverage ranking, bounded repair plans, and post-fix replay",
     ]
     for term in coverage_terms:
         require(f"research coverage: {term}", term in coverage, "anchor found" if term in coverage else "missing")
