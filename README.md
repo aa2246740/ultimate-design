@@ -6,6 +6,8 @@ It turns a design request into a usable result: clarify the brief, create a `DES
 
 Works with Codex, Claude Code, Pi Agent, and other compatible Agent Skill hosts.
 
+[![OKF BundleDex](https://bundledex.net/static-badge.svg)](https://bundledex.net)
+
 ## Install
 
 ```bash
