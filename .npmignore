@@ -1,0 +1,9 @@
+# Keep npm pack free of generated Python bytecode even if present before packing.
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+.DS_Store
+.env
+node_modules/
+*.log
+*.tmp

@@ -13,10 +13,22 @@ Read this before final delivery. Apply this core gate, the selected branch's Don
 
 - Preflight happened before direction and artifact decisions, not as post-rationalization.
 - Active references, constraints, deliberate exceptions, and verification hooks are recorded.
+- Active OKF is count-free: keep a concept Active while it adds a non-subsumed decision, failure mode, or verification obligation; there is no fixed hard or soft Active count.
 - Every active `design-okf/` concept has an `OKF Decision Bindings` row: `Reference | Decision | Artifact target | Verification`.
-- A concept that changed no decision is removed from Active references.
+- A concept that changed no decision, failure mode, or verification obligation is removed from Active references.
+- Support references must not disguise active influence; under-binding is higher product risk than over-binding.
 - Major content, layout, visual-system, interaction, motion, and production choices trace to the Request Anchor, existing contract, or a binding.
 - In monitored mode, `scripts/validate_okf_usage.py` passes.
+
+## Integration And Co-Constraint
+
+Apply when Portable Specialist mode is on, or whenever multiple independent decision owners contributed:
+
+- Every Active OKF has an accountable owner; specialist packets were integrated, not concatenated.
+- Conflict matrix entries are resolved with accept, rewrite, or explicit waive and owner.
+- Co-constraint pairs (for example a11y vs visual flourish, motion vs reduced-motion, type personality vs payload) were re-checked jointly before final write.
+- Only the Integrator wrote final artifact and `DESIGN.md`.
+- When a handoff blackboard is present, structural handoff validation passes or is reported not-run with reason.
 
 ## Content And Hierarchy
 

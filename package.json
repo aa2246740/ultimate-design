@@ -28,6 +28,7 @@
   "scripts": {
     "flow-check": "python3 skill/ultimate-design/scripts/flow_check.py skill/ultimate-design",
     "okf-graph-check": "python3 skill/ultimate-design/scripts/validate_okf_graph.py skill/ultimate-design",
+    "agent-handoff-check": "python3 skill/ultimate-design/scripts/test_agent_handoff.py",
     "install:codex": "node scripts/install-agent-skill.mjs --target codex",
     "install:claude": "node scripts/install-agent-skill.mjs --target claude-code",
     "install:pi": "node scripts/install-agent-skill.mjs --target pi-agent",

@@ -6,3 +6,8 @@ visual-check/
 ultimate-design-visual-check/
 *.log
 *.tmp
+
+# Python bytecode
+__pycache__/
+**/__pycache__/
+*.py[cod]

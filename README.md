@@ -26,6 +26,19 @@ Use $ultimate-design to turn this report into a clear visual web page. Create DE
 
 Use `--pro` when you want to agree on the important design choices before implementation.
 
+### Portable Specialist mode (optional)
+
+Default is single-agent. For multi-domain or high-risk work with independent decision clusters, the skill can use **Portable Specialist** mode: an Integrator routes concern-cluster work orders, specialists return packets only, and the Integrator remains the sole final writer of the artifact and `DESIGN.md`.
+
+```text
+Use $ultimate-design in Portable Specialist mode for this public multi-domain landing page.
+Keep Active OKF count-free. Route Narrative, Visual, and Interaction work orders on a file blackboard.
+If the host cannot spawn workers, run the same protocol as serial role-passes.
+Integrate, resolve conflicts, run co-constraint checks, then verify with validate_okf_usage.
+```
+
+Details: `skill/ultimate-design/references/multi-agent-mode.md` and templates under `skill/ultimate-design/templates/`.
+
 ## What It Covers
 
 - Websites and marketing pages
@@ -53,6 +66,7 @@ For development checks:
 ```bash
 npm run flow-check
 npm run okf-graph-check
+npm run agent-handoff-check
 npm run check-integrations
 ```
 

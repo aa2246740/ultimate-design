@@ -1,0 +1,12 @@
+[
+  {
+    "path": "references/design-okf/content/message-model.md",
+    "sha256": "d50ccbae698c30356ef21ed70d261de7813c2701627ce9dca31defcf82d0d82a",
+    "owner": "not-the-accountable-work-order"
+  },
+  {
+    "path": "references/design-okf/foundations/information-architecture.md",
+    "sha256": "25ffa2f7d6adff66a03a6f4ad7092f68e80113229621ba8775dcd1bd8e779155",
+    "owner": "wo-narrative"
+  }
+]

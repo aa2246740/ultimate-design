@@ -45,7 +45,7 @@ When creating `DESIGN.md` from scratch:
 - Fill every section with useful first-pass decisions, not placeholders, where evidence supports it.
 - Create a Request Anchor before detailed styling so the original user need stays visible through critique, verification, and final delivery.
 - Build a content model before visual direction: user intent, message hierarchy, primary action meaning, voice/tone, terminology, and state-language rules.
-- Record OKF Preflight before visual direction, then bind every active OKF concept to a decision, artifact target, and verification hook. A reference that changes no decision is not active knowledge.
+- Record OKF Preflight before visual direction, then bind every active OKF concept to a decision, artifact target, and verification hook. Active OKF is count-free: admit a concept while it adds a non-subsumed decision, failure mode, or verification obligation. A reference that changes none of those is not active knowledge.
 - Put uncertain but non-blocking decisions under `Assumptions`.
 - Put unresolved decisions that should change future work under `Open Questions`.
 - Add a review-log entry explaining that the contract was bootstrapped.
@@ -180,11 +180,16 @@ Record this before choosing visual direction or making a new artifact:
 
 ### Active OKF Concepts
 
-- List only task-facing `design-okf/` concepts that change a concrete decision.
+- List only task-facing `design-okf/` concepts that add a non-subsumed decision, failure mode, or verification obligation. There is no fixed Active count.
+- Every listed concept must appear in `## OKF Decision Bindings` with complete Decision, Artifact target, and Verification cells.
 
 ### Support References
 
-- List branch, workflow, index, governance, contract, and verification files read for execution or traceability. These are not active OKF unless promoted into the section above.
+- List branch, workflow, index, governance, contract, multi-agent protocol, and verification files read for execution or traceability. These are not active OKF unless promoted into the section above. Do not park influencing concepts here to dodge Active admission.
+
+### Execution Mode
+
+- `single-agent` (default) or `portable-specialist` with a short reason. Specialist protocol selection is semantic; parallel vs serial is a harness choice.
 
 ### Decision Record
 

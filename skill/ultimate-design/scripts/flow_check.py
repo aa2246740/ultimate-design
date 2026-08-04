@@ -36,6 +36,7 @@ def main() -> int:
         "Complete the brief.",
         "Build the content contract.",
         "Run OKF preflight.",
+        "Decide execution mode.",
         "Bootstrap the contract.",
         "Choose a direction.",
         "Make the artifact.",
@@ -120,12 +121,61 @@ def main() -> int:
         and "## Consensus" in pro_mode
         and "## Decision Snapshot" in pro_mode
         and "## Post-Consensus Gate" in pro_mode
-        and "at most two directly relevant task-facing OKF concepts" in pro_mode
+        and "There is no fixed Active OKF count" in pro_mode
+        and "distinct decision, failure mode, or verification obligation" in pro_mode
         and "### Active OKF Concepts" in pro_mode
         and "### Support References" in pro_mode
-        and "Support references do not consume the active concept budget" in pro_mode
+        and "Support references are not Active" in pro_mode
+        and "do not park influencing concepts under Support" in pro_mode
+        and "at most two directly relevant task-facing OKF concepts" not in pro_mode
         and "## Done Criteria" in pro_mode,
         "the conditional consensus branch is loadable without bloating the default workflow",
+    )
+    multi_agent = read(root / "references" / "multi-agent-mode.md")
+    require(
+        "count-free Active OKF doctrine is in main skill",
+        "Active OKF is count-free" in skill
+        and "no fixed hard or soft concurrent Active count" in skill
+        and "decision**, **failure mode**, or **verification obligation" in skill
+        and "Progressive disclosure controls discovery" in skill
+        and "Support references must not disguise active influence" in skill,
+        "Active admission is contribution-based, not a fixed concurrent count",
+    )
+    require(
+        "execution mode branch is optional and portable",
+        "Decide execution mode." in skill
+        and "Portable Specialist" in skill
+        and "references/multi-agent-mode.md" in skill
+        and "Never trigger specialist mode from Active OKF count" in skill
+        and "never assign one agent per OKF file" in skill
+        and "serial role-passes" in skill
+        and "2–4 work orders" in skill
+        and "orchestration-cost guidance" in skill,
+        "specialist protocol is optional, count-free to trigger, and serial-degradable",
+    )
+    require(
+        "portable specialist protocol reference is complete",
+        "## Protocol vs scheduling" in multi_agent
+        and "## Triggers (semantic, not count-based)" in multi_agent
+        and "## Roles" in multi_agent
+        and "## Concern-cluster routing" in multi_agent
+        and "## Blackboard layout" in multi_agent
+        and "## Single-writer rule" in multi_agent
+        and "## Integration gates" in multi_agent
+        and "## Serial degradation" in multi_agent
+        and "## Ban list" in multi_agent
+        and "One OKF = one agent" in multi_agent
+        and "Active count auto-triggers" in multi_agent
+        and "Harness-specific spawn API required" in multi_agent
+        and "templates/work-order.md" in multi_agent,
+        "multi-agent-mode documents triggers, roles, routing, blackboard, gates, bans, and serial fallback",
+    )
+    require(
+        "old Pro two-concept cap doctrine is removed",
+        "at most two directly relevant task-facing OKF concepts" not in skill
+        and "at most two directly relevant task-facing OKF concepts" not in pro_mode
+        and "at most two" not in multi_agent,
+        "removed hard Active cap wording must not remain as doctrine",
     )
     require(
         "quality gates are always loaded",
@@ -138,8 +188,8 @@ def main() -> int:
         and "before choosing a direction or making a new artifact" in skill
         and "OKF Decision Bindings" in skill
         and "Reference | Decision | Artifact target | Verification" in skill
-        and positions[3] < positions[4] < positions[5] < positions[6],
-        "OKF is loaded and bound to decisions before Bootstrap, Choose, and Make",
+        and positions[3] < positions[4] < positions[5] < positions[6] < positions[7],
+        "OKF is loaded and bound before execution-mode choice, Bootstrap, Choose, and Make",
     )
     require(
         "motion display-window default is in main skill",
@@ -654,6 +704,8 @@ def main() -> int:
         "## OKF Preflight" in contract
         and "### Active OKF Concepts" in contract
         and "### Support References" in contract
+        and "### Execution Mode" in contract
+        and "There is no fixed Active count" in contract
         and "### Decision Record" in contract
         and "Constraints extracted:" in contract
         and "Deliberate exceptions:" in contract
@@ -664,7 +716,8 @@ def main() -> int:
         "contract has OKF decision bindings",
         "## OKF Decision Bindings" in contract
         and "| Reference | Decision | Artifact target | Verification |" in contract
-        and "A reference that changes no decision is not active knowledge" in contract,
+        and "Active OKF is count-free" in contract
+        and "A reference that changes none of those is not active knowledge" in contract,
         "DESIGN.md binds active OKF concepts to concrete decisions, targets, and evidence",
     )
     require(
@@ -820,6 +873,17 @@ def main() -> int:
         and "success criteria" in quality
         and "Requirement drift" in quality,
         "quality-gates checks artifact against user-specific request",
+    )
+    require(
+        "quality gates include count-free OKF and integration duties",
+        "## OKF Evidence" in quality
+        and "Active OKF is count-free" in quality
+        and "under-binding is higher product risk" in quality
+        and "## Integration And Co-Constraint" in quality
+        and "specialist packets were integrated, not concatenated" in quality
+        and "Co-constraint pairs" in quality
+        and "Only the Integrator wrote final artifact" in quality,
+        "quality-gates enforce under-binding risk, integration, and co-constraint without Active count caps",
     )
     require(
         "quality gates include content",
@@ -1215,6 +1279,76 @@ def main() -> int:
         and "OKF Decision Bindings" in okf_usage_validator
         and "Active OKF concept has no decision binding" in okf_usage_validator,
         "local validator rejects active OKF concepts that do not bind to a decision, artifact target, and verification hook",
+    )
+    require(
+        "OKF usage validator stays count-free",
+        "at most" not in okf_usage_validator
+        and "maximum active" not in okf_usage_validator.lower()
+        and "max_active" not in okf_usage_validator
+        and "active count" not in okf_usage_validator.lower(),
+        "validate_okf_usage enforces binding completeness, not Active count caps",
+    )
+    handoff_validator_path = root / "scripts" / "validate_agent_handoff.py"
+    handoff_validator = read(handoff_validator_path) if handoff_validator_path.exists() else ""
+    require(
+        "agent handoff structural validator exists",
+        handoff_validator_path.exists()
+        and "ultimate-design.agent-handoff.v1" in handoff_validator
+        and "work_order" in handoff_validator
+        and "specialist-results" in handoff_validator
+        and "Incomplete binding" in handoff_validator
+        and "Duplicate accountable ownership" in handoff_validator
+        and "Owned Active OKF has no complete matching binding" in handoff_validator
+        and "Required blackboard artifact missing" in handoff_validator
+        and "Malformed or non-exact binding reference" in handoff_validator
+        and "Binding proposals section missing" in handoff_validator
+        and "absolute paths are forbidden" in handoff_validator
+        and "okf-read-manifest.json" in handoff_validator
+        and "64 lowercase hex" in handoff_validator
+        and "undeclared by owner work order" in handoff_validator
+        and "EXACT_OKF_RE" in handoff_validator
+        and "--require-hashes" in handoff_validator
+        and "max_active" not in handoff_validator
+        and "active count" not in handoff_validator.lower(),
+        "handoff validator checks exact paths, ownership, binding coverage, ledgers, and hashes without Active count limits",
+    )
+    handoff_test_path = root / "scripts" / "test_agent_handoff.py"
+    require(
+        "agent handoff automated tests exist",
+        handoff_test_path.exists()
+        and "AGENT HANDOFF TESTS PASS" in read(handoff_test_path)
+        and "A-blank-provenance" in read(handoff_test_path)
+        and "B-garbage-binding-ref" in read(handoff_test_path)
+        and "C-non-hex-sha-normal" in read(handoff_test_path)
+        and "D-undeclared-manifest-read" in read(handoff_test_path)
+        and "E-missing-h1-and-primary-read" in read(handoff_test_path)
+        and "Binding proposals section missing" in read(handoff_test_path),
+        "deterministic handoff test runner covers valid, invalid, and A-E adversarial cases",
+    )
+    require(
+        "portable specialist templates exist",
+        (root / "templates" / "work-order.md").exists()
+        and (root / "templates" / "specialist-result.md").exists()
+        and (root / "templates" / "integration-ledger.md").exists()
+        and (root / "templates" / "verification-ledger.md").exists()
+        and "request_anchor_ref" in read(root / "templates" / "work-order.md")
+        and "Expected result / return schema" in read(root / "templates" / "work-order.md")
+        and "work_order_id" in read(root / "templates" / "specialist-result.md")
+        and "OKF / hash provenance" in read(root / "templates" / "specialist-result.md")
+        and "Local verification evidence" in read(root / "templates" / "specialist-result.md")
+        and "Conflict matrix" in read(root / "templates" / "integration-ledger.md"),
+        "reusable work-order, result, and ledger templates are packaged with complete schemas",
+    )
+    require(
+        "portable specialist schemas require ledgers and unique ownership",
+        "Required blackboard ledgers" in multi_agent
+        and "integration-ledger.md` — ownership map" in multi_agent
+        and "exactly one" in multi_agent
+        and "accountable owner work order per Active OKF" in multi_agent
+        and "One complete row must not mask other unbound owned OKFs" in multi_agent
+        and "okf-read-manifest.json` is a **required** blackboard file" in multi_agent
+        and "only required under" not in multi_agent,
+        "protocol docs require ledgers, unique ownership, full binding coverage, and required manifest",
     )
     okf_graph_validator_path = root / "scripts" / "validate_okf_graph.py"
     okf_graph_validator = read(okf_graph_validator_path)
