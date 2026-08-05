@@ -1,6 +1,6 @@
 {
   "name": "ultimate-design-skill",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Self-contained OKF design workflow for AI agents: DESIGN.md contracts, rendered UI checks, project-wide motion audits, critique/repair, and governed delivery.",
   "type": "module",
   "private": false,
