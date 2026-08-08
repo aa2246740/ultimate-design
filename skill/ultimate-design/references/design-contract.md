@@ -4,6 +4,46 @@ The design contract is the single source of truth for project design decisions. 
 
 A missing contract is expected in many projects. Create a professional first draft yourself from the user prompt, repository context, existing copy, screenshots, visual assets, technology stack, and safe defaults. Do not ask the user to provide a `DESIGN.md`.
 
+## Design Maturity
+
+Every non-trivial contract records **Design Maturity** on a single shared `DESIGN.md` (never a second contract file for a later stage). Keep **one** `## Design Maturity` section; duplicate headings or duplicate key fields are invalid.
+
+| Status | Meaning |
+|--------|---------|
+| **Exploratory** | Direction still open; assumptions welcome; variety and alternatives allowed. |
+| **Candidate** | One direction is implemented and verified enough to prefer, but not owner-accepted as final. |
+| **Locked** | Owner-accepted system; later work defers to locked axes. |
+
+**Promotion rules:**
+
+- New work may move **Exploratory → Candidate** after one coherent direction is implemented and verified against Request Anchor and relevant gates.
+- **Locked** requires one of the **four fixed authority forms** below, or a **pre-existing locked contract** Markdown path that resolves relative to this `DESIGN.md` and itself declares `Status: Locked` under those same rules. **An agent never self-locks.**
+- **Lock authority** (only these complete strings, case-insensitive): `User accepted after Codex review` · `Design owner approved` · `Accepted by user` · `Approved by design owner`. Reject any other wording, including bare `User accepted` / `User approved`, arbitrary `after …` suffixes (`after AI guess`), questions, conditionals, agent-as-decider, Client/Stakeholder, and negation/pending/revoked language. Pre-existing form: `Pre-existing locked contract: path/to/file.md` or `… in path/to/file.md` — relative Markdown only (`.md` / `.markdown`), no absolute paths, no `..`; directories such as `ai/` or `repo/` are allowed when the file is a real locked contract.
+- When Locked, also record **Locked axes** (what must not drift). Empty axes fail. Unresolved tokens anywhere in the axes string fail (`TBD`, `pending`, `placeholder`, and similar). Negative design constraints such as `no gradients` or `never use shadows` are valid.
+- Same file across stages: refresh the one section in place; do not spawn `DESIGN-v2.md` or parallel system files for maturity alone.
+
+## Visual Fingerprint
+
+When the artifact has durable visible structure, record a compact **Visual Fingerprint** (search memory for later runs, not a style costume):
+
+- Surface / page shape
+- Entry / hero pattern
+- Section / content rhythm
+- Navigation / footer / chrome
+- Typography roles
+- Imagery / evidence strategy
+- Motion behavior
+- Intentional repetition (and functional/brand reason)
+- Locked axes
+- Allowed variation
+
+Use fingerprint comparison to notice default attractors. Intentional repetition passes when the reason is recorded. Locked brand or layout axes override novelty.
+
+## Reference Study And Exports
+
+- **Reference Study** — when a study will govern work, record source mode, provenance/rights, mechanisms adopted, signature exclusions, and evidence confidence in this same contract (see `reference-study.md`).
+- **Export Targets** — list CSS tokens, DTCG `tokens.json`, Tailwind `@theme`, shadcn variables, or similar **only when the user requests exports and paths point at real artifact files**. Do not invent export sections for empty promises.
+
 ## Compatibility Target
 
 When the file is named `DESIGN.md`, treat Google Labs `design.md` as the primary compatibility target:
@@ -150,6 +190,13 @@ List concrete, enforceable rules and forbidden patterns.
 - Do not invent persistent visual tokens without updating this file.
 - Return a short self-check for meaningful UI changes.
 
+## Design Maturity
+
+- Status: Exploratory
+- Lock authority:
+- Locked axes:
+- Allowed variation:
+
 ## Request Anchor
 
 - Original user request:
@@ -161,6 +208,38 @@ List concrete, enforceable rules and forbidden patterns.
 - Non-goals:
 - Must preserve:
 - Validation must check against:
+
+## Visual Fingerprint
+
+Use when durable visible structure matters:
+
+- Surface / page shape:
+- Entry / hero:
+- Section / content rhythm:
+- Navigation / footer / chrome:
+- Typography roles:
+- Imagery / evidence strategy:
+- Motion behavior:
+- Intentional repetition:
+- Locked axes:
+- Allowed variation:
+
+## Reference Study
+
+Use when an external or local reference governs the work:
+
+- Source mode:
+- Provenance / rights:
+- Mechanisms adopted:
+- Signature exclusions:
+- Evidence confidence:
+- Date:
+
+## Export Targets
+
+Use only when requested and backed by real paths:
+
+- targets and artifact paths:
 
 ## Content Model
 
@@ -402,6 +481,10 @@ Use only when relevant:
 |---|---|---|---|---|
 | 0.1 |  | Initial draft |  |  |
 ```
+
+When promoting to Locked later, replace the Design Maturity field values in place (still one section). Valid authority examples (write as field values, do not paste a second Status block into the template): `User accepted after Codex review`, `Design owner approved`, `Accepted by user`, `Approved by design owner`. Valid axes may include negative constraints such as `no gradients` or `never use shadows`.
+
+
 
 ## Contract Hygiene
 

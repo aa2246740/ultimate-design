@@ -301,6 +301,525 @@ def check_request_anchor(body: str, strict: bool, reporter: Reporter) -> None:
             reporter.error(f"Request Anchor field is empty: {field}")
 
 
+
+VALID_MATURITY_STATUS = re.compile(r"^(Exploratory|Candidate|Locked)$", re.I)
+EMPTY_OR_PUNCT_FIELD = re.compile(r"^(?:n/?a|none|\.+|—|-|–|\(required.*\))$", re.I)
+
+# Unresolved tokens anywhere in Locked axes (design negatives like "no gradients" stay valid).
+AXES_UNRESOLVED_TOKEN = re.compile(
+    r"(?i)\b(?:tbd|todo|unknown|placeholder|pending|awaiting|n/?a|none)\b"
+)
+
+# Four fixed Lock authority forms only (case-insensitive; flexible horizontal space).
+VALID_LOCK_AUTHORITY_FORMS = (
+    re.compile(r"(?i)^[ \t]*user[ \t]+accepted[ \t]+after[ \t]+codex[ \t]+review[ \t]*$"),
+    re.compile(r"(?i)^[ \t]*design[ \t]+owner[ \t]+approved[ \t]*$"),
+    re.compile(r"(?i)^[ \t]*accepted[ \t]+by[ \t]+user[ \t]*$"),
+    re.compile(r"(?i)^[ \t]*approved[ \t]+by[ \t]+design[ \t]+owner[ \t]*$"),
+)
+
+PREEXISTING_LOCKED_CONTRACT = re.compile(
+    r"(?i)^[ \t]*pre-existing[ \t]+locked[ \t]+contract[ \t]*"
+    r"(?::[ \t]*|[ \t]+in[ \t]+)([^\n]+?)[ \t]*$"
+)
+MARKDOWN_CONTRACT_SUFFIXES = {".md", ".markdown"}
+
+# Bound pre-existing reference walk well below sys.getrecursionlimit() (~1000).
+MAX_PREEXISTING_DEPTH = 32
+
+MATURITY_KEY_FIELDS = ("Status", "Lock authority", "Locked axes")
+MATURITY_HEADING_RE = re.compile(r"(?mi)^##[ \t]+Design Maturity[ \t]*$")
+
+
+def _maturity_field_values(maturity: str, field: str) -> list[str]:
+    """Line-safe field parse: horizontal space only; bullets -, *, +; no cross-line capture."""
+    pattern = re.compile(
+        rf"(?mi)^[ \t]*(?:[-*+][ \t]+)?{re.escape(field)}[ \t]*:[ \t]*([^\n]*)$"
+    )
+    return [match.group(1).rstrip() for match in pattern.finditer(maturity)]
+
+
+def _maturity_issue(reporter: "Reporter", strict: bool, message: str) -> None:
+    if strict:
+        reporter.error(message)
+    else:
+        reporter.warn(message)
+
+
+def _is_invalid_locked_axes(value: str) -> bool:
+    text = value.strip()
+    if not text:
+        return True
+    if EMPTY_OR_PUNCT_FIELD.match(text):
+        return True
+    if AXES_UNRESOLVED_TOKEN.search(text):
+        return True
+    return False
+
+
+def _resolve_preexisting_target(
+    target: str, contract_path: Path | None
+) -> tuple[Path | None, str | None]:
+    """Return (resolved_path, error_message).
+
+    Security is structural only: controlled relative Markdown path, no absolute path,
+    no parent traversal, resolved within the DESIGN.md directory, and is_file().
+    Directory vocabulary (ai/, repo/, codex/, pending/) is not blacklisted.
+    """
+    raw = target.strip().strip("`\"'")
+    if not raw:
+        return None, "empty pre-existing contract path"
+    if raw.startswith("/") or re.match(r"^[A-Za-z]:[\\/]", raw):
+        return None, "absolute pre-existing contract path is not allowed"
+    path = Path(raw)
+    if ".." in path.parts:
+        return None, "pre-existing contract path must not traverse parent directories"
+    if path.suffix.lower() not in MARKDOWN_CONTRACT_SUFFIXES:
+        return None, "pre-existing contract path must be a Markdown file (.md or .markdown)"
+    if contract_path is None:
+        return None, "pre-existing contract path requires validating a real DESIGN.md path"
+    base = contract_path.resolve().parent
+    resolved = (base / path).resolve()
+    try:
+        resolved.relative_to(base)
+    except ValueError:
+        return None, "pre-existing contract path escapes the DESIGN.md directory"
+    if not resolved.is_file():
+        return None, f"pre-existing contract file does not exist: {raw}"
+    return resolved, None
+
+
+def _is_valid_role_authority_statement(text: str) -> bool:
+    """True only for the four documented fixed authority forms."""
+    cleaned = text.strip()
+    if not cleaned:
+        return False
+    return any(pattern.fullmatch(cleaned) for pattern in VALID_LOCK_AUTHORITY_FORMS)
+
+
+def _referenced_contract_is_locked(
+    path: Path,
+    *,
+    strict: bool,
+    reporter: "Reporter",
+    visited: set[Path],
+    depth: int,
+) -> bool:
+    """Referenced contract must itself be Locked with valid User/Design owner authority.
+
+    ``depth`` counts pre-existing hops; fails with a normal finding at
+    MAX_PREEXISTING_DEPTH (32), well below the interpreter recursion limit.
+    """
+    if depth >= MAX_PREEXISTING_DEPTH:
+        _maturity_issue(
+            reporter,
+            strict,
+            f"Pre-existing locked contract reference depth exceeds "
+            f"{MAX_PREEXISTING_DEPTH}.",
+        )
+        return False
+    resolved = path.resolve()
+    if resolved in visited:
+        _maturity_issue(
+            reporter,
+            strict,
+            "Pre-existing locked contract reference loop detected.",
+        )
+        return False
+    visited = set(visited)
+    visited.add(resolved)
+    try:
+        text = resolved.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        _maturity_issue(
+            reporter,
+            strict,
+            f"Pre-existing locked contract file unreadable or invalid encoding: "
+            f"{resolved.name} ({exc})",
+        )
+        return False
+    _, body = extract_frontmatter(text)
+    nested = Reporter()
+    check_design_maturity(
+        body,
+        nested,
+        strict=True,
+        contract_path=resolved,
+        _visited=visited,
+        _depth=depth + 1,
+    )
+    if nested.errors:
+        structural = [
+            e
+            for e in nested.errors
+            if any(
+                key in e
+                for key in (
+                    "depth exceeds",
+                    "loop detected",
+                    "unreadable",
+                    "invalid encoding",
+                )
+            )
+        ]
+        if structural:
+            for message in structural:
+                _maturity_issue(reporter, strict, message)
+        else:
+            _maturity_issue(
+                reporter,
+                strict,
+                "Pre-existing locked contract must declare Status Locked with valid "
+                f"User/Design owner authority and locked axes ({resolved.name}).",
+            )
+        return False
+    maturity = section_text(body, "Design Maturity") or ""
+    statuses = _maturity_field_values(maturity, "Status")
+    if not statuses or statuses[0].strip().lower() != "locked":
+        _maturity_issue(
+            reporter,
+            strict,
+            f"Pre-existing locked contract is not Status Locked: {resolved.name}",
+        )
+        return False
+    return True
+
+
+def _is_valid_lock_authority(
+    value: str,
+    *,
+    contract_path: Path | None,
+    strict: bool,
+    reporter: "Reporter",
+    visited: set[Path],
+    depth: int,
+) -> bool:
+    text = value.strip()
+    preexisting = PREEXISTING_LOCKED_CONTRACT.match(text)
+    if preexisting:
+        target = preexisting.group(1).strip()
+        resolved, err = _resolve_preexisting_target(target, contract_path)
+        if err or resolved is None:
+            return False
+        return _referenced_contract_is_locked(
+            resolved,
+            strict=strict,
+            reporter=reporter,
+            visited=visited,
+            depth=depth,
+        )
+    if re.match(r"(?i)^[ \t]*pre-existing[ \t]+locked[ \t]+contract[ \t]*$", text):
+        return False
+    return _is_valid_role_authority_statement(text)
+
+
+def check_design_maturity(
+    body: str,
+    reporter: "Reporter",
+    *,
+    strict: bool = False,
+    contract_path: Path | None = None,
+    _visited: set[Path] | None = None,
+    _depth: int = 0,
+) -> None:
+    """Validate Design Maturity when present.
+
+    Missing section is always a no-op. When present, ``strict`` controls
+    error vs warning. ``contract_path`` enables pre-existing contract path checks.
+    ``_depth`` bounds pre-existing reference walks (max MAX_PREEXISTING_DEPTH).
+    """
+    visited = _visited if _visited is not None else set()
+    heading_count = len(MATURITY_HEADING_RE.findall(body))
+    if heading_count == 0:
+        return
+    if heading_count > 1:
+        _maturity_issue(
+            reporter,
+            strict,
+            "Design Maturity has duplicate section headings; keep one authoritative section.",
+        )
+
+    maturity = section_text(body, "Design Maturity")
+    if maturity is None:
+        return
+
+    for field in MATURITY_KEY_FIELDS:
+        values = _maturity_field_values(maturity, field)
+        if len(values) > 1:
+            _maturity_issue(
+                reporter,
+                strict,
+                f"Design Maturity has duplicate {field} fields.",
+            )
+
+    statuses = _maturity_field_values(maturity, "Status")
+    if not statuses:
+        _maturity_issue(
+            reporter,
+            strict,
+            "Design Maturity section present but Status is missing.",
+        )
+        return
+
+    status = statuses[0].strip()
+    if not VALID_MATURITY_STATUS.fullmatch(status):
+        _maturity_issue(
+            reporter,
+            strict,
+            "Design Maturity Status must be exactly Exploratory, Candidate, or Locked "
+            f"(got {status!r}).",
+        )
+        return
+
+    if status.lower() != "locked":
+        return
+
+    authorities = _maturity_field_values(maturity, "Lock authority")
+    axes_list = _maturity_field_values(maturity, "Locked axes")
+    auth_val = authorities[0].strip() if authorities else ""
+    axes_val = axes_list[0].strip() if axes_list else ""
+    issue_count_before = len(reporter.errors) + len(reporter.warnings)
+    if not _is_valid_lock_authority(
+        auth_val,
+        contract_path=contract_path,
+        strict=strict,
+        reporter=reporter,
+        visited=visited,
+        depth=_depth,
+    ):
+        if len(reporter.errors) + len(reporter.warnings) == issue_count_before:
+            _maturity_issue(
+                reporter,
+                strict,
+                "Locked Design Maturity requires Lock authority as one of the four "
+                "documented forms (User accepted after Codex review; Design owner approved; "
+                "Accepted by user; Approved by design owner) or a pre-existing locked "
+                "Markdown contract path that itself is Locked under those rules.",
+            )
+    if _is_invalid_locked_axes(axes_val):
+        _maturity_issue(
+            reporter,
+            strict,
+            "Locked Design Maturity requires non-empty Locked axes without unresolved "
+            "tokens such as TBD/pending/placeholder (negative design constraints are allowed).",
+        )
+
+
+def _minimal_maturity_probe_body(maturity_block: str | None) -> str:
+    base = (
+        "# Design System\n\n## Overview\nProbe.\n\n## Colors\nok\n\n"
+        "## Typography\nok\n\n## Layout\nok\n\n## Elevation & Depth\nok\n\n"
+        "## Shapes\nok\n\n## Components\nok\n\n## Do's and Don'ts\nok\n"
+    )
+    if maturity_block:
+        return base + "\n" + maturity_block + "\n"
+    return base
+
+
+def run_maturity_smoke_tests() -> list[str]:
+    """Compact installable smoke suite — core parser viability only.
+
+    Always available in the published package. Does not load repo-only tests/.
+    """
+    failures: list[str] = []
+
+    def errs(block: str | None, *, strict: bool = True) -> list[str]:
+        reporter = Reporter()
+        check_design_maturity(
+            _minimal_maturity_probe_body(block), reporter, strict=strict
+        )
+        return list(reporter.errors)
+
+    def warns(block: str | None) -> list[str]:
+        reporter = Reporter()
+        check_design_maturity(
+            _minimal_maturity_probe_body(block), reporter, strict=False
+        )
+        return list(reporter.warnings)
+
+    # missing section is a no-op
+    if errs(None, strict=True):
+        failures.append(f"missing section should be silent: {errs(None)}")
+
+    # Draft: non-strict warn-only; strict error
+    draft = "## Design Maturity\n\n- Status: Draft\n"
+    if errs(draft, strict=False):
+        failures.append(f"Draft non-strict must be 0 errors: {errs(draft, strict=False)}")
+    if not warns(draft):
+        failures.append("Draft non-strict must warn")
+    if not errs(draft, strict=True):
+        failures.append("Draft strict must error")
+
+    # valid Locked authority (documented four forms only)
+    locked_ok = (
+        "## Design Maturity\n\n- Status: Locked\n"
+        "- Lock authority: User accepted after Codex review\n"
+        "- Locked axes: color, type\n"
+    )
+    if errs(locked_ok, strict=True):
+        failures.append(f"valid User accepted after Codex review should pass: {errs(locked_ok)}")
+
+    # negative axes language allowed; unresolved token anywhere fails
+    axes_ok = (
+        "## Design Maturity\n\n- Status: Locked\n"
+        "- Lock authority: Design owner approved\n"
+        "- Locked axes: no gradients, never use shadows\n"
+    )
+    if errs(axes_ok, strict=True):
+        failures.append(f"negative axes language should pass: {errs(axes_ok)}")
+    axes_tbd = (
+        "## Design Maturity\n\n- Status: Locked\n"
+        "- Lock authority: Design owner approved\n"
+        "- Locked axes: color, TBD\n"
+    )
+    if not errs(axes_tbd, strict=True):
+        failures.append("axes containing TBD must fail")
+
+    # empty axes must not swallow next field
+    empty_axes = (
+        "## Design Maturity\n\n- Status: Locked\n"
+        "- Lock authority: Accepted by user\n"
+        "- Locked axes:\n"
+        "- Allowed variation: no gradients\n"
+    )
+    if not errs(empty_axes, strict=True):
+        failures.append("empty Locked axes must fail")
+
+    # + bullet duplicate Status
+    plus_dup = (
+        "## Design Maturity\n\n- Status: Candidate\n"
+        "+ Status: Locked\n"
+        "- Lock authority: Approved by design owner\n"
+        "- Locked axes: color\n"
+    )
+    if not any("duplicate Status" in e for e in errs(plus_dup, strict=True)):
+        failures.append(f"+ bullet Status duplicate must fail: {errs(plus_dup)}")
+
+    # reject non-fixed authority forms
+    for bad in (
+        "User accepted",
+        "User accepted after AI guess",
+        "User accepted?",
+        "Client signed off",
+        "approved by Codex",
+    ):
+        block = (
+            "## Design Maturity\n\n- Status: Locked\n"
+            f"- Lock authority: {bad}\n"
+            "- Locked axes: color\n"
+        )
+        if not errs(block, strict=True):
+            failures.append(f"authority must fail: {bad!r}")
+
+    # line-safe field parse: prose + bullet counted together
+    mixed = (
+        "## Design Maturity\n\n- Status: Candidate\n"
+        "Status: Locked\n"
+        "- Lock authority: User accepted after Codex review\n"
+        "- Locked axes: color\n"
+    )
+    if not any("duplicate Status" in e for e in errs(mixed, strict=True)):
+        failures.append(f"mixed bullet/prose Status duplicate must fail: {errs(mixed)}")
+
+    # depth bound: deep acyclic chain must not RecursionError
+    try:
+        with __import__("tempfile").TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            # chain file_0 -> file_1 -> ... -> file_40 each Locked with pre-existing
+            n = MAX_PREEXISTING_DEPTH + 5
+            for i in range(n - 1, -1, -1):
+                p = root / f"c{i}.md"
+                if i == n - 1:
+                    auth = "Design owner approved"
+                    body = (
+                        "# Design System\n\n## Overview\nx\n\n## Design Maturity\n\n"
+                        f"- Status: Locked\n- Lock authority: {auth}\n"
+                        "- Locked axes: color\n"
+                    )
+                else:
+                    body = (
+                        "# Design System\n\n## Overview\nx\n\n## Design Maturity\n\n"
+                        "- Status: Locked\n"
+                        f"- Lock authority: Pre-existing locked contract: c{i + 1}.md\n"
+                        "- Locked axes: color\n"
+                    )
+                p.write_text(body, encoding="utf-8")
+            rep = Reporter()
+            check_design_maturity(
+                (root / "c0.md").read_text(encoding="utf-8"),
+                rep,
+                strict=True,
+                contract_path=root / "c0.md",
+            )
+            if not rep.errors:
+                failures.append("deep acyclic pre-existing chain must fail at max depth")
+            if any("RecursionError" in e for e in rep.errors):
+                failures.append("deep chain must not surface RecursionError")
+    except RecursionError:
+        failures.append("deep acyclic pre-existing chain raised RecursionError")
+
+    # non-UTF-8 target must not raise UnicodeDecodeError
+    try:
+        with __import__("tempfile").TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bad = root / "binary.md"
+            bad.write_bytes(b"\xff\xfe not utf8 \x00\x01")
+            design = root / "DESIGN.md"
+            design.write_text(
+                _minimal_maturity_probe_body(
+                    "## Design Maturity\n\n- Status: Locked\n"
+                    "- Lock authority: Pre-existing locked contract: binary.md\n"
+                    "- Locked axes: color\n"
+                ),
+                encoding="utf-8",
+            )
+            rep = Reporter()
+            check_design_maturity(
+                design.read_text(encoding="utf-8"),
+                rep,
+                strict=True,
+                contract_path=design,
+            )
+            if not rep.errors:
+                failures.append("non-UTF-8 pre-existing target must fail validation")
+    except UnicodeError:
+        failures.append("non-UTF-8 pre-existing target raised UnicodeError")
+
+    return failures
+
+
+def run_maturity_self_tests() -> list[str]:
+    """Self-test entry used by CLI and flow-check.
+
+    Prefer the comprehensive repo-only suite when ``tests/test_design_maturity.py``
+    is present. Fall back to the compact installable smoke suite otherwise so
+    published packages never fail solely because tests/ was excluded from pack.
+    """
+    smoke = run_maturity_smoke_tests()
+    repo_root = Path(__file__).resolve().parents[3]
+    test_path = repo_root / "tests" / "test_design_maturity.py"
+    if not test_path.is_file():
+        return smoke
+
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("ud_test_design_maturity", test_path)
+    if spec is None or spec.loader is None:
+        smoke.append(f"unable to load comprehensive maturity tests from {test_path}")
+        return smoke
+    mod = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(mod)
+    except Exception as exc:  # pragma: no cover - defensive for broken checkout
+        smoke.append(f"comprehensive maturity tests failed to import: {exc}")
+        return smoke
+    if not hasattr(mod, "run_maturity_self_tests"):
+        smoke.append("comprehensive suite missing run_maturity_self_tests()")
+        return smoke
+    # Comprehensive suite is the source of truth in a full checkout.
+    return list(mod.run_maturity_self_tests())
+
+
 def check_okf_preflight(body: str, strict: bool, reporter: Reporter) -> None:
     preflight = section_text(body, "OKF Preflight")
     if preflight is None:
@@ -372,6 +891,12 @@ def validate(path: Path, require_frontmatter: bool, strict_ultimate: bool) -> tu
     check_ultimate_sections(section_names, strict_ultimate, reporter)
     check_request_anchor(body, strict_ultimate, reporter)
     check_okf_preflight(body, strict_ultimate, reporter)
+    check_design_maturity(
+        body,
+        reporter,
+        strict=strict_ultimate,
+        contract_path=path,
+    )
 
     summary = {
         "path": str(path),
@@ -389,7 +914,22 @@ def main() -> int:
     parser.add_argument("--require-frontmatter", action="store_true", help="Treat missing YAML front matter as an error.")
     parser.add_argument("--strict-ultimate", action="store_true", help="Treat missing ultimate-design extension sections as errors.")
     parser.add_argument("--json", action="store_true", help="Print JSON summary.")
+    parser.add_argument(
+        "--self-test-maturity",
+        action="store_true",
+        help="Run Design Maturity regression cases and exit (ignores path).",
+    )
     args = parser.parse_args()
+
+    if args.self_test_maturity:
+        failures = run_maturity_self_tests()
+        if failures:
+            print("DESIGN MATURITY SELF-TEST FAIL")
+            for item in failures:
+                print(f"FAIL {item}")
+            return 1
+        print("DESIGN MATURITY SELF-TEST PASS")
+        return 0
 
     path = Path(args.path).resolve()
     if not path.exists():

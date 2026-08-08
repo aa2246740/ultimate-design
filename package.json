@@ -34,7 +34,8 @@
     "install:pi": "node scripts/install-agent-skill.mjs --target pi-agent",
     "install:all": "node scripts/install-agent-skill.mjs --target all",
     "check-integrations": "node scripts/check-agent-integrations.mjs",
-    "scan-release": "! rg -n \"(/Users/|npm_[A-Za-z0-9]|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'"
+    "scan-release": "! rg -n \"(/Users/|npm_[A-Za-z0-9]|api[_-]?key|secret|password|OPENAI|ANTHROPIC)\" . --glob '!node_modules/**' --glob '!package.json'",
+    "maturity-self-test": "python3 skill/ultimate-design/scripts/validate_design_contract.py --self-test-maturity"
   },
   "pi": {
     "skills": [

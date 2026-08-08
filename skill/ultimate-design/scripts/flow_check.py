@@ -23,6 +23,98 @@ def frontmatter(text: str) -> str | None:
     return match.group(1) if match else None
 
 
+# Neutral composition family fields — open-set, no fixed family name catalog.
+COMPOSITION_FAMILY_FIELDS = (
+    "**Use when:**",
+    "**Avoid when:**",
+    "**Format / responsive collapse:**",
+    "**Variation axes:**",
+    "**Common failure:**",
+)
+COMPOSITION_MIN_FAMILIES = 5
+_FAMILY_SECTION_RE = re.compile(
+    r"(?ms)^##\s+Family Contract\s*$\n(?P<body>.*?)(?=^##\s+|\Z)"
+)
+_FAMILY_HEADING_RE = re.compile(r"(?m)^###\s+(.+?)\s*$")
+
+
+def composition_family_contract_errors(
+    text: str, *, min_families: int = COMPOSITION_MIN_FAMILIES
+) -> list[str]:
+    """Parse composition family examples generically; return human-readable errors."""
+    errors: list[str] = []
+    section_match = _FAMILY_SECTION_RE.search(text)
+    if not section_match:
+        return ["Family Contract section missing"]
+    section = section_match.group("body")
+    headings = list(_FAMILY_HEADING_RE.finditer(section))
+    if len(headings) < min_families:
+        errors.append(
+            f"need at least {min_families} family examples, found {len(headings)}"
+        )
+    for index, match in enumerate(headings):
+        start = match.start()
+        end = headings[index + 1].start() if index + 1 < len(headings) else len(section)
+        block = section[start:end]
+        title = match.group(1).strip()
+        for field in COMPOSITION_FAMILY_FIELDS:
+            if field not in block:
+                errors.append(f"{title}: missing {field}")
+    return errors
+
+
+def composition_family_open_set_self_test() -> list[str]:
+    """Prove family names/order are not hard-coded and required fields still bind."""
+    failures: list[str] = []
+
+    def synth(families: list[tuple[str, bool]]) -> str:
+        chunks = ["## Family Contract\n"]
+        for title, complete in families:
+            chunks.append(f"### {title}\n")
+            chunks.append("- **Use when:** example\n")
+            chunks.append("- **Avoid when:** example\n")
+            if complete:
+                chunks.append("- **Format / responsive collapse:** example\n")
+                chunks.append("- **Variation axes:** example\n")
+                chunks.append("- **Common failure:** example\n")
+            else:
+                chunks.append("- **Format / responsive collapse:** example\n")
+                chunks.append("- **Variation axes:** example\n")
+                # omit Common failure deliberately
+            chunks.append("\n")
+        chunks.append("## Candidate Protocol\n")
+        return "".join(chunks)
+
+    renamed = synth(
+        [
+            ("Renamed Alpha Shape", True),
+            ("Beta Reordered", True),
+            ("Gamma Extra", True),
+            ("Delta New", True),
+            ("Epsilon Added", True),
+        ]
+    )
+    renamed_errors = composition_family_contract_errors(renamed)
+    if renamed_errors:
+        failures.append(f"rename/reorder should pass: {renamed_errors}")
+
+    incomplete = synth(
+        [
+            ("One", True),
+            ("Two", True),
+            ("Three", True),
+            ("Four", True),
+            ("Five Missing Field", False),
+        ]
+    )
+    incomplete_errors = composition_family_contract_errors(incomplete)
+    if not any("Common failure" in err for err in incomplete_errors):
+        failures.append(
+            f"missing required field should fail: got {incomplete_errors}"
+        )
+    return failures
+
+
 def main() -> int:
     root = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
     checks: list[tuple[str, bool, str]] = []
@@ -90,14 +182,26 @@ def main() -> int:
         "brand systems",
         "content/UX writing",
         "motion audits",
-        "design critique",
+        "design audits",
+        "redesigns",
+        "studying screenshots",
+        "local artifacts",
         "rendered verification",
     ]
     missing_triggers = [term for term in branch_triggers if term not in description]
     require(
         "description has one trigger per branch",
-        not missing_triggers and len(description) <= 320,
+        not missing_triggers and len(description) <= 360,
         "all branch triggers present and concise" if not missing_triggers else ", ".join(missing_triggers),
+    )
+    openai_yaml = read(root / "agents" / "openai.yaml")
+    require(
+        "openai.yaml routes task selection before artifact work",
+        "Build, Audit, Redesign, or Study" in openai_yaml
+        and "diagnosis-only" in openai_yaml
+        and "apply or build" in openai_yaml
+        and "always make" not in openai_yaml.lower(),
+        "Codex interface prompt selects Task Route; Audit/Study do not always make artifacts",
     )
     require(
         "yolo mode is default",
@@ -286,6 +390,250 @@ def main() -> int:
         and "user success criteria" in skill
         and "How the result maps back" in skill,
         "verify and final response must map back to user request",
+    )
+
+    # --- Hallmark-distilled mechanisms (generic, no product catalog) ---
+    require(
+        "task routes are defined",
+        "## Task Routes" in skill
+        and "**Build** (default)" in skill
+        and "**Audit**" in skill
+        and "**Redesign**" in skill
+        and "**Study**" in skill
+        and "YOLO / Pro stay independent" in skill,
+        "four Task Routes are named separately from Interaction Modes",
+    )
+    require(
+        "task route pointer ownership",
+        "references/audit-polish.md" in skill
+        and "references/reference-study.md" in skill
+        and "Audit and Redesign routes" in skill
+        and "Study route" in skill,
+        "Audit/Redesign own audit-polish; Study owns reference-study",
+    )
+    require(
+        "progressive disclosure stop-loading rule",
+        "Stop-loading rule" in skill
+        and "cannot add an independent decision, failure mode, or verification obligation" in skill
+        and "under-binding would hide real influence" in skill,
+        "main skill stops loading when the next file cannot change decisions",
+    )
+    reference_study = read(root / "references" / "reference-study.md")
+    require(
+        "reference-study protocol is complete",
+        "# Reference Study" in reference_study
+        and "## Modes" in reference_study
+        and "Image / screenshot" in reference_study
+        and "Public URL" in reference_study
+        and "Local artifact / codebase" in reference_study
+        and "## Rights And Provenance" in reference_study
+        and "Diagnosis-only does not require a rights question" in reference_study
+        and "untrusted data" in reference_study
+        and "Never assume a tool named WebFetch" in reference_study
+        and "## Evidence Split" in reference_study
+        and "**Observed**" in reference_study
+        and "**Inferred**" in reference_study
+        and "**Unknown**" in reference_study
+        and "## Analysis Axes" in reference_study
+        and "rendered visual" in reference_study
+        and "markup-only" in reference_study
+        and "## Completion Criteria" in reference_study
+        and "never a second contract" in reference_study
+        and "same `DESIGN.md`" in reference_study,
+        "reference-study covers modes, safety, evidence split, and completion",
+    )
+    composition_search = read(root / "references" / "composition-search.md")
+    require(
+        "composition-search is open-set not catalog",
+        "# Composition Search" in composition_search
+        and "not a closed catalog" in composition_search
+        and "non-exhaustive examples" in composition_search
+        and "derive a new neutral family" in composition_search
+        and "## Candidate Protocol" in composition_search
+        and "2–3 plausible composition hypotheses" in composition_search
+        and "Compare each qualitatively" in composition_search
+        and "arbitrary numeric self-scores" in composition_search
+        and "## Repetition" in composition_search
+        and "Locked" in composition_search
+        and "## Family Contract" in composition_search
+        and "## Completion Criteria" in composition_search
+        and "Hallmark" not in composition_search,
+        "composition-search is a neutral open prior with family contract and no foreign product brand",
+    )
+    # Open-set family parse: discover ### headings in Family Contract; no fixed names/order.
+    family_errors = composition_family_contract_errors(composition_search)
+    require(
+        "composition-search family contract coverage",
+        not family_errors,
+        "discovered families complete" if not family_errors else "; ".join(family_errors[:12]),
+    )
+    family_self_failures = composition_family_open_set_self_test()
+    require(
+        "composition-search open-set family self-test",
+        not family_self_failures,
+        "rename ok / missing field fails"
+        if not family_self_failures
+        else "; ".join(family_self_failures[:6]),
+    )
+    design_contract = read(root / "references" / "design-contract.md")
+    require(
+        "design-contract maturity and fingerprint",
+        "## Design Maturity" in design_contract
+        and "Exploratory" in design_contract
+        and "Candidate" in design_contract
+        and "Locked" in design_contract
+        and "An agent never self-locks" in design_contract
+        and "four fixed authority forms" in design_contract
+        and "duplicate headings" in design_contract
+        and "User accepted after Codex review" in design_contract
+        and "Approved by design owner" in design_contract
+        and "## Visual Fingerprint" in design_contract
+        and "Surface / page shape" in design_contract
+        and "Reference Study" in design_contract
+        and "Export Targets" in design_contract
+        and "Lock authority" in design_contract
+        and "Locked axes" in design_contract,
+        "contract template carries strict maturity authority grammar, fingerprint, study, exports",
+    )
+    design_contract_validator = read(root / "scripts" / "validate_design_contract.py")
+    require(
+        "maturity validator enforces strict authority and one section",
+        "VALID_LOCK_AUTHORITY_FORMS" in design_contract_validator
+        and "PREEXISTING_LOCKED_CONTRACT" in design_contract_validator
+        and "MAX_PREEXISTING_DEPTH" in design_contract_validator
+        and "AXES_UNRESOLVED_TOKEN" in design_contract_validator
+        and "MARKDOWN_CONTRACT_SUFFIXES" in design_contract_validator
+        and "_maturity_field_values" in design_contract_validator
+        and "[-*+]" in design_contract_validator
+        and "contract_path" in design_contract_validator
+        and "UnicodeError" in design_contract_validator
+        and "duplicate section headings" in design_contract_validator
+        and "repo|codex|ai|placeholder" not in design_contract_validator,
+        "validator uses four fixed authority forms, depth-bounded pre-existing locks, line-safe fields",
+    )
+    # fenced lean template has exactly one active maturity Status
+    fence = re.search(r"```md\n(.*?)```", design_contract, re.S)
+    fenced_ok = False
+    if fence:
+        mat = re.search(
+            r"(?ms)^##\s+Design Maturity\s*$\n(.*?)(?=^##\s+|\Z)", fence.group(1)
+        )
+        if mat:
+            statuses = re.findall(
+                r"(?mi)^[ \t]*(?:[-*+][ \t]+)?Status[ \t]*:[ \t]*([^\n]*)$",
+                mat.group(0),
+            )
+            fenced_ok = len(statuses) == 1 and statuses[0].strip() == "Exploratory"
+    require(
+        "lean template has exactly one Status Exploratory",
+        fenced_ok,
+        "fenced Design Maturity Status is only Exploratory",
+    )
+    quality_gates = read(root / "references" / "quality-gates.md")
+    require(
+        "named evidence-owned quality gates",
+        "## Evidence-Owned Integrity" in quality_gates
+        and "Honest proof" in quality_gates
+        and "Mockup honesty" in quality_gates
+        and "Token / system coherence" in quality_gates
+        and "Text and i18n overflow" in quality_gates
+        and "Sticky / fixed layers" in quality_gates
+        and "Media intrinsic size" in quality_gates
+        and "Missing assets" in quality_gates
+        and "Machine vs taste" in quality_gates
+        and "fixed gate total" in quality_gates
+        and "58" not in quality_gates
+        and "57" not in quality_gates,
+        "quality-gates use named evidence checks without numeric Hallmark totals",
+    )
+    audit_for_routes = read(root / "references" / "audit-polish.md")
+    require(
+        "audit-polish evidence checks",
+        "## Evidence-Owned Checks" in audit_for_routes
+        and "Fabricated proof" in audit_for_routes
+        and "composition-search.md" in audit_for_routes
+        and "preserve factual content" in audit_for_routes,
+        "audit-polish routes redesign diagnosis and evidence-owned checks",
+    )
+    web_product = read(root / "references" / "branch-web-product.md")
+    require(
+        "semantic state matrix in web product",
+        "Semantic state matrix" in web_product
+        and "**Action**" in web_product
+        and "**Form control**" in web_product
+        and "**Async container**" in web_product
+        and "**Selection**" in web_product
+        and "**Destructive flow**" in web_product
+        and "reachable" in web_product.lower(),
+        "component states are derived from semantics, not a fixed global list only",
+    )
+    taste_engine = read(root / "references" / "design-okf" / "systems" / "taste-engine.md")
+    require(
+        "taste-engine composition search integration",
+        "Composition Search Input" in taste_engine
+        and "composition-search.md" in taste_engine
+        and "Visual Fingerprint" in taste_engine
+        and "Layout-Family Audit" in taste_engine,
+        "taste-engine links composition search and fingerprint without dropping layout-family audit",
+    )
+    # Guard: no external product brand import or fixed gate-score statements in runtime surfaces
+    import_ban_hits: list[str] = []
+    ban_tokens = (
+        "Hallmark",
+        "58 / 58",
+        "57 / 57",
+        "57 slop",
+        "58 slop",
+        "slop-test gates",
+        "fifty-seven slop",
+        "fifty-eight-gate",
+    )
+    for rel in [
+        "SKILL.md",
+        "references/composition-search.md",
+        "references/reference-study.md",
+        "references/quality-gates.md",
+        "references/audit-polish.md",
+        "references/design-contract.md",
+        "references/branch-web-product.md",
+        "agents/openai.yaml",
+    ]:
+        body = read(root / rel)
+        for token in ban_tokens:
+            if token in body:
+                import_ban_hits.append(f"{rel}:{token}")
+    require(
+        "no external product brand or fixed gate score in runtime refs",
+        not import_ban_hits,
+        "clean" if not import_ban_hits else ", ".join(import_ban_hits),
+    )
+    # Design Maturity validator regressions (positive + negative cases)
+    import importlib.util
+
+    validator_path = root / "scripts" / "validate_design_contract.py"
+    spec = importlib.util.spec_from_file_location("ud_validate_design_contract", validator_path)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    # Always require the installable smoke suite (works without repo tests/).
+    smoke_failures = mod.run_maturity_smoke_tests()
+    require(
+        "design maturity installable smoke",
+        not smoke_failures,
+        "smoke pass" if not smoke_failures else "; ".join(smoke_failures[:6]),
+    )
+    # Full adversarial corpus when present in the source checkout only.
+    maturity_failures = mod.run_maturity_self_tests()
+    require(
+        "design maturity validator regressions",
+        not maturity_failures,
+        "all maturity cases pass" if not maturity_failures else "; ".join(maturity_failures[:6]),
+    )
+    require(
+        "semantic destructive floor is confirm or undo",
+        "confirm or undo" in web_product
+        and "confirm/undo +" not in web_product,
+        "destructive recovery is disjunctive, not both-required",
     )
 
     principles = read(root / "references" / "principles.md")

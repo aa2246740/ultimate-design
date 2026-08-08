@@ -1,5 +1,5 @@
 interface:
   display_name: "Ultimate Design"
-  short_description: "Contract-driven design, motion audits, and rendered verification"
-  default_prompt: "Use $ultimate-design for this design task. Identify the surface, preserve the user's Request Anchor, load only the matching branch and OKF concepts, bind active knowledge to concrete decisions, create or update a compact DESIGN.md when the work is non-trivial, make the artifact, critique and repair it, then verify the final rendered output with the relevant branch gates."
+  short_description: "Contract-driven design via Build, Audit, Redesign, or Study"
+  default_prompt: "Use $ultimate-design. First choose Task Route: Build, Audit, Redesign, or Study. Audit and Study stay diagnosis-only unless the user asks to apply or build. For Build or Redesign implementation: preserve the Request Anchor, load only matching branch and OKF concepts, bind active knowledge to decisions, create or update a compact DESIGN.md when non-trivial, make the artifact, critique and repair it, then verify rendered output with the relevant gates."
   brand_color: "#0057FF"

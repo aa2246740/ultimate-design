@@ -48,11 +48,21 @@ Product surfaces help users repeatedly complete tasks. Favor clarity, predictabi
 ## Components And Forms
 
 - Prefer existing components, helpers, tokens, and framework idioms.
-- Every interactive component needs relevant states: default, hover, focus, active, disabled, loading, and error.
+- **Semantic state matrix** — derive states from component and workflow semantics; implement **reachable** states only; never omit a reachable loading, error, success, disabled, focus, or recovery path.
+
+| Kind | Derive states from | Reachable floor (when the workflow can hit them) |
+|------|--------------------|--------------------------------------------------|
+| **Action** (button, link-as-action, icon action) | default, hover/pointer, focus-visible, active/pressed, disabled, loading (async), success flash if outcome is otherwise invisible | focus-visible + disabled when disableable; loading when async |
+| **Form control** (input, select, textarea, checkbox, radio, switch) | default, hover, focus-visible, filled, error, disabled; helper and error text slots that do not collapse layout | focus-visible, error + recovery copy, disabled |
+| **Async container** (list, panel, table body, route section) | loading, empty, partial, error, success/populated, permission-denied | loading + empty + error when data is fetched |
+| **Selection** (tabs, segmented control, list pick, menu item) | unselected, selected, hover, focus-visible, disabled | focus-visible + selected |
+| **Destructive flow** | confirm or undo path (either recovery pattern is enough), busy while applying, error on failure, success/recovery | confirm or undo when destructive; error and recovery when the workflow can fail |
+
 - Forms need visible labels, helper text where useful, inline errors, recovery paths, and focus management.
 - Component copy follows the content contract: labels name the thing, helper text explains format or consequence, errors explain fix, and empty states provide the next step.
 - Destructive actions need confirmation or undo.
 - Tables need sorting, empty/error/loading states, responsive strategy, and tabular figures.
+- Preserve accessibility: semantic roles, keyboard order, visible focus, accessible names, and non-color-only state.
 
 ## Accessibility And Interaction
 

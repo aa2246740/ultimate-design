@@ -78,7 +78,23 @@ Reject and rewrite:
 - Numbered section markers where order carries no meaning.
 - Copy that sounds impressive but says nothing specific.
 
-For visible artifacts, apply at least the light Taste Checkpoint. For visible artifacts with style freedom, also apply `design-okf/systems/taste-engine.md`. Treat unanswered Taste Critique questions as polish findings, not as optional commentary.
+## Evidence-Owned Checks
+
+Also apply the named checks in `quality-gates.md` § Evidence-Owned Integrity. In audit/redesign diagnosis, treat each as a finding with severity and evidence owner:
+
+- Fabricated proof (metrics, customers, awards, capabilities).
+- Unlabeled mockups or fake chrome presented as product truth.
+- Token/system drift without recorded exception.
+- Overflow from long text, URLs, localization, or media intrinsic size.
+- Sticky/fixed layers that obscure reading or focus.
+- Missing assets filled with dishonest decoration.
+- Machine facts reported as if they were taste approval (or the reverse).
+
+Do not apply blanket bans on italics, font counts, accent percentages, asymmetry, two-line labels, or color syntax as universal fails. Prefer Request Fit, honesty, accessibility, and scene-fit.
+
+For redesign diagnosis (structure fails but content/IA/brand must stay), preserve factual content, information architecture, and brand constraints; replace the failing visual/interaction structure. Route implementation of redesign fixes through the normal Build path after diagnosis when the user asks for fixes.
+
+For visible artifacts, apply at least the light Taste Checkpoint. For visible artifacts with style freedom, also apply `design-okf/systems/taste-engine.md` and, when composition is still open, `composition-search.md`. Treat unanswered Taste Critique questions as polish findings, not as optional commentary.
 
 Prefer necessary minimalism: whitespace, radius, glass, restraint, and quiet palettes must organize hierarchy, material, interaction, or scene rather than imitate a prestige surface.
 

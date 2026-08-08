@@ -141,18 +141,23 @@ Common defaults to reject unless the brief explicitly justifies them:
 
 Anti-defaults are not universal bans. They are locks against lazy first choices. If a locked pattern fits the brief, record the reason and execute it deliberately.
 
+# Composition Search Input
+
+When style freedom is open and structure is not yet chosen, load `references/composition-search.md` as an **open search prior**. Generate 2–3 composition hypotheses, choose by Request Fit, content, scene, and evidence, and record intentional repetition. Hypotheses are search inputs, not templates. A **Locked** contract constrains search; locked brand/layout axes override novelty. Do not import closed theme or macro name catalogs from other products.
+
 # Layout-Family Audit
 
-A layout family is a recognizable composition pattern: centered hero, split hero, asymmetric editorial grid, bento, timeline, comparison table, quote wall, full-bleed image, chart-led slide, process diagram, statement slide, matrix, annotated screenshot, modular list, map, or typographic poster.
+A layout family is a recognizable composition pattern: statement-led, split dialogue, narrative document, modular index, process sequence, evidence stage, workbench utility, comparison matrix, atmospheric immersion, spec/catalog strip, or other justified hybrid — plus medium-specific shapes such as chart-led slide, quote wall, or typographic poster.
 
-Use the audit before final delivery:
+Use the audit before final delivery (after composition search when search ran):
 
 - Multi-section pages with six or more sections should use at least four layout families unless the design intentionally needs strict repetition.
-- Do not repeat the same family in adjacent sections more than twice.
+- Do not repeat the same family in adjacent sections more than twice without a recorded functional or brand reason.
 - Avoid using cards as the default container for every idea; use scale, alignment, dividers, image, table, chart, or whitespace when elevation does not carry meaning.
 - Decks should vary slide archetypes by narrative job: claim, evidence, comparison, process, decision, quote, data, appendix, transition.
 - Social nine-frame or carousel work should vary composition by message role, not only swap text inside the same frame.
 - Reports should combine diagrams, tables, callouts, charts, annotations, and editorial text blocks instead of only card stacks.
+- Compare against the contract **Visual Fingerprint** and prior sections when available: flag unexplained default attractors; allow intentional repetition with a recorded reason.
 - If the artifact is intentionally systematic, record the repetition rule and the one place where the rhythm breaks for emphasis.
 
 # Asset Credibility
@@ -203,18 +208,19 @@ Fix failed answers before final delivery when the artifact is meant to be polish
 
 # Contract Fields
 
-For durable work, record a compact Taste Signature:
+For durable work, record a compact Taste Signature and, when structure is durable, the contract **Visual Fingerprint** (see `design-contract.md`):
 
 - Design read:
 - Necessary judgment:
 - Taste dials:
 - Category defaults avoided:
-- Layout families or slide archetypes:
+- Layout families or slide archetypes (from composition search + audit):
 - Visual memory feature:
 - Type personality:
 - Asset/reference policy:
 - Anti-default locks:
 - Intentional exceptions:
+- Intentional repetition reason (if families repeat):
 
 Keep this compact. It is a continuation aid, not a manifesto.
 

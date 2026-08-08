@@ -91,6 +91,23 @@ Apply this section only when meaningful motion is active:
 - Unknown production facts make the result a draft or preflight package, not a false production-ready claim.
 - Mockups, generated assets, placeholders, inferred claims, and illustrative data remain materially honest.
 
+## Evidence-Owned Integrity
+
+Named cross-branch checks. Each finding needs an owner evidence type: **machine** (validator, browser measure, file path), **rendered** (screenshot/contact sheet), or **human taste** (judgment). Do not collapse taste into machine pass/fail. Do not claim a fixed gate total.
+
+| Check | Require | Evidence owner |
+|-------|---------|----------------|
+| **Honest proof** | No fabricated metrics, testimonials, customers, awards, capabilities, or social proof. Missing proof uses placeholders, questions, or a different structure. | human + contract |
+| **Mockup honesty** | Real screenshots vs illustrative mockups/placeholders are labeled; re-drawn OS/browser chrome is not presented as product truth. | rendered + human |
+| **Token / system coherence** | Colors, type, space, and motion follow the locked or candidate system; raw one-offs become tokens or recorded exceptions. | machine path/diff + contract |
+| **Text and i18n overflow** | Long text, URLs, localization expansion, and fallback fonts do not clip or force horizontal overflow. | machine reflow + rendered |
+| **Sticky / fixed layers** | Sticky or fixed chrome uses offsets so secondary stickies do not obscure nav, focus, or reading; focus remains visible. | rendered + keyboard |
+| **Media intrinsic size** | Images, video, and grid tracks do not force overflow; image-bearing tracks use min-size-safe layout. | machine layout + rendered |
+| **Missing assets** | Absent assets use honest named placeholders or slots, not fake product UI or decorative filler pretending to be content. | human + contract |
+| **Machine vs taste** | Validator/browser facts stay separate from taste judgment; a green machine report never certifies beauty or brand fit alone. | both, labeled |
+
+Apply medium-specific Done Criteria in branch files for deeper rules. Do not import universal bans on italics, two-line affordances, font counts, accent area percentages, asymmetry mandates, or color syntax fashion as global law.
+
 ## Branch Gates
 
 Apply the selected branch's Done Criteria rather than loading unrelated medium rules:

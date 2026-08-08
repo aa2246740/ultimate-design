@@ -2,7 +2,7 @@
 
 Use this branch for landing pages, campaign pages, brand websites, content sites, portfolios, homepages, pricing pages, and marketing redesigns.
 
-Read `design-okf/systems/taste-engine.md` by default when the site has style freedom, and especially when it needs distinctive taste, stronger style confidence, anti-AI-slop cleanup, visual assets, layout variety, or when the page risks becoming a centered hero followed by repeated card grids.
+Read `design-okf/systems/taste-engine.md` by default when the site has style freedom, and especially when it needs distinctive taste, stronger style confidence, anti-AI-slop cleanup, visual assets, layout variety, or when the page risks becoming a centered hero followed by repeated card grids. When composition or section shape is still open, also read `composition-search.md` for 2–3 Request-Fit hypotheses before freezing layout; keep the Layout-Family Audit for multi-section variety.
 
 Read `design-okf/systems/type-personality.md` when the hero, brand, pricing, proof, article, or campaign typography needs a clearer voice, when Chinese/English mixed text matters, or when WebFont performance, fallback, or font licensing can affect the site.
 
