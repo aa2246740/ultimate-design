@@ -43,7 +43,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--color-surface); }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
     }
@@ -55,7 +55,6 @@
         radial-gradient(1200px 600px at 78% -10%, rgba(46, 196, 168, 0.12), transparent 55%),
         radial-gradient(900px 500px at 8% 18%, rgba(232, 163, 23, 0.08), transparent 50%),
         linear-gradient(180deg, #0A101A 0%, var(--color-surface) 42%, #05070C 100%);
-      background-attachment: fixed;
       min-height: 100%;
       overflow-x: hidden;
     }
