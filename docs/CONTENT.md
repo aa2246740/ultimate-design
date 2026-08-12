@@ -21,7 +21,7 @@
 | 任务路线 | 4 | SKILL.md:Build / Audit / Redesign / Study |
 | 宿主集成 | 3 | Codex / Claude Code / Pi Agent |
 | 协作模板 | 4 | templates/:work-order 等 |
-| 完整案例 | 6 | `ls docs/demos/*/index.html \| wc -l`,由安装本技能的 Agent 按完整工作流设计,每个附带自己的 DESIGN.md |
+| 完整案例 | 12 | `ls docs/demos/*/index.html \| wc -l`,由安装本技能的 Agent 按完整工作流设计,每个附带自己的 DESIGN.md |
 | 版本 | 0.6.0 | package.json |
 
 不得出现:用户数、星标数、成功率、案例数等仓库内无法核对的数字。
@@ -51,7 +51,7 @@ Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 - 7 个知识域
 - 19 份分支参考
 - 11 个内置脚本
-- 6 个完整案例
+- 12 个完整案例
 - 3 个宿主
 
 ### 为什么需要它
@@ -102,13 +102,13 @@ Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 
 ### 案例画廊(完整页面,可点开体验)
 
-标题:六个完整页面,六种设计语言。
+标题:十二个完整页面,十二种设计语言。
 
 说明:每个案例都由安装了本技能的 Agent 按完整工作流设计——契约、实现、批判、渲染复查。缩略图是案例页的实时渲染(缩放的 iframe),不是截图;点开就是真实页面,旁边是能复现它的 Prompt 和它自己的 `DESIGN.md` 契约。所有品牌均为虚构。
 
 卡片动作:查看页面(新标签打开)· 复制 Prompt · 看契约(链接到该案例的 DESIGN.md)。
 
-六个案例(slug · 类目 · 风格 · 语言 · 复现 Prompt):
+十二个案例(slug · 类目 · 风格 · 语言 · 复现 Prompt):
 
 1. `finlytics` · 营销页 · 深色数据感 · EN —— Prompt:`$ultimate-design Design a marketing landing page for Finlytics, a fictional real-time revenue analytics platform for subscription businesses. Dark, data-forward, credible; charts drawn in CSS/SVG; pricing and a demo CTA.`
 2. `teahouse` · 品牌官网 · 东方编辑感 · 中文 —— Prompt:`$ultimate-design 为虚构茶馆品牌「山声茶事」设计品牌官网首页:山泉煮茶的门店故事、三款招牌茶、茶席预约。东方编辑感、纸感底色、宋体标题、竖排点缀。`
@@ -116,6 +116,12 @@ Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 4. `petcare` · 预约落地页 · 活泼圆润 · 中文 —— Prompt:`$ultimate-design 为虚构宠物洗护品牌「毛茸茸研究所」设计预约落地页:服务套餐、价格、门店预约表单。活泼、圆角、奶油色系,但专业可信。`
 5. `deck-q2` · HTML Deck · 汇报叙事 · 中文 —— Prompt:`$ultimate-design 把「2026 Q2 增长复盘」做成 HTML 演示 deck:8–10 页,封面、议程、3 个数据页(CSS/SVG 图表)、结论页;键盘翻页、页码、可打印。数据虚构。`
 6. `gridnoise` · 作品集 · 新粗野主义 · EN —— Prompt:`$ultimate-design Design a one-page portfolio for GRID&NOISE, a fictional independent design studio: manifesto, text-based selected works, services, contact. Neo-brutalist - hard borders, offset shadows, aggressive type - but readable and accessible.`
+7. `systema` · 会议活动 · 瑞士国际主义 · EN —— Prompt:`$ultimate-design Design the landing page for SYSTEMA 2026, a fictional one-day conference on design systems. Swiss International Style: strict modular grid, oversized flush-left type, one red accent, the schedule set as a designed table. English.`
+8. `maison` · 电商产品页 · 静奢极简 · EN —— Prompt:`$ultimate-design Design a product detail page for Maison Ombre Eau de Parfum No.04, a fictional fragrance house. Quiet luxury: muted warm neutrals, generous whitespace, serif with humanist sans, a CSS/SVG still-life instead of photography, ingredients accordion, sticky add-to-cart. English.`
+9. `field7` · 硬件产品页 · 工业功能主义 · EN —— Prompt:`$ultimate-design Design the product page for FIELD-7, a fictional pocket synthesizer. Industrial functionalism: a detailed inline-SVG schematic as the hero, a knolling grid of accessories, mono spec tables, functional gray with industrial orange. English.`
+10. `jiexiang` · 独立刊物 · 新闻纸编辑 · 中文 —— Prompt:`$ultimate-design 为虚构独立城市观察刊物「街巷」设计创刊号页面:报头、本期目录、三篇文章的多栏报纸排版、订阅栏。新闻纸编辑风:多栏网格、首字下沉、细规则线、黑白加一个专色蓝。中文。`
+11. `shuguang` · 数据报告 · 数据叙事 · 中文 —— Prompt:`$ultimate-design 为虚构阅读 App「拾光书房」设计 2026 年度阅读报告页:巨号数字开场,每屏一个数据结论配一张 SVG 图表(时长分布、类目偏好、夜读热力、年度书单),浅底高饱和数据色。数据虚构。中文。`
+12. `neuehalle` · 展览海报 · 包豪斯几何 · 中文 —— Prompt:`$ultimate-design 为虚构美术馆「新厅美术馆」设计展览页「形式与功能:包豪斯百年」:海报式几何 hero(三原色、圆三角方构成)、展览介绍、三个展区、参观信息与票务。中文。`
 
 画廊卡片标注格式:名称 + 类目片 + 风格一句话 + 语言标签;底部一行说明「由安装本技能的 Agent 设计,契约随附」。
 
@@ -191,7 +197,7 @@ Hero claim: Build the design. Keep the judgment.
 
 Lead: Ultimate Design is a design workflow skill for AI agents. It turns a vague ask into a clear brief and a real artifact, reviews the rendered result before handoff, and leaves a `DESIGN.md` contract the next agent can continue from.
 
-Stat labels: 35 knowledge concepts · 7 domains · 19 branch playbooks · 11 bundled scripts · 6 complete demos · 3 hosts.
+Stat labels: 35 knowledge concepts · 7 domains · 19 branch playbooks · 11 bundled scripts · 12 complete demos · 3 hosts.
 
 Section titles (parallel, not literal):
 
@@ -199,7 +205,7 @@ Section titles (parallel, not literal):
 - Outputs: Every run leaves three things you can keep using.
 - Workflow: Say it clearly first, then get the picture right.
 - Knowledge: 35 concepts, loaded on demand, bound to decisions.
-- Gallery: Six complete pages, six design languages. (Card note: each demo was designed by an agent running this skill and ships with its own `DESIGN.md`; thumbnails are live renders, not screenshots; all brands fictional.)
+- Gallery: Twelve complete pages, twelve design languages. (Card note: each demo was designed by an agent running this skill and ships with its own `DESIGN.md`; thumbnails are live renders, not screenshots; all brands fictional.)
 - Modes: Ship by default. Align when it matters.
 - Start: Install, then describe the outcome you want.
 - Delivery: What you hand over is more than a link.

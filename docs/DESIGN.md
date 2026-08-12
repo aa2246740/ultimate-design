@@ -1,5 +1,5 @@
 ---
-version: 0.9
+version: 1.0
 name: Ultimate Design Official Site
 description: Bilingual showcase homepage that proves the skill's design capability with the page itself - a gallery of complete demo pages designed by agents running the skill, a searchable knowledge explorer, and honest repository-sourced numbers.
 
@@ -56,7 +56,7 @@ components:
 
 ## Overview
 
-This is the bilingual official showcase homepage for Ultimate Design, served from `docs/` on GitHub Pages. Version 0.9 replaces the quiet editorial page (0.7) with a capability showcase: the page must demonstrate design range, not only describe it. The proof devices are a demo gallery of six complete pages under `docs/demos/` - each designed by a worker agent running this very skill and shipped with its own `DESIGN.md` contract - plus a searchable OKF knowledge explorer, an interactive five-step run record, and a meta strip that points back to this contract. Chinese is the default language; English is a parallel expression.
+This is the bilingual official showcase homepage for Ultimate Design, served from `docs/` on GitHub Pages. Version 0.9 replaces the quiet editorial page (0.7) with a capability showcase: the page must demonstrate design range, not only describe it. The proof devices are a demo gallery of twelve complete pages under `docs/demos/` - each designed by a worker agent running this very skill and shipped with its own `DESIGN.md` contract - plus a searchable OKF knowledge explorer, an interactive five-step run record, and a meta strip that points back to this contract. Chinese is the default language; English is a parallel expression.
 
 The direction is a **studio desk at night**: a deep ink field (the desk), light paper sheets carrying the run artifacts, red annotation marks, and restrained teal/chartreuse instrument accents. This keeps the 0.7 brand genes (ink, paper, signal red, teal, chartreuse, editorial serif) while flipping the value: dark field, light artifacts.
 
@@ -82,7 +82,7 @@ One bilingual scrolling homepage with a sticky top bar (brand, four anchors, lan
 - Outputs: three paper artifact cards (Request Anchor, `DESIGN.md`, Rendered review), each with a real sample fragment.
 - Workflow: five clickable steps; the active step reveals one miniature artifact. No scroll hijacking.
 - Knowledge explorer: search input, nine domain filter chips, result counter, and a card grid of all 54 entries (35 OKF concepts plus 19 branch playbooks) with real file paths and faithful one-line summaries. This is the only high-density zone on the page.
-- Demo gallery: six cards for the complete demo pages under `docs/demos/<slug>/`, one per design language and surface (marketing, brand site, product UI, landing, HTML deck, portfolio). Each card shows a live scaled-iframe thumbnail (lazy, `aria-hidden`, non-interactive), name, category chip, style line, language tag, and three actions: open the page in a new tab, copy the reproducing prompt, open that demo's `DESIGN.md`. A one-line note states the demos were designed by agents running this skill and that all brands are fictional.
+- Demo gallery: twelve cards for the complete demo pages under `docs/demos/<slug>/`, one per design language and surface (marketing, brand site, product UI, landing, HTML deck, portfolio, conference, e-commerce PDP, hardware product, publication, data report, exhibition). Each card shows a live scaled-iframe thumbnail (lazy, `aria-hidden`, non-interactive), name, category chip, style line, language tag, and three actions: open the page in a new tab, copy the reproducing prompt, open that demo's `DESIGN.md`. A one-line note states the demos were designed by agents running this skill and that all brands are fictional.
 - Modes and routes: three collaboration modes, four task-route chips.
 - Start: three host install tabs with copy buttons; two prompts (default and `--pro`) with copy buttons.
 - Delivery checklist plus one GitHub CTA.
@@ -101,7 +101,7 @@ Mostly rectangular with `sm`-`md` radii on controls and cards. Red annotation st
 
 ## Components
 
-Sticky header, language switch (`aria-pressed`), hero run-record card (5 phases, clickable, auto-advance with pause on hover, static under reduced motion), mono stat strip, observation list, artifact trio, workflow stepper, OKF explorer (search + chips + counter + cards + empty state), demo gallery (6 cards with live iframe thumbnails and view/copy-prompt/contract actions), mode cards, route chips, install tabs with copy buttons, prompt console with copy buttons, delivery checklist, meta strip, footer.
+Sticky header, language switch (`aria-pressed`), hero run-record card (5 phases, clickable, auto-advance with pause on hover, static under reduced motion), mono stat strip, observation list, artifact trio, workflow stepper, OKF explorer (search + chips + counter + cards + empty state), demo gallery (12 cards with live iframe thumbnails and view/copy-prompt/contract actions), mode cards, route chips, install tabs with copy buttons, prompt console with copy buttons, delivery checklist, meta strip, footer.
 
 ## Do's and Don'ts
 
@@ -127,7 +127,7 @@ Sticky header, language switch (`aria-pressed`), hero run-record card (5 phases,
 ## Request Anchor
 
 - Original user request: Build a showcase page for this repository similar to ui-ux-pro-max-skill.nextlevelbuilder.io, demonstrating design capability, servable as the GitHub Pages site; the orchestrator plans, Kimi K3 workers implement.
-- Latest user override: Follow the reference site's strongest mechanism - a gallery of real demo cases. Six complete demo pages are designed by worker agents that run this skill end to end (Grok 4.5 High workers), each shipping its own `DESIGN.md`; the homepage's inline specimen section is replaced by this demo gallery.
+- Latest user override: Expand the gallery to twelve demos with maximally distinct style families and scenarios; new directions come from mechanism extraction of well-designed reference archetypes (Study route, no signature cloning); workers run this skill end to end and every demo keeps its own `DESIGN.md`.
 - Deliverable: Redesigned static bilingual homepage - `docs/index.html`, six demo pages with contracts under `docs/demos/`, updated `docs/CONTENT.md` and `docs/DESIGN.md`, validation results, and rendered screenshots.
 - Primary audience: Developers and design engineers evaluating whether to install the skill into their coding agent; GitHub visitors arriving from the README or npm.
 - Core job to be done: Within about a minute, understand what the skill does, what a run leaves behind, and how to install it - and see evidence of design capability on the page itself.
@@ -192,7 +192,7 @@ Sticky header, language switch (`aria-pressed`), hero run-record card (5 phases,
 | `design-okf/systems/color-system.md` | Red reserved for large marks and graphics; small emphasis uses chartreuse or light teal; muted roles defined for desk and paper | CSS custom properties, text roles | Contrast checks: body 4.5:1 or better, large display 3:1 or better, on both desk and paper |
 | `design-okf/systems/motion-language.md` | Entry-play reveals, run-record auto-cycle with hover pause, micro-interactions only; static-first; hard reduced-motion fallback | `data-ud-motion` zones, IntersectionObserver script | Reduced-motion audit shows no animation; durations 400ms or less; transform/opacity only |
 | `design-okf/foundations/visual-communication-hierarchy.md` | One dominant hero; the explorer is the only dense zone; each section has a single job | Layout rhythm, section scaffolding | Full-page screenshots show no section competing with the hero and no duplicate section jobs |
-| `design-okf/foundations/necessary-design-judgment.md` | Six complete demos maximum, each shipping its own `DESIGN.md`; any gallery element that demonstrates nothing is deleted | Demo gallery, hero desk texture, ornament budget | Critique pass names what was cut and confirms every remaining element demonstrates a capability |
+| `design-okf/foundations/necessary-design-judgment.md` | Twelve complete demos maximum, each shipping its own `DESIGN.md` and claiming a distinct style family; any gallery element that demonstrates nothing is deleted | Demo gallery, hero desk texture, ornament budget | Critique pass names what was cut and confirms every remaining element demonstrates a capability |
 | `design-okf/digital/accessibility-usability.md` | Semantic landmarks, `aria-pressed` language switch, focus-visible styles, 44px targets, real text everywhere | Header, controls, explorer, tabs | Keyboard walkthrough plus contrast pass; zones visible and unoccluded in rendered audit |
 | `design-okf/digital/responsive-interaction.md` | Explorer chips wrap and cards stack on mobile; gallery cards go single column; hero paper card moves below the claim | Grid rules, breakpoints at 375/768/1024/1280 | Rendered checks at 375, 768, 1440 in both languages show a clean reading path and no horizontal overflow |
 
@@ -211,7 +211,7 @@ Sticky header, language switch (`aria-pressed`), hero run-record card (5 phases,
 - Taste dials: Visual variance 7, information density 6, motion depth 2, brand distinction 8, experiment risk 5.
 - Category defaults avoided: Purple/blue gradient hero, glow cards, emoji icon rows, fake dashboard screenshots, testimonial walls, animated counters that fabricate scale.
 - Layout families: Editorial display hero with instrument panel, paper artifact cards, stepper rail, filterable card grid, live demo plates, tabbed console.
-- Visual memory feature: Light paper sheets with red annotation marks on a deep ink desk, and six live demo plates proving range.
+- Visual memory feature: Light paper sheets with red annotation marks on a deep ink desk, and twelve live demo plates proving range.
 - Type personality: Editorial serif display (Fraunces with Noto Serif SC) over quiet system sans, mono for instrument labels; Chinese-first optical pairing.
 - Asset/reference policy: No raster imagery; everything is typeset or drawn with CSS. The retired `assets/imagegen-homepage-reference.png` stays in the repository but is no longer rendered.
 - Anti-default locks: One main idea per section; no repeated full-width card bands; no claim without a countable source; no decorative animation; no competitor signature transfer.
@@ -225,7 +225,7 @@ Mechanisms adapted from ui-ux-pro-max-skill.nextlevelbuilder.io (Study route, no
 
 - Goal: Make the homepage itself the strongest evidence of the skill's design capability while staying honest.
 - Primary user task: Understand the method and inventory, then copy an install command.
-- Primary content: Claim, run record, stats, observations, three outputs, five steps, 54-entry explorer, six-demo gallery, modes and routes, install and prompts, delivery checklist, meta strip.
+- Primary content: Claim, run record, stats, observations, three outputs, five steps, 54-entry explorer, twelve-demo gallery, modes and routes, install and prompts, delivery checklist, meta strip.
 - Primary CTA: Copy install command (header CTA links to GitHub).
 - Components or visual modules: As listed in Components.
 - Required states: Chinese active, English active, copy success, copy failure, explorer filtered, explorer empty, workflow step active, reduced motion.
@@ -242,7 +242,7 @@ Mechanisms adapted from ui-ux-pro-max-skill.nextlevelbuilder.io (Study route, no
 - Accessibility: Contrast roles hold on desk and paper; keyboard path covers switch, tabs, stepper, explorer, copy buttons; focus states visible; targets 44px or larger.
 - Responsive: 375, 768, and 1440 render cleanly in both languages; 320 has no horizontal overflow.
 - Interaction: Language switch, copy buttons, tabs, stepper, and explorer filter work; states announced via `aria-live`.
-- Performance: One HTML file around 250KB or less including inline data; Google Fonts with `display=swap` is the only external request; no other scripts, no raster images; the six gallery thumbnails are same-origin iframes with `loading="lazy"` so they cost nothing until scrolled near.
+- Performance: One HTML file around 250KB or less including inline data; Google Fonts with `display=swap` is the only external request; no other scripts, no raster images; the twelve gallery thumbnails are same-origin iframes with `loading="lazy"` so they cost nothing until scrolled near.
 - Print or export: Not applicable.
 - Contract consistency: This file passes strict contract validation and OKF usage validation; `data-ud-check` zones match the Agent Execution Rules list.
 
@@ -276,6 +276,7 @@ Mechanisms adapted from ui-ux-pro-max-skill.nextlevelbuilder.io (Study route, no
 
 | Version | Date | Change | Reason | Reviewer |
 |---|---|---|---|---|
+| 1.0 | 2026-08-12 | Expanded the demo gallery from six to twelve: Swiss-grid conference, quiet-luxury PDP, industrial hardware page, newsprint zine, data-story annual report, Bauhaus exhibition; stats updated to 12 | User wanted broader style range with clearly separated design languages, sourced by mechanism extraction from strong reference archetypes | Cursor (Integrator) |
 | 0.9 | 2026-08-12 | Replaced the inline specimen section with a demo gallery: six complete pages under `docs/demos/`, each designed by a worker agent running this skill and shipped with its own `DESIGN.md`; stat strip now counts the demos | User asked to follow the reference site's real-case gallery approach, with workers installing this skill to design the cases (Grok 4.5 High workers) | Cursor (Integrator) |
 | 0.8 | 2026-08-12 | Rebuilt the homepage as a dark studio showcase: live specimens, 54-entry OKF explorer, interactive run record, honest stat strip; Integrator-planned, worker-implemented | User asked for a capability-showcase page comparable to the UI UX Pro Max site, planned by the orchestrator and built by Kimi K3 workers | Cursor (Integrator) |
 | 0.7 | 2026-07-11 | Reframed the homepage around concrete outputs, five actions, and quieter editorial copy | User found the page cluttered and the copy AI-sounding; the new content contract removes repetition and abstract product language | Codex |
