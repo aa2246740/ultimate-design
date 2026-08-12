@@ -21,6 +21,7 @@
 | 任务路线 | 4 | SKILL.md:Build / Audit / Redesign / Study |
 | 宿主集成 | 3 | Codex / Claude Code / Pi Agent |
 | 协作模板 | 4 | templates/:work-order 等 |
+| 完整案例 | 6 | `ls docs/demos/*/index.html \| wc -l`,由安装本技能的 Agent 按完整工作流设计,每个附带自己的 DESIGN.md |
 | 版本 | 0.6.0 | package.json |
 
 不得出现:用户数、星标数、成功率、案例数等仓库内无法核对的数字。
@@ -50,7 +51,7 @@ Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 - 7 个知识域
 - 19 份分支参考
 - 11 个内置脚本
-- 4 条任务路线
+- 6 个完整案例
 - 3 个宿主
 
 ### 为什么需要它
@@ -99,22 +100,24 @@ Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 
 空态文案:没有匹配的条目。换个关键词,或清除筛选。
 
-### 设计幅度(样张画廊)
+### 案例画廊(完整页面,可点开体验)
 
-标题:同一套方法,长出不同的设计语言。
+标题:六个完整页面,六种设计语言。
 
-说明:下面的样张直接渲染在本页里,不是截图。每一张都标注驱动它的 OKF 概念和口味刻度,证明方法能覆盖的幅度。
+说明:每个案例都由安装了本技能的 Agent 按完整工作流设计——契约、实现、批判、渲染复查。缩略图是案例页的实时渲染(缩放的 iframe),不是截图;点开就是真实页面,旁边是能复现它的 Prompt 和它自己的 `DESIGN.md` 契约。所有品牌均为虚构。
 
-六张现场渲染样张(每张 = 一个设计语言 × 标注):
+卡片动作:查看页面(新标签打开)· 复制 Prompt · 看契约(链接到该案例的 DESIGN.md)。
 
-1. 编辑部头版 —— 纸面底、宋体大字、红色题注线。驱动:layout-typography-composition · type-personality。
-2. 产品仪表盘 —— 中性浅色、KPI 数字、迷你数据条。驱动:tokens-components · responsive-interaction。
-3. 新粗野主义海报 —— 黄绿底、硬边框、错位阴影。驱动:taste-engine(实验风险调高)。
-4. 深色数据卡 —— 墨色玻璃面、图表条、等宽标签。驱动:color-system(深色对比角色)· data-viz-i18n-legal。
-5. 印刷信息图 —— 纸面、等宽注记、示意图形。驱动:graphic-print · visual-communication-hierarchy。
-6. 动效样张 —— 按钮与进度微交互,尊重 reduced motion。驱动:motion-language · motion-contract。
+六个案例(slug · 类目 · 风格 · 语言 · 复现 Prompt):
 
-每张样张下的标注格式:名称 + 一行驱动概念 + 一行口味刻度(如"密度 6 · 实验 8")。
+1. `finlytics` · 营销页 · 深色数据感 · EN —— Prompt:`$ultimate-design Design a marketing landing page for Finlytics, a fictional real-time revenue analytics platform for subscription businesses. Dark, data-forward, credible; charts drawn in CSS/SVG; pricing and a demo CTA.`
+2. `teahouse` · 品牌官网 · 东方编辑感 · 中文 —— Prompt:`$ultimate-design 为虚构茶馆品牌「山声茶事」设计品牌官网首页:山泉煮茶的门店故事、三款招牌茶、茶席预约。东方编辑感、纸感底色、宋体标题、竖排点缀。`
+3. `taskflow` · 产品界面 · 冷静系统感 · EN —— Prompt:`$ultimate-design Design the main dashboard screen for TaskFlow, a fictional project management tool: sidebar, project board with task cards, activity feed, summary row. Light, calm, production-quality states.`
+4. `petcare` · 预约落地页 · 活泼圆润 · 中文 —— Prompt:`$ultimate-design 为虚构宠物洗护品牌「毛茸茸研究所」设计预约落地页:服务套餐、价格、门店预约表单。活泼、圆角、奶油色系,但专业可信。`
+5. `deck-q2` · HTML Deck · 汇报叙事 · 中文 —— Prompt:`$ultimate-design 把「2026 Q2 增长复盘」做成 HTML 演示 deck:8–10 页,封面、议程、3 个数据页(CSS/SVG 图表)、结论页;键盘翻页、页码、可打印。数据虚构。`
+6. `gridnoise` · 作品集 · 新粗野主义 · EN —— Prompt:`$ultimate-design Design a one-page portfolio for GRID&NOISE, a fictional independent design studio: manifesto, text-based selected works, services, contact. Neo-brutalist - hard borders, offset shadows, aggressive type - but readable and accessible.`
+
+画廊卡片标注格式:名称 + 类目片 + 风格一句话 + 语言标签;底部一行说明「由安装本技能的 Agent 设计,契约随附」。
 
 ### 模式与路线
 
@@ -188,7 +191,7 @@ Hero claim: Build the design. Keep the judgment.
 
 Lead: Ultimate Design is a design workflow skill for AI agents. It turns a vague ask into a clear brief and a real artifact, reviews the rendered result before handoff, and leaves a `DESIGN.md` contract the next agent can continue from.
 
-Stat labels: 35 knowledge concepts · 7 domains · 19 branch playbooks · 11 bundled scripts · 4 task routes · 3 hosts.
+Stat labels: 35 knowledge concepts · 7 domains · 19 branch playbooks · 11 bundled scripts · 6 complete demos · 3 hosts.
 
 Section titles (parallel, not literal):
 
@@ -196,7 +199,7 @@ Section titles (parallel, not literal):
 - Outputs: Every run leaves three things you can keep using.
 - Workflow: Say it clearly first, then get the picture right.
 - Knowledge: 35 concepts, loaded on demand, bound to decisions.
-- Range: One method, many design languages.
+- Gallery: Six complete pages, six design languages. (Card note: each demo was designed by an agent running this skill and ships with its own `DESIGN.md`; thumbnails are live renders, not screenshots; all brands fictional.)
 - Modes: Ship by default. Align when it matters.
 - Start: Install, then describe the outcome you want.
 - Delivery: What you hand over is more than a link.
@@ -209,6 +212,7 @@ Avoid "transform", "elevate", "empower", "seamless", "world-class", "supercharge
 - 中文为默认语言;顶部切换会替换整页文案并更新 `<html lang>`;`?lang=en` 直接打开英文态;`index-en.html` 保持跳转。
 - 所有复制按钮复制当前语言的内容,成功/失败以当前语言短暂提示。
 - OKF 浏览器为纯客户端过滤,数据内联在页面里;无网络请求。
+- 案例画廊缩略图用缩放 iframe 实时渲染案例页:`loading="lazy"`、`aria-hidden="true"`、`tabindex="-1"`、`pointer-events: none`;「查看页面」新标签打开 `demos/<slug>/`;「复制 Prompt」复制 CONTENT.md 里对应的 Prompt 原文;「看契约」打开该案例的 DESIGN.md。
 - 五步工作流手动切换,不劫持滚动。
 - 所有进场动效用 transform/opacity,时长 ≤ 400ms;`prefers-reduced-motion: reduce` 时全部退化为静态。
 - 桌面与移动端都要有干净的阅读路径;知识库是唯一允许的高密度区。
