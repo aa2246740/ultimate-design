@@ -1,660 +1,1784 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ultimate Design - 把设计做出来，也把判断留下来</title>
-  <meta name="description" content="Ultimate Design 帮助 AI Agent 把模糊需求做成可检查、可继续的设计工作。" />
-  <style>
-    :root {
-      --surface: #f2f3ee;
-      --surface-strong: #e7e9e1;
-      --ink: #10120e;
-      --muted: #62675f;
-      --rule: rgba(16, 18, 14, 0.2);
-      --red: #df3a22;
-      --teal: #0e6e6b;
-      --chartreuse: #d7de49;
-      --white: #fbfcf8;
-      --max: 1200px;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Design — 把设计做出来,也把判断留下来</title>
+<meta name="description" content="Ultimate Design 是给 AI Agent 用的设计工作流:收到模糊需求时先理顺目标和内容,做完后对着真实渲染结果复查,最后把 DESIGN.md 契约留给下一位接手的人。">
+<meta property="og:title" content="Ultimate Design — 把设计做出来,也把判断留下来">
+<meta property="og:description" content="Ultimate Design 是给 AI Agent 用的设计工作流:收到模糊需求时先理顺目标和内容,做完后对着真实渲染结果复查,最后把 DESIGN.md 契约留给下一位接手的人。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://aa2246740.github.io/ultimate-design/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2310120E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23F2F3EE'%3EU%3C/text%3E%3Cpath d='M26 2h4v4' stroke='%23DF3A22' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #DF3A22;
+  --secondary: #0E6E6B;
+  --tertiary: #D7DE49;
+  --neutral: #F2F3EE;
+  --surface: #10120E;
+  --on-surface: #F2F3EE;
+  --error: #FF8A70;
+  --desk: #10120E;
+  --desk-raised: #181B15;
+  --paper: #F2F3EE;
+  --red: #DF3A22;
+  --teal: #0E6E6B;
+  --teal-light: #7FC8C3;
+  --chartreuse: #D7DE49;
+  --body-on-desk: #E9EBE3;
+  --muted-on-desk: #A9AEA1;
+  --muted-on-paper: #5B5F55;
+  --ink-on-paper: #10120E;
+  --hairline: rgba(242,243,238,0.14);
+  --paper-shadow: 0 12px 32px rgba(0,0,0,0.35);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  --font-display: Fraunces, "Noto Serif SC", "Songti SC", STSong, Georgia, serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --max: 1120px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+body {
+  margin: 0;
+  background: var(--desk);
+  color: var(--body-on-desk);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.72;
+  background-image:
+    linear-gradient(rgba(242,243,238,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,243,238,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; }
+pre, code { overflow-x: auto; max-width: 100%; }
+a { color: var(--teal-light); text-underline-offset: 3px; }
+a:hover { color: var(--chartreuse); }
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--chartreuse);
+  outline-offset: 3px;
+}
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--paper);
+  color: var(--ink-on-paper);
+  padding: 12px 16px;
+  z-index: 1000;
+}
+.skip:focus { left: 16px; top: 16px; }
+.wrap {
+  width: min(100% - 40px, var(--max));
+  margin-inline: auto;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
-    * { box-sizing: border-box; }
-    html { background: var(--surface); scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--surface);
-      color: var(--ink);
-      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-      font-size: 16px;
-      line-height: 1.72;
-      letter-spacing: 0;
-    }
-    button { font: inherit; letter-spacing: 0; }
-    a { color: inherit; text-decoration: none; }
-    a:focus-visible, button:focus-visible { outline: 3px solid var(--chartreuse); outline-offset: 3px; }
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(16,18,14,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hairline);
+}
+.header-inner {
+  display: flex; align-items: center; gap: 16px;
+  min-height: 64px; justify-content: space-between;
+}
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 18px;
+  color: var(--paper); text-decoration: none; white-space: nowrap;
+  min-height: 44px; display: inline-flex; align-items: center;
+}
+.nav {
+  display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
+}
+.nav a {
+  color: var(--muted-on-desk); text-decoration: none; font-size: 14px;
+  min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center;
+  padding-inline: 6px;
+}
+.nav a:hover { color: var(--paper); }
+.header-actions {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.lang-switch {
+  display: inline-flex; border: 1px solid var(--hairline); border-radius: var(--radius-sm); overflow: hidden;
+}
+.lang-switch button {
+  appearance: none; border: 0; background: transparent;
+  color: var(--muted-on-desk); font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700; min-width: 44px; min-height: 44px;
+  cursor: pointer; padding: 0 12px;
+}
+.lang-switch button[aria-pressed="true"] {
+  background: var(--paper); color: var(--desk);
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 12px 16px;
+  border-radius: var(--radius-sm); border: 0;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  line-height: 1.15; letter-spacing: 0.02em;
+  text-decoration: none; cursor: pointer;
+}
+.btn-primary { background: var(--paper); color: var(--desk); }
+.btn-primary:hover { background: #fff; color: var(--desk); }
+.btn-ghost {
+  background: transparent; color: var(--body-on-desk);
+  border: 1px solid var(--hairline);
+}
+.btn-ghost:hover { border-color: var(--teal-light); color: var(--paper); }
+.btn-paper {
+  background: var(--desk); color: var(--paper);
+  border: 1px solid rgba(16,18,14,0.2);
+}
+.btn-sm { min-height: 44px; padding: 10px 12px; font-size: 11px; }
 
-    .shell { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: var(--surface);
-      border-bottom: 1px solid var(--ink);
-    }
-    .header-grid {
-      min-height: 68px;
-      display: grid;
-      grid-template-columns: minmax(210px, 1fr) auto auto;
-      align-items: center;
-      gap: 28px;
-    }
-    .brand { display: inline-flex; min-width: 0; min-height: 44px; align-items: center; gap: 10px; }
-    .brand-mark {
-      display: grid;
-      width: 30px;
-      height: 30px;
-      place-items: center;
-      background: var(--ink);
-      color: var(--white);
-      font-family: Georgia, serif;
-      font-size: 15px;
-      font-weight: 800;
-    }
-    .brand-copy { display: grid; gap: 1px; }
-    .brand strong { font-family: "Songti SC", STSong, Georgia, serif; font-size: 18px; line-height: 1; }
-    .brand small { color: var(--muted); font-size: 11px; line-height: 1.25; }
-    .site-nav { display: flex; gap: 22px; color: var(--muted); font-size: 13px; font-weight: 700; }
-    .site-nav a { display: inline-flex; min-height: 44px; align-items: center; }
-    .header-actions { display: flex; align-items: center; gap: 8px; }
-    .lang-switch { display: grid; min-height: 44px; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--ink); }
-    .lang-switch button {
-      min-width: 44px;
-      min-height: 44px;
-      border: 0;
-      border-right: 1px solid var(--ink);
-      background: transparent;
-      color: var(--ink);
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 800;
-    }
-    .lang-switch button:last-child { border-right: 0; }
-    .lang-switch button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+/* Sections */
+.section { padding: var(--space-xl) 0; }
+.section + .section { border-top: 1px solid var(--hairline); }
+.section-kicker {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--chartreuse); letter-spacing: 0.06em; text-transform: uppercase;
+  margin: 0 0 12px;
+}
+.section-title {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(28px, 4vw, 42px); line-height: 1.15;
+  color: var(--paper); margin: 0 0 12px; max-width: 28ch;
+}
+.section-lead {
+  margin: 0 0 32px; color: var(--muted-on-desk); max-width: 58ch;
+}
+.mark {
+  display: inline-block; width: 28px; height: 2px;
+  background: var(--red); vertical-align: middle; margin-right: 10px;
+}
 
-    .button, .quiet-button, .copy-button {
-      display: inline-flex;
-      min-height: 44px;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--ink);
-      padding: 9px 14px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 800;
-    }
-    .button { background: var(--ink); color: var(--white); }
-    .button:hover { background: var(--red); border-color: var(--red); }
-    .quiet-button { background: transparent; color: var(--ink); }
-    .quiet-button:hover { background: var(--surface-strong); }
-    .header-copy { min-height: 44px; padding-inline: 11px; font-size: 12px; }
+/* Hero */
+.hero { padding: 48px 0 56px; }
+.hero-grid {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 40px; align-items: start;
+}
+.kicker-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--teal-light); margin: 0 0 20px;
+}
+.kicker-badge::before {
+  content: ""; width: 8px; height: 8px; background: var(--red);
+  transform: rotate(45deg);
+}
+.hero-title {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(40px, 7vw, 84px); line-height: 1.04;
+  color: var(--paper); margin: 0 0 20px; max-width: 12ch;
+}
+.hero-title .red-rule {
+  display: block; width: 64px; height: 3px;
+  background: var(--red); margin-top: 18px;
+}
+.hero-lead {
+  margin: 0 0 28px; color: var(--body-on-desk); max-width: 42ch; font-size: 18px;
+}
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.paper-card {
+  background: var(--paper); color: var(--ink-on-paper);
+  border-radius: var(--radius-md); box-shadow: var(--paper-shadow);
+  padding: 24px; position: relative;
+}
+.paper-card.tilt { transform: rotate(-0.5deg); }
+.paper-card .tick {
+  position: absolute; top: 12px; right: 14px;
+  width: 18px; height: 18px; border-top: 2px solid var(--red);
+  border-right: 2px solid var(--red);
+}
+.run-phases {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 0; list-style: none;
+}
+.run-phases button {
+  appearance: none; border: 1px solid rgba(16,18,14,0.15);
+  background: transparent; color: var(--muted-on-paper);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  min-height: 44px; padding: 8px 10px; border-radius: var(--radius-full);
+  cursor: pointer;
+}
+.run-phases button[aria-pressed="true"] {
+  background: var(--desk); color: var(--paper); border-color: var(--desk);
+}
+.run-body { min-height: 140px; }
+.run-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: var(--red); letter-spacing: 0.04em; margin: 0 0 8px;
+}
+.run-title {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  margin: 0 0 8px; line-height: 1.25;
+}
+.run-text { margin: 0; color: var(--muted-on-paper); font-size: 15px; }
+.run-panel[hidden] { display: none; }
 
-    .eyebrow, .section-index, .record-kicker {
-      margin: 0;
-      color: var(--red);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 1.3;
-      text-transform: uppercase;
-    }
-    .eyebrow { display: flex; align-items: center; gap: 10px; }
-    .eyebrow::before { width: 30px; height: 2px; background: var(--red); content: ""; }
-    h1, h2, h3, p { margin-top: 0; }
-    h1, h2, h3 { font-family: "Songti SC", STSong, "Hiragino Mincho ProN", Georgia, serif; letter-spacing: 0; }
+.stat-strip {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px; margin-top: 40px; padding-top: 28px;
+  border-top: 1px solid var(--hairline);
+}
+.stat {
+  min-width: 0;
+}
+.stat-num {
+  font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600; color: var(--red); line-height: 1; margin: 0 0 6px;
+}
+.stat-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: var(--muted-on-desk); line-height: 1.35; margin: 0;
+}
 
-    .hero {
-      display: grid;
-      min-height: 690px;
-      grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.76fr);
-      gap: 88px;
-      align-items: center;
-      padding: 76px 0 70px;
-      border-bottom: 2px solid var(--ink);
-    }
-    h1 { margin: 22px 0 0; font-size: 98px; font-weight: 800; line-height: 0.9; }
-    .hero-offer {
-      max-width: 700px;
-      margin: 28px 0 0;
-      color: var(--red);
-      font-size: 49px;
-      font-weight: 800;
-      line-height: 1.08;
-    }
-    .lead { max-width: 600px; margin: 25px 0 0; color: var(--muted); font-size: 19px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
-    .mode-note { max-width: 570px; margin: 20px 0 0; padding-top: 15px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
-    .mode-note b { color: var(--ink); }
+/* Observations */
+.obs-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.obs {
+  padding: 0; border: 0; background: transparent;
+}
+.obs-index {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--chartreuse); margin: 0 0 10px;
+}
+.obs p {
+  margin: 0; color: var(--body-on-desk); font-size: 18px;
+  border-left: 2px solid var(--red); padding-left: 14px;
+}
 
-    .run-record { border: 2px solid var(--ink); background: var(--white); box-shadow: 12px 12px 0 var(--teal); }
-    .record-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; padding: 22px 24px 18px; border-bottom: 2px solid var(--ink); }
-    .record-head strong { display: block; margin-top: 7px; font-family: "Songti SC", STSong, Georgia, serif; font-size: 27px; line-height: 1.1; }
-    .record-state { padding: 4px 8px; background: var(--chartreuse); color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; font-weight: 800; white-space: nowrap; }
-    .record-list { margin: 0; padding: 0; list-style: none; }
-    .record-list li { display: grid; grid-template-columns: 38px 1fr; gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--rule); }
-    .record-list li:last-child { border-bottom: 0; }
-    .record-list code { color: var(--red); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; font-weight: 800; }
-    .record-list b, .record-list span { display: block; }
-    .record-list b { font-size: 15px; line-height: 1.35; }
-    .record-list span { margin-top: 2px; color: var(--muted); font-size: 13px; line-height: 1.5; }
-    .record-foot { display: flex; justify-content: space-between; gap: 12px; padding: 13px 24px; border-top: 2px solid var(--ink); background: var(--ink); color: var(--white); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; text-transform: uppercase; }
+/* Artifacts */
+.artifact-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.artifact {
+  background: var(--paper); color: var(--ink-on-paper);
+  border-radius: var(--radius-md); box-shadow: var(--paper-shadow);
+  padding: 22px; min-width: 0;
+}
+.artifact:nth-child(2) { transform: rotate(0.5deg); }
+.artifact-name {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--red); margin: 0 0 8px;
+}
+.artifact h3 {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  margin: 0 0 10px; line-height: 1.25;
+}
+.artifact > p { margin: 0 0 14px; color: var(--muted-on-paper); font-size: 15px; }
+.sample {
+  background: #E8E9E2; border-radius: var(--radius-sm);
+  padding: 12px 14px; font-family: var(--font-mono); font-size: 12px;
+  line-height: 1.55; color: var(--ink-on-paper); white-space: pre-wrap;
+  overflow-x: auto; margin: 0;
+}
 
-    .section { padding: 104px 0; border-bottom: 1px solid var(--ink); }
-    .section-head { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.7fr); gap: 64px; align-items: end; margin-bottom: 54px; }
-    .section-head h2, .section-intro h2 { max-width: 720px; margin: 13px 0 0; font-size: 52px; font-weight: 800; line-height: 1.06; }
-    .section-head > p, .section-intro > p { margin: 0; color: var(--muted); font-size: 17px; }
+/* Workflow */
+.workflow-layout {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px; align-items: start;
+}
+.step-list { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.step-btn {
+  width: 100%; text-align: left; appearance: none; cursor: pointer;
+  background: var(--desk-raised); border: 1px solid var(--hairline);
+  color: var(--body-on-desk); border-radius: var(--radius-md);
+  padding: 14px 16px; min-height: 56px;
+  font-family: var(--font-body); font-size: 16px;
+  display: flex; gap: 12px; align-items: baseline;
+}
+.step-btn[aria-expanded="true"] {
+  border-color: var(--teal-light); background: #1C2119;
+}
+.step-num {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--chartreuse); flex-shrink: 0;
+}
+.step-title { font-weight: 600; color: var(--paper); }
+.step-desc { display: block; color: var(--muted-on-desk); font-size: 14px; margin-top: 4px; }
+.mini-artifact {
+  background: var(--paper); color: var(--ink-on-paper);
+  border-radius: var(--radius-md); box-shadow: var(--paper-shadow);
+  padding: 24px; min-height: 220px;
+}
+.mini-artifact[hidden] { display: none; }
+.mini-artifact h3 {
+  font-family: var(--font-display); font-size: 20px; margin: 0 0 12px;
+}
+.mini-artifact pre, .mini-artifact ul {
+  margin: 0; font-size: 13px; line-height: 1.55;
+}
+.mini-artifact pre {
+  font-family: var(--font-mono); white-space: pre-wrap; overflow-x: auto;
+  background: #E8E9E2; padding: 12px; border-radius: var(--radius-sm);
+}
+.mini-artifact ul { padding-left: 18px; color: var(--muted-on-paper); }
 
-    .observations { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
-    .observation { min-height: 240px; padding: 22px 24px 20px 0; border-right: 1px solid var(--rule); }
-    .observation + .observation { padding-left: 24px; }
-    .observation:last-child { border-right: 0; }
-    .observation b, .output-row b, .workflow-list b, .handoff-list b { color: var(--red); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; }
-    .observation h3 { margin: 54px 0 10px; font-size: 30px; line-height: 1.15; }
-    .observation p { max-width: 300px; margin: 0; color: var(--muted); font-size: 15px; }
+/* Explorer */
+.explorer-controls {
+  display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;
+}
+.explorer-search {
+  width: 100%; min-height: 48px; padding: 12px 16px;
+  border-radius: var(--radius-md); border: 1px solid var(--hairline);
+  background: var(--desk-raised); color: var(--paper);
+  font-family: var(--font-body); font-size: 16px;
+}
+.explorer-search::placeholder { color: var(--muted-on-desk); }
+.domain-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none;
+}
+.domain-chips button {
+  appearance: none; cursor: pointer; min-height: 44px; padding: 8px 14px;
+  border-radius: var(--radius-full); border: 1px solid var(--hairline);
+  background: transparent; color: var(--muted-on-desk);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+}
+.domain-chips button[aria-pressed="true"] {
+  background: var(--paper); color: var(--desk); border-color: var(--paper);
+}
+.explorer-count {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--teal-light); margin: 0 0 16px;
+}
+.okf-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.okf-card {
+  background: var(--desk-raised); border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); padding: 14px 16px; min-width: 0;
+}
+.okf-domain {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  color: var(--chartreuse); text-transform: uppercase; letter-spacing: 0.04em;
+  margin: 0 0 6px;
+}
+.okf-title {
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  color: var(--paper); margin: 0 0 6px; line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.okf-summary {
+  margin: 0 0 8px; color: var(--muted-on-desk); font-size: 13px; line-height: 1.45;
+}
+.okf-path {
+  font-family: var(--font-mono); font-size: 11px; color: var(--teal-light);
+  margin: 0; overflow-wrap: anywhere;
+}
+.explorer-empty {
+  padding: 32px 16px; text-align: center; color: var(--muted-on-desk);
+  border: 1px dashed var(--hairline); border-radius: var(--radius-md);
+}
+.explorer-empty[hidden] { display: none; }
 
-    .outputs { background: var(--ink); color: var(--white); }
-    .outputs .section-index { color: var(--chartreuse); }
-    .output-layout { display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(440px, 1.28fr); gap: 94px; align-items: start; }
-    .outputs h2 { margin: 13px 0 0; color: var(--white); font-size: 52px; line-height: 1.06; }
-    .outputs .section-intro p { margin: 25px 0 0; color: rgba(251, 252, 248, 0.68); font-size: 17px; }
-    .output-list { border-top: 1px solid rgba(251, 252, 248, 0.35); }
-    .output-row { display: grid; grid-template-columns: 64px minmax(150px, 0.72fr) 1.4fr; gap: 20px; padding: 27px 0; border-bottom: 1px solid rgba(251, 252, 248, 0.26); }
-    .output-row b { color: var(--chartreuse); }
-    .output-row h3 { margin: 0; color: var(--white); font-size: 25px; line-height: 1.1; }
-    .output-row p { margin: 0; color: rgba(251, 252, 248, 0.74); font-size: 15px; }
+/* Gallery */
+.gallery-note {
+  margin: -12px 0 28px; color: var(--muted-on-desk); font-size: 15px; max-width: 70ch;
+}
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.demo-card {
+  background: var(--desk-raised); border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); overflow: hidden; min-width: 0;
+  display: flex; flex-direction: column;
+}
+.demo-thumb {
+  position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+  background: #0A0B09; border-bottom: 1px solid var(--hairline);
+}
+.demo-thumb-inner {
+  position: absolute; inset: 0;
+  width: 1280px; height: 800px;
+  transform-origin: top left;
+  pointer-events: none;
+}
+.demo-thumb iframe {
+  width: 1280px; height: 800px; border: 0;
+  pointer-events: none; background: #fff;
+  max-width: none;
+}
+html:not(.js) .demo-thumb-inner {
+  width: 100%; height: 100%; transform: none;
+}
+html:not(.js) .demo-thumb iframe {
+  width: 100%; height: 100%;
+}
+.demo-body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.demo-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 4px 10px;
+  border-radius: var(--radius-full); font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700;
+  background: rgba(127,200,195,0.12); color: var(--teal-light);
+}
+.chip-lang { background: rgba(215,222,73,0.12); color: var(--chartreuse); }
+.demo-name {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  color: var(--paper); margin: 0; line-height: 1.2;
+}
+.demo-style { margin: 0; color: var(--muted-on-desk); font-size: 14px; }
+.demo-actions {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px;
+}
+.demo-foot {
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted-on-desk); margin: 0;
+}
 
-    .workflow-frame, .handoff-layout { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(460px, 1.25fr); gap: 82px; align-items: start; }
-    .workflow-frame .section-intro p, .handoff-layout .section-intro p { margin: 24px 0 0; color: var(--muted); font-size: 17px; }
-    .workflow-list, .handoff-list { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--ink); }
-    .workflow-list li { display: grid; grid-template-columns: 56px minmax(160px, 0.65fr) 1.35fr; gap: 20px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--rule); }
-    .workflow-list h3 { margin: 0; font-size: 25px; line-height: 1.1; }
-    .workflow-list p { margin: 0; color: var(--muted); font-size: 15px; }
-    .reference-note { display: grid; grid-template-columns: 116px 1fr; gap: 16px; align-items: center; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); }
-    .reference-note figure { width: 116px; height: 84px; margin: 0; overflow: hidden; border: 1px solid var(--ink); background: var(--ink); }
-    .reference-note img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 58% 45%; }
-    .reference-note p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+/* Modes */
+.modes-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+  margin-bottom: 24px;
+}
+.mode-card {
+  background: var(--desk-raised); border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); padding: 20px; min-width: 0;
+}
+.mode-card h3 {
+  font-family: var(--font-display); font-size: 20px; margin: 0 0 8px; color: var(--paper);
+}
+.mode-card p { margin: 0; color: var(--muted-on-desk); font-size: 15px; }
+.route-chips {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none;
+}
+.route-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 10px 16px;
+  border: 1px solid var(--hairline); border-radius: var(--radius-full);
+  color: var(--body-on-desk); font-size: 14px;
+}
+.route-chip strong {
+  font-family: var(--font-mono); font-size: 12px; color: var(--chartreuse); font-weight: 700;
+}
 
-    .capability-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
-    .capability { min-height: 154px; padding: 21px 22px 22px 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-    .capability:nth-child(3n + 2), .capability:nth-child(3n + 3) { padding-left: 22px; }
-    .capability:nth-child(3n) { border-right: 0; }
-    .capability:nth-last-child(-n + 3) { border-bottom: 0; }
-    .capability h3 { margin: 0; font-size: 25px; line-height: 1.12; }
-    .capability p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+/* Install */
+.tabs {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none;
+}
+.tabs button {
+  appearance: none; cursor: pointer; min-height: 44px; padding: 10px 16px;
+  border-radius: var(--radius-sm); border: 1px solid var(--hairline);
+  background: transparent; color: var(--muted-on-desk);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+}
+.tabs button[aria-selected="true"] {
+  background: var(--paper); color: var(--desk); border-color: var(--paper);
+}
+.console {
+  background: #0A0B09; border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;
+}
+.console-row {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+}
+.console pre {
+  margin: 0; flex: 1; min-width: 0;
+  font-family: var(--font-mono); font-size: 13px; color: var(--paper);
+  white-space: pre-wrap; overflow-x: auto; line-height: 1.5;
+}
+.tab-panel[hidden] { display: none; }
+.prompt-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;
+}
+.prompt-card {
+  background: #0A0B09; border: 1px solid var(--hairline);
+  border-radius: var(--radius-md); padding: 16px; min-width: 0;
+}
+.prompt-card h3 {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--teal-light); margin: 0 0 12px;
+}
+.prompt-card pre {
+  margin: 0 0 14px; font-family: var(--font-mono); font-size: 13px;
+  color: var(--paper); white-space: pre-wrap; overflow-x: auto; line-height: 1.55;
+}
 
-    .prompt-section { background: var(--teal); color: var(--white); }
-    .prompt-layout { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(480px, 1.3fr); gap: 84px; align-items: start; }
-    .prompt-section .section-index { color: var(--chartreuse); }
-    .prompt-section h2 { margin: 13px 0 0; color: var(--white); font-size: 52px; line-height: 1.06; }
-    .prompt-section .section-intro p { margin: 24px 0 0; color: rgba(251, 252, 248, 0.76); font-size: 17px; }
-    .prompt-console { border: 2px solid var(--ink); background: var(--ink); box-shadow: 10px 10px 0 var(--chartreuse); }
-    .console-bar { display: flex; justify-content: space-between; gap: 18px; padding: 13px 18px; border-bottom: 1px solid rgba(251, 252, 248, 0.24); color: rgba(251, 252, 248, 0.76); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; }
-    .copy-status { color: var(--chartreuse); }
-    .prompt-card { padding: 21px 20px; border-bottom: 1px solid rgba(251, 252, 248, 0.2); }
-    .prompt-card:last-child { border-bottom: 0; }
-    .prompt-card h3 { margin: 0 0 11px; color: var(--white); font-size: 20px; }
-    .prompt-card pre { margin: 0; color: rgba(251, 252, 248, 0.76); white-space: pre-wrap; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; line-height: 1.72; }
-    .copy-row { margin-top: 15px; }
-    .copy-button { min-height: 44px; border-color: rgba(251, 252, 248, 0.48); background: transparent; color: var(--white); padding: 7px 10px; font-size: 12px; }
-    .copy-button:hover { background: var(--chartreuse); border-color: var(--chartreuse); color: var(--ink); }
+/* Delivery */
+.check-list {
+  list-style: none; margin: 0 0 24px; padding: 0;
+  display: grid; gap: 12px;
+}
+.check-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  color: var(--body-on-desk);
+}
+.check-list li::before {
+  content: ""; flex-shrink: 0; width: 10px; height: 10px; margin-top: 8px;
+  background: var(--red); transform: rotate(45deg);
+}
 
-    .handoff-list li { display: grid; grid-template-columns: 32px 170px 1fr; gap: 16px; padding: 17px 0; border-bottom: 1px solid var(--rule); }
-    .handoff-list strong { font-size: 15px; }
-    .handoff-list span { color: var(--muted); font-size: 14px; }
-    .final-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 50px; align-items: center; padding: 74px 0; }
-    .final-cta h2 { max-width: 810px; margin: 0; font-size: 48px; line-height: 1.08; }
-    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 26px 0 36px; border-top: 1px solid var(--ink); color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; text-transform: uppercase; }
-    [data-lang="en"] h1, [data-lang="en"] h2, [data-lang="en"] h3, [data-lang="en"] .hero-offer, [data-lang="en"] .brand strong, [data-lang="en"] .record-head strong { font-family: Georgia, "Times New Roman", serif; }
-    [data-lang="en"] .hero-offer { max-width: 630px; }
+/* Meta */
+.meta-strip {
+  background: var(--desk-raised); border-block: 1px solid var(--hairline);
+  padding: 28px 0;
+}
+.meta-strip p {
+  margin: 0; color: var(--muted-on-desk); max-width: 72ch; font-size: 15px;
+}
+.meta-strip a { color: var(--chartreuse); display: inline-flex; align-items: center; min-height: 44px; padding-inline: 2px; }
 
-    @media (max-width: 1020px) {
-      .hero, .output-layout, .workflow-frame, .prompt-layout, .handoff-layout { grid-template-columns: 1fr; }
-      .hero { min-height: auto; gap: 52px; }
-      .hero-copy { max-width: 760px; }
-      .run-record, .prompt-console { max-width: 680px; }
-      .output-layout, .workflow-frame, .prompt-layout, .handoff-layout { gap: 46px; }
-    }
-    @media (max-width: 760px) {
-      .shell { width: min(100% - 28px, var(--max)); }
-      .header-grid { min-height: 58px; grid-template-columns: 1fr auto; gap: 12px; }
-      .site-nav, .header-copy { display: none; }
-      .brand strong { font-size: 16px; }
-      .brand small { font-size: 10px; }
-      .hero { gap: 44px; padding: 48px 0 54px; }
-      h1 { font-size: 63px; }
-      .hero-offer { margin-top: 23px; font-size: 38px; }
-      .lead { margin-top: 20px; font-size: 17px; }
-      .mode-note { font-size: 13px; }
-      .record-head { padding: 18px; }
-      .record-head strong { font-size: 23px; }
-      .record-list li { padding: 14px 18px; }
-      .record-foot { padding: 11px 18px; font-size: 9px; }
-      .section { padding: 68px 0; }
-      .section-head { grid-template-columns: 1fr; gap: 20px; margin-bottom: 36px; }
-      .section-head h2, .section-intro h2, .outputs h2, .prompt-section h2 { font-size: 39px; }
-      .section-head > p, .section-intro > p, .workflow-frame .section-intro p, .handoff-layout .section-intro p, .prompt-section .section-intro p, .outputs .section-intro p { font-size: 16px; }
-      .observations, .capability-grid { grid-template-columns: 1fr; }
-      .observation, .observation + .observation, .capability, .capability:nth-child(3n + 2), .capability:nth-child(3n + 3) { min-height: 0; padding: 19px 0; border-right: 0; border-bottom: 1px solid var(--rule); }
-      .observation h3 { margin-top: 28px; font-size: 27px; }
-      .capability:nth-last-child(-n + 3) { border-bottom: 1px solid var(--rule); }
-      .capability:last-child { border-bottom: 0; }
-      .output-row, .workflow-list li, .handoff-list li { grid-template-columns: 38px 1fr; gap: 12px; }
-      .output-row p, .workflow-list p, .handoff-list span { grid-column: 2; }
-      .output-row h3, .workflow-list h3 { font-size: 23px; }
-      .reference-note { grid-template-columns: 92px 1fr; }
-      .reference-note figure { width: 92px; height: 70px; }
-      .prompt-console { box-shadow: 7px 7px 0 var(--chartreuse); }
-      .final-cta { grid-template-columns: 1fr; gap: 24px; padding: 58px 0; }
-      .final-cta h2 { font-size: 38px; }
-      .final-cta .button { width: 100%; }
-      .footer { flex-direction: column; gap: 6px; }
-    }
-  </style>
+/* Footer */
+.site-footer {
+  padding: 32px 0 48px; color: var(--muted-on-desk); font-size: 14px;
+}
+.footer-inner {
+  display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between;
+}
+.footer-links {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0; padding: 0; list-style: none;
+}
+.footer-links a { color: var(--muted-on-desk); text-decoration: none; min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; padding-inline: 4px; }
+.footer-links a:hover { color: var(--paper); }
+
+/* Motion: only when JS adds .js and not reduced */
+html.js [data-ud-motion="section-reveal"] {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+html.js [data-ud-motion="section-reveal"].is-in {
+  opacity: 1; transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-ud-motion="section-reveal"] {
+    opacity: 1 !important; transform: none !important; transition: none !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-grid, .workflow-layout { grid-template-columns: 1fr; }
+  .paper-card.tilt, .artifact:nth-child(2) { transform: none; }
+  .stat-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .obs-grid, .artifact-grid, .modes-grid, .prompt-grid { grid-template-columns: 1fr; }
+  .okf-grid, .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav { display: none; }
+  .hero-title { max-width: none; }
+}
+@media (max-width: 640px) {
+  .wrap { width: min(100% - 28px, var(--max)); }
+  .stat-strip, .okf-grid, .gallery-grid { grid-template-columns: 1fr; }
+  .header-inner { gap: 8px; }
+  .brand { font-size: 15px; }
+}
+</style>
 </head>
-<body data-lang="zh">
-  <header class="site-header" data-ud-check="site-header">
-    <div class="shell header-grid">
-      <a class="brand" href="#top" aria-label="Ultimate Design home">
-        <span class="brand-mark">UD</span>
-        <span class="brand-copy"><strong>Ultimate Design</strong><small data-i18n="brand.tagline">给 AI Agent 的设计工作流</small></span>
-      </a>
-      <nav class="site-nav" aria-label="Primary navigation">
-        <a href="#method" data-i18n="nav.method">怎么工作</a>
-        <a href="#uses" data-i18n="nav.uses">能做什么</a>
-        <a href="#prompts" data-i18n="nav.prompts">怎么开始</a>
-        <a href="#handoff" data-i18n="nav.handoff">交付什么</a>
-      </nav>
-      <div class="header-actions">
-        <div class="lang-switch" aria-label="Language switch">
-          <button type="button" data-lang-button="zh" aria-pressed="true">中</button>
-          <button type="button" data-lang-button="en" aria-pressed="false">EN</button>
+<body>
+<a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
+<div class="live" id="copy-live" aria-live="polite"></div>
+
+<header class="site-header" data-ud-check="navigation">
+  <div class="wrap header-inner">
+    <a class="brand" href="#">Ultimate Design</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#workflow" data-i18n="nav.method">方法</a>
+      <a href="#knowledge" data-i18n="nav.knowledge">知识库</a>
+      <a href="#gallery" data-i18n="nav.gallery">案例</a>
+      <a href="#start" data-i18n="nav.start">上手</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang-button="zh" aria-pressed="true">中</button>
+        <button type="button" data-lang-button="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/aa2246740/ultimate-design" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="kicker-badge" data-i18n="hero.kicker">Agent Skill · v0.6.0 · MIT</p>
+          <h1 class="hero-title" id="hero-heading" data-ud-check="hero-title">
+            <span data-i18n="hero.title">把设计做出来,也把判断留下来。</span>
+            <span class="red-rule" aria-hidden="true"></span>
+          </h1>
+          <p class="hero-lead" data-ud-check="hero-lead" data-i18n="hero.lead">Ultimate Design 是给 AI Agent 用的设计工作流:收到模糊需求时先理顺目标和内容,做完后对着真实渲染结果复查,最后把 DESIGN.md 契约留给下一位接手的人。</p>
+          <div class="hero-ctas">
+            <button type="button" class="btn btn-primary" data-copy="npx ultimate-design-skill@latest --target claude-code" data-i18n="hero.ctaCopy">复制安装命令</button>
+            <a class="btn btn-ghost" href="#workflow" data-i18n="hero.ctaHow">看它怎么工作</a>
+          </div>
         </div>
-        <button class="button header-copy" type="button" data-copy="starter" data-i18n="header.copy">复制 Prompt</button>
+        <aside class="paper-card tilt" data-ud-check="hero-run-record" data-ud-motion="hero-run-cycle" aria-label="Run record">
+          <span class="tick" aria-hidden="true"></span>
+          <p class="run-label" data-i18n="run.label">一次运行 · 五阶段</p>
+          <ul class="run-phases" role="list">
+            <li><button type="button" data-run-phase="0" aria-pressed="true" data-i18n="run.p0.tab">需求锚点</button></li>
+            <li><button type="button" data-run-phase="1" aria-pressed="false" data-i18n="run.p1.tab">内容契约</button></li>
+            <li><button type="button" data-run-phase="2" aria-pressed="false" data-i18n="run.p2.tab">方向</button></li>
+            <li><button type="button" data-run-phase="3" aria-pressed="false" data-i18n="run.p3.tab">制品</button></li>
+            <li><button type="button" data-run-phase="4" aria-pressed="false" data-i18n="run.p4.tab">渲染复查</button></li>
+          </ul>
+          <div class="run-body">
+            <div class="run-panel" data-run-panel="0">
+              <h2 class="run-title" data-i18n="run.p0.title">Request Anchor</h2>
+              <p class="run-text" data-i18n="run.p0.text">写清这次要解决什么、谁来用、什么不能丢。后续细节不能盖住原始诉求。</p>
+            </div>
+            <div class="run-panel" data-run-panel="1" hidden>
+              <h2 class="run-title" data-i18n="run.p1.title">Content contract</h2>
+              <p class="run-text" data-i18n="run.p1.text">先排信息层级与必须准确的句子,再开版式。CONTENT.md 成为页面文案的唯一来源。</p>
+            </div>
+            <div class="run-panel" data-run-panel="2" hidden>
+              <h2 class="run-title" data-i18n="run.p2.title">Direction</h2>
+              <p class="run-text" data-i18n="run.p2.text">选定色彩、字体、密度与参考策略,并写进 DESIGN.md 的 taste dials。</p>
+            </div>
+            <div class="run-panel" data-run-panel="3" hidden>
+              <h2 class="run-title" data-i18n="run.p3.title">Artifact</h2>
+              <p class="run-text" data-i18n="run.p3.text">落到真实页面或材料,带上 data-ud-check 语义区,方便渲染审计对位。</p>
+            </div>
+            <div class="run-panel" data-run-panel="4" hidden>
+              <h2 class="run-title" data-i18n="run.p4.title">Rendered review</h2>
+              <p class="run-text" data-i18n="run.p4.text">对着真实渲染修问题,把未解决风险写清楚,再交给下一位接手的人。</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="stat-strip" data-ud-check="stat-strip" data-ud-motion="section-reveal">
+        <div class="stat"><p class="stat-num">35</p><p class="stat-label" data-i18n="stat.concepts">个知识概念</p></div>
+        <div class="stat"><p class="stat-num">7</p><p class="stat-label" data-i18n="stat.domains">个知识域</p></div>
+        <div class="stat"><p class="stat-num">19</p><p class="stat-label" data-i18n="stat.playbooks">份分支参考</p></div>
+        <div class="stat"><p class="stat-num">11</p><p class="stat-label" data-i18n="stat.scripts">个内置脚本</p></div>
+        <div class="stat"><p class="stat-num">6</p><p class="stat-label" data-i18n="stat.demos">个完整案例</p></div>
+        <div class="stat"><p class="stat-num">3</p><p class="stat-label" data-i18n="stat.hosts">个宿主</p></div>
       </div>
     </div>
-  </header>
+  </section>
 
-  <main id="top">
-    <section class="shell hero">
-      <div class="hero-copy">
-        <p class="eyebrow" data-i18n="hero.eyebrow">面向网页、界面、PPT 与视觉内容</p>
-        <h1 data-ud-check="hero-title">Ultimate<br />Design</h1>
-        <p class="hero-offer" data-i18n="hero.offer">把设计做出来，<br />也把判断留下来。</p>
-        <p class="lead" data-ud-check="hero-lead" data-i18n="hero.lead">先把模糊需求理成可执行的任务；完成后看真实页面，修掉跑题、错位和含糊的表达。交付时，不只留下一个链接。</p>
-        <div class="hero-actions" data-ud-check="hero-actions">
-          <a class="button" href="#method" data-i18n="hero.primary">看它怎么工作</a>
-          <button class="quiet-button" type="button" data-copy="starter" data-i18n="hero.secondary">复制起步 Prompt</button>
-        </div>
-        <p class="mode-note" data-i18n="hero.mode"><b>默认</b>先给你一版完整结果。关键选择需要共同决定时，再用 <b>--pro</b>。</p>
+  <!-- OBSERVATIONS -->
+  <section class="section" aria-labelledby="why-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="observations">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="why.kicker">为什么需要它</span></p>
+      <h2 class="section-title" id="why-title" data-i18n="why.title">一张"看起来完成"的页面,往往只完成了一半。</h2>
+      <p class="section-lead" data-i18n="why.lead">画面做出来以后,真正的问题才露出来。</p>
+      <div class="obs-grid">
+        <article class="obs">
+          <p class="obs-index">01</p>
+          <p data-i18n="why.o1">原始诉求被后续细节盖住了。</p>
+        </article>
+        <article class="obs">
+          <p class="obs-index">02</p>
+          <p data-i18n="why.o2">内容和版式一起开工,重要的话没有位置。</p>
+        </article>
+        <article class="obs">
+          <p class="obs-index">03</p>
+          <p data-i18n="why.o3">交付只剩截图,没人知道为什么这样取舍。</p>
+        </article>
       </div>
+    </div>
+  </section>
 
-      <aside class="run-record" data-ud-check="hero-run-record" aria-label="What a design run leaves behind">
-        <div class="record-head">
-          <div><p class="record-kicker" data-i18n="record.kicker">一次设计，交出去什么？</p><strong data-i18n="record.title">能接着用的四样东西</strong></div>
-          <span class="record-state" data-i18n="record.state">RUN COMPLETE</span>
-        </div>
-        <ol class="record-list">
-          <li><code>01</code><div><b data-i18n="record.1.title">需求卡</b><span data-i18n="record.1.text">原始诉求、最新调整、验收标准。</span></div></li>
-          <li><code>02</code><div><b>DESIGN.md</b><span data-i18n="record.2.text">内容顺序、设计方向、假设和待确认项。</span></div></li>
-          <li><code>03</code><div><b data-i18n="record.3.title">真实成品</b><span data-i18n="record.3.text">网页、界面、PPT、图形或品牌材料。</span></div></li>
-          <li><code>04</code><div><b data-i18n="record.4.title">复核记录</b><span data-i18n="record.4.text">截图、发现的问题和仍需注意的风险。</span></div></li>
-        </ol>
-        <div class="record-foot"><span>Brief → Build</span><span>Review → Handoff</span></div>
-      </aside>
-    </section>
-
-    <section id="method" class="shell section">
-      <header class="section-head">
-        <div><p class="section-index">01 / WHERE WORK BREAKS</p><h2 data-i18n="observations.title">一张页面，常常只完成了一半。</h2></div>
-        <p data-i18n="observations.lead">画面做出来以后，真正的问题才露出来：需求在中途变了，内容没讲清，下一位接手的人不知道哪些是刻意选择。</p>
-      </header>
-      <div class="observations" data-ud-check="observation-list">
-        <article class="observation"><b>01</b><h3 data-i18n="observation.1.title">需求在途中换了</h3><p data-i18n="observation.1.text">原始诉求被新细节盖住，最后做出的东西已经不是一开始要解决的问题。</p></article>
-        <article class="observation"><b>02</b><h3 data-i18n="observation.2.title">重要的话没有位置</h3><p data-i18n="observation.2.text">内容和版式一起开工，真正需要被看懂的部分反而被装饰和组件挤到后面。</p></article>
-        <article class="observation"><b>03</b><h3 data-i18n="observation.3.title">交付只剩一张图</h3><p data-i18n="observation.3.text">没有取舍记录，也没有真实状态的检查，下一位只能从头猜一遍。</p></article>
+  <!-- ARTIFACTS -->
+  <section class="section" aria-labelledby="out-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="artifact-trio">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="out.kicker">它留下什么</span></p>
+      <h2 class="section-title" id="out-title" data-i18n="out.title">每一次运行,留下三件能继续用的东西。</h2>
+      <div class="artifact-grid">
+        <article class="artifact">
+          <p class="artifact-name">Request Anchor</p>
+          <h3 data-i18n="out.a1.title">这次到底要解决什么</h3>
+          <p data-i18n="out.a1.desc">谁来用,什么不能丢。三行锚点记录把原始诉求钉住。</p>
+          <pre class="sample" data-i18n="out.a1.sample">Audience: agent developers evaluating install
+Job: judge capability in ~60s, then copy a command
+Must keep: countable inventory, bilingual switch</pre>
+        </article>
+        <article class="artifact">
+          <p class="artifact-name">DESIGN.md</p>
+          <h3 data-i18n="out.a2.title">内容顺序与视觉方向</h3>
+          <p data-i18n="out.a2.desc">假设和待确认项写进契约,下一位接手的人不用猜。</p>
+          <pre class="sample" data-i18n="out.a2.sample">colors:
+  primary: "#DF3A22"
+  surface: "#10120E"
+taste: studio desk at night
+exceptions: Google Fonts for display only</pre>
+        </article>
+        <article class="artifact">
+          <p class="artifact-name">Rendered review</p>
+          <h3 data-i18n="out.a3.title">对着真实页面复查</h3>
+          <p data-i18n="out.a3.desc">截图与批判发现成对出现,修完再交付。</p>
+          <pre class="sample" data-i18n="out.a3.sample">FINDING: hero claim competed with stat strip
+FIX: moved stats below the fold rule; claim dominates once
+STATUS: resolved before handoff</pre>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section outputs">
-      <div class="shell output-layout">
-        <div class="section-intro" data-ud-check="outputs-intro"><p class="section-index">02 / WHAT STAYS</p><h2 data-i18n="outputs.title">每一次设计，都留下能继续使用的东西。</h2><p data-i18n="outputs.lead">需求变了，看需求卡；换人接手，读 DESIGN.md；出现问题，回到真实页面和截图。</p></div>
-        <div class="output-list" data-ud-check="outputs-list">
-          <article class="output-row"><b>01</b><h3>Request Anchor</h3><p data-i18n="output.1">这次要解决什么，谁来用，什么不能丢。</p></article>
-          <article class="output-row"><b>02</b><h3>DESIGN.md</h3><p data-i18n="output.2">内容顺序、视觉方向、假设和待确认项写在一起。</p></article>
-          <article class="output-row"><b>03</b><h3 data-i18n="output.3.title">真实复核</h3><p data-i18n="output.3">用真实页面和截图看内容、层级、换行和细节是否站得住。</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="shell section">
-      <div class="workflow-frame">
-        <div class="section-intro"><p class="section-index">03 / THE RUN</p><h2 data-i18n="workflow.title">先把事情说清，再把画面做对。</h2><p data-i18n="workflow.lead">五步会留下五个可回看的点：需求、内容、方向、成品和复核。</p></div>
-        <div>
-          <ol class="workflow-list" data-ud-check="workflow-list">
-            <li><b>01</b><h3 data-i18n="workflow.1.title">读需求</h3><p data-i18n="workflow.1.text">保留原始诉求、最新调整和验收标准。</p></li>
-            <li><b>02</b><h3 data-i18n="workflow.2.title">理内容</h3><p data-i18n="workflow.2.text">确定先让人看懂什么，哪些话必须准确。</p></li>
-            <li><b>03</b><h3 data-i18n="workflow.3.title">定方向</h3><p data-i18n="workflow.3.text">选择合适的色彩、字体、密度、版式和参考策略。</p></li>
-            <li><b>04</b><h3 data-i18n="workflow.4.title">做成品</h3><p data-i18n="workflow.4.text">落到网页、产品界面、PPT、图形或品牌材料。</p></li>
-            <li><b>05</b><h3 data-i18n="workflow.5.title">回看交付</h3><p data-i18n="workflow.5.text">检查真实输出，修问题，补上下一位能读懂的记录。</p></li>
-          </ol>
-          <div class="reference-note" data-ud-check="reference-input">
-            <figure><img src="./assets/imagegen-homepage-reference.png" alt="Optional visual reference thumbnail for an Ultimate Design run" /></figure>
-            <p data-i18n="reference.note">有参考图就用它判断结构、气质和节奏；没有也照样继续。它是输入，不是流程的前提。</p>
+  <!-- WORKFLOW -->
+  <section class="section" id="workflow" aria-labelledby="wf-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="workflow">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="wf.kicker">工作方式</span></p>
+      <h2 class="section-title" id="wf-title" data-i18n="wf.title">先把事情说清,再把画面做对。</h2>
+      <div class="workflow-layout">
+        <ul class="step-list" role="list">
+          <li>
+            <button type="button" class="step-btn" data-step="0" aria-expanded="true" aria-controls="step-panel-0" id="step-btn-0">
+              <span class="step-num">01</span>
+              <span><span class="step-title" data-i18n="wf.s1.title">读需求</span><span class="step-desc" data-i18n="wf.s1.desc">保留原始诉求、最新调整和验收标准。</span></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="step-btn" data-step="1" aria-expanded="false" aria-controls="step-panel-1" id="step-btn-1">
+              <span class="step-num">02</span>
+              <span><span class="step-title" data-i18n="wf.s2.title">理内容</span><span class="step-desc" data-i18n="wf.s2.desc">确定先让人看懂什么,哪些话必须准确。</span></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="step-btn" data-step="2" aria-expanded="false" aria-controls="step-panel-2" id="step-btn-2">
+              <span class="step-num">03</span>
+              <span><span class="step-title" data-i18n="wf.s3.title">定方向</span><span class="step-desc" data-i18n="wf.s3.desc">选择色彩、字体、密度、版式和参考策略。</span></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="step-btn" data-step="3" aria-expanded="false" aria-controls="step-panel-3" id="step-btn-3">
+              <span class="step-num">04</span>
+              <span><span class="step-title" data-i18n="wf.s4.title">做成品</span><span class="step-desc" data-i18n="wf.s4.desc">落到网页、产品界面、Deck、图形或品牌材料。</span></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="step-btn" data-step="4" aria-expanded="false" aria-controls="step-panel-4" id="step-btn-4">
+              <span class="step-num">05</span>
+              <span><span class="step-title" data-i18n="wf.s5.title">回看交付</span><span class="step-desc" data-i18n="wf.s5.desc">对着渲染结果修问题,补上下一位能读懂的记录。</span></span>
+            </button>
+          </li>
+        </ul>
+        <div class="step-panels">
+          <div class="mini-artifact" id="step-panel-0" role="region" aria-labelledby="step-btn-0">
+            <h3 data-i18n="wf.s1.miniTitle">需求锚点条目</h3>
+            <pre data-i18n="wf.s1.mini">- Original ask: showcase page like the reference site
+- Latest override: real demo gallery, six agent-designed pages
+- Success: name 3 outputs + 5 steps; copy install + prompt</pre>
+          </div>
+          <div class="mini-artifact" id="step-panel-1" role="region" aria-labelledby="step-btn-1" hidden>
+            <h3 data-i18n="wf.s2.miniTitle">信息层级清单</h3>
+            <ul>
+              <li data-i18n="wf.s2.m1">1. Claim + run record</li>
+              <li data-i18n="wf.s2.m2">2. Inventory proof</li>
+              <li data-i18n="wf.s2.m3">3. Method, library, range</li>
+              <li data-i18n="wf.s2.m4">4. Install and delivery</li>
+            </ul>
+          </div>
+          <div class="mini-artifact" id="step-panel-2" role="region" aria-labelledby="step-btn-2" hidden>
+            <h3 data-i18n="wf.s3.miniTitle">Taste dials 摘要</h3>
+            <pre data-i18n="wf.s3.mini">visual variance: 7
+information density: 6
+motion depth: 2
+brand distinction: 8
+direction: studio desk at night</pre>
+          </div>
+          <div class="mini-artifact" id="step-panel-3" role="region" aria-labelledby="step-btn-3" hidden>
+            <h3 data-i18n="wf.s4.miniTitle">带 data-ud-check 的片段</h3>
+            <pre>&lt;section data-ud-check='demo-gallery'&gt;
+  &lt;!-- live iframe plates --&gt;
+&lt;/section&gt;</pre>
+          </div>
+          <div class="mini-artifact" id="step-panel-4" role="region" aria-labelledby="step-btn-4" hidden>
+            <h3 data-i18n="wf.s5.miniTitle">验证清单</h3>
+            <ul>
+              <li data-i18n="wf.s5.m1">契约校验 (strict contract)</li>
+              <li data-i18n="wf.s5.m2">渲染复查 (375 / 768 / 1440)</li>
+              <li data-i18n="wf.s5.m3">双语核对 (semantic parity)</li>
+            </ul>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="uses" class="shell section">
-      <header class="section-head">
-        <div><p class="section-index">04 / WHERE IT HELPS</p><h2 data-i18n="uses.title">不同媒介，仍然可以用同一套判断。</h2></div>
-        <p data-i18n="uses.lead">做的东西不同，看的问题不同；但内容、方向、成品和复核的顺序不需要变。</p>
-      </header>
-      <div class="capability-grid" data-ud-check="capability-list">
-        <article class="capability"><h3 data-i18n="use.1.title">官网与内容页</h3><p data-i18n="use.1.text">把调研、想法或产品说明，整理成读得懂的页面。</p></article>
-        <article class="capability"><h3 data-i18n="use.2.title">产品界面</h3><p data-i18n="use.2.text">Dashboard、表单、引导、定价页、流程和原型。</p></article>
-        <article class="capability"><h3 data-i18n="use.3.title">PPT / Deck</h3><p data-i18n="use.3.text">汇报、路演、培训、产品讲解和 HTML Deck。</p></article>
-        <article class="capability"><h3 data-i18n="use.4.title">平面与社媒</h3><p data-i18n="use.4.text">海报、九图、报告封面、横幅和信息图。</p></article>
-        <article class="capability"><h3 data-i18n="use.5.title">品牌规则</h3><p data-i18n="use.5.text">色彩、字体、识别点和跨媒介的使用边界。</p></article>
-        <article class="capability"><h3 data-i18n="use.6.title">审查与打磨</h3><p data-i18n="use.6.text">检查已有设计，修掉影响理解和使用的问题。</p></article>
+  <!-- OKF EXPLORER -->
+  <section class="section" id="knowledge" aria-labelledby="okf-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="okf-explorer">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="okf.kicker">知识库</span></p>
+      <h2 class="section-title" id="okf-title" data-i18n="okf.title">35 个概念,按需加载,绑定到决策。</h2>
+      <p class="section-lead" data-i18n="okf.lead">OKF 不是装饰性的背景知识。每个被激活的概念,都必须绑定一条具体决策、一个制品目标和一条验证钩子;贡献结束就退场。</p>
+      <div class="explorer-controls">
+        <label class="sr-only" for="okf-search" data-i18n="okf.searchLabel">搜索知识库</label>
+        <input class="explorer-search" id="okf-search" type="search" data-i18n-attr="placeholder:okf.placeholder" placeholder="搜索概念、文件名或关键词…">
+        <ul class="domain-chips" role="list" aria-label="Domains">
+          <li><button type="button" data-domain="all" aria-pressed="true" data-i18n="okf.d.all">全部</button></li>
+          <li><button type="button" data-domain="foundations" aria-pressed="false" data-i18n="okf.d.foundations">基础</button></li>
+          <li><button type="button" data-domain="systems" aria-pressed="false" data-i18n="okf.d.systems">系统</button></li>
+          <li><button type="button" data-domain="content" aria-pressed="false" data-i18n="okf.d.content">内容</button></li>
+          <li><button type="button" data-domain="digital" aria-pressed="false" data-i18n="okf.d.digital">数字</button></li>
+          <li><button type="button" data-domain="methods" aria-pressed="false" data-i18n="okf.d.methods">方法</button></li>
+          <li><button type="button" data-domain="production" aria-pressed="false" data-i18n="okf.d.production">生产</button></li>
+          <li><button type="button" data-domain="governance" aria-pressed="false" data-i18n="okf.d.governance">治理</button></li>
+          <li><button type="button" data-domain="playbook" aria-pressed="false" data-i18n="okf.d.playbook">分支参考</button></li>
+        </ul>
       </div>
-    </section>
+      <p class="explorer-count" id="okf-count" aria-live="polite">54 项中的 54 项</p>
+      <div class="okf-grid" id="okf-grid"></div>
+      <div class="explorer-empty" id="okf-empty" hidden data-i18n="okf.empty">没有匹配的条目。换个关键词,或清除筛选。</div>
+    </div>
+  </section>
 
-    <section id="prompts" class="section prompt-section">
-      <div class="shell prompt-layout">
-        <div class="section-intro" data-ud-check="prompt-intro"><p class="section-index">05 / START HERE</p><h2 data-i18n="prompts.title">用一句明确的话开始。</h2><p data-i18n="prompts.lead">普通工作直接说你要做什么。需要共同决定方向时，再加 <code>--pro</code>。</p></div>
-        <div class="prompt-console" data-ud-check="prompt-console">
-          <div class="console-bar"><span>$ ultimate-design</span><span id="copy-status" class="copy-status" aria-live="polite"></span></div>
-          <article class="prompt-card"><h3 data-i18n="prompt.1.title">先做一版</h3><pre id="prompt-starter" data-i18n="prompt.1.text">$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。</pre><div class="copy-row"><button class="copy-button" type="button" data-copy="starter" data-i18n="prompt.copy1">复制起步 Prompt</button></div></article>
-          <article class="prompt-card"><h3 data-i18n="prompt.2.title">先对齐关键选择</h3><pre id="prompt-pro" data-i18n="prompt.2.text">$ultimate-design --pro
-我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。</pre><div class="copy-row"><button class="copy-button" type="button" data-copy="pro" data-i18n="prompt.copy2">复制 --pro Prompt</button></div></article>
+  <!-- DEMO GALLERY placeholder - filled next -->
+  <section class="section" id="gallery" aria-labelledby="gal-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="demo-gallery">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="gal.kicker">案例画廊</span></p>
+      <h2 class="section-title" id="gal-title" data-i18n="gal.title">六个完整页面,六种设计语言。</h2>
+      <p class="gallery-note" data-i18n="gal.note">每个案例都由安装了本技能的 Agent 按完整工作流设计——契约、实现、批判、渲染复查。缩略图是案例页的实时渲染(缩放的 iframe),不是截图;所有品牌均为虚构。</p>
+      <div class="gallery-grid" id="gallery-grid">
+<article class="demo-card" data-demo="finlytics">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/finlytics/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.finlytics.cat">营销页</span>
+      <span class="chip chip-lang">EN</span>
+    </div>
+    <h3 class="demo-name">Finlytics</h3>
+    <p class="demo-style" data-i18n="gal.finlytics.style">深色数据感</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/finlytics/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design Design a marketing landing page for Finlytics, a fictional real-time revenue analytics platform for subscription businesses. Dark, data-forward, credible; charts drawn in CSS/SVG; pricing and a demo CTA." data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/finlytics/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+<article class="demo-card" data-demo="teahouse">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/teahouse/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.teahouse.cat">品牌官网</span>
+      <span class="chip chip-lang">中文</span>
+    </div>
+    <h3 class="demo-name">山声茶事</h3>
+    <p class="demo-style" data-i18n="gal.teahouse.style">东方编辑感</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/teahouse/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design 为虚构茶馆品牌「山声茶事」设计品牌官网首页:山泉煮茶的门店故事、三款招牌茶、茶席预约。东方编辑感、纸感底色、宋体标题、竖排点缀。" data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/teahouse/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+<article class="demo-card" data-demo="taskflow">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/taskflow/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.taskflow.cat">产品界面</span>
+      <span class="chip chip-lang">EN</span>
+    </div>
+    <h3 class="demo-name">TaskFlow</h3>
+    <p class="demo-style" data-i18n="gal.taskflow.style">冷静系统感</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/taskflow/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design Design the main dashboard screen for TaskFlow, a fictional project management tool: sidebar, project board with task cards, activity feed, summary row. Light, calm, production-quality states." data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/taskflow/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+<article class="demo-card" data-demo="petcare">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/petcare/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.petcare.cat">预约落地页</span>
+      <span class="chip chip-lang">中文</span>
+    </div>
+    <h3 class="demo-name">毛茸茸研究所</h3>
+    <p class="demo-style" data-i18n="gal.petcare.style">活泼圆润</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/petcare/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design 为虚构宠物洗护品牌「毛茸茸研究所」设计预约落地页:服务套餐、价格、门店预约表单。活泼、圆角、奶油色系,但专业可信。" data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/petcare/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+<article class="demo-card" data-demo="deck-q2">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/deck-q2/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.deck-q2.cat">HTML Deck</span>
+      <span class="chip chip-lang">中文</span>
+    </div>
+    <h3 class="demo-name">2026 Q2 增长复盘</h3>
+    <p class="demo-style" data-i18n="gal.deck-q2.style">汇报叙事</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/deck-q2/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design 把「2026 Q2 增长复盘」做成 HTML 演示 deck:8–10 页,封面、议程、3 个数据页(CSS/SVG 图表)、结论页;键盘翻页、页码、可打印。数据虚构。" data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/deck-q2/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+<article class="demo-card" data-demo="gridnoise">
+  <div class="demo-thumb">
+    <div class="demo-thumb-inner">
+      <iframe src="demos/gridnoise/index.html" title="" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+  </div>
+  <div class="demo-body">
+    <div class="demo-meta">
+      <span class="chip" data-i18n="gal.gridnoise.cat">作品集</span>
+      <span class="chip chip-lang">EN</span>
+    </div>
+    <h3 class="demo-name">GRID&amp;NOISE</h3>
+    <p class="demo-style" data-i18n="gal.gridnoise.style">新粗野主义</p>
+    <div class="demo-actions">
+      <a class="btn btn-primary btn-sm" href="demos/gridnoise/index.html" target="_blank" rel="noopener" data-i18n="gal.open">查看页面</a>
+      <button type="button" class="btn btn-ghost btn-sm" data-copy="$ultimate-design Design a one-page portfolio for GRID&amp;NOISE, a fictional independent design studio: manifesto, text-based selected works, services, contact. Neo-brutalist - hard borders, offset shadows, aggressive type - but readable and accessible." data-i18n="gal.copyPrompt">复制 Prompt</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/aa2246740/ultimate-design/blob/main/docs/demos/gridnoise/DESIGN.md" target="_blank" rel="noopener" data-i18n="gal.contract">看契约</a>
+    </div>
+    <p class="demo-foot" data-i18n="gal.cardFoot">由安装本技能的 Agent 设计,契约随附</p>
+  </div>
+</article>
+</div>
+    </div>
+  </section>
+
+  <!-- MODES -->
+  <section class="section" aria-labelledby="modes-title" data-ud-motion="section-reveal">
+    <div class="wrap" data-ud-check="modes">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="modes.kicker">模式与路线</span></p>
+      <h2 class="section-title" id="modes-title" data-i18n="modes.title">默认直接做;要对齐时再对齐。</h2>
+      <div class="modes-grid">
+        <article class="mode-card">
+          <h3 data-i18n="modes.m1.title">默认 (YOLO)</h3>
+          <p data-i18n="modes.m1.desc">不盘问用户,从现有材料推断,先交出完整的第一版。</p>
+        </article>
+        <article class="mode-card">
+          <h3 data-i18n="modes.m2.title">--pro</h3>
+          <p data-i18n="modes.m2.desc">受众、信息重点、品牌气质、验收标准先对齐,再开始做。</p>
+        </article>
+        <article class="mode-card">
+          <h3 data-i18n="modes.m3.title">Portable Specialist</h3>
+          <p data-i18n="modes.m3.desc">多域高风险工作时,Integrator 分发工单,专家返回结果包,最终制品只有一个执笔人。</p>
+        </article>
+      </div>
+      <ul class="route-chips" role="list">
+        <li class="route-chip"><strong>Build</strong> <span data-i18n="modes.r1">做出来</span></li>
+        <li class="route-chip"><strong>Audit</strong> <span data-i18n="modes.r2">只诊断</span></li>
+        <li class="route-chip"><strong>Redesign</strong> <span data-i18n="modes.r3">保内容换结构</span></li>
+        <li class="route-chip"><strong>Study</strong> <span data-i18n="modes.r4">提取可迁移机制</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- START -->
+  <section class="section" id="start" aria-labelledby="start-title">
+    <div class="wrap">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="start.kicker">怎么开始</span></p>
+      <h2 class="section-title" id="start-title" data-i18n="start.title">装进宿主,再说你要的结果。</h2>
+      <div data-ud-check="install-tabs" data-ud-motion="section-reveal">
+        <ul class="tabs" role="tablist" aria-label="Install targets">
+          <li><button type="button" role="tab" id="tab-codex" data-tab="codex" aria-selected="true" aria-controls="panel-codex">Codex</button></li>
+          <li><button type="button" role="tab" id="tab-claude" data-tab="claude-code" aria-selected="false" aria-controls="panel-claude">Claude Code</button></li>
+          <li><button type="button" role="tab" id="tab-pi" data-tab="pi-agent" aria-selected="false" aria-controls="panel-pi">Pi Agent</button></li>
+        </ul>
+        <div class="console tab-panel" role="tabpanel" id="panel-codex" aria-labelledby="tab-codex">
+          <div class="console-row">
+            <pre id="cmd-codex">npx ultimate-design-skill@latest --target codex</pre>
+            <button type="button" class="btn btn-primary btn-sm" data-copy="npx ultimate-design-skill@latest --target codex" data-i18n="copy.cmd">复制命令</button>
+          </div>
+        </div>
+        <div class="console tab-panel" role="tabpanel" id="panel-claude" aria-labelledby="tab-claude" hidden>
+          <div class="console-row">
+            <pre id="cmd-claude">npx ultimate-design-skill@latest --target claude-code</pre>
+            <button type="button" class="btn btn-primary btn-sm" data-copy="npx ultimate-design-skill@latest --target claude-code" data-i18n="copy.cmd">复制命令</button>
+          </div>
+        </div>
+        <div class="console tab-panel" role="tabpanel" id="panel-pi" aria-labelledby="tab-pi" hidden>
+          <div class="console-row">
+            <pre id="cmd-pi">npx ultimate-design-skill@latest --target pi-agent</pre>
+            <button type="button" class="btn btn-primary btn-sm" data-copy="npx ultimate-design-skill@latest --target pi-agent" data-i18n="copy.cmd">复制命令</button>
+          </div>
         </div>
       </div>
-    </section>
-
-    <section id="handoff" class="shell section">
-      <div class="handoff-layout">
-        <div class="section-intro" data-ud-check="handoff-intro"><p class="section-index">06 / HANDOFF</p><h2 data-i18n="handoff.title">交出去的，不只有一个链接。</h2><p data-i18n="handoff.lead">工作完成后，下一位人或 Agent 能看到做了什么、为什么这样做，以及还有什么没解决。</p></div>
-        <ol class="handoff-list" data-ud-check="handoff-list">
-          <li><b>01</b><strong>DESIGN.md</strong><span data-i18n="handoff.1">需求、取舍、假设和质量门写在同一个可继续的合同里。</span></li>
-          <li><b>02</b><strong data-i18n="handoff.2.title">参考输入</strong><span data-i18n="handoff.2">参考资料保留来源和用途；没有参考图也会写清楚。</span></li>
-          <li><b>03</b><strong data-i18n="handoff.3.title">真实检查</strong><span data-i18n="handoff.3">页面、幻灯片或图形按实际尺寸看过，而不是只看代码。</span></li>
-          <li><b>04</b><strong data-i18n="handoff.4.title">未解决风险</strong><span data-i18n="handoff.4">没有解决的限制和待确认项如实留下。</span></li>
-        </ol>
+      <div class="prompt-grid" style="margin-top:24px" data-ud-check="prompt-console" data-ud-motion="section-reveal">
+        <article class="prompt-card">
+          <h3 data-i18n="start.p1.title">普通模式</h3>
+          <pre id="prompt-default">$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向,再实现、复查并修掉明显问题。</pre>
+          <button type="button" class="btn btn-ghost btn-sm" data-copy-from="prompt-default" data-i18n="copy.prompt">复制提示词</button>
+        </article>
+        <article class="prompt-card">
+          <h3 data-i18n="start.p2.title">--pro 模式</h3>
+          <pre id="prompt-pro">$ultimate-design --pro
+我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准,再开始实现。</pre>
+          <button type="button" class="btn btn-ghost btn-sm" data-copy-from="prompt-pro" data-i18n="copy.prompt">复制提示词</button>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="shell final-cta">
-      <h2 data-ud-check="cta-headline" data-i18n="cta.title">从一个明确的任务开始，后面的取舍也有据可查。</h2>
-      <button class="button" type="button" data-copy="starter" data-ud-check="cta-button" data-i18n="cta.copy">复制起步 Prompt</button>
-    </section>
-  </main>
+  <!-- DELIVERY -->
+  <section class="section" aria-labelledby="del-title" data-ud-check="delivery" data-ud-motion="section-reveal">
+    <div class="wrap">
+      <p class="section-kicker"><span class="mark" aria-hidden="true"></span><span data-i18n="del.kicker">交付时看什么</span></p>
+      <h2 class="section-title" id="del-title" data-i18n="del.title">交出去的,不只有一个链接。</h2>
+      <ul class="check-list">
+        <li data-i18n="del.c1">需求和取舍写在 DESIGN.md。</li>
+        <li data-i18n="del.c2">参考资料有来源和用途。</li>
+        <li data-i18n="del.c3">页面、幻灯片或图形按实际尺寸检查过。</li>
+        <li data-i18n="del.c4">未解决的风险被如实写下。</li>
+      </ul>
+      <a class="btn btn-primary" href="https://github.com/aa2246740/ultimate-design" target="_blank" rel="noopener" data-i18n="del.cta">去 GitHub 看仓库</a>
+    </div>
+  </section>
 
-  <footer class="shell footer"><span>Ultimate Design</span><span>Brief → Direction → Build → Review</span></footer>
+  <!-- META -->
+  <aside class="meta-strip">
+    <div class="wrap" data-ud-check="meta-strip">
+      <p data-i18n="meta.text">本页由 Ultimate Design 的方法自举完成:契约在 docs/DESIGN.md,内容源在 docs/CONTENT.md,交付前经过契约校验与浏览器渲染复查。</p>
+      <p style="margin-top:10px">
+        <a href="https://github.com/aa2246740/ultimate-design/blob/main/docs/DESIGN.md" target="_blank" rel="noopener">docs/DESIGN.md</a>
+        ·
+        <a href="https://github.com/aa2246740/ultimate-design/blob/main/docs/CONTENT.md" target="_blank" rel="noopener">docs/CONTENT.md</a>
+      </p>
+    </div>
+  </aside>
+</main>
 
-  <script>
-    const prompts = {
-      zh: {
-        starter: "$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。",
-        pro: "$ultimate-design --pro\n我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。"
-      },
-      en: {
-        starter: "$ultimate-design Turn this research into a web page people can actually read. Shape the content and direction first, then build it, review it, and fix the obvious problems.",
-        pro: "$ultimate-design --pro\nI am making a product site for investors. First align with me on the audience, key message, brand posture, and acceptance criteria; then build it."
-      }
-    };
+<footer class="site-footer">
+  <div class="wrap footer-inner" data-ud-check="footer">
+    <ul class="footer-links">
+      <li><a href="https://github.com/aa2246740/ultimate-design/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a></li>
+      <li><a href="https://github.com/aa2246740/ultimate-design" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://www.npmjs.com/package/ultimate-design-skill" target="_blank" rel="noopener">npm</a></li>
+      <li><a href="https://github.com/aa2246740/ultimate-design/blob/main/integrations/README.md" target="_blank" rel="noopener" data-i18n="footer.integrations">集成说明</a></li>
+    </ul>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-lang-button="zh" aria-pressed="true">中</button>
+      <button type="button" data-lang-button="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</footer>
 
-    const dict = {
-      zh: {
-        title: "Ultimate Design - 把设计做出来，也把判断留下来",
-        description: "Ultimate Design 帮助 AI Agent 把模糊需求做成可检查、可继续的设计工作。",
-        "brand.tagline": "给 AI Agent 的设计工作流",
-        "nav.method": "怎么工作",
-        "nav.uses": "能做什么",
-        "nav.prompts": "怎么开始",
-        "nav.handoff": "交付什么",
-        "header.copy": "复制 Prompt",
-        "hero.eyebrow": "面向网页、界面、PPT 与视觉内容",
-        "hero.offer": "把设计做出来，<br />也把判断留下来。",
-        "hero.lead": "先把模糊需求理成可执行的任务；完成后看真实页面，修掉跑题、错位和含糊的表达。交付时，不只留下一个链接。",
-        "hero.primary": "看它怎么工作",
-        "hero.secondary": "复制起步 Prompt",
-        "hero.mode": "<b>默认</b>先给你一版完整结果。关键选择需要共同决定时，再用 <b>--pro</b>。",
-        "record.kicker": "一次设计，交出去什么？",
-        "record.title": "能接着用的四样东西",
-        "record.state": "RUN COMPLETE",
-        "record.1.title": "需求卡",
-        "record.1.text": "原始诉求、最新调整、验收标准。",
-        "record.2.text": "内容顺序、设计方向、假设和待确认项。",
-        "record.3.title": "真实成品",
-        "record.3.text": "网页、界面、PPT、图形或品牌材料。",
-        "record.4.title": "复核记录",
-        "record.4.text": "截图、发现的问题和仍需注意的风险。",
-        "observations.title": "一张页面，常常只完成了一半。",
-        "observations.lead": "画面做出来以后，真正的问题才露出来：需求在中途变了，内容没讲清，下一位接手的人不知道哪些是刻意选择。",
-        "observation.1.title": "需求在途中换了",
-        "observation.1.text": "原始诉求被新细节盖住，最后做出的东西已经不是一开始要解决的问题。",
-        "observation.2.title": "重要的话没有位置",
-        "observation.2.text": "内容和版式一起开工，真正需要被看懂的部分反而被装饰和组件挤到后面。",
-        "observation.3.title": "交付只剩一张图",
-        "observation.3.text": "没有取舍记录，也没有真实状态的检查，下一位只能从头猜一遍。",
-        "outputs.title": "每一次设计，都留下能继续使用的东西。",
-        "outputs.lead": "需求变了，看需求卡；换人接手，读 DESIGN.md；出现问题，回到真实页面和截图。",
-        "output.1": "这次要解决什么，谁来用，什么不能丢。",
-        "output.2": "内容顺序、视觉方向、假设和待确认项写在一起。",
-        "output.3.title": "真实复核",
-        "output.3": "用真实页面和截图看内容、层级、换行和细节是否站得住。",
-        "workflow.title": "先把事情说清，再把画面做对。",
-        "workflow.lead": "五步会留下五个可回看的点：需求、内容、方向、成品和复核。",
-        "workflow.1.title": "读需求",
-        "workflow.1.text": "保留原始诉求、最新调整和验收标准。",
-        "workflow.2.title": "理内容",
-        "workflow.2.text": "确定先让人看懂什么，哪些话必须准确。",
-        "workflow.3.title": "定方向",
-        "workflow.3.text": "选择合适的色彩、字体、密度、版式和参考策略。",
-        "workflow.4.title": "做成品",
-        "workflow.4.text": "落到网页、产品界面、PPT、图形或品牌材料。",
-        "workflow.5.title": "回看交付",
-        "workflow.5.text": "检查真实输出，修问题，补上下一位能读懂的记录。",
-        "reference.note": "有参考图就用它判断结构、气质和节奏；没有也照样继续。它是输入，不是流程的前提。",
-        "uses.title": "不同媒介，仍然可以用同一套判断。",
-        "uses.lead": "做的东西不同，看的问题不同；但内容、方向、成品和复核的顺序不需要变。",
-        "use.1.title": "官网与内容页",
-        "use.1.text": "把调研、想法或产品说明，整理成读得懂的页面。",
-        "use.2.title": "产品界面",
-        "use.2.text": "Dashboard、表单、引导、定价页、流程和原型。",
-        "use.3.title": "PPT / Deck",
-        "use.3.text": "汇报、路演、培训、产品讲解和 HTML Deck。",
-        "use.4.title": "平面与社媒",
-        "use.4.text": "海报、九图、报告封面、横幅和信息图。",
-        "use.5.title": "品牌规则",
-        "use.5.text": "色彩、字体、识别点和跨媒介的使用边界。",
-        "use.6.title": "审查与打磨",
-        "use.6.text": "检查已有设计，修掉影响理解和使用的问题。",
-        "prompts.title": "用一句明确的话开始。",
-        "prompts.lead": "普通工作直接说你要做什么。需要共同决定方向时，再加 <code>--pro</code>。",
-        "prompt.1.title": "先做一版",
-        "prompt.1.text": "$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向，再实现、复查并修掉明显问题。",
-        "prompt.copy1": "复制起步 Prompt",
-        "prompt.2.title": "先对齐关键选择",
-        "prompt.2.text": "$ultimate-design --pro\n我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准，再开始实现。",
-        "prompt.copy2": "复制 --pro Prompt",
-        "handoff.title": "交出去的，不只有一个链接。",
-        "handoff.lead": "工作完成后，下一位人或 Agent 能看到做了什么、为什么这样做，以及还有什么没解决。",
-        "handoff.1": "需求、取舍、假设和质量门写在同一个可继续的合同里。",
-        "handoff.2.title": "参考输入",
-        "handoff.2": "参考资料保留来源和用途；没有参考图也会写清楚。",
-        "handoff.3.title": "真实检查",
-        "handoff.3": "页面、幻灯片或图形按实际尺寸看过，而不是只看代码。",
-        "handoff.4.title": "未解决风险",
-        "handoff.4": "没有解决的限制和待确认项如实留下。",
-        "cta.title": "从一个明确的任务开始，后面的取舍也有据可查。",
-        "cta.copy": "复制起步 Prompt",
-        "status.copied": "已复制",
-        "status.failed": "复制失败"
-      },
-      en: {
-        title: "Ultimate Design - Build the design. Keep the judgment.",
-        description: "Ultimate Design helps AI agents turn vague asks into design work people can inspect, revise, and hand off.",
-        "brand.tagline": "A design workflow for AI agents",
-        "nav.method": "Method",
-        "nav.uses": "Uses",
-        "nav.prompts": "Prompts",
-        "nav.handoff": "Handoff",
-        "header.copy": "Copy prompt",
-        "hero.eyebrow": "For web, product UI, decks, and visual work",
-        "hero.offer": "Build the design.<br />Keep the judgment.",
-        "hero.lead": "Turn a vague ask into a workable task. Then inspect the real output, fix drift and obvious failures, and hand over more than a link.",
-        "hero.primary": "See the method",
-        "hero.secondary": "Copy starter prompt",
-        "hero.mode": "<b>Default</b> ships a complete first pass. Use <b>--pro</b> when the important choices need agreement first.",
-        "record.kicker": "What leaves one design run?",
-        "record.title": "Four things someone can use next",
-        "record.state": "RUN COMPLETE",
-        "record.1.title": "Brief",
-        "record.1.text": "Original ask, latest change, acceptance criteria.",
-        "record.2.text": "Content order, direction, assumptions, and open questions.",
-        "record.3.title": "Artifact",
-        "record.3.text": "A page, interface, deck, graphic, or brand deliverable.",
-        "record.4.title": "Review record",
-        "record.4.text": "Screenshots, findings, and risks that still need attention.",
-        "observations.title": "A page can look finished and still be only half done.",
-        "observations.lead": "The real problems often show up after the first build: the brief moved, the message stayed blurry, or the next person cannot tell which choices mattered.",
-        "observation.1.title": "The brief moved",
-        "observation.1.text": "New detail covers the original job until the result solves something else.",
-        "observation.2.title": "The message has no place",
-        "observation.2.text": "Content and layout start together, so the point people need to understand gets crowded out.",
-        "observation.3.title": "Handoff is only an image",
-        "observation.3.text": "There is no record of trade-offs or real-state review. The next person has to guess again.",
-        "outputs.title": "Each run leaves material the next one can use.",
-        "outputs.lead": "When the brief changes, check the brief. When the work moves, read DESIGN.md. When something breaks, return to the page and its screenshots.",
-        "output.1": "What this run must solve, who it serves, and what cannot be lost.",
-        "output.2": "Content order, visual direction, assumptions, and open questions in one place.",
-        "output.3.title": "Rendered review",
-        "output.3": "The real page and its screenshots show whether content, hierarchy, wrapping, and details hold up.",
-        "workflow.title": "Clarify the work, then make the page.",
-        "workflow.lead": "The five steps leave five places to return to: the ask, content, direction, artifact, and review.",
-        "workflow.1.title": "Read the ask",
-        "workflow.1.text": "Keep the original request, latest change, and acceptance criteria.",
-        "workflow.2.title": "Shape the content",
-        "workflow.2.text": "Decide what people need to understand first and what language must stay exact.",
-        "workflow.3.title": "Set direction",
-        "workflow.3.text": "Choose color, type, density, layout, and a reference strategy that fit the task.",
-        "workflow.4.title": "Make the artifact",
-        "workflow.4.text": "Build the page, product UI, deck, graphic, or brand material.",
-        "workflow.5.title": "Review and hand off",
-        "workflow.5.text": "Check the real output, repair issues, and leave a record someone else can read.",
-        "reference.note": "Use a reference image for structure, mood, color, or rhythm when it helps. Continue without one when it does not.",
-        "uses.title": "Different media. The same useful checks.",
-        "uses.lead": "The deliverable changes. The order of content, direction, artifact, and review does not.",
-        "use.1.title": "Marketing and content",
-        "use.1.text": "Turn research, ideas, or product notes into a page people can follow.",
-        "use.2.title": "Product UI",
-        "use.2.text": "Dashboards, forms, onboarding, pricing, flows, and prototypes.",
-        "use.3.title": "PPT / decks",
-        "use.3.text": "Reviews, pitches, training, explainers, and HTML decks.",
-        "use.4.title": "Graphics and social",
-        "use.4.text": "Posters, carousels, report covers, banners, and infographics.",
-        "use.5.title": "Brand rules",
-        "use.5.text": "Color, type, identity anchors, and cross-medium boundaries.",
-        "use.6.title": "Audit and polish",
-        "use.6.text": "Review existing work and repair what blocks understanding or use.",
-        "prompts.title": "Start with one clear sentence.",
-        "prompts.lead": "For ordinary work, say what you need made. Add <code>--pro</code> only when the direction needs agreement first.",
-        "prompt.1.title": "Make a first pass",
-        "prompt.1.text": "$ultimate-design Turn this research into a web page people can actually read. Shape the content and direction first, then build it, review it, and fix the obvious problems.",
-        "prompt.copy1": "Copy starter prompt",
-        "prompt.2.title": "Align the important choices",
-        "prompt.2.text": "$ultimate-design --pro\nI am making a product site for investors. First align with me on the audience, key message, brand posture, and acceptance criteria; then build it.",
-        "prompt.copy2": "Copy --pro prompt",
-        "handoff.title": "Handoff is more than a link.",
-        "handoff.lead": "When the work is done, the next person or Agent can see what changed, why, and what remains unresolved.",
-        "handoff.1": "The brief, trade-offs, assumptions, and quality gates live in one contract that can be continued.",
-        "handoff.2.title": "Reference input",
-        "handoff.2": "References keep their source and purpose. The absence of an image is recorded too.",
-        "handoff.3.title": "Rendered checks",
-        "handoff.3": "The page, deck, or graphic is reviewed at the size people will actually see.",
-        "handoff.4.title": "Open risks",
-        "handoff.4": "Limits and unresolved questions stay visible instead of being silently dropped.",
-        "cta.title": "Start with a clear task. Keep the later choices traceable.",
-        "cta.copy": "Copy starter prompt",
-        "status.copied": "Copied",
-        "status.failed": "Copy failed"
-      }
-    };
+<script type="application/json" id="okf-data">[{"path":"references/design-okf/foundations/gestalt-composition.md","domain":"foundations","titleEn":"Gestalt and Composition","titleZh":"格式塔与构图","en":"Gestalt grouping checks, focal-point and alignment rules, and reading-path choices for orderly layouts.","zh":"用接近、相似等格式塔检查与阅读路径,让版面分组、焦点、对齐有秩序。","kw":["gestalt","composition","reading path","格式塔","构图"]},{"path":"references/design-okf/foundations/information-architecture.md","domain":"foundations","titleEn":"Information Architecture","titleZh":"信息架构","en":"User, task, navigation, and content-hierarchy questions to answer before designing any page or screen.","zh":"设计页面前先回答用户、任务、导航与内容主次,明确首屏要传达什么。","kw":["ia","navigation","content hierarchy","信息架构","导航"]},{"path":"references/design-okf/foundations/layout-typography-composition.md","domain":"foundations","titleEn":"Layout, Typography and Composition","titleZh":"版式、字体排印与构图","en":"Coordination layer for composition models, grids, alignment, spacing rhythm, and Chinese/mixed typesetting.","zh":"协调构图、网格、对齐、留白节奏与中文排版,决定信息在版面上的读法。","kw":["layout","grid","typography","cjk","版式","排版"]},{"path":"references/design-okf/foundations/necessary-design-judgment.md","domain":"foundations","titleEn":"Necessary Design Judgment","titleZh":"必要的设计判断","en":"Critique lens for necessity, craft, care, and material honesty, with delete/replace/move tests.","zh":"用删除、替换、移动等测试追问每个元素是否必要,反对模板化和假极简。","kw":["taste","critique","necessity","设计判断","克制"]},{"path":"references/design-okf/foundations/visual-communication-hierarchy.md","domain":"foundations","titleEn":"Visual Communication and Information Hierarchy","titleZh":"视觉传达与信息层级","en":"From intent to action: rank information, write L1-L5 message levels, then map attention and reading path.","zh":"先排信息优先级,再写消息层级,最后安排注意力与阅读路径,拒绝诱导。","kw":["hierarchy","attention","message","信息层级","阅读路径"]},{"path":"references/design-okf/foundations/visual-hierarchy.md","domain":"foundations","titleEn":"Visual Hierarchy","titleZh":"视觉层级","en":"Emphasis levers and rules: one focal point per surface, no stacked emphasis, no accidental micro-contrast.","zh":"大小、粗细、颜色等强调手段的用法:每屏一个主焦点,别把强调叠满。","kw":["hierarchy","emphasis","focal point","视觉层级","焦点"]},{"path":"references/design-okf/systems/brand-identity-media-production.md","domain":"systems","titleEn":"Brand Identity and Media Production","titleZh":"品牌识别与媒介交付","en":"Logo rules, guideline layers, asset and rights registers, and per-medium delivery from screen to packaging.","zh":"标志用法、品牌手册、素材库与版权登记,以及屏幕、印刷、社媒、包装的交付规则。","kw":["brand","logo","licensing","delivery","品牌","标志"]},{"path":"references/design-okf/systems/color-system.md","domain":"systems","titleEn":"Color System","titleZh":"色彩系统","en":"Role-first color decisions, palette postures, WCAG contrast targets, dark-mode and cultural caveats.","zh":"先定色彩角色再选色值,含对比度标准、深色模式与文化差异提醒。","kw":["color","contrast","dark mode","配色","对比度"]},{"path":"references/design-okf/systems/motion-contract.md","domain":"systems","titleEn":"Motion Contract","titleZh":"动效契约","en":"Executable contract for scroll-linked and SVG-draw animation: triggers, progress mapping, browser validation.","zh":"把滚动联动、SVG 描边等动画写成可验证契约:触发、进度映射、浏览器采样。","kw":["motion","gsap","scrolltrigger","validation","动效","动画"]},{"path":"references/design-okf/systems/motion-language.md","domain":"systems","titleEn":"Motion Language and Choreography","titleZh":"动效语言与编排","en":"Purpose-led motion: exposure budgets, timing bands, easing, quiet zones, reduced-motion and performance.","zh":"什么时候该动、什么时候该静:动效目的、频次预算、时长缓动与减弱动效。","kw":["motion","animation","choreography","reduced motion","动效","编排"]},{"path":"references/design-okf/systems/taste-engine.md","domain":"systems","titleEn":"Taste Engine","titleZh":"品味引擎","en":"Turns taste into constraints: design read, taste dials, anti-defaults, layout-family audit, asset checks.","zh":"把品味变成可执行的旋钮:设计解读、反默认锁定、版式家族审计与素材可信度。","kw":["taste","anti-slop","art direction","品味","反模板"]},{"path":"references/design-okf/systems/tokens-components.md","domain":"systems","titleEn":"Tokens and Components","titleZh":"设计令牌与组件","en":"Token layers, semantic naming, component spec fields, and state coverage for reusable design systems.","zh":"令牌分层、语义命名、组件规格与交互状态,让设计系统可被代码复用。","kw":["tokens","components","design system","令牌","组件"]},{"path":"references/design-okf/systems/type-personality.md","domain":"systems","titleEn":"Type Personality and Typography Art Direction","titleZh":"字体性格与排印艺术指导","en":"When type recedes or carries memory: CJK/Latin voice maps, mixed-script pairing, WebFont and licensing.","zh":"决定字体该退后还是该被记住:中西字体声调表、混排配对、字库授权与回退。","kw":["typography","fonts","cjk","webfont","字体","混排"]},{"path":"references/design-okf/systems/typography-system.md","domain":"systems","titleEn":"Typography System","titleZh":"字体排印系统","en":"Readable type mechanics: scale, line length, line height, tabular figures, mixed-language and overflow.","zh":"字号阶梯、行长行高、表格数字与中英混排的可读性规则,处理文字溢出。","kw":["typography","readability","type scale","排版","可读性"]},{"path":"references/design-okf/systems/visual-language-style-system.md","domain":"systems","titleEn":"Visual Language and Style System","titleZh":"视觉语言与风格系统","en":"Coordinates color, photography, illustration, icons, symbols, and texture into one consistent, ownable style.","zh":"把色彩、摄影、插画、图标、符号与质感统一成一套可复用、可治理的风格。","kw":["visual language","style","art direction","视觉语言","风格"]},{"path":"references/design-okf/content/message-model.md","domain":"content","titleEn":"Message Model","titleZh":"消息模型","en":"Order content by the user's decision path; first screen answers what, why, next action, and credibility.","zh":"按用户的决策路径排列内容,首屏回答是什么、为什么、下一步做什么。","kw":["content","message","first screen","内容","首屏"]},{"path":"references/design-okf/content/semantic-binding.md","domain":"content","titleEn":"Semantic Binding","titleZh":"语义绑定","en":"Bind content rules to components: semantic HTML first, labels, long text, truncation, and localization.","zh":"让文案在实现中存活:语义化标签、表单标注、长文截断与本地化规则。","kw":["semantic html","a11y","i18n","语义化","本地化"]},{"path":"references/design-okf/content/state-language.md","domain":"content","titleEn":"State Language","titleZh":"状态文案","en":"Copy patterns for loading, empty, error, success, disabled, confirmation, undo, and permission states.","zh":"加载、空态、报错、成功、禁用、确认、撤销等状态的写法与恢复路径。","kw":["states","microcopy","forms","状态","文案"]},{"path":"references/design-okf/content/ux-writing.md","domain":"content","titleEn":"UX Writing","titleZh":"UX 文案","en":"Interface copy rules: action-plus-result CTAs, problem-plus-fix errors, consistent terms, voice versus tone.","zh":"按钮写动作加结果,报错写问题加解法,术语统一,语气随场景变化。","kw":["ux writing","microcopy","cta","文案","语气"]},{"path":"references/design-okf/digital/accessibility-usability.md","domain":"digital","titleEn":"Accessibility and Usability","titleZh":"无障碍与可用性","en":"WCAG 2.2 AA default, semantic structure, keyboard and focus checks, form feedback, and usability heuristics.","zh":"以 WCAG 2.2 AA 为默认目标:语义结构、键盘焦点、表单反馈与可用性启发式。","kw":["accessibility","wcag","usability","keyboard","无障碍","可用性"]},{"path":"references/design-okf/digital/responsive-interaction.md","domain":"digital","titleEn":"Responsive and Interaction","titleZh":"响应式与交互","en":"Mobile-first layout, content breakpoints, interaction feedback states, and direct-manipulation gesture rules.","zh":"移动优先布局、按内容设断点、每个操作有反馈,以及拖拽手势的连贯规则。","kw":["responsive","interaction","breakpoints","gestures","响应式","交互"]},{"path":"references/design-okf/methods/product-sense.md","domain":"methods","titleEn":"Product Sense","titleZh":"产品判断","en":"PM judgment for design: problem framing, user outcome, metrics, MVP scope, validation, and AI-product risk.","zh":"先问解决什么问题再动手:用户结果、指标、最小版本、验证路径与 AI 产品风险。","kw":["product","pm","metrics","mvp","产品","验证"]},{"path":"references/design-okf/methods/senior-design-process.md","domain":"methods","titleEn":"Senior Design Process","titleZh":"资深设计流程","en":"Turn a vague request into brief, direction, artifact, and verification, with a priority order for conflicts.","zh":"把模糊需求变成简报、方向、成品与验证,冲突时按无障碍到装饰的顺序取舍。","kw":["process","brief","design contract","流程","简报"]},{"path":"references/design-okf/production/data-viz-i18n-legal.md","domain":"production","titleEn":"Data Visualization, I18n and Legal","titleZh":"数据可视化、本地化与法务","en":"Chart-type and integrity rules, localization and RTL checks, and rights flags for fonts, images, and claims.","zh":"图表选型与诚实刻度、本地化与 RTL 检查,以及字体图片素材的版权标记。","kw":["data viz","i18n","legal","licensing","图表","版权"]},{"path":"references/design-okf/production/graphic-print.md","domain":"production","titleEn":"Graphic and Print","titleZh":"平面与印刷","en":"Graphic composition checks and print preflight: trim, bleed, color mode, resolution, and licensing records.","zh":"平面构图检查与印前清单:裁切、出血、色彩模式、分辨率与素材授权。","kw":["print","graphic","preflight","bleed","印刷","印前"]},{"path":"references/design-okf/production/presentation-deck.md","domain":"production","titleEn":"Presentation Deck","titleZh":"演示文稿","en":"Business decks: decision path, narrative spine, claim/evidence/action slides, honest charts, masters, export.","zh":"商业演示的决策路径、叙事骨架、每页论点论据行动、图表与母版交付。","kw":["presentation","deck","slides","ppt","演示","幻灯片"]},{"path":"references/design-okf/governance/design-md-agent-governance.md","domain":"governance","titleEn":"DESIGN.md Agent Governance","titleZh":"DESIGN.md 代理治理","en":"How coding agents create, read, apply, and update DESIGN.md, with token self-checks and AGENTS.md rules.","zh":"代理如何创建、读取、遵守与更新 DESIGN.md,附令牌自查与代理规则衔接。","kw":["design.md","agents","governance","tokens","治理","代理"]},{"path":"references/design-okf/governance/design-md-standard.md","domain":"governance","titleEn":"DESIGN.md Standard","titleZh":"DESIGN.md 规范","en":"Google-compatible DESIGN.md: front-matter token schema, reference syntax, section order, extension boundary.","zh":"Google 兼容的 DESIGN.md 写法:前置令牌、引用语法、章节顺序与扩展边界。","kw":["design.md","schema","tokens","google","规范","契约"]},{"path":"references/design-okf/governance/design-to-code-governance.md","domain":"governance","titleEn":"Design to Code Governance","titleZh":"设计到代码治理","en":"Trace design decisions into code: token flow, Storybook states, visual regression, and contract changelog.","zh":"让实现可回溯到设计契约:令牌流转、组件状态示例、视觉回归与变更记录。","kw":["design to code","storybook","ci","tokens","落地","回归"]},{"path":"references/design-okf/governance/machine-verification-ci.md","domain":"governance","titleEn":"Machine Verification and CI","titleZh":"机器验证与 CI","en":"Machine-checkable contract shape, token and reference checks, official tooling, and automated quality gates.","zh":"把设计契约变成可机检的结构:令牌与引用检查、官方工具与自动化质量门。","kw":["ci","validation","schema","automation","验证","质量门"]},{"path":"references/design-okf/governance/okf-taxonomy-digestion-map.md","domain":"governance","titleEn":"OKF Taxonomy and Digestion Map","titleZh":"OKF 分类与消化地图","en":"Maintainer map of the OKF bundle: runtime layers, load patterns, source-of-truth rules, and gap handling.","zh":"维护者视角的 OKF 全景:运行时分层、加载方式、唯一事实源与缺口处理。","kw":["okf","taxonomy","governance","分类","维护"]},{"path":"references/design-okf/governance/request-integrity.md","domain":"governance","titleEn":"Request Integrity","titleZh":"请求完整性","en":"Prevent requirement drift in long runs with a compact Request Anchor checked before critique and delivery.","zh":"用简短的请求锚点记录用户原始需求,防止长任务中跑偏,交付前逐条对照。","kw":["request anchor","drift","traceability","锚点","需求"]},{"path":"references/design-okf/governance/research-coverage-map.md","domain":"governance","titleEn":"Research Coverage Map","titleZh":"研究覆盖地图","en":"Traceability table from the original design research report to each OKF concept, with honest coverage marks.","zh":"原始研究报告到各 OKF 概念的溯源表,逐条标注覆盖状态与已知局限。","kw":["coverage","research","traceability","覆盖","溯源"]},{"path":"references/design-okf/governance/research-digestion-llm-wiki.md","domain":"governance","titleEn":"Research Digestion and LLM Wiki Layer","titleZh":"研究消化与 LLM 维基层","en":"Build-time workflow: digest raw research into a wiki layer, then promote only stable knowledge into OKF.","zh":"构建期流程:先把原始研究消化成维基层,只把稳定可检验的知识提拔进 OKF。","kw":["research","wiki","digestion","okf","消化","知识"]},{"path":"references/design-okf/governance/senior-proxy-checklist.md","domain":"governance","titleEn":"Senior Proxy Checklist","titleZh":"资深代理清单","en":"Observable proxy checks for senior-level design quality, with verified/assumed/not-run evidence labels.","zh":"用可观察的代理指标核对设计质量,证据如实标注已验证、已假设或未运行。","kw":["checklist","quality","verification","清单","评审"]},{"path":"references/audit-polish.md","domain":"playbook","titleEn":"Audit and Polish","titleZh":"审计与打磨","en":"Critique and redesign-diagnosis branch: severity-ranked findings, anti-slop checks, polish order, re-pass.","zh":"评审与改版诊断分支:按严重度列问题、反 AI 套路检查、打磨顺序与复审。","kw":["audit","critique","polish","anti-slop","评审","打磨"]},{"path":"references/branch-brand-system.md","domain":"playbook","titleEn":"Brand System Branch","titleZh":"品牌系统分支","en":"Branch for visual identity work: brand brief, identity elements, guardrails, distinctiveness checks, outputs.","zh":"视觉识别任务分支:品牌简报、识别要素、使用护栏、独特性检查与交付物。","kw":["brand","identity","guidelines","品牌","识别"]},{"path":"references/branch-marketing-site.md","domain":"playbook","titleEn":"Marketing Site Branch","titleZh":"营销网站分支","en":"Branch for landing and campaign pages: first-viewport rules, objection-ordered sections, layout variety.","zh":"落地页与活动页分支:首屏说清卖点、按疑虑排章节、版式有变化、转化路径通。","kw":["marketing","landing page","conversion","营销","落地页"]},{"path":"references/branch-motion-audit.md","domain":"playbook","titleEn":"Motion Audit Branch","titleZh":"动效审计分支","en":"Repo-wide animation audit: inventory, evidence gate, severity queue, bounded repairs, before/after replay.","zh":"全仓库动画审计:清点现状、证据闸门定级、限定范围修复,修前修后对比回放。","kw":["motion","audit","evidence","repair","动效","审计"]},{"path":"references/branch-presentation.md","domain":"playbook","titleEn":"Presentation Deck Branch","titleZh":"演示文稿分支","en":"Branch for PPT/Keynote/Slides work: brief, narrative spine, slide claim rule, data slides, delivery package.","zh":"PPT 类任务分支:明确简报、选叙事骨架、每页有论点、数据页可信、交付完整。","kw":["presentation","deck","ppt","slides","演示","幻灯片"]},{"path":"references/branch-web-product.md","domain":"playbook","titleEn":"Web Product Branch","titleZh":"Web 产品分支","en":"Branch for dashboards and app UI: task-first IA, density, semantic state matrix, forms, accessibility.","zh":"仪表盘与应用界面分支:任务优先的信息架构、密度、状态矩阵、表单与无障碍。","kw":["web app","dashboard","forms","states","产品","界面"]},{"path":"references/composition-search.md","domain":"playbook","titleEn":"Composition Search","titleZh":"构图搜索","en":"Open search prior for page composition: ten neutral layout families, candidate protocol, repetition rules.","zh":"构图未定时的开放搜索:十个中性版式家族、候选比较流程与重复规则。","kw":["composition","layout","families","构图","版式"]},{"path":"references/content-model.md","domain":"playbook","titleEn":"Content Model","titleZh":"内容模型","en":"Content contract before styling: user intent, message hierarchy, terminology, state language, content risks.","zh":"动手样式前先定内容契约:用户意图、消息层级、术语、状态文案与内容风险。","kw":["content","contract","terminology","内容","契约"]},{"path":"references/design-contract.md","domain":"playbook","titleEn":"Design Contract","titleZh":"设计契约","en":"DESIGN.md as single source of truth: maturity states, visual fingerprint, Google-compatible template, upkeep.","zh":"DESIGN.md 是设计决策的唯一事实源:成熟度状态、视觉指纹、精简模板与维护规则。","kw":["design.md","contract","template","契约","模板"]},{"path":"references/graphic-print.md","domain":"playbook","titleEn":"Graphic and Print Branch","titleZh":"平面与印刷分支","en":"Branch for posters, social graphics, and packaging: subsurface routing, brief, composition, print preflight.","zh":"海报、社媒图与包装分支:先归类子场景,再定简报、构图、素材与印前检查。","kw":["graphic","print","poster","packaging","平面","印刷"]},{"path":"references/monitoring.md","domain":"playbook","titleEn":"Monitoring and Evidence","titleZh":"监控与证据","en":"Dev-mode proof that the workflow ran: OKF utilization funnel, static flow check, run traces, completion seal.","zh":"开发模式下证明流程真的跑过:OKF 使用漏斗、静态流程校验、运行轨迹与完成封印。","kw":["monitoring","evidence","trace","eval","监控","证据"]},{"path":"references/multi-agent-mode.md","domain":"playbook","titleEn":"Portable Specialist Mode","titleZh":"可移植专家模式","en":"Optional multi-agent protocol: integrator and specialist roles, work orders, blackboard, single-writer gates.","zh":"可选的多代理协议:整合者与专家分工、工单、黑板文件与单一写入者闸门。","kw":["multi-agent","protocol","work orders","多代理","协作"]},{"path":"references/principles.md","domain":"playbook","titleEn":"Principles Router","titleZh":"原则路由器","en":"Routing index for the OKF bundle: which concept file to load for each design situation.","zh":"OKF 知识包的路由索引:按设计场景列出该加载哪个概念文件。","kw":["router","okf","index","路由","索引"]},{"path":"references/pro-mode.md","domain":"playbook","titleEn":"Pro Mode","titleZh":"Pro 模式","en":"Consensus-first branch: freeze high-impact decisions in a snapshot, then execute and verify against it.","zh":"先共识再执行:把高影响决策冻结成快照,之后照快照施工并完整验证。","kw":["pro mode","consensus","snapshot","共识","快照"]},{"path":"references/proof-run-html.md","domain":"playbook","titleEn":"HTML Proof Run","titleZh":"HTML 验证流程","en":"Minimal evidence loop for weak models: HTML first, compact contract, markers, proof command, repair, rerun.","zh":"给弱模型的最小证据闭环:先写 HTML,再补契约与标记,跑一条验证命令并修复。","kw":["proof","html","validation","eval","验证","证据"]},{"path":"references/quality-gates.md","domain":"playbook","titleEn":"Quality Gates","titleZh":"质量门","en":"Cross-branch delivery bar: request fit, OKF evidence, content, taste, accessibility, rendered integrity.","zh":"跨分支的交付底线:请求贴合、OKF 证据、内容、品味、无障碍与渲染完整性。","kw":["quality gates","delivery","checklist","质量门","交付"]},{"path":"references/reference-study.md","domain":"playbook","titleEn":"Reference Study","titleZh":"参考研究","en":"Extract transferable mechanisms from a reference without cloning: modes, rights, evidence split, diagnosis.","zh":"从参考设计中提取可迁移的机制而不抄袭:输入模式、版权状态、证据分级与诊断。","kw":["reference","study","mechanisms","rights","参考","借鉴"]},{"path":"references/tokens-components.md","domain":"playbook","titleEn":"Tokens and Components Branch","titleZh":"令牌与组件实施","en":"Implementation-side token work: inventory, semantic naming, component coverage gap list, deprecation rules.","zh":"令牌落地的执行清单:盘点现状、语义命名、组件覆盖缺口表与弃用规则。","kw":["tokens","components","naming","令牌","组件"]},{"path":"references/visual-verification.md","domain":"playbook","titleEn":"Visual Verification","titleZh":"视觉验证","en":"Rendered-evidence gate: screenshot every page, rendered UI audit, motion integrity, semantic zone markers.","zh":"以渲染结果为准的验收:逐页截图、浏览器测量审计、动效完整性与语义区域标记。","kw":["visual verification","screenshots","rendered audit","验证","截图"]}]</script>
+<script>
+(function () {
+  "use strict";
 
-    function selectedLanguage() {
-      const fromUrl = new URLSearchParams(window.location.search).get("lang");
-      if (fromUrl === "zh" || fromUrl === "en") return fromUrl;
-      const saved = window.localStorage.getItem("ultimate-design-lang");
-      return saved === "zh" || saved === "en" ? saved : "zh";
+  document.documentElement.classList.add("js");
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var I18N = {
+    zh: {
+      "doc.title": "Ultimate Design — 把设计做出来,也把判断留下来",
+      "skip": "跳到主要内容",
+      "nav.method": "方法",
+      "nav.knowledge": "知识库",
+      "nav.gallery": "案例",
+      "nav.start": "上手",
+      "nav.github": "GitHub",
+      "hero.kicker": "Agent Skill · v0.6.0 · MIT",
+      "hero.title": "把设计做出来,也把判断留下来。",
+      "hero.lead": "Ultimate Design 是给 AI Agent 用的设计工作流:收到模糊需求时先理顺目标和内容,做完后对着真实渲染结果复查,最后把 DESIGN.md 契约留给下一位接手的人。",
+      "hero.ctaCopy": "复制安装命令",
+      "hero.ctaHow": "看它怎么工作",
+      "run.label": "一次运行 · 五阶段",
+      "run.p0.tab": "需求锚点",
+      "run.p1.tab": "内容契约",
+      "run.p2.tab": "方向",
+      "run.p3.tab": "制品",
+      "run.p4.tab": "渲染复查",
+      "run.p0.title": "Request Anchor",
+      "run.p1.title": "Content contract",
+      "run.p2.title": "Direction",
+      "run.p3.title": "Artifact",
+      "run.p4.title": "Rendered review",
+      "run.p0.text": "写清这次要解决什么、谁来用、什么不能丢。后续细节不能盖住原始诉求。",
+      "run.p1.text": "先排信息层级与必须准确的句子,再开版式。CONTENT.md 成为页面文案的唯一来源。",
+      "run.p2.text": "选定色彩、字体、密度与参考策略,并写进 DESIGN.md 的 taste dials。",
+      "run.p3.text": "落到真实页面或材料,带上 data-ud-check 语义区,方便渲染审计对位。",
+      "run.p4.text": "对着真实渲染修问题,把未解决风险写清楚,再交给下一位接手的人。",
+      "stat.concepts": "个知识概念",
+      "stat.domains": "个知识域",
+      "stat.playbooks": "份分支参考",
+      "stat.scripts": "个内置脚本",
+      "stat.demos": "个完整案例",
+      "stat.hosts": "个宿主",
+      "why.kicker": "为什么需要它",
+      "why.title": "一张\"看起来完成\"的页面,往往只完成了一半。",
+      "why.lead": "画面做出来以后,真正的问题才露出来。",
+      "why.o1": "原始诉求被后续细节盖住了。",
+      "why.o2": "内容和版式一起开工,重要的话没有位置。",
+      "why.o3": "交付只剩截图,没人知道为什么这样取舍。",
+      "out.kicker": "它留下什么",
+      "out.title": "每一次运行,留下三件能继续用的东西。",
+      "out.a1.title": "这次到底要解决什么",
+      "out.a1.desc": "谁来用,什么不能丢。三行锚点记录把原始诉求钉住。",
+      "out.a1.sample": "Audience: agent developers evaluating install\nJob: judge capability in ~60s, then copy a command\nMust keep: countable inventory, bilingual switch",
+      "out.a2.title": "内容顺序与视觉方向",
+      "out.a2.desc": "假设和待确认项写进契约,下一位接手的人不用猜。",
+      "out.a2.sample": "colors:\n  primary: \"#DF3A22\"\n  surface: \"#10120E\"\ntaste: studio desk at night\nexceptions: Google Fonts for display only",
+      "out.a3.title": "对着真实页面复查",
+      "out.a3.desc": "截图与批判发现成对出现,修完再交付。",
+      "out.a3.sample": "FINDING: hero claim competed with stat strip\nFIX: moved stats below the fold rule; claim dominates once\nSTATUS: resolved before handoff",
+      "wf.kicker": "工作方式",
+      "wf.title": "先把事情说清,再把画面做对。",
+      "wf.s1.title": "读需求",
+      "wf.s1.desc": "保留原始诉求、最新调整和验收标准。",
+      "wf.s1.miniTitle": "需求锚点条目",
+      "wf.s1.mini": "- Original ask: showcase page like the reference site\n- Latest override: real demo gallery, six agent-designed pages\n- Success: name 3 outputs + 5 steps; copy install + prompt",
+      "wf.s2.title": "理内容",
+      "wf.s2.desc": "确定先让人看懂什么,哪些话必须准确。",
+      "wf.s2.miniTitle": "信息层级清单",
+      "wf.s2.m1": "1. 主张与运行记录",
+      "wf.s2.m2": "2. 库存证明",
+      "wf.s2.m3": "3. 方法、知识库、样张",
+      "wf.s2.m4": "4. 安装与交付",
+      "wf.s3.title": "定方向",
+      "wf.s3.desc": "选择色彩、字体、密度、版式和参考策略。",
+      "wf.s3.miniTitle": "Taste dials 摘要",
+      "wf.s3.mini": "visual variance: 7\ninformation density: 6\nmotion depth: 2\nbrand distinction: 8\ndirection: studio desk at night",
+      "wf.s4.title": "做成品",
+      "wf.s4.desc": "落到网页、产品界面、Deck、图形或品牌材料。",
+      "wf.s4.miniTitle": "带 data-ud-check 的片段",
+      "wf.s5.title": "回看交付",
+      "wf.s5.desc": "对着渲染结果修问题,补上下一位能读懂的记录。",
+      "wf.s5.miniTitle": "验证清单",
+      "wf.s5.m1": "契约校验 (strict contract)",
+      "wf.s5.m2": "渲染复查 (375 / 768 / 1440)",
+      "wf.s5.m3": "双语核对 (semantic parity)",
+      "okf.kicker": "知识库",
+      "okf.title": "35 个概念,按需加载,绑定到决策。",
+      "okf.lead": "OKF 不是装饰性的背景知识。每个被激活的概念,都必须绑定一条具体决策、一个制品目标和一条验证钩子;贡献结束就退场。",
+      "okf.searchLabel": "搜索知识库",
+      "okf.placeholder": "搜索概念、文件名或关键词…",
+      "okf.d.all": "全部",
+      "okf.d.foundations": "基础",
+      "okf.d.systems": "系统",
+      "okf.d.content": "内容",
+      "okf.d.digital": "数字",
+      "okf.d.methods": "方法",
+      "okf.d.production": "生产",
+      "okf.d.governance": "治理",
+      "okf.d.playbook": "分支参考",
+      "okf.empty": "没有匹配的条目。换个关键词,或清除筛选。",
+      "okf.count": "{n} 项中的 {shown} 项",
+      "gal.kicker": "案例画廊",
+      "gal.title": "六个完整页面,六种设计语言。",
+      "gal.note": "每个案例都由安装了本技能的 Agent 按完整工作流设计——契约、实现、批判、渲染复查。缩略图是案例页的实时渲染(缩放的 iframe),不是截图;所有品牌均为虚构。",
+      "gal.open": "查看页面",
+      "gal.copyPrompt": "复制 Prompt",
+      "gal.contract": "看契约",
+      "gal.cardFoot": "由安装本技能的 Agent 设计,契约随附",
+      "gal.finlytics.cat": "营销页",
+      "gal.finlytics.style": "深色数据感",
+      "gal.teahouse.cat": "品牌官网",
+      "gal.teahouse.style": "东方编辑感",
+      "gal.taskflow.cat": "产品界面",
+      "gal.taskflow.style": "冷静系统感",
+      "gal.petcare.cat": "预约落地页",
+      "gal.petcare.style": "活泼圆润",
+      "gal.deck-q2.cat": "HTML Deck",
+      "gal.deck-q2.style": "汇报叙事",
+      "gal.gridnoise.cat": "作品集",
+      "gal.gridnoise.style": "新粗野主义",
+      "modes.kicker": "模式与路线",
+      "modes.title": "默认直接做;要对齐时再对齐。",
+      "modes.m1.title": "默认 (YOLO)",
+      "modes.m1.desc": "不盘问用户,从现有材料推断,先交出完整的第一版。",
+      "modes.m2.title": "--pro",
+      "modes.m2.desc": "受众、信息重点、品牌气质、验收标准先对齐,再开始做。",
+      "modes.m3.title": "Portable Specialist",
+      "modes.m3.desc": "多域高风险工作时,Integrator 分发工单,专家返回结果包,最终制品只有一个执笔人。",
+      "modes.r1": "做出来",
+      "modes.r2": "只诊断",
+      "modes.r3": "保内容换结构",
+      "modes.r4": "提取可迁移机制",
+      "start.kicker": "怎么开始",
+      "start.title": "装进宿主,再说你要的结果。",
+      "start.p1.title": "普通模式",
+      "start.p2.title": "--pro 模式",
+      "copy.cmd": "复制命令",
+      "copy.prompt": "复制提示词",
+      "copy.ok": "已复制",
+      "copy.fail": "复制失败,请手动选择复制",
+      "del.kicker": "交付时看什么",
+      "del.title": "交出去的,不只有一个链接。",
+      "del.c1": "需求和取舍写在 DESIGN.md。",
+      "del.c2": "参考资料有来源和用途。",
+      "del.c3": "页面、幻灯片或图形按实际尺寸检查过。",
+      "del.c4": "未解决的风险被如实写下。",
+      "del.cta": "去 GitHub 看仓库",
+      "meta.text": "本页由 Ultimate Design 的方法自举完成:契约在 docs/DESIGN.md,内容源在 docs/CONTENT.md,交付前经过契约校验与浏览器渲染复查。",
+      "footer.integrations": "集成说明",
+      "prompt.default": "$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向,再实现、复查并修掉明显问题。",
+      "prompt.pro": "$ultimate-design --pro\n我要做一个面向投资人的产品官网。先和我确定受众、信息重点、品牌气质和验收标准,再开始实现。"
+    },
+    en: {
+      "doc.title": "Ultimate Design — Build the design. Keep the judgment.",
+      "skip": "Skip to main content",
+      "nav.method": "Method",
+      "nav.knowledge": "Knowledge",
+      "nav.gallery": "Demos",
+      "nav.start": "Start",
+      "nav.github": "GitHub",
+      "hero.kicker": "Agent Skill · v0.6.0 · MIT",
+      "hero.title": "Build the design. Keep the judgment.",
+      "hero.lead": "Ultimate Design is a design workflow skill for AI agents. It turns a vague ask into a clear brief and a real artifact, reviews the rendered result before handoff, and leaves a DESIGN.md contract the next agent can continue from.",
+      "hero.ctaCopy": "Copy install command",
+      "hero.ctaHow": "See how it works",
+      "run.label": "One run · five phases",
+      "run.p0.tab": "Anchor",
+      "run.p1.tab": "Content",
+      "run.p2.tab": "Direction",
+      "run.p3.tab": "Artifact",
+      "run.p4.tab": "Review",
+      "run.p0.title": "Request Anchor",
+      "run.p1.title": "Content contract",
+      "run.p2.title": "Direction",
+      "run.p3.title": "Artifact",
+      "run.p4.title": "Rendered review",
+      "run.p0.text": "Pin what this run must solve, who it is for, and what cannot be lost. Later details do not overwrite the original ask.",
+      "run.p1.text": "Rank the message hierarchy and the sentences that must stay accurate before layout starts. CONTENT.md becomes the single source for page copy.",
+      "run.p2.text": "Choose color, type, density, and reference policy, then lock them into the DESIGN.md taste dials.",
+      "run.p3.text": "Ship a real page or material with data-ud-check zones so rendered audit can land on the same landmarks.",
+      "run.p4.text": "Fix issues against the live render, write unresolved risks plainly, then hand off.",
+      "stat.concepts": "knowledge concepts",
+      "stat.domains": "domains",
+      "stat.playbooks": "branch playbooks",
+      "stat.scripts": "bundled scripts",
+      "stat.demos": "complete demos",
+      "stat.hosts": "hosts",
+      "why.kicker": "Why it exists",
+      "why.title": "A page that looks finished is often half done.",
+      "why.lead": "Once the picture exists, the real problems show up.",
+      "why.o1": "The original ask gets buried under later details.",
+      "why.o2": "Copy and layout start together, so the important lines never get a place.",
+      "why.o3": "Handoff is a screenshot; nobody can say why the trade-offs were made.",
+      "out.kicker": "What a run leaves",
+      "out.title": "Every run leaves three things you can keep using.",
+      "out.a1.title": "What this run must solve",
+      "out.a1.desc": "Who it is for, and what cannot be lost. Three anchor lines pin the original ask.",
+      "out.a1.sample": "Audience: agent developers evaluating install\nJob: judge capability in ~60s, then copy a command\nMust keep: countable inventory, bilingual switch",
+      "out.a2.title": "Content order and visual direction",
+      "out.a2.desc": "Assumptions and open questions live in the contract so the next agent does not guess.",
+      "out.a2.sample": "colors:\n  primary: \"#DF3A22\"\n  surface: \"#10120E\"\ntaste: studio desk at night\nexceptions: Google Fonts for display only",
+      "out.a3.title": "Review against the real page",
+      "out.a3.desc": "Findings pair with screenshots; fixes land before handoff.",
+      "out.a3.sample": "FINDING: hero claim competed with stat strip\nFIX: moved stats below the fold rule; claim dominates once\nSTATUS: resolved before handoff",
+      "wf.kicker": "How it works",
+      "wf.title": "Say it clearly first, then get the picture right.",
+      "wf.s1.title": "Read the ask",
+      "wf.s1.desc": "Keep the original request, latest overrides, and acceptance checks.",
+      "wf.s1.miniTitle": "Request Anchor entries",
+      "wf.s1.mini": "- Original ask: showcase page like the reference site\n- Latest override: real demo gallery, six agent-designed pages\n- Success: name 3 outputs + 5 steps; copy install + prompt",
+      "wf.s2.title": "Shape the content",
+      "wf.s2.desc": "Decide what people must understand first, and which lines must stay exact.",
+      "wf.s2.miniTitle": "Message hierarchy",
+      "wf.s2.m1": "1. Claim + run record",
+      "wf.s2.m2": "2. Inventory proof",
+      "wf.s2.m3": "3. Method, library, range",
+      "wf.s2.m4": "4. Install and delivery",
+      "wf.s3.title": "Set direction",
+      "wf.s3.desc": "Choose color, type, density, layout, and reference policy.",
+      "wf.s3.miniTitle": "Taste dials summary",
+      "wf.s3.mini": "visual variance: 7\ninformation density: 6\nmotion depth: 2\nbrand distinction: 8\ndirection: studio desk at night",
+      "wf.s4.title": "Make the artifact",
+      "wf.s4.desc": "Ship a page, product UI, deck, graphic, or brand piece.",
+      "wf.s4.miniTitle": "Snippet with data-ud-check",
+      "wf.s5.title": "Review and hand off",
+      "wf.s5.desc": "Fix against the render, then leave a record the next agent can read.",
+      "wf.s5.miniTitle": "Delivery checklist",
+      "wf.s5.m1": "Contract validation (strict)",
+      "wf.s5.m2": "Rendered review (375 / 768 / 1440)",
+      "wf.s5.m3": "Bilingual parity check",
+      "okf.kicker": "Knowledge",
+      "okf.title": "35 concepts, loaded on demand, bound to decisions.",
+      "okf.lead": "OKF is not decorative background knowledge. Every activated concept binds to one decision, one artifact target, and one verification hook — then it steps aside.",
+      "okf.searchLabel": "Search knowledge base",
+      "okf.placeholder": "Search concepts, filenames, or keywords…",
+      "okf.d.all": "All",
+      "okf.d.foundations": "Foundations",
+      "okf.d.systems": "Systems",
+      "okf.d.content": "Content",
+      "okf.d.digital": "Digital",
+      "okf.d.methods": "Methods",
+      "okf.d.production": "Production",
+      "okf.d.governance": "Governance",
+      "okf.d.playbook": "Playbooks",
+      "okf.empty": "No matching entries. Try another keyword, or clear the filter.",
+      "okf.count": "{shown} of {n} entries",
+      "gal.kicker": "Demo gallery",
+      "gal.title": "Six complete pages, six design languages.",
+      "gal.note": "Each demo was designed by an agent running this skill — contract, build, critique, render review. Thumbnails are live renders (scaled iframes), not screenshots; all brands are fictional.",
+      "gal.open": "Open page",
+      "gal.copyPrompt": "Copy prompt",
+      "gal.contract": "View contract",
+      "gal.cardFoot": "Designed by an agent running this skill; contract included",
+      "gal.finlytics.cat": "Marketing",
+      "gal.finlytics.style": "Dark, data-forward",
+      "gal.teahouse.cat": "Brand site",
+      "gal.teahouse.style": "Eastern editorial",
+      "gal.taskflow.cat": "Product UI",
+      "gal.taskflow.style": "Calm system UI",
+      "gal.petcare.cat": "Booking landing",
+      "gal.petcare.style": "Playful & rounded",
+      "gal.deck-q2.cat": "HTML Deck",
+      "gal.deck-q2.style": "Narrative briefing",
+      "gal.gridnoise.cat": "Portfolio",
+      "gal.gridnoise.style": "Neo-brutalist",
+      "modes.kicker": "Modes & routes",
+      "modes.title": "Ship by default. Align when it matters.",
+      "modes.m1.title": "Default (YOLO)",
+      "modes.m1.desc": "No interrogation. Infer from what is already there and ship a complete first pass.",
+      "modes.m2.title": "--pro",
+      "modes.m2.desc": "Align audience, message focus, brand feel, and acceptance checks before building.",
+      "modes.m3.title": "Portable Specialist",
+      "modes.m3.desc": "For multi-domain, high-risk work: an Integrator issues work orders, specialists return result packs, and one writer owns the final artifact.",
+      "modes.r1": "Build it",
+      "modes.r2": "Diagnose only",
+      "modes.r3": "Keep content, change structure",
+      "modes.r4": "Extract transferable mechanisms",
+      "start.kicker": "Get started",
+      "start.title": "Install, then describe the outcome you want.",
+      "start.p1.title": "Default prompt",
+      "start.p2.title": "--pro prompt",
+      "copy.cmd": "Copy command",
+      "copy.prompt": "Copy prompt",
+      "copy.ok": "Copied!",
+      "copy.fail": "Copy failed — select the text manually",
+      "del.kicker": "Before handoff",
+      "del.title": "What you hand over is more than a link.",
+      "del.c1": "Needs and trade-offs live in DESIGN.md.",
+      "del.c2": "References name their source and purpose.",
+      "del.c3": "Pages, decks, or graphics were checked at real sizes.",
+      "del.c4": "Unresolved risks are written down plainly.",
+      "del.cta": "Open the repository on GitHub",
+      "meta.text": "This page bootstraps itself with Ultimate Design — its contract lives in docs/DESIGN.md, its content source in docs/CONTENT.md, and it was render-reviewed before delivery.",
+      "footer.integrations": "Integrations",
+      "prompt.default": "$ultimate-design Turn this research into a readable web page. Settle content and design direction first, then implement, review, and fix the obvious issues.",
+      "prompt.pro": "$ultimate-design --pro\nI need a product site for investors. Align with me on audience, message focus, brand feel, and acceptance checks before you start building."
     }
+  };
 
-    function setStatus(message) {
-      const status = document.getElementById("copy-status");
-      status.textContent = message;
-      window.clearTimeout(setStatus.timer);
-      setStatus.timer = window.setTimeout(() => { status.textContent = ""; }, 1800);
-    }
+  var lang = "zh";
+  var okfData = [];
+  var activeDomain = "all";
+  var searchQuery = "";
 
-    function applyLanguage(language) {
-      const lang = dict[language] ? language : "zh";
-      const copy = dict[lang];
-      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-      document.body.dataset.lang = lang;
-      document.title = copy.title;
-      document.querySelector('meta[name="description"]').setAttribute("content", copy.description);
-      document.querySelectorAll("[data-i18n]").forEach((element) => {
-        const value = copy[element.dataset.i18n];
-        if (value !== undefined) element.innerHTML = value;
-      });
-      document.querySelectorAll("[data-lang-button]").forEach((button) => {
-        button.setAttribute("aria-pressed", String(button.dataset.langButton === lang));
-      });
-      window.localStorage.setItem("ultimate-design-lang", lang);
-    }
+  function t(key) {
+    var pack = I18N[lang] || I18N.zh;
+    return pack[key] != null ? pack[key] : (I18N.zh[key] || key);
+  }
 
-    async function copyPrompt(kind) {
-      const lang = document.body.dataset.lang === "en" ? "en" : "zh";
-      const value = prompts[lang][kind];
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(value);
-        } else {
-          const field = document.createElement("textarea");
-          field.value = value;
-          field.setAttribute("readonly", "");
-          field.style.position = "fixed";
-          field.style.opacity = "0";
-          document.body.appendChild(field);
-          field.select();
-          const copied = document.execCommand("copy");
-          field.remove();
-          if (!copied) throw new Error("Clipboard fallback was rejected");
+  function applyI18n() {
+    document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+    document.title = t("doc.title");
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      var val = t(key);
+      if (el.tagName === "TITLE") {
+        el.textContent = val;
+      } else if (el.children.length && !el.getAttribute("data-i18n-html")) {
+        // Prefer text on leaf-ish nodes; if only text, set textContent
+        var hasElementChild = false;
+        for (var i = 0; i < el.childNodes.length; i++) {
+          if (el.childNodes[i].nodeType === 1) { hasElementChild = true; break; }
         }
-        setStatus(dict[lang]["status.copied"]);
-      } catch {
-        setStatus(dict[lang]["status.failed"]);
+        if (!hasElementChild) el.textContent = val;
+        else el.textContent = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+    document.querySelectorAll("[data-i18n-attr]").forEach(function (el) {
+      var raw = el.getAttribute("data-i18n-attr");
+      raw.split(";").forEach(function (pair) {
+        var parts = pair.split(":");
+        if (parts.length < 2) return;
+        el.setAttribute(parts[0].trim(), t(parts[1].trim()));
+      });
+    });
+    var pd = document.getElementById("prompt-default");
+    var pp = document.getElementById("prompt-pro");
+    if (pd) pd.textContent = t("prompt.default");
+    if (pp) pp.textContent = t("prompt.pro");
+    document.querySelectorAll("[data-lang-button]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-lang-button") === lang ? "true" : "false");
+    });
+    renderOkf();
+  }
+
+  function setLang(next, persist) {
+    lang = next === "en" ? "en" : "zh";
+    if (persist !== false) {
+      try { localStorage.setItem("ud-lang", lang); } catch (e) {}
+    }
+    applyI18n();
+  }
+
+  function initLang() {
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get("lang");
+    if (q === "en" || q === "zh") {
+      setLang(q, true);
+      return;
+    }
+    var stored = null;
+    try { stored = localStorage.getItem("ud-lang"); } catch (e) {}
+    if (stored === "en" || stored === "zh") {
+      setLang(stored, false);
+      return;
+    }
+    setLang("zh", false);
+  }
+
+  function copyText(text, btn) {
+    var live = document.getElementById("copy-live");
+    function ok() {
+      if (live) live.textContent = t("copy.ok");
+      if (btn) {
+        var prev = btn.getAttribute("data-i18n") ? t(btn.getAttribute("data-i18n")) : btn.textContent;
+        btn.textContent = t("copy.ok");
+        window.setTimeout(function () {
+          if (btn.getAttribute("data-i18n")) btn.textContent = t(btn.getAttribute("data-i18n"));
+          else btn.textContent = prev;
+        }, 2000);
       }
     }
+    function fail() {
+      if (live) live.textContent = t("copy.fail");
+      if (btn) {
+        btn.textContent = t("copy.fail");
+        window.setTimeout(function () {
+          if (btn.getAttribute("data-i18n")) btn.textContent = t(btn.getAttribute("data-i18n"));
+        }, 2000);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok).catch(function () {
+        fallbackCopy(text, ok, fail);
+      });
+    } else {
+      fallbackCopy(text, ok, fail);
+    }
+  }
 
-    document.querySelectorAll("[data-lang-button]").forEach((button) => {
-      button.addEventListener("click", () => applyLanguage(button.dataset.langButton));
+  function fallbackCopy(text, ok, fail) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      var succeeded = document.execCommand("copy");
+      document.body.removeChild(ta);
+      if (succeeded) ok(); else fail();
+    } catch (e) {
+      fail();
+    }
+  }
+
+  function initCopy() {
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-copy], [data-copy-from]");
+      if (!btn) return;
+      var text = "";
+      if (btn.hasAttribute("data-copy-from")) {
+        var el = document.getElementById(btn.getAttribute("data-copy-from"));
+        text = el ? el.textContent : "";
+      } else {
+        text = btn.getAttribute("data-copy") || "";
+      }
+      copyText(text, btn);
     });
-    document.querySelectorAll("[data-copy]").forEach((button) => {
-      button.addEventListener("click", () => copyPrompt(button.dataset.copy));
+  }
+
+  /* Run record */
+  var runIndex = 0;
+  var runTimer = null;
+  function showRun(i) {
+    runIndex = i;
+    document.querySelectorAll("[data-run-phase]").forEach(function (btn) {
+      var on = Number(btn.getAttribute("data-run-phase")) === i;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    applyLanguage(selectedLanguage());
-  </script>
+    document.querySelectorAll("[data-run-panel]").forEach(function (panel) {
+      var on = Number(panel.getAttribute("data-run-panel")) === i;
+      panel.hidden = !on;
+    });
+  }
+  function nextRun() {
+    showRun((runIndex + 1) % 5);
+  }
+  function startRunCycle() {
+    if (reduceMotion) return;
+    stopRunCycle();
+    runTimer = window.setInterval(nextRun, 3500);
+  }
+  function stopRunCycle() {
+    if (runTimer) {
+      window.clearInterval(runTimer);
+      runTimer = null;
+    }
+  }
+  function initRun() {
+    var card = document.querySelector("[data-ud-motion='hero-run-cycle']");
+    document.querySelectorAll("[data-run-phase]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        showRun(Number(btn.getAttribute("data-run-phase")));
+        startRunCycle();
+      });
+    });
+    if (card) {
+      card.addEventListener("mouseenter", stopRunCycle);
+      card.addEventListener("mouseleave", startRunCycle);
+      card.addEventListener("focusin", stopRunCycle);
+      card.addEventListener("focusout", function (e) {
+        if (!card.contains(e.relatedTarget)) startRunCycle();
+      });
+    }
+    showRun(0);
+    startRunCycle();
+  }
+
+  /* Workflow stepper */
+  function initWorkflow() {
+    var buttons = document.querySelectorAll("[data-step]");
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = Number(btn.getAttribute("data-step"));
+        buttons.forEach(function (b) {
+          var on = Number(b.getAttribute("data-step")) === idx;
+          b.setAttribute("aria-expanded", on ? "true" : "false");
+        });
+        document.querySelectorAll(".mini-artifact").forEach(function (panel, i) {
+          panel.hidden = i !== idx;
+        });
+      });
+    });
+  }
+
+  /* Install tabs */
+  function initTabs() {
+    var tabs = document.querySelectorAll("[data-tab]");
+    var map = {
+      "codex": "panel-codex",
+      "claude-code": "panel-claude",
+      "pi-agent": "panel-pi"
+    };
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var key = tab.getAttribute("data-tab");
+        tabs.forEach(function (tEl) {
+          var on = tEl === tab;
+          tEl.setAttribute("aria-selected", on ? "true" : "false");
+          tEl.tabIndex = on ? 0 : -1;
+        });
+        Object.keys(map).forEach(function (k) {
+          var panel = document.getElementById(map[k]);
+          if (panel) panel.hidden = k !== key;
+        });
+      });
+    });
+  }
+
+  /* OKF explorer */
+  function loadOkf() {
+    var el = document.getElementById("okf-data");
+    try {
+      okfData = JSON.parse(el.textContent);
+    } catch (e) {
+      okfData = [];
+    }
+  }
+
+  function renderOkf() {
+    var grid = document.getElementById("okf-grid");
+    var empty = document.getElementById("okf-empty");
+    var countEl = document.getElementById("okf-count");
+    if (!grid) return;
+    var q = searchQuery.trim().toLowerCase();
+    var filtered = okfData.filter(function (item) {
+      if (activeDomain !== "all" && item.domain !== activeDomain) return false;
+      if (!q) return true;
+      var hay = [
+        item.path || "",
+        item.titleEn || "",
+        item.titleZh || "",
+        item.en || "",
+        item.zh || "",
+        (item.kw || []).join(" ")
+      ].join(" ").toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    grid.innerHTML = "";
+    filtered.forEach(function (item) {
+      var card = document.createElement("article");
+      card.className = "okf-card";
+      var title = lang === "en" ? item.titleEn : item.titleZh;
+      var summary = lang === "en" ? item.en : item.zh;
+      card.innerHTML =
+        '<p class="okf-domain">' + escapeHtml(item.domain) + "</p>" +
+        '<h3 class="okf-title">' + escapeHtml(title) + "</h3>" +
+        '<p class="okf-summary">' + escapeHtml(summary) + "</p>" +
+        '<p class="okf-path">' + escapeHtml(item.path) + "</p>";
+      grid.appendChild(card);
+    });
+    if (empty) empty.hidden = filtered.length > 0;
+    if (countEl) {
+      countEl.textContent = t("okf.count")
+        .replace("{n}", String(okfData.length))
+        .replace("{shown}", String(filtered.length));
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function initOkf() {
+    loadOkf();
+    var input = document.getElementById("okf-search");
+    if (input) {
+      input.addEventListener("input", function () {
+        searchQuery = input.value || "";
+        renderOkf();
+      });
+    }
+    document.querySelectorAll("[data-domain]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        activeDomain = btn.getAttribute("data-domain") || "all";
+        document.querySelectorAll("[data-domain]").forEach(function (b) {
+          b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+        });
+        renderOkf();
+      });
+    });
+  }
+
+  /* Gallery iframe scale */
+  function scaleThumbs() {
+    document.querySelectorAll(".demo-thumb").forEach(function (frame) {
+      var inner = frame.querySelector(".demo-thumb-inner");
+      if (!inner) return;
+      var w = frame.clientWidth || 1;
+      var s = w / 1280;
+      inner.style.transform = "scale(" + s + ")";
+      inner.style.width = "1280px";
+      inner.style.height = "800px";
+    });
+  }
+
+  /* Section reveals */
+  function initReveals() {
+    if (reduceMotion) {
+      document.querySelectorAll("[data-ud-motion='section-reveal']").forEach(function (el) {
+        el.classList.add("is-in");
+      });
+      return;
+    }
+    if (!("IntersectionObserver" in window)) {
+      document.querySelectorAll("[data-ud-motion='section-reveal']").forEach(function (el) {
+        el.classList.add("is-in");
+      });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    document.querySelectorAll("[data-ud-motion='section-reveal']").forEach(function (el) {
+      io.observe(el);
+    });
+    /* Fallback: full-page captures, print, and audits must never see hidden sections. */
+    window.setTimeout(function () {
+      document.querySelectorAll("[data-ud-motion='section-reveal']:not(.is-in)").forEach(function (el) {
+        el.classList.add("is-in");
+        io.unobserve(el);
+      });
+    }, 700);
+  }
+
+  function initLangButtons() {
+    document.querySelectorAll("[data-lang-button]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        setLang(btn.getAttribute("data-lang-button"), true);
+      });
+    });
+  }
+
+  initLangButtons();
+  initCopy();
+  initRun();
+  initWorkflow();
+  initTabs();
+  initOkf();
+  initLang();
+  initReveals();
+  scaleThumbs();
+  window.addEventListener("resize", scaleThumbs);
+})();
+
+</script>
 </body>
 </html>

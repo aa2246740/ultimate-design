@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finlytics — Real-time revenue analytics for subscription businesses</title>
+  <meta name="description" content="Finlytics gives Finance and RevOps leaders a reconciled, real-time view of MRR, churn, and expansion across every billing system.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #E8A317;
+      --color-secondary: #2EC4A8;
+      --color-tertiary: #6B8CFF;
+      --color-neutral: #8A93A6;
+      --color-surface: #070B12;
+      --color-surface-raised: #0F1622;
+      --color-surface-panel: #141C2B;
+      --color-on-surface: #E7EDF6;
+      --color-on-surface-muted: #A3ADC0;
+      --color-error: #FF6B6B;
+      --color-border: rgba(231, 237, 246, 0.12);
+      --color-border-strong: rgba(231, 237, 246, 0.22);
+      --color-grid: rgba(46, 196, 168, 0.06);
+      --font-sans: "Sora", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --text-headline-lg: 700 56px/1.05 var(--font-sans);
+      --text-body-md: 400 16px/1.65 var(--font-sans);
+      --text-label-md: 500 12px/1.2 var(--font-mono);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --max: 1120px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 320ms;
+      --focus: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--color-primary);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      margin: 0;
+      font: var(--text-body-md);
+      color: var(--color-on-surface);
+      background:
+        radial-gradient(1200px 600px at 78% -10%, rgba(46, 196, 168, 0.12), transparent 55%),
+        radial-gradient(900px 500px at 8% 18%, rgba(232, 163, 23, 0.08), transparent 50%),
+        linear-gradient(180deg, #0A101A 0%, var(--color-surface) 42%, #05070C 100%);
+      background-attachment: fixed;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    :focus { outline: none; }
+    :focus-visible { box-shadow: var(--focus); border-radius: var(--radius-sm); }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--color-primary);
+      color: #111;
+      padding: 12px 16px;
+      z-index: 100;
+      font-weight: 600;
+    }
+    .skip:focus { left: var(--space-md); top: var(--space-md); }
+
+    .wrap {
+      width: min(100% - 2 * var(--space-md), var(--max));
+      margin-inline: auto;
+    }
+    @media (min-width: 768px) {
+      .wrap { width: min(100% - 2 * var(--space-lg), var(--max)); }
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 11, 18, 0.82);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      min-height: 64px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 18px;
+      min-height: 44px;
+    }
+    .brand__mark {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .nav__links {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav__links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 14px;
+      color: var(--color-on-surface-muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav__links a:hover { color: var(--color-on-surface); }
+    .nav__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: var(--radius-md);
+      background: var(--color-primary);
+      color: #14110A;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+    .nav__cta:hover { transform: translateY(-1px); }
+    .nav__cta:active { transform: translateY(0); opacity: 0.92; }
+    @media (min-width: 860px) {
+      .nav__links { display: flex; }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .btn--primary {
+      background: var(--color-primary);
+      color: #14110A;
+    }
+    .btn--primary:hover { transform: translateY(-1px); }
+    .btn--ghost {
+      border: 1px solid var(--color-border-strong);
+      color: var(--color-on-surface);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .btn--ghost:hover {
+      border-color: rgba(46, 196, 168, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: var(--space-lg);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 48px 0 28px;
+      isolation: isolate;
+    }
+    .hero__grid {
+      display: grid;
+      gap: 36px;
+      align-items: end;
+    }
+    @media (min-width: 980px) {
+      .hero {
+        padding: 56px 0 40px;
+        min-height: calc(100vh - 64px);
+        min-height: 720px;
+        display: flex;
+        align-items: center;
+      }
+      .hero__grid {
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.18fr);
+        gap: 48px;
+        align-items: center;
+        width: 100%;
+      }
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: var(--text-label-md);
+      color: var(--color-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+    .eyebrow__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      box-shadow: 0 0 0 4px rgba(46, 196, 168, 0.18);
+    }
+    .hero__brand {
+      font: 700 clamp(42px, 7vw, 72px)/0.95 var(--font-sans);
+      letter-spacing: -0.045em;
+      color: var(--color-on-surface);
+      margin-bottom: 18px;
+    }
+    .hero__brand span {
+      color: var(--color-primary);
+    }
+    .hero h1 {
+      font: 600 clamp(26px, 3.4vw, 36px)/1.2 var(--font-sans);
+      letter-spacing: -0.025em;
+      max-width: 18ch;
+      margin-bottom: 14px;
+    }
+    .hero__lead {
+      color: var(--color-on-surface-muted);
+      max-width: 38ch;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    .hero__note {
+      margin-top: 18px;
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+    }
+
+    /* Product surface */
+    .product {
+      position: relative;
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(180deg, rgba(20, 28, 43, 0.96), rgba(15, 22, 34, 0.98));
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 28px 60px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      min-height: 420px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .product.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    .product__chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--color-border);
+      background: rgba(7, 11, 18, 0.55);
+    }
+    .product__tabs {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .product__tabs span {
+      white-space: nowrap;
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+    }
+    .product__tabs span[aria-current="true"] {
+      color: var(--color-on-surface);
+      background: rgba(46, 196, 168, 0.12);
+    }
+    .product__live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: var(--text-label-md);
+      color: var(--color-secondary);
+      flex-shrink: 0;
+    }
+    .product__body {
+      display: grid;
+      gap: 14px;
+      padding: 14px;
+    }
+    @media (min-width: 720px) {
+      .product__body {
+        grid-template-columns: 1.35fr 0.9fr;
+        grid-template-rows: auto auto;
+      }
+      .panel--mrr { grid-column: 1; grid-row: 1 / span 2; }
+    }
+    .panel {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: rgba(7, 11, 18, 0.45);
+      padding: 14px;
+      min-width: 0;
+    }
+    .panel__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .panel__title {
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .panel__value {
+      font: 600 28px/1.1 var(--font-sans);
+      letter-spacing: -0.03em;
+    }
+    .panel__delta {
+      font: var(--text-label-md);
+      color: var(--color-secondary);
+    }
+    .panel__delta--down { color: var(--color-error); }
+    .chart {
+      width: 100%;
+      height: auto;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .metric {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .metric dt {
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+      margin-bottom: 6px;
+    }
+    .metric dd {
+      margin: 0;
+      font: 600 18px/1.2 var(--font-sans);
+      letter-spacing: -0.02em;
+    }
+    .feed {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .feed li {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      gap: 10px;
+      align-items: start;
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--color-on-surface-muted);
+    }
+    .feed strong { color: var(--color-on-surface); font-weight: 600; }
+    .feed time {
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+    }
+
+    /* Sections shared */
+    section.block {
+      padding: 72px 0;
+    }
+    .block__head {
+      max-width: 40rem;
+      margin-bottom: 40px;
+    }
+    .block__head h2 {
+      font: 600 clamp(28px, 4vw, 40px)/1.15 var(--font-sans);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .block__head p {
+      color: var(--color-on-surface-muted);
+      font-size: 17px;
+    }
+
+    /* Features — not a card grid: mechanism rail */
+    .features {
+      border-block: 1px solid var(--color-border);
+      background: linear-gradient(180deg, rgba(15, 22, 34, 0.55), transparent);
+    }
+    .feature-rail {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--color-border);
+    }
+    .feature {
+      display: grid;
+      gap: 16px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    @media (min-width: 800px) {
+      .feature {
+        grid-template-columns: 56px 1.1fr 1.4fr;
+        align-items: start;
+        gap: 28px;
+        padding: 32px 0;
+      }
+    }
+    .feature__icon {
+      width: 44px;
+      height: 44px;
+      color: var(--color-secondary);
+    }
+    .feature h3 {
+      font: 600 20px/1.25 var(--font-sans);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .feature__copy {
+      color: var(--color-on-surface-muted);
+      max-width: 46ch;
+    }
+    .feature__proof {
+      font: var(--text-label-md);
+      color: var(--color-primary);
+      margin-top: 10px;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch;
+      }
+    }
+    .plan {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-raised);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .plan--featured {
+      border-color: rgba(232, 163, 23, 0.55);
+      background:
+        linear-gradient(180deg, rgba(232, 163, 23, 0.08), transparent 40%),
+        var(--color-surface-panel);
+      position: relative;
+    }
+    .plan__badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font: var(--text-label-md);
+      color: #14110A;
+      background: var(--color-primary);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+    }
+    .plan__name {
+      font: 600 18px/1.2 var(--font-sans);
+      margin-bottom: 8px;
+    }
+    .plan__price {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .plan__price strong {
+      font: 700 36px/1 var(--font-sans);
+      letter-spacing: -0.03em;
+    }
+    .plan__price span {
+      color: var(--color-neutral);
+      font-size: 14px;
+    }
+    .plan__blurb {
+      color: var(--color-on-surface-muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+      min-height: 2.8em;
+    }
+    .plan ul {
+      list-style: none;
+      margin: 0 0 28px;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+      flex: 1;
+    }
+    .plan li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      font-size: 14px;
+      color: var(--color-on-surface-muted);
+    }
+    .plan li svg {
+      width: 18px;
+      height: 18px;
+      color: var(--color-secondary);
+      margin-top: 2px;
+    }
+    .plan .btn { width: 100%; }
+
+    /* CTA band */
+    .cta-band {
+      padding: 0 0 88px;
+    }
+    .cta-panel {
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-lg);
+      padding: clamp(32px, 5vw, 56px);
+      background:
+        radial-gradient(700px 280px at 90% 0%, rgba(232, 163, 23, 0.14), transparent 55%),
+        linear-gradient(135deg, #121A28, #0B111A 60%);
+      display: grid;
+      gap: 28px;
+    }
+    @media (min-width: 860px) {
+      .cta-panel {
+        grid-template-columns: 1.4fr 0.8fr;
+        align-items: center;
+      }
+    }
+    .cta-panel h2 {
+      font: 600 clamp(28px, 4vw, 40px)/1.15 var(--font-sans);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      max-width: 16ch;
+    }
+    .cta-panel p {
+      color: var(--color-on-surface-muted);
+      max-width: 42ch;
+    }
+    .cta-panel__aside {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      background: rgba(7, 11, 18, 0.55);
+    }
+    .cta-panel__aside dt {
+      font: var(--text-label-md);
+      color: var(--color-neutral);
+      margin-bottom: 6px;
+    }
+    .cta-panel__aside dd {
+      margin: 0 0 16px;
+      font-weight: 600;
+    }
+    .cta-panel__aside dd:last-child { margin-bottom: 0; }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--color-border);
+      padding: 28px 0 40px;
+    }
+    .footer__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer__brand {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .footer__note {
+      font-size: 13px;
+      color: var(--color-neutral);
+      max-width: 62ch;
+      line-height: 1.5;
+    }
+
+    /* Motion entry helpers */
+    .rise {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .rise.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    .rise-delay-1 { transition-delay: 60ms; }
+    .rise-delay-2 { transition-delay: 120ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .product, .rise {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* Captures, print, and link previews must never show hidden reveal states */
+    @media print {
+      .product, .rise {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="nav">
+    <div class="wrap nav__inner" data-ud-check="navigation">
+      <a class="brand" href="#top" aria-label="Finlytics home">
+        <svg class="brand__mark" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+          <rect x="2" y="2" width="24" height="24" rx="6" fill="#141C2B" stroke="#2EC4A8" stroke-width="1.5"/>
+          <path d="M7 18 L12 11 L16 15 L21 8" fill="none" stroke="#E8A317" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Finlytics
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav__links">
+          <li><a href="#product">Product</a></li>
+          <li><a href="#features">Capabilities</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </nav>
+      <a class="nav__cta" href="#demo">Book a demo</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="hero" id="top">
+      <div class="wrap hero__grid">
+        <section data-ud-check="hero" aria-labelledby="hero-brand">
+          <p class="eyebrow rise" data-motion="hero">
+            <span class="eyebrow__dot" aria-hidden="true"></span>
+            Live for Finance &amp; RevOps
+          </p>
+          <p class="hero__brand rise rise-delay-1" id="hero-brand" data-motion="hero">Finlyt<span>ics</span></p>
+          <h1 class="rise rise-delay-1" data-motion="hero">Revenue that reconciles itself before the board deck does.</h1>
+          <p class="hero__lead rise rise-delay-2" data-motion="hero">
+            Finlytics streams MRR, churn, and expansion from your billing stack into one audited ledger—so heads of Finance stop rebuilding the same spreadsheet every Monday.
+          </p>
+          <div class="btn-row rise rise-delay-2" data-motion="hero">
+            <a class="btn btn--primary" href="#demo">Book a product demo</a>
+            <a class="btn btn--ghost" href="#pricing">Compare plans</a>
+          </div>
+          <p class="hero__note rise rise-delay-2" data-motion="hero">SOC 2 Type II controls · Billora, Ledgerly, and custom billing adapters</p>
+        </section>
+
+        <section class="product" id="product" data-ud-check="product-surface" data-motion="product" aria-label="Finlytics revenue console preview">
+          <div class="product__chrome">
+            <div class="product__tabs" aria-hidden="true">
+              <span aria-current="true">Revenue</span>
+              <span>Cohorts</span>
+              <span>Recognition</span>
+              <span>Board pack</span>
+            </div>
+            <p class="product__live">
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="#2EC4A8"/></svg>
+              Streaming · 42ms lag
+            </p>
+          </div>
+          <div class="product__body">
+            <article class="panel panel--mrr">
+              <div class="panel__head">
+                <h2 class="panel__title">Net new MRR · trailing 90 days</h2>
+                <p class="panel__delta">+12.4% vs prior</p>
+              </div>
+              <p class="panel__value">$248,610</p>
+              <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="Area chart of net new MRR rising from about 170 thousand to 249 thousand over ninety days">
+                <defs>
+                  <linearGradient id="mrrFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2EC4A8" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#2EC4A8" stop-opacity="0"/>
+                  </linearGradient>
+                  <pattern id="grid" width="40" height="36" patternUnits="userSpaceOnUse">
+                    <path d="M40 0 H0 V36" fill="none" stroke="rgba(231,237,246,0.06)" stroke-width="1"/>
+                  </pattern>
+                </defs>
+                <rect width="520" height="220" fill="url(#grid)"/>
+                <text x="8" y="18" fill="#8A93A6" font-family="IBM Plex Mono, monospace" font-size="10">$260k</text>
+                <text x="8" y="110" fill="#8A93A6" font-family="IBM Plex Mono, monospace" font-size="10">$200k</text>
+                <text x="8" y="202" fill="#8A93A6" font-family="IBM Plex Mono, monospace" font-size="10">$160k</text>
+                <path d="M36 168 C 80 162, 110 150, 140 142 S 200 128, 230 118 S 290 108, 320 96 S 380 78, 410 70 S 470 52, 500 40 L 500 210 L 36 210 Z" fill="url(#mrrFill)"/>
+                <path d="M36 168 C 80 162, 110 150, 140 142 S 200 128, 230 118 S 290 108, 320 96 S 380 78, 410 70 S 470 52, 500 40" fill="none" stroke="#2EC4A8" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="500" cy="40" r="4.5" fill="#E8A317"/>
+                <text x="430" y="30" fill="#E8A317" font-family="IBM Plex Mono, monospace" font-size="11">Today</text>
+              </svg>
+              <dl class="metrics" style="margin-top:14px">
+                <div class="metric"><dt>New MRR</dt><dd>$86.2k</dd></div>
+                <div class="metric"><dt>Expansion</dt><dd>$41.7k</dd></div>
+                <div class="metric"><dt>Contraction</dt><dd class="panel__delta--down" style="color:var(--color-error)">−$12.4k</dd></div>
+                <div class="metric"><dt>Churned</dt><dd style="color:var(--color-error)">−$18.9k</dd></div>
+              </dl>
+            </article>
+
+            <article class="panel">
+              <div class="panel__head">
+                <h2 class="panel__title">Recognition bridge</h2>
+                <p class="panel__delta">GAAP · ASC 606</p>
+              </div>
+              <svg class="chart" viewBox="0 0 280 130" role="img" aria-label="Horizontal bridge chart from billed cash to recognized revenue">
+                <rect x="16" y="18" width="72" height="28" rx="4" fill="#141C2B" stroke="#6B8CFF"/>
+                <text x="52" y="36" text-anchor="middle" fill="#E7EDF6" font-family="Sora, sans-serif" font-size="11" font-weight="600">Billed</text>
+                <path d="M92 32 H118" stroke="#8A93A6" stroke-width="1.5"/>
+                <rect x="118" y="18" width="78" height="28" rx="4" fill="#141C2B" stroke="#2EC4A8"/>
+                <text x="157" y="36" text-anchor="middle" fill="#E7EDF6" font-family="Sora, sans-serif" font-size="11" font-weight="600">Deferred</text>
+                <path d="M200 32 H224" stroke="#8A93A6" stroke-width="1.5"/>
+                <rect x="224" y="18" width="40" height="28" rx="4" fill="#E8A317"/>
+                <text x="244" y="36" text-anchor="middle" fill="#14110A" font-family="Sora, sans-serif" font-size="11" font-weight="700">Rev</text>
+                <text x="16" y="72" fill="#8A93A6" font-family="IBM Plex Mono, monospace" font-size="10">Cash $412k → Deferred $163k → Recognized $249k</text>
+                <rect x="16" y="88" width="248" height="8" rx="4" fill="#0A101A"/>
+                <rect x="16" y="88" width="150" height="8" rx="4" fill="#6B8CFF"/>
+                <rect x="166" y="88" width="60" height="8" rx="4" fill="#2EC4A8"/>
+                <rect x="226" y="88" width="38" height="8" rx="4" fill="#E8A317"/>
+                <text x="16" y="118" fill="#A3ADC0" font-family="IBM Plex Mono, monospace" font-size="10">Unmatched invoices: 3 · auto-cleared overnight</text>
+              </svg>
+            </article>
+
+            <article class="panel">
+              <div class="panel__head">
+                <h2 class="panel__title">Ledger events</h2>
+                <p class="panel__delta">Last 8 min</p>
+              </div>
+              <ul class="feed">
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#2EC4A8"/></svg>
+                  <div><strong>Expansion</strong> · Nimbus Ops seat uplift +$1,240 MRR</div>
+                  <time datetime="2026-08-12T00:58">0:58</time>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#E8A317"/></svg>
+                  <div><strong>Invoice match</strong> · Ledgerly #INV-88421 reconciled</div>
+                  <time datetime="2026-08-12T00:54">0:54</time>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#FF6B6B"/></svg>
+                  <div><strong>Churn risk</strong> · Harbor CRM payment failed ×2</div>
+                  <time datetime="2026-08-12T00:51">0:51</time>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="block features" id="features" aria-labelledby="features-title">
+      <div class="wrap" data-ud-check="features">
+        <div class="block__head">
+          <h2 id="features-title">Built for the Monday board pack, not another BI dashboard.</h2>
+          <p>Every capability maps to a Finance or RevOps decision you already make—only with a ledger that stays current between closes.</p>
+        </div>
+        <div class="feature-rail">
+          <article class="feature">
+            <svg class="feature__icon" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+              <rect x="4" y="4" width="36" height="36" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 28h6v-8h8v-6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <h3>Canonical MRR ledger</h3>
+              <p class="feature__proof">SOURCE OF TRUTH</p>
+            </div>
+            <p class="feature__copy">Normalize new, expansion, contraction, and churned MRR across Billora, Ledgerly, and custom invoices. Diffs surface before they land in the CFO’s deck.</p>
+          </article>
+          <article class="feature">
+            <svg class="feature__icon" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+              <rect x="4" y="4" width="36" height="36" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M14 30 V16 M22 30 V12 M30 30 V20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <h3>Recognition that Finance trusts</h3>
+              <p class="feature__proof">ASC 606 READY</p>
+            </div>
+            <p class="feature__copy">Bridge cash to deferred to recognized revenue with audit trails. Export journal lines that match how your controller already books the month.</p>
+          </article>
+          <article class="feature">
+            <svg class="feature__icon" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+              <rect x="4" y="4" width="36" height="36" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="22" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M22 16v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <h3>RevOps alerts with owners</h3>
+              <p class="feature__proof">ACTIONABLE, NOT NOISY</p>
+            </div>
+            <p class="feature__copy">Route failed payments, sudden contraction, and renewal cliffs to named owners in Relay chat or email—with the exact MRR dollars at stake.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap" data-ud-check="pricing">
+        <div class="block__head">
+          <h2 id="pricing-title">Pricing that scales with subscription volume, not seat theater.</h2>
+          <p>Annual contracts. Implementation included on Growth and Scale. Cancel anytime before renewal with a 30-day notice.</p>
+        </div>
+        <div class="pricing-grid">
+          <article class="plan">
+            <h3 class="plan__name">Starter</h3>
+            <p class="plan__price"><strong>$890</strong><span>/mo</span></p>
+            <p class="plan__blurb">For SaaS teams under $3M ARR that need a reconciled MRR view fast.</p>
+            <ul>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                1 billing connector
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Daily MRR ledger refresh
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Board pack CSV export
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Email support, 1 business day
+              </li>
+            </ul>
+            <a class="btn btn--ghost" href="#demo">Start Starter demo</a>
+          </article>
+
+          <article class="plan plan--featured" aria-label="Growth plan, most chosen">
+            <span class="plan__badge">Most chosen</span>
+            <h3 class="plan__name">Growth</h3>
+            <p class="plan__price"><strong>$2,400</strong><span>/mo</span></p>
+            <p class="plan__blurb">For Finance and RevOps teams that close monthly and brief the board from Finlytics.</p>
+            <ul>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Unlimited connectors
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Real-time streaming ledger
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                ASC 606 recognition bridge
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Relay chat alerts with owner routing
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Guided implementation, 3 weeks
+              </li>
+            </ul>
+            <a class="btn btn--primary" href="#demo">Book Growth demo</a>
+          </article>
+
+          <article class="plan">
+            <h3 class="plan__name">Scale</h3>
+            <p class="plan__price"><strong>$5,900</strong><span>/mo</span></p>
+            <p class="plan__blurb">For multi-entity SaaS groups that need audit-ready packs and SSO.</p>
+            <ul>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Everything in Growth
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Multi-entity consolidation
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                SAML SSO + SCIM
+              </li>
+              <li>
+                <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Dedicated success lead
+              </li>
+            </ul>
+            <a class="btn btn--ghost" href="#demo">Talk to Scale sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band" id="demo" aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="cta-panel" data-ud-check="cta">
+          <div>
+            <h2 id="cta-title">See your last ninety days of MRR reconciled in one sitting.</h2>
+            <p>Bring a billing export or connect a sandbox. We will walk Finance and RevOps through the ledger, recognition bridge, and board pack together.</p>
+            <div class="btn-row">
+              <a class="btn btn--primary" href="mailto:demo@finlytics.example?subject=Finlytics%20demo%20request">Request a live demo</a>
+              <a class="btn btn--ghost" href="#pricing">Review pricing again</a>
+            </div>
+          </div>
+          <dl class="cta-panel__aside">
+            <dt>Typical demo length</dt>
+            <dd>35 minutes</dd>
+            <dt>Who should attend</dt>
+            <dd>Head of Finance + RevOps lead</dd>
+            <dt>What you leave with</dt>
+            <dd>Sample board pack PDF from your data shape</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner" data-ud-check="footer">
+      <p class="footer__brand">Finlytics</p>
+      <p class="footer__note">Demo page designed with the Ultimate Design agent skill · Finlytics is a fictional brand.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-motion], .rise, .product"));
+      var io = null;
+
+      function revealAll(instant) {
+        nodes.forEach(function (el) {
+          if (instant) {
+            el.style.transition = "none";
+            el.style.transitionDelay = "0s";
+          }
+          el.classList.add("is-in");
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          if (io) {
+            try { io.unobserve(el); } catch (e) {}
+          }
+        });
+      }
+
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce || !("IntersectionObserver" in window)) {
+        revealAll(true);
+        return;
+      }
+
+      io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      );
+      nodes.forEach(function (el) {
+        io.observe(el);
+      });
+
+      // Hero + product settle on first paint when already in view
+      requestAnimationFrame(function () {
+        document.querySelectorAll('[data-motion="hero"], #product').forEach(function (el) {
+          el.classList.add("is-in");
+          if (io) io.unobserve(el);
+        });
+      });
+
+      // Hard fallback for full-page captures, print, and stuck observers (~700ms)
+      window.setTimeout(function () {
+        revealAll(true);
+      }, 700);
+
+      window.addEventListener("beforeprint", function () {
+        revealAll(true);
+      });
+    })();
+  </script>
+</body>
+</html>

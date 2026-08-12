@@ -30,7 +30,7 @@
 
 ### 第一屏(hero)
 
-顶栏:品牌 Ultimate Design;锚点导航——方法、知识库、样张、上手;语言切换(中/EN);GitHub 链接。
+顶栏:品牌 Ultimate Design;锚点导航——方法、知识库、案例、上手;语言切换(中/EN);GitHub 链接。
 
 Kicker 徽标:`Agent Skill · v0.6.0 · MIT`
 
