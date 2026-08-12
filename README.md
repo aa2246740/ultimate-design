@@ -1,15 +1,15 @@
 # Ultimate Design
 
-**Turn your coding agent into a disciplined designer-builder.** Contract first. Real artifact. Rendered proof.
+**Turn your coding agent into a disciplined designer-builder.**
 
 [![npm](https://img.shields.io/npm/v/ultimate-design-skill)](https://www.npmjs.com/package/ultimate-design-skill)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![OKF BundleDex](https://bundledex.net/static-badge.svg)](https://bundledex.net)
 
-Most AI "design" ends at a screenshot that looks finished and falls apart the moment requirements shift. Ultimate Design keeps the judgment attached to the pixels: it anchors the request, writes the design contract, builds the real thing, critiques it, and verifies the rendered result in a browser before it ships.
+Most AI design stops at a screenshot that looks finished. The requirements behind it are gone, and the next person cannot tell which choices were deliberate. Ultimate Design keeps that reasoning with the work: it anchors the request, writes the design contract, builds the artifact, critiques it, and checks the rendered result in a browser before delivery.
 
-**[See it prove itself → aa2246740.github.io/ultimate-design](https://aa2246740.github.io/ultimate-design/)**
-The showcase site was designed and built by agents running this skill — and every demo on it publishes its own `DESIGN.md` contract next to the page. No other design skill shows you its receipts.
+**Live showcase: [aa2246740.github.io/ultimate-design](https://aa2246740.github.io/ultimate-design/)**
+The site was designed and built by agents running this skill. Every demo on it links to the `DESIGN.md` contract that produced it, so you can check the claims against the work.
 
 ## What a run leaves behind
 
@@ -17,18 +17,18 @@ Every run produces three things you can keep using:
 
 - **Request Anchor** — what this run must solve, for whom, and what must not be lost.
 - **`DESIGN.md` contract** — tokens, direction, assumptions, and open questions, written so the next agent (or human) can continue without reverse-engineering.
-- **Rendered review** — the real page, screenshots, and browser-measured audits, not a promise.
+- **Rendered review** — the real page, screenshots, and browser-measured audits.
 
 ## What's inside
 
-| Capability | The receipts |
+| Capability | Details |
 |---|---|
-| **Operational design knowledge** | 35 concept files across 7 domains — layout, typography, color systems, motion language, content models, accessibility, governance. Loaded on demand and **bound to concrete decisions**, never dumped as vibes. |
+| **Operational design knowledge** | 35 concept files across 7 domains — layout, typography, color systems, motion language, content models, accessibility, governance. A concept is loaded on demand and stays active only while it changes a concrete decision. |
 | **19 branch playbooks** | Marketing sites, product UI, presentation decks, graphic/print, brand systems, motion audits, reference study, audit & polish, and more. |
-| **11 bundled validators & tools** | Contract validation, OKF-usage validation, a pinned-Chromium **rendered UI audit** (overflow, clipping, occlusion, target sizes), motion-contract validation, agent-handoff checks. Machine-checkable design. |
-| **4 task routes** | Build / Audit / Redesign / Study — it knows when *not* to redesign your product. |
+| **11 bundled validators & tools** | Contract validation, OKF-usage validation, a pinned-Chromium **rendered UI audit** (overflow, clipping, occlusion, target sizes), motion-contract validation, agent-handoff checks. |
+| **4 task routes** | Build / Audit / Redesign / Study. Audit and Study stop at findings instead of rebuilding what already works. |
 | **Multi-agent native** | Portable Specialist mode: an Integrator routes work orders, specialists return packets, one writer owns the final artifact. Ships with the templates. |
-| **12 complete demos** | Twelve pages in twelve deliberately different design languages, each designed end-to-end by an agent running this skill — contract included. |
+| **12 complete demos** | Twelve pages in twelve deliberately different design languages, each designed end-to-end by an agent running this skill, each with its own contract. |
 
 ## The demo gallery
 
@@ -49,7 +49,7 @@ Every demo below is a complete, self-contained page. Click through, copy the pro
 | [拾光书房](https://aa2246740.github.io/ultimate-design/demos/shuguang/) | Annual data report | Data storytelling |
 | [新厅美术馆](https://aa2246740.github.io/ultimate-design/demos/neuehalle/) | Exhibition page | Bauhaus geometry |
 
-All brands are fictional. New style directions come from **mechanism extraction** (the skill's Study route) — transferable craft, never cloned signatures.
+All brands are fictional. The newer styles come from the skill's Study route, which extracts transferable mechanisms from strong reference work without copying any site's signature.
 
 ## Install
 
@@ -63,13 +63,13 @@ Project-scoped, shared, and manual installation: [integrations/README.md](integr
 
 ## Use
 
-Describe the outcome, not the process:
+Describe the outcome you want:
 
 ```text
 Use $ultimate-design to turn this report into a clear visual web page. Create DESIGN.md if needed, make the page, critique it, repair it, and verify the rendered result.
 ```
 
-Want to lock the important choices together before it builds? Add `--pro`:
+To settle the important choices together before it builds, add `--pro`:
 
 ```text
 $ultimate-design --pro
@@ -87,9 +87,9 @@ For multi-domain, high-risk work, ask for **Portable Specialist mode**: an Integ
 5. **Critique, repair, verify** — rendered UI audit in a real browser; fix what fails.
 6. **Govern** — leave a contract the next agent can continue from.
 
-## Verification is a feature, not a footnote
+## Built-in verification
 
-Visual work gets rendered and reviewed before delivery — the skill ships deterministic tools for it:
+Visual work gets rendered and reviewed before delivery. The skill ships deterministic tools for it:
 
 ```bash
 npm run flow-check            # skill flow integrity
