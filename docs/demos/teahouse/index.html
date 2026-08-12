@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>山声茶事 · 山泉煮茶</title>
+  <meta name="description" content="山声茶事：山泉煮茶的门店故事、三款招牌茶、茶席预约。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary: #7A2E28;
+      --color-secondary: #3D5A4C;
+      --color-tertiary: #8A8578;
+      --color-neutral: #D0CBC0;
+      --color-surface: #E4E0D6;
+      --color-on-surface: #1F2420;
+      --color-error: #9B2F2F;
+      --color-muted: #5A5E56;
+      --color-rule: rgba(31, 36, 32, 0.18);
+      --color-seal: #7A2E28;
+      --font-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+      --font-body: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --max: 1080px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--color-on-surface);
+      background:
+        radial-gradient(ellipse 120% 60% at 50% -10%, rgba(61, 90, 76, 0.07), transparent 55%),
+        linear-gradient(180deg, #EAE6DC 0%, var(--color-surface) 28%, #DED9CE 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    a { color: var(--color-primary); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+    a:hover { color: var(--color-secondary); }
+    img, svg { max-width: 100%; display: block; }
+    button, input, select { font: inherit; color: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      padding: 12px 16px;
+      z-index: 100;
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+    }
+
+    .wrap {
+      width: min(100% - 2 * var(--space-md), var(--max));
+      margin-inline: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ——— Navigation ——— */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: rgba(228, 224, 214, 0.88);
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .site-nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      min-height: 64px;
+      padding-block: var(--space-sm);
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--color-on-surface);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .brand-mark:hover { color: var(--color-primary); }
+    .nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+    .nav-list a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 12px;
+      color: var(--color-muted);
+      text-decoration: none;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+    }
+    .nav-list a:hover { color: var(--color-on-surface); }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative;
+      min-height: min(92vh, 820px);
+      display: grid;
+      align-items: end;
+      padding: var(--space-xl) 0 var(--space-lg);
+      overflow: hidden;
+    }
+    .hero-art {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-art svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .mountain-path {
+      fill: none;
+      stroke: var(--color-on-surface);
+      stroke-width: 1.25;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.55;
+    }
+    .mountain-fill {
+      fill: rgba(61, 90, 76, 0.06);
+    }
+    .steam-line {
+      fill: none;
+      stroke: var(--color-secondary);
+      stroke-width: 1;
+      stroke-linecap: round;
+      opacity: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-lg);
+      align-items: end;
+      padding-bottom: var(--space-md);
+    }
+    .vert-accent {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: 0.45em;
+      color: var(--color-secondary);
+      border-left: 1px solid var(--color-rule);
+      padding-left: 14px;
+      align-self: stretch;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 8px;
+    }
+    .hero-copy { max-width: 36rem; }
+    .hero-brand {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(48px, 9vw, 92px);
+      line-height: 1.05;
+      letter-spacing: 0.08em;
+      color: var(--color-on-surface);
+    }
+    .hero-lead {
+      margin: 0 0 var(--space-lg);
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--color-muted);
+      max-width: 28em;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 22px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform 280ms var(--ease), opacity 280ms var(--ease), background-color 280ms var(--ease), color 280ms var(--ease), border-color 280ms var(--ease);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--color-primary);
+      color: #F5F1E8;
+      border-color: var(--color-primary);
+    }
+    .btn-primary:hover {
+      background: #652620;
+      border-color: #652620;
+      color: #F5F1E8;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-on-surface);
+      border-color: var(--color-rule);
+    }
+    .btn-ghost:hover {
+      border-color: var(--color-on-surface);
+      color: var(--color-on-surface);
+    }
+
+    .seal {
+      position: absolute;
+      right: max(4vw, calc((100% - var(--max)) / 2 + 8px));
+      top: 18%;
+      width: 72px;
+      height: 72px;
+      z-index: 2;
+      opacity: 0.92;
+      transform: rotate(-8deg);
+    }
+    .seal text {
+      fill: var(--color-seal);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .seal rect, .seal circle {
+      fill: none;
+      stroke: var(--color-seal);
+      stroke-width: 2;
+    }
+
+    /* ——— Sections ——— */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: var(--space-xl) 0;
+    }
+    .section-head {
+      margin-bottom: var(--space-lg);
+      max-width: 36rem;
+    }
+    .section-kicker {
+      margin: 0 0 8px;
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      color: var(--color-secondary);
+    }
+    .section-title {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: 0.06em;
+    }
+    .section-lead {
+      margin: 0;
+      color: var(--color-muted);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+    .rule {
+      height: 1px;
+      background: var(--color-rule);
+      border: 0;
+      margin: 0;
+    }
+
+    /* Story */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+    .story-prose p {
+      margin: 0 0 1.1em;
+      max-width: 36em;
+    }
+    .story-prose p:last-child { margin-bottom: 0; }
+    .story-side {
+      position: relative;
+      padding: var(--space-lg) 0 0;
+      border-top: 1px solid var(--color-rule);
+    }
+    .story-meta {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--space-md);
+    }
+    .story-meta li {
+      display: grid;
+      gap: 4px;
+    }
+    .story-meta dt,
+    .story-meta .label {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--color-tertiary);
+    }
+    .story-meta .value {
+      font-size: 18px;
+      letter-spacing: 0.04em;
+    }
+    .ink-cup {
+      margin-top: var(--space-lg);
+      width: 100%;
+      max-width: 280px;
+    }
+
+    /* Teas */
+    .tea-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--color-rule);
+    }
+    .tea-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) auto;
+      gap: var(--space-md) var(--space-lg);
+      align-items: baseline;
+      padding: var(--space-lg) 0;
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .tea-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    .tea-origin {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--color-tertiary);
+      letter-spacing: 0.08em;
+    }
+    .tea-desc {
+      margin: 0;
+      color: var(--color-muted);
+      max-width: 36em;
+    }
+    .tea-price {
+      font-variant-numeric: tabular-nums;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--color-on-surface);
+      white-space: nowrap;
+      text-align: right;
+    }
+    .tea-price small {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-tertiary);
+      letter-spacing: 0.12em;
+    }
+
+    /* Booking */
+    .booking-panel {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+    .booking-note {
+      margin: var(--space-md) 0 0;
+      color: var(--color-muted);
+      font-size: 15px;
+    }
+    .booking-form {
+      display: grid;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      border: 1px solid var(--color-rule);
+      background: rgba(255, 252, 246, 0.45);
+    }
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+    .field label {
+      font-size: 14px;
+      letter-spacing: 0.14em;
+      color: var(--color-on-surface);
+    }
+    .field .hint {
+      font-size: 13px;
+      color: var(--color-tertiary);
+      margin: 0;
+    }
+    .field input,
+    .field select {
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.55);
+      width: 100%;
+    }
+    .field input:hover,
+    .field select:hover {
+      border-color: rgba(31, 36, 32, 0.35);
+    }
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .slot {
+      position: relative;
+    }
+    .slot input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      cursor: pointer;
+    }
+    .slot span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.06em;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.4);
+      transition: border-color 250ms var(--ease), background-color 250ms var(--ease), color 250ms var(--ease);
+    }
+    .slot input:checked + span {
+      border-color: var(--color-primary);
+      background: rgba(122, 46, 40, 0.08);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+    .slot input:focus-visible + span {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .form-status {
+      min-height: 1.5em;
+      font-size: 14px;
+      color: var(--color-secondary);
+    }
+    .form-status[data-tone="error"] { color: var(--color-error); }
+    .form-status[data-tone="ok"] { color: var(--color-secondary); }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--color-rule);
+      padding: var(--space-lg) 0 calc(var(--space-xl) - 8px);
+      color: var(--color-muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .site-footer .wrap {
+      display: grid;
+      gap: 8px;
+    }
+    .footer-demo {
+      color: var(--color-tertiary);
+    }
+
+    /* Motion */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    .steam-line.is-on {
+      opacity: 0.42;
+      transform: translateY(-4px);
+      transition: opacity 400ms var(--ease), transform 400ms var(--ease);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .steam-line,
+      .steam-line.is-on {
+        opacity: 0.35;
+        animation: none;
+        transform: none;
+      }
+      .btn { transition: none; }
+      .mountain-path {
+        stroke-dasharray: none !important;
+        stroke-dashoffset: 0 !important;
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      .reveal,
+      .reveal.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .steam-line,
+      .steam-line.is-on {
+        opacity: 0.42 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .mountain-path {
+        stroke-dasharray: none !important;
+        stroke-dashoffset: 0 !important;
+        transition: none !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: 1fr; gap: var(--space-md); }
+      .vert-accent {
+        writing-mode: horizontal-tb;
+        border-left: 0;
+        border-bottom: 1px solid var(--color-rule);
+        padding: 0 0 10px;
+        letter-spacing: 0.28em;
+        align-self: start;
+      }
+      .story-grid,
+      .booking-panel {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+      .tea-item {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "name price"
+          "desc desc";
+      }
+      .tea-item .tea-main { grid-area: name; }
+      .tea-item .tea-desc { grid-area: desc; }
+      .tea-item .tea-price { grid-area: price; }
+      .seal {
+        width: 56px;
+        height: 56px;
+        top: 12%;
+        right: 16px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav-list a { padding: 0 8px; font-size: 14px; }
+      .hero { min-height: 78vh; padding-top: var(--space-lg); }
+      .hero-brand { letter-spacing: 0.04em; }
+      .slot-grid { grid-template-columns: 1fr 1fr; }
+      .tea-item {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "name"
+          "price"
+          "desc";
+      }
+      .tea-price { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-nav">
+    <div class="wrap" data-ud-check="navigation">
+      <a class="brand-mark" href="#top">山声茶事</a>
+      <nav aria-label="页面导航">
+        <ul class="nav-list">
+          <li><a href="#story">门店</a></li>
+          <li><a href="#teas">茶单</a></li>
+          <li><a href="#booking">预约</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-brand">
+      <div class="hero-art" aria-hidden="true">
+        <svg id="hero-mountains" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="presentation">
+          <defs>
+            <linearGradient id="skyWash" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#EAE6DC" />
+              <stop offset="100%" stop-color="#D8D3C7" stop-opacity="0.2" />
+            </linearGradient>
+          </defs>
+          <rect width="1280" height="720" fill="url(#skyWash)" />
+          <path class="mountain-fill" d="M0 470 C160 390 250 410 360 350 C470 290 540 250 680 300 C820 350 900 280 1040 320 C1140 350 1220 390 1280 370 L1280 720 L0 720 Z" />
+          <path
+            id="mountain-outline"
+            class="mountain-path"
+            data-ud-motion="mountain-ink"
+            data-ud-motion-type="svg-draw"
+            data-ud-motion-trigger-model="entry-play"
+            data-ud-motion-trigger="#hero-mountains"
+            data-ud-motion-end-trigger="#hero-mountains"
+            data-ud-motion-subject="#hero-mountains"
+            data-ud-motion-start="top 100%"
+            data-ud-motion-end="bottom 100%"
+            data-ud-motion-focus-at="auto"
+            data-ud-motion-samples="0,1"
+            d="M-20 500 C120 420 210 430 320 360 C430 290 520 240 670 295 C820 350 900 265 1045 310 C1160 348 1235 395 1300 375"
+          />
+          <path class="mountain-path" d="M-10 560 C180 510 280 530 420 480 C560 430 680 450 820 490 C960 530 1100 500 1290 530" opacity="0.35" />
+          <path class="steam-line" d="M610 455 C605 430 618 415 612 395" />
+          <path class="steam-line" d="M628 458 C624 432 636 418 630 396" />
+          <path class="steam-line" d="M646 456 C642 434 654 420 648 398" />
+          <ellipse cx="628" cy="470" rx="28" ry="8" fill="none" stroke="#3D5A4C" stroke-width="1" opacity="0.35" />
+          <path d="M610 470 C612 450 644 450 646 470" fill="none" stroke="#3D5A4C" stroke-width="1.1" opacity="0.45" />
+        </svg>
+      </div>
+
+      <svg class="seal" viewBox="0 0 72 72" aria-hidden="true">
+        <rect x="4" y="4" width="64" height="64" rx="2" />
+        <text x="36" y="33" text-anchor="middle">山声</text>
+        <text x="36" y="52" text-anchor="middle">茶事</text>
+      </svg>
+
+      <div class="wrap hero-content" data-ud-check="hero">
+        <p class="vert-accent" aria-hidden="true">山泉煮茶</p>
+        <div class="hero-copy">
+          <h1 class="hero-brand" id="hero-brand">山声茶事</h1>
+          <p class="hero-lead">傍山泉而坐。水开，茶沉，屋里只剩溪声与炭火。</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#booking">预约茶席</a>
+            <a class="btn btn-ghost" href="#teas">看今日茶单</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule wrap" />
+
+    <section id="story" aria-labelledby="story-title">
+      <div class="wrap" data-ud-check="story">
+        <div class="section-head reveal">
+          <p class="section-kicker">门店</p>
+          <h2 class="section-title" id="story-title">山泉旁的一间茶屋</h2>
+          <p class="section-lead">不卖热闹。只煮山上的水，泡三道茶。</p>
+        </div>
+        <div class="story-grid">
+          <div class="story-prose reveal">
+            <p>茶屋贴着南坡泉眼，清晨先舀一桶清泉，炭炉上温着。泉眼在雨后会涨，水声压过檐下风铃；晴天则细得像线，刚好盖住翻书的声响。</p>
+            <p>店里只设六席。席间不播乐，客人自带书也行，或对着窗外松影坐一会儿。茶从壶里出来，第一道看汤色，第二道才论香。</p>
+            <p>我们不为赶场。预约写清时段与人数，到点开门，坐满便止。</p>
+          </div>
+          <aside class="story-side reveal" aria-label="门店要点">
+            <ul class="story-meta">
+              <li>
+                <span class="label">地址</span>
+                <span class="value">青城外南坡 · 听泉巷 3 号</span>
+              </li>
+              <li>
+                <span class="label">席位</span>
+                <span class="value">六席 · 每席最多四人</span>
+              </li>
+              <li>
+                <span class="label">开席</span>
+                <span class="value">午后 13:00 — 晚间 20:30</span>
+              </li>
+            </ul>
+            <svg class="ink-cup" viewBox="0 0 280 120" aria-hidden="true">
+              <path d="M40 78 C70 48 110 40 140 52 C170 40 210 48 240 78" fill="none" stroke="#1F2420" stroke-width="1.2" opacity="0.45" />
+              <path d="M88 78 C95 62 120 58 140 68 C160 58 185 62 192 78" fill="none" stroke="#3D5A4C" stroke-width="1.1" opacity="0.55" />
+              <path d="M120 50 C118 40 124 32 122 22" class="steam-line is-on" stroke="#3D5A4C" />
+              <path d="M140 48 C139 38 145 30 143 20" class="steam-line is-on" stroke="#3D5A4C" />
+              <path d="M160 50 C159 41 165 33 163 24" class="steam-line is-on" stroke="#3D5A4C" />
+            </svg>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule wrap" />
+
+    <section id="teas" aria-labelledby="teas-title">
+      <div class="wrap" data-ud-check="teas">
+        <div class="section-head reveal">
+          <p class="section-kicker">茶单</p>
+          <h2 class="section-title" id="teas-title">三款招牌</h2>
+          <p class="section-lead">每席任选一壶。茶汤随泉温微调，不另加花果。</p>
+        </div>
+        <ol class="tea-list">
+          <li class="tea-item reveal">
+            <div class="tea-main">
+              <h3 class="tea-name">云前龙井</h3>
+              <p class="tea-origin">龙井村北坡 · 清明前三日</p>
+            </div>
+            <p class="tea-desc">干茶扁平翠绿。开汤后先有青豆气，随后是淡兰花香；杯底留一点雨后草地的湿润。适合午后第一席。</p>
+            <p class="tea-price">¥68<small>每壶</small></p>
+          </li>
+          <li class="tea-item reveal">
+            <div class="tea-main">
+              <h3 class="tea-name">岩骨肉桂</h3>
+              <p class="tea-origin">武夷正岩 · 中火焙</p>
+            </div>
+            <p class="tea-desc">入口先焦糖，再转桂皮与岩韵；汤稠，回甘慢。炭火旁喝，屋外风起也不觉淡。</p>
+            <p class="tea-price">¥88<small>每壶</small></p>
+          </li>
+          <li class="tea-item reveal">
+            <div class="tea-main">
+              <h3 class="tea-name">月白银针</h3>
+              <p class="tea-origin">福鼎高山 · 单芽</p>
+            </div>
+            <p class="tea-desc">芽针披毫，汤色浅杏。甜在舌尖，凉意在齿间，像清晨雾气刚散开。晚席常点这一壶。</p>
+            <p class="tea-price">¥98<small>每壶</small></p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <hr class="rule wrap" />
+
+    <section id="booking" aria-labelledby="booking-title">
+      <div class="wrap booking-panel" data-ud-check="booking">
+        <div class="reveal">
+          <div class="section-head" style="margin-bottom: var(--space-md);">
+            <p class="section-kicker">预约</p>
+            <h2 class="section-title" id="booking-title">订一席茶</h2>
+            <p class="section-lead">写下时段与人数。确认后我们发短信，请按时入座。</p>
+          </div>
+          <p class="booking-note">满席不候。若需取消，请提前四小时告知，席位转给下一位。</p>
+        </div>
+
+        <form class="booking-form reveal" id="booking-form" novalidate>
+          <div class="field">
+            <label for="guest-name">称呼</label>
+            <input id="guest-name" name="name" type="text" autocomplete="name" required maxlength="40" placeholder="例如：陈先生" />
+          </div>
+
+          <div class="field">
+            <label for="guest-phone">手机号</label>
+            <input id="guest-phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required pattern="1[3-9]\d{9}" maxlength="11" placeholder="11 位手机号" aria-describedby="phone-hint" />
+            <p class="hint" id="phone-hint">用于发送预约确认，不会公开显示。</p>
+          </div>
+
+          <div class="field">
+            <span id="slot-label">时段</span>
+            <div class="slot-grid" role="radiogroup" aria-labelledby="slot-label">
+              <label class="slot">
+                <input type="radio" name="slot" value="13:00" required />
+                <span>13:00</span>
+              </label>
+              <label class="slot">
+                <input type="radio" name="slot" value="15:00" />
+                <span>15:00</span>
+              </label>
+              <label class="slot">
+                <input type="radio" name="slot" value="17:00" />
+                <span>17:00</span>
+              </label>
+              <label class="slot">
+                <input type="radio" name="slot" value="19:00" />
+                <span>19:00</span>
+              </label>
+              <label class="slot">
+                <input type="radio" name="slot" value="20:30" />
+                <span>20:30</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="party-size">人数</label>
+            <select id="party-size" name="party" required>
+              <option value="" disabled selected>选择人数</option>
+              <option value="1">1 人</option>
+              <option value="2">2 人</option>
+              <option value="3">3 人</option>
+              <option value="4">4 人</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tea-choice">想喝的茶（可选）</label>
+            <select id="tea-choice" name="tea">
+              <option value="">到店再定</option>
+              <option value="longjing">云前龙井</option>
+              <option value="rouqui">岩骨肉桂</option>
+              <option value="yinzhen">月白银针</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">提交预约</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap" data-ud-check="footer">
+      <p>山声茶事 · 青城外南坡听泉巷 3 号</p>
+      <p class="footer-demo">演示页面，由 Ultimate Design agent skill 设计 · 「山声茶事」为虚构品牌。</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function initMountainDraw() {
+        var path = document.getElementById("mountain-outline");
+        if (!path || typeof path.getTotalLength !== "function") return;
+        var length = path.getTotalLength();
+        path.style.strokeDasharray = String(length);
+        if (reduce) {
+          path.style.strokeDashoffset = "0";
+          return;
+        }
+        path.style.strokeDashoffset = String(length);
+        path.style.transition = "stroke-dashoffset 400ms cubic-bezier(0.22, 1, 0.36, 1)";
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            path.style.strokeDashoffset = "0";
+          });
+        });
+      }
+
+      function forceVisibleState(io) {
+        Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (el) {
+          if (!el.classList.contains("is-in")) {
+            el.classList.add("is-in");
+          }
+          if (io) {
+            try { io.unobserve(el); } catch (err) { /* ignore */ }
+          }
+        });
+        Array.prototype.forEach.call(document.querySelectorAll(".hero-art .steam-line"), function (el) {
+          el.classList.add("is-on");
+        });
+        var path = document.getElementById("mountain-outline");
+        if (path) {
+          path.style.strokeDashoffset = "0";
+        }
+      }
+
+      function initReveals() {
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+        if (reduce || !("IntersectionObserver" in window)) {
+          forceVisibleState(null);
+          window.addEventListener("beforeprint", function () { forceVisibleState(null); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+        nodes.forEach(function (el) { io.observe(el); });
+        window.setTimeout(function () {
+          forceVisibleState(io);
+        }, 700);
+        window.addEventListener("beforeprint", function () {
+          forceVisibleState(io);
+        });
+      }
+
+      function initSteam() {
+        Array.prototype.forEach.call(document.querySelectorAll(".hero-art .steam-line"), function (el) {
+          el.classList.add("is-on");
+        });
+      }
+
+      function initBooking() {
+        var form = document.getElementById("booking-form");
+        var status = document.getElementById("form-status");
+        if (!form || !status) return;
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          status.dataset.tone = "";
+          status.textContent = "";
+
+          if (!form.checkValidity()) {
+            status.dataset.tone = "error";
+            status.textContent = "请补全称呼、手机号、时段与人数。";
+            var firstInvalid = form.querySelector(":invalid");
+            if (firstInvalid) firstInvalid.focus();
+            return;
+          }
+
+          var phone = form.elements.namedItem("phone");
+          if (phone && !/^1[3-9]\d{9}$/.test(String(phone.value || ""))) {
+            status.dataset.tone = "error";
+            status.textContent = "手机号格式不对，请填写 11 位号码。";
+            phone.focus();
+            return;
+          }
+
+          var slot = form.querySelector('input[name="slot"]:checked');
+          var party = form.elements.namedItem("party");
+          status.dataset.tone = "ok";
+          status.textContent = "已记下 " + (slot ? slot.value : "") + " · " + (party ? party.value : "") + " 人。确认短信稍后发出（演示）。";
+          form.reset();
+        });
+      }
+
+      initMountainDraw();
+      initSteam();
+      initReveals();
+      initBooking();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GRID&amp;NOISE — Independent Design Studio</title>
+  <meta name="description" content="GRID&amp;NOISE is an independent design studio. Systems with teeth. Interfaces that hold up under pressure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFE500;
+      --secondary: #FF3355;
+      --tertiary: #00C8F0;
+      --neutral: #D8D4CC;
+      --surface: #F6F5F2;
+      --on-surface: #0B0B0B;
+      --error: #B00020;
+      --ink: #0B0B0B;
+      --paper: #F6F5F2;
+      --mute: #3A3A3A;
+      --border: 3px solid var(--ink);
+      --shadow: 6px 6px 0 var(--ink);
+      --shadow-sm: 4px 4px 0 var(--ink);
+      --radius: 0px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --font-display: "Syne", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+      --font-body: "IBM Plex Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --max: 1120px;
+      --focus: 3px solid var(--tertiary);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-underline-offset: 0.18em;
+    }
+
+    a:hover { text-decoration-thickness: 3px; }
+
+    :focus-visible {
+      outline: var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--primary);
+      color: var(--ink);
+      border: var(--border);
+      padding: 12px 16px;
+      z-index: 1000;
+      font-weight: 700;
+    }
+    .skip:focus {
+      left: 16px;
+      top: 16px;
+    }
+
+    .wrap {
+      width: min(100% - 32px, var(--max));
+      margin-inline: auto;
+    }
+
+    /* NAV */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--paper);
+      border-bottom: var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 64px;
+      padding-block: 8px;
+    }
+
+    .brand-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 0;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: 2px solid transparent;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--ink);
+      background: var(--primary);
+      text-decoration: none;
+    }
+
+    /* HERO — thumbnail punch */
+    .hero {
+      border-bottom: var(--border);
+      background:
+        linear-gradient(90deg, rgba(11,11,11,0.06) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(rgba(11,11,11,0.06) 1px, transparent 1px) 0 0 / 48px 48px,
+        var(--paper);
+      padding: clamp(28px, 5vw, 56px) 0 clamp(36px, 6vw, 72px);
+      position: relative;
+      overflow: visible;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .hero-grid > * {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+        gap: 40px;
+      }
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+    }
+
+    .hero-kicker span {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: var(--secondary);
+      border: 2px solid var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .hero-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.35rem, 0.35rem + 9.2vw, 7.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      margin: 0;
+      max-width: 100%;
+      width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      hyphens: manual;
+    }
+
+    .hero-brand em {
+      font-style: normal;
+      color: var(--ink);
+      background: var(--primary);
+      box-shadow: inset 0 -0.12em 0 var(--ink);
+      padding: 0 0.04em;
+    }
+
+    .hero-lead {
+      margin: 20px 0 0;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-weight: 500;
+      max-width: 34ch;
+      line-height: 1.4;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 12px 20px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      background: var(--primary);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .btn-secondary {
+      background: var(--paper);
+    }
+
+    .hero-panel {
+      border: var(--border);
+      box-shadow: var(--shadow);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 22px;
+      min-height: 220px;
+      display: grid;
+      gap: 16px;
+      align-content: space-between;
+    }
+
+    .hero-panel h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+      max-width: 14ch;
+    }
+
+    .hero-panel-copy {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.45;
+      color: rgba(246,245,242,0.86);
+      max-width: 28ch;
+    }
+
+    .noise-bar {
+      height: 18px;
+      border: 2px solid var(--paper);
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          var(--secondary) 0 8px,
+          var(--primary) 8px 16px,
+          var(--tertiary) 16px 24px,
+          var(--paper) 24px 32px
+        );
+    }
+
+    /* SECTIONS */
+    section {
+      border-bottom: var(--border);
+      padding: clamp(40px, 7vw, 80px) 0;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 12px;
+      margin-bottom: clamp(24px, 4vw, 40px);
+      max-width: 52ch;
+    }
+
+    .section-label {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .section-label::before {
+      content: "";
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+      vertical-align: -1px;
+      border: 2px solid var(--ink);
+      background: var(--tertiary);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .section-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 5.5vw, 3.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      text-wrap: balance;
+    }
+
+    .section-copy {
+      margin: 0;
+      color: var(--mute);
+      font-size: 1.05rem;
+      max-width: 46ch;
+    }
+
+    /* MANIFESTO — asymmetric editorial */
+    .manifesto-layout {
+      display: grid;
+      gap: 28px;
+    }
+
+    @media (min-width: 860px) {
+      .manifesto-layout {
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 48px;
+        align-items: start;
+      }
+    }
+
+    .manifesto-quote {
+      margin: 0;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      background: var(--secondary);
+      color: var(--ink);
+      padding: clamp(20px, 3vw, 32px);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.55rem, 3.8vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+
+    .manifesto-body {
+      display: grid;
+      gap: 16px;
+    }
+
+    .manifesto-body p {
+      margin: 0;
+      font-size: 1.08rem;
+      max-width: 54ch;
+    }
+
+    .manifesto-body p strong {
+      font-weight: 700;
+      background: linear-gradient(transparent 62%, var(--primary) 62%);
+    }
+
+    .rule-list {
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .rule-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      border-left: 4px solid var(--ink);
+      padding-left: 12px;
+    }
+
+    .rule-list b {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* WORKS — text index, not cards */
+    .works {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .works .section-label::before { background: var(--primary); }
+    .works .section-copy { color: rgba(246,245,242,0.78); }
+
+    .works-table {
+      width: 100%;
+      border-collapse: collapse;
+      display: block;
+    }
+
+    .work-row {
+      display: grid;
+      gap: 8px 16px;
+      padding: 18px 0;
+      border-top: 2px solid rgba(246,245,242,0.28);
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 180ms ease, transform 180ms ease;
+      align-items: baseline;
+    }
+
+    .work-row:last-child {
+      border-bottom: 2px solid rgba(246,245,242,0.28);
+    }
+
+    @media (min-width: 760px) {
+      .work-row {
+        grid-template-columns: 72px 1.1fr 1fr 1.6fr;
+        gap: 20px;
+        padding: 22px 8px;
+      }
+    }
+
+    .work-row:hover,
+    .work-row:focus-visible {
+      background: rgba(255,229,0,0.12);
+      outline: none;
+    }
+
+    .work-year {
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+    }
+
+    .work-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .work-client {
+      font-size: 0.95rem;
+      color: rgba(246,245,242,0.72);
+      font-weight: 500;
+    }
+
+    .work-outcome {
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    /* SERVICES — raw catalog grid */
+    .services-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (min-width: 720px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .service {
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+      background: var(--paper);
+      display: grid;
+      gap: 10px;
+      min-height: 180px;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .service:nth-child(1) { background: var(--primary); }
+    .service:nth-child(2) { background: var(--tertiary); }
+    .service:nth-child(3) { background: var(--neutral); }
+    .service:nth-child(4) { background: var(--secondary); color: var(--ink); }
+
+    .service:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .service h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .service p {
+      margin: 0;
+      font-size: 0.98rem;
+      max-width: 36ch;
+    }
+
+    .service-num {
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* CONTACT */
+    .contact-layout {
+      display: grid;
+      gap: 28px;
+    }
+
+    @media (min-width: 860px) {
+      .contact-layout {
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 40px;
+        align-items: start;
+      }
+    }
+
+    .contact-panel {
+      border: var(--border);
+      box-shadow: var(--shadow);
+      background: var(--primary);
+      padding: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .contact-panel h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .contact-meta {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .contact-meta li {
+      display: grid;
+      gap: 2px;
+    }
+
+    .contact-meta span {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .contact-meta a,
+    .contact-meta strong {
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .contact-meta a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .contact-meta a:hover { text-decoration: underline; }
+
+    .contact-form {
+      display: grid;
+      gap: 16px;
+      border: var(--border);
+      background: var(--paper);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      min-height: 48px;
+      border: var(--border);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      padding: 10px 12px;
+      border-radius: 0;
+    }
+
+    .field textarea {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    .field-hint {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .form-status {
+      margin: 0;
+      font-weight: 600;
+      min-height: 1.4em;
+    }
+
+    .form-status[data-tone="ok"] { color: #0B5E2E; }
+    .form-status[data-tone="err"] { color: var(--error); }
+
+    /* FOOTER */
+    .site-footer {
+      padding: 28px 0 40px;
+      background: var(--neutral);
+      border-top: var(--border);
+    }
+
+    .footer-inner {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (min-width: 760px) {
+      .footer-inner {
+        grid-template-columns: 1fr auto;
+        align-items: end;
+      }
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.03em;
+      margin: 0 0 6px;
+    }
+
+    .footer-note {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--mute);
+      max-width: 62ch;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 10px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid transparent;
+    }
+
+    .footer-links a:hover {
+      border-color: var(--ink);
+      background: var(--paper);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .btn:hover,
+      .service:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="wrap nav-inner" data-ud-check="navigation">
+      <a class="brand-mark" href="#top" aria-label="GRID and NOISE home">GRID&amp;NOISE</a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#works">Works</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-brand">
+      <div class="wrap hero-grid" data-ud-check="hero">
+        <div>
+          <p class="hero-kicker"><span aria-hidden="true"></span> Independent design studio</p>
+          <h1 class="hero-brand" id="hero-brand" data-ud-check="hero-title">GRID<em>&amp;</em><wbr>NOISE</h1>
+          <p class="hero-lead" data-ud-check="hero-lead">We design systems with hard edges — brand, product, and campaign work that stays loud after the launch party ends.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#works">See selected works</a>
+            <a class="btn btn-secondary" href="#contact">Start a brief</a>
+          </div>
+        </div>
+        <aside class="hero-panel reveal" aria-label="Studio snapshot">
+          <h2>Clarity first. Chaos optional. Grid always.</h2>
+          <p class="hero-panel-copy">A raw CSS grid, hard ink borders, and type loud enough to survive a gallery thumbnail.</p>
+          <div class="noise-bar" aria-hidden="true"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="manifesto" aria-labelledby="manifesto-title">
+      <div class="wrap manifesto-layout" data-ud-check="manifesto">
+        <div class="section-head">
+          <p class="section-label">Manifesto</p>
+          <h2 class="section-title" id="manifesto-title">Pretty is not a strategy.</h2>
+          <p class="section-copy">GRID&amp;NOISE builds interfaces and identities that survive real use: deadlines, messy content, and stakeholders who change their minds.</p>
+        </div>
+        <div class="manifesto-body reveal">
+          <blockquote class="manifesto-quote">If the grid holds, the noise can roar.</blockquote>
+          <p>We start with structure: type scale, contrast, content order, and the one action that must be obvious. Then we turn the volume up — hard borders, offset shadows, color that refuses to apologize.</p>
+          <p><strong>Attitude without waste.</strong> Every block earns its place. Every word has a job. No filler icons. No pastel fog. No layouts that collapse the first time someone pastes a real headline.</p>
+          <ul class="rule-list">
+            <li><b>01</b><span>Design for reading distance first, decoration second.</span></li>
+            <li><b>02</b><span>Make the brand impossible to mistake at thumbnail scale.</span></li>
+            <li><b>03</b><span>Ship systems operators can extend without calling us every Tuesday.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="works" id="works" aria-labelledby="works-title">
+      <div class="wrap" data-ud-check="works">
+        <div class="section-head">
+          <p class="section-label">Selected works</p>
+          <h2 class="section-title" id="works-title">Projects that left a dent.</h2>
+          <p class="section-copy">A text ledger of recent engagements — year, client type, and the outcome we were hired to protect.</p>
+        </div>
+        <div class="works-table" role="list">
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2025</span>
+            <span class="work-name">Helio Freight Console</span>
+            <span class="work-client">Logistics SaaS</span>
+            <span class="work-outcome">Cut average booking time 40% with a denser ops console and clearer exception states.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2025</span>
+            <span class="work-name">Northline Civic Permits</span>
+            <span class="work-client">Municipal services</span>
+            <span class="work-outcome">Redesigned the permit portal; first-pass completion rose 28% across mobile sessions.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2024</span>
+            <span class="work-name">Volt Market Brand Kit</span>
+            <span class="work-client">Fintech</span>
+            <span class="work-outcome">Built a modular brand system that held through Series B diligence without a redraw.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2024</span>
+            <span class="work-name">Paperhouse Longform</span>
+            <span class="work-client">Publishing</span>
+            <span class="work-outcome">Editorial site redesign halved bounce on features over 2,000 words.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2024</span>
+            <span class="work-name">Kite Athletics Checkout</span>
+            <span class="work-client">DTC retail</span>
+            <span class="work-outcome">Mobile checkout rewrite lifted conversion 19% in eight weeks of A/B traffic.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2023</span>
+            <span class="work-name">Signal Ops Naming</span>
+            <span class="work-client">B2B infrastructure</span>
+            <span class="work-outcome">Naming and UI kit for a monitoring suite adopted by three product teams in one quarter.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2023</span>
+            <span class="work-name">Orchard Bank Lobby</span>
+            <span class="work-client">Retail banking</span>
+            <span class="work-outcome">Branch digital lobby screens shipped WCAG AA with live rate content and calm motion.</span>
+          </a>
+          <a class="work-row reveal" role="listitem" href="#contact">
+            <span class="work-year">2023</span>
+            <span class="work-name">Meridian Deck System</span>
+            <span class="work-client">Biotech</span>
+            <span class="work-outcome">Investor deck system reused across eleven fundraising rounds without brand drift.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" aria-labelledby="services-title">
+      <div class="wrap" data-ud-check="services">
+        <div class="section-head">
+          <p class="section-label">Services</p>
+          <h2 class="section-title" id="services-title">Four ways we enter the room.</h2>
+          <p class="section-copy">Engagements stay focused. We do not sell a vague “full-service” fog — we sell the work that changes what people see and do.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service reveal">
+            <span class="service-num">Service 01</span>
+            <h3>Brand systems</h3>
+            <p>Logo logic, type pairings, color roles, and component rules teams can ship without waiting on a moodboard.</p>
+          </article>
+          <article class="service reveal">
+            <span class="service-num">Service 02</span>
+            <h3>Product UI</h3>
+            <p>Dense tools, onboarding, and marketing-to-app handoffs with accessibility baked into the first pass.</p>
+          </article>
+          <article class="service reveal">
+            <span class="service-num">Service 03</span>
+            <h3>Campaign sites</h3>
+            <p>One-page launches and portfolio surfaces that punch in a thumbnail and still read on a phone.</p>
+          </article>
+          <article class="service reveal">
+            <span class="service-num">Service 04</span>
+            <h3>Design ops</h3>
+            <p>Tokens, critique rituals, and documentation so your next hire inherits a system instead of a myth.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-layout" data-ud-check="contact">
+        <div>
+          <div class="section-head">
+            <p class="section-label">Contact</p>
+            <h2 class="section-title" id="contact-title">Send the brief. Keep the attitude.</h2>
+            <p class="section-copy">Tell us what must ship, who it is for, and where the current design is failing. We reply within two business days.</p>
+          </div>
+          <aside class="contact-panel reveal">
+            <h3>Studio desk</h3>
+            <ul class="contact-meta">
+              <li>
+                <span>Email</span>
+                <a href="mailto:brief@gridandnoise.studio">brief@gridandnoise.studio</a>
+              </li>
+              <li>
+                <span>Hours</span>
+                <strong>Mon–Fri · 10:00–18:00 PT</strong>
+              </li>
+              <li>
+                <span>Base</span>
+                <strong>Portland, OR · remote-first</strong>
+              </li>
+            </ul>
+          </aside>
+        </div>
+
+        <form class="contact-form" id="brief-form" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="project">Project type</label>
+            <select id="project" name="project" required>
+              <option value="">Select one</option>
+              <option>Brand system</option>
+              <option>Product UI</option>
+              <option>Campaign site</option>
+              <option>Design ops</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">What needs to change?</label>
+            <textarea id="message" name="message" required maxlength="1200" placeholder="Timeline, audience, and the failure you want fixed."></textarea>
+            <p class="field-hint">Demo form — nothing is transmitted. Use the email above for a real brief.</p>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Send brief outline</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner" data-ud-check="footer">
+      <div>
+        <p class="footer-brand">GRID&amp;NOISE</p>
+        <p class="footer-note">Demo page designed with the Ultimate Design agent skill · GRID&amp;NOISE is a fictional studio.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#works">Works</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nodes = document.querySelectorAll(".reveal");
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        nodes.forEach(function (el) { el.classList.add("is-in"); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        nodes.forEach(function (el) { io.observe(el); });
+      }
+
+      var form = document.getElementById("brief-form");
+      var status = document.getElementById("form-status");
+      if (!form || !status) return;
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        status.dataset.tone = "";
+        status.textContent = "";
+
+        if (!form.checkValidity()) {
+          status.dataset.tone = "err";
+          status.textContent = "Fill the required fields, then try again.";
+          var firstInvalid = form.querySelector(":invalid");
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+
+        status.dataset.tone = "ok";
+        status.textContent = "Outline captured locally. Email brief@gridandnoise.studio to send it for real.";
+        form.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

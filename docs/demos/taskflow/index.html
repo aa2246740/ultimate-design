@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskFlow — Atlas Launch board</title>
+<style>
+:root {
+  --primary: #0B6E6A;
+  --primary-hover: #095A57;
+  --primary-soft: #E4F3F2;
+  --secondary: #3A4556;
+  --tertiary: #B86A2D;
+  --neutral: #E6E9EF;
+  --surface: #F5F6F8;
+  --surface-raised: #FFFFFF;
+  --on-surface: #1A2030;
+  --on-muted: #5A6478;
+  --border: #D5DAE3;
+  --border-soft: #E8EBF1;
+  --error: #C0392B;
+  --success: #1F7A4D;
+  --warn: #B86A2D;
+  --info: #2F5F8A;
+  --shadow-sm: 0 1px 2px rgba(26, 32, 48, 0.06);
+  --shadow-md: 0 4px 14px rgba(26, 32, 48, 0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --sidebar-w: 232px;
+  --feed-w: 292px;
+  --topbar-h: 72px;
+  --font: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --focus: 0 0 0 3px rgba(11, 110, 106, 0.35);
+  --motion: 180ms ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--on-surface);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; color: inherit; }
+button {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; }
+:focus { outline: none; }
+:focus-visible { outline: none; box-shadow: var(--focus); }
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  grid-template-rows: 100%;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* —— Sidebar —— */
+.sidebar {
+  background: var(--surface-raised);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  z-index: 20;
+  min-height: 0;
+}
+.zone-sidebar {
+  margin: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  min-height: 44px;
+}
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.brand-mark svg { width: 16px; height: 16px; }
+.brand-name {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.brand-sub {
+  font-size: 11px;
+  color: var(--on-muted);
+  font-weight: 500;
+}
+
+.nav-section { display: flex; flex-direction: column; gap: 2px; }
+.nav-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--on-muted);
+  padding: 8px 12px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  color: var(--secondary);
+  font-weight: 500;
+  font-size: 13.5px;
+  transition: background-color var(--motion), color var(--motion);
+}
+.nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.85; }
+.nav-item:hover { background: var(--neutral); color: var(--on-surface); }
+.nav-item[aria-current="page"] {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 600;
+}
+.nav-item[aria-current="page"] svg { opacity: 1; }
+.nav-count {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-muted);
+  background: var(--neutral);
+  border-radius: 999px;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+}
+.nav-item[aria-current="page"] .nav-count {
+  background: #fff;
+  color: var(--primary);
+}
+
+.project-list { display: flex; flex-direction: column; gap: 2px; }
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--secondary);
+  text-align: left;
+  transition: background-color var(--motion);
+}
+.project-item:hover { background: var(--neutral); color: var(--on-surface); }
+.project-item[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--on-surface);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-teal { background: var(--primary); }
+.dot-blue { background: var(--info); }
+.dot-amber { background: var(--tertiary); }
+
+.sidebar-foot {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-soft);
+}
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  width: 100%;
+  text-align: left;
+  transition: background-color var(--motion);
+}
+.user-chip:hover { background: var(--neutral); }
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.avatar-sm { width: 24px; height: 24px; font-size: 9px; }
+.avatar-xs { width: 20px; height: 20px; font-size: 8px; }
+.av-maya { background: #3D6B8A; }
+.av-jordan { background: #6B5B8A; }
+.av-priya { background: #0B6E6A; }
+.av-sam { background: #8A5B3D; }
+.av-elena { background: #2F7A5A; }
+.av-you { background: #1A2030; }
+.user-meta { min-width: 0; }
+.user-name { font-size: 13px; font-weight: 600; line-height: 1.2; }
+.user-role { font-size: 11px; color: var(--on-muted); }
+
+/* —— Main shell —— */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.topbar {
+  height: var(--topbar-h);
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+}
+.zone-topbar {
+  margin: 8px 20px 16px 20px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+}
+.menu-toggle:hover { background: var(--neutral); }
+.menu-toggle svg { width: 20px; height: 20px; }
+.crumb {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.crumb-path {
+  font-size: 11px;
+  color: var(--on-muted);
+  font-weight: 500;
+}
+.crumb-title {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-width: 200px;
+  transition: border-color var(--motion), background-color var(--motion);
+}
+.search:focus-within {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: var(--focus);
+}
+.search svg { width: 16px; height: 16px; color: var(--on-muted); flex-shrink: 0; }
+.search input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  height: 44px;
+  font-size: 13px;
+  line-height: 44px;
+}
+.search input::placeholder { color: var(--on-muted); }
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  color: var(--secondary);
+  border: 1px solid transparent;
+  position: relative;
+  transition: background-color var(--motion), border-color var(--motion);
+}
+.icon-btn:hover { background: var(--neutral); }
+.icon-btn svg { width: 18px; height: 18px; }
+.badge-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--error);
+  border: 2px solid #fff;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--motion), transform var(--motion);
+}
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary svg { width: 16px; height: 16px; }
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--secondary);
+  font-size: 13px;
+  font-weight: 550;
+  transition: background-color var(--motion), border-color var(--motion);
+}
+.btn-ghost:hover { background: var(--neutral); border-color: #c5cad4; }
+.btn-ghost svg { width: 16px; height: 16px; }
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--feed-w);
+  overflow: hidden;
+}
+
+.board-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: var(--space-md) var(--space-lg) 0;
+}
+
+/* —— Summary metrics —— */
+.zone-summary {
+  flex-shrink: 0;
+  margin: 0 0 12px;
+}
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.metric {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 72px;
+  box-shadow: var(--shadow-sm);
+}
+.metric-label {
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--on-muted);
+}
+.metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.metric-delta {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.delta-up { color: var(--success); }
+.delta-flat { color: var(--on-muted); }
+.delta-warn { color: var(--warn); }
+.metric-hint {
+  font-size: 11px;
+  color: var(--on-muted);
+}
+
+/* —— Board —— */
+.board-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.board-toolbar h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--neutral);
+  border-radius: var(--radius-sm);
+}
+.seg button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-muted);
+  transition: background-color var(--motion), color var(--motion), box-shadow var(--motion);
+}
+.seg button[aria-pressed="true"] {
+  background: #fff;
+  color: var(--on-surface);
+  box-shadow: var(--shadow-sm);
+}
+.seg button:hover:not([aria-pressed="true"]) { color: var(--on-surface); }
+.filter-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--secondary);
+  transition: background-color var(--motion), border-color var(--motion);
+}
+.chip:hover { background: var(--neutral); }
+.chip[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.board-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c5cad4 transparent;
+}
+.board {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  overflow: visible;
+}
+.board-track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  align-content: start;
+}
+.column {
+  background: rgba(230, 233, 239, 0.45);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+  padding: 10px;
+}
+.column-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px 10px;
+  flex-shrink: 0;
+}
+.column-title {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.column-count {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--on-muted);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+}
+.column-add {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: var(--on-muted);
+  transition: background-color var(--motion), color var(--motion);
+}
+.column-add:hover { background: var(--surface-raised); color: var(--on-surface); }
+.column-add svg { width: 14px; height: 14px; }
+.status-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pip-backlog { background: #8A93A5; }
+.pip-progress { background: var(--primary); }
+.pip-review { background: var(--tertiary); }
+.pip-done { background: var(--success); }
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+  padding: 2px;
+  scrollbar-width: thin;
+}
+.task {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+  transition: border-color var(--motion), box-shadow var(--motion), transform var(--motion);
+  cursor: grab;
+}
+.task:hover {
+  border-color: #c5cad4;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.task:focus-visible {
+  border-color: var(--primary);
+}
+.task-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+.tag-design { background: #E8F0F8; color: var(--info); }
+.tag-eng { background: #E4F3F2; color: var(--primary); }
+.tag-content { background: #F5EDE4; color: #8A5B3D; }
+.tag-qa { background: #EAF3EC; color: var(--success); }
+.tag-priority {
+  background: #F8E8E6;
+  color: var(--error);
+}
+.task-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  color: var(--on-surface);
+}
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--on-muted);
+  font-weight: 500;
+}
+.task-meta svg { width: 13px; height: 13px; flex-shrink: 0; }
+.task-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.assignees { display: flex; }
+.assignees .avatar { margin-left: -6px; border: 2px solid #fff; }
+.assignees .avatar:first-child { margin-left: 0; }
+.due {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-muted);
+}
+.due.soon { color: var(--warn); }
+.due.overdue { color: var(--error); }
+.due svg { width: 12px; height: 12px; }
+
+.empty-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 28px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.4);
+  gap: 8px;
+  min-height: 160px;
+}
+.empty-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  display: grid;
+  place-items: center;
+  color: var(--on-muted);
+  margin-bottom: 4px;
+}
+.empty-icon svg { width: 18px; height: 18px; }
+.empty-title {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--on-surface);
+  margin: 0;
+}
+.empty-copy {
+  margin: 0;
+  font-size: 12px;
+  color: var(--on-muted);
+  max-width: 180px;
+  line-height: 1.45;
+}
+.empty-cta {
+  margin-top: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary);
+  transition: background-color var(--motion);
+}
+.empty-cta:hover { background: var(--neutral); }
+
+/* —— Activity feed —— */
+.activity {
+  border-left: 1px solid var(--border);
+  background: var(--surface-raised);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.zone-activity {
+  margin: 20px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.activity-head {
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.activity-head h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+}
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 0;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+.activity-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+  transition: background-color var(--motion);
+}
+.activity-item:hover { background: var(--surface); }
+.activity-body { min-width: 0; }
+.activity-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--secondary);
+}
+.activity-text strong {
+  color: var(--on-surface);
+  font-weight: 650;
+}
+.activity-time {
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--on-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  border-top: 1px solid var(--border);
+  background: var(--surface-raised);
+  font-size: 11px;
+  color: var(--on-muted);
+  font-weight: 500;
+}
+.zone-footer {
+  margin: 14px 24px 12px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.zone-footer span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.status-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  display: block;
+}
+
+.scrim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 32, 48, 0.35);
+  z-index: 30;
+}
+body.sidebar-open .scrim { display: block; }
+
+@media (max-width: 1200px) {
+  :root { --feed-w: 260px; --sidebar-w: 212px; }
+  .search { min-width: 160px; }
+  .summary-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 86vw);
+    height: 100%;
+    transform: translateX(-105%);
+    transition: transform 220ms ease;
+    box-shadow: var(--shadow-md);
+    visibility: hidden;
+    pointer-events: none;
+  }
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .menu-toggle { display: grid; }
+  .workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) 200px;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .main { overflow: hidden; min-height: 0; }
+  .board-pane {
+    overflow: hidden;
+    padding: 12px 16px 0;
+    min-height: 0;
+  }
+  .board-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 0;
+    margin-bottom: 16px;
+  }
+  .board {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+  }
+  .board-track {
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    width: max(100%, 920px);
+    min-width: 920px;
+    height: 100%;
+  }
+  .column { max-height: 100%; min-height: 0; }
+  .activity {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    max-height: none;
+    min-height: 0;
+  }
+  .zone-activity { margin: 16px 16px 16px; }
+  .activity-list { max-height: none; }
+  .zone-topbar { margin: 6px 12px 16px; gap: 10px; }
+  .btn-label { display: none; }
+  .search { min-width: 0; width: 140px; }
+}
+
+@media (max-width: 640px) {
+  .workspace {
+    grid-template-rows: minmax(0, 1fr) 180px;
+  }
+  .summary-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric { padding: 10px 12px; min-height: 64px; }
+  .metric-value { font-size: 20px; }
+  .filter-chips { margin-left: 0; width: 100%; }
+  .crumb-path { display: none; }
+  .search { display: none; }
+  .board-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .board {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+  }
+  .board-track {
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    min-width: 920px;
+    width: 920px;
+    height: 100%;
+  }
+  .column { max-height: 100%; min-height: 0; }
+  .zone-footer {
+    margin: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .task:hover { transform: none; }
+  .btn-primary:active { transform: none; }
+  .sidebar { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="scrim" id="scrim" hidden></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Primary">
+    <div class="zone-sidebar" data-ud-check="sidebar">
+    <a class="brand" href="#board" aria-label="TaskFlow home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M3 8h7M3 11.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </span>
+      <span>
+        <span class="brand-name">TaskFlow</span>
+        <span class="brand-sub" style="display:block">Workspace</span>
+      </span>
+    </a>
+
+    <nav class="nav-section" aria-label="Main">
+      <div class="nav-label">Navigate</div>
+      <a class="nav-item" href="#overview">
+        <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="10.5" y="2.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="2.5" y="10.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="10.5" y="10.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5"/></svg>
+        Overview
+      </a>
+      <a class="nav-item" href="#board" aria-current="page">
+        <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 3.5h3.5v11H3A1.5 1.5 0 0 1 1.5 13V5A1.5 1.5 0 0 1 3 3.5Zm5 0h7A1.5 1.5 0 0 1 16.5 5v2.5h-8.5V3.5Zm0 5.5h8.5V13a1.5 1.5 0 0 1-1.5 1.5h-7V9Z" stroke="currentColor" stroke-width="1.4"/></svg>
+        Board
+        <span class="nav-count">18</span>
+      </a>
+      <a class="nav-item" href="#timeline">
+        <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 14.5V5.5M3 14.5h12M6.5 11V8.5M10 11V6M13.5 11V4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Timeline
+      </a>
+      <a class="nav-item" href="#reports">
+        <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 13.5 7.2 8.8l3 2.4L15 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 5.5H15v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reports
+      </a>
+    </nav>
+
+    <div class="nav-section project-list" role="group" aria-label="Projects">
+      <div class="nav-label">Projects</div>
+      <button type="button" class="project-item" aria-pressed="true">
+        <span class="dot dot-teal" aria-hidden="true"></span>
+        Atlas Launch
+      </button>
+      <button type="button" class="project-item" aria-pressed="false">
+        <span class="dot dot-blue" aria-hidden="true"></span>
+        Billing API v2
+      </button>
+      <button type="button" class="project-item" aria-pressed="false">
+        <span class="dot dot-amber" aria-hidden="true"></span>
+        Partner Portal
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <button type="button" class="user-chip" aria-label="Account menu for Maya Chen">
+        <span class="avatar av-maya" aria-hidden="true">MC</span>
+        <span class="user-meta">
+          <span class="user-name">Maya Chen</span>
+          <span class="user-role">Product lead</span>
+        </span>
+      </button>
+    </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="zone-topbar" data-ud-check="topbar">
+      <button type="button" class="menu-toggle" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <div class="crumb">
+        <span class="crumb-path">Projects / Atlas Launch</span>
+        <h1 class="crumb-title">Sprint 24 board</h1>
+      </div>
+      <div class="topbar-actions">
+        <label class="search">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Search tasks" aria-label="Search tasks">
+        </label>
+        <button type="button" class="icon-btn" aria-label="Notifications, 3 unread">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2.5a4.5 4.5 0 0 1 4.5 4.5v2.2l1.2 2.1H3.3L4.5 9.2V7A4.5 4.5 0 0 1 9 2.5Z" stroke="currentColor" stroke-width="1.4"/><path d="M7.2 14.2a1.8 1.8 0 0 0 3.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span class="badge-dot" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn-ghost" aria-label="Filter board">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 3.5h11l-4 4.8V13l-3-1.5V8.3L2.5 3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="btn-label">Filter</span>
+        </button>
+        <button type="button" class="btn-primary">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span class="btn-label">New task</span>
+        </button>
+      </div>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <section class="board-pane" aria-label="Board workspace">
+        <div class="zone-summary" data-ud-check="summary-row">
+        <div class="summary-row" aria-label="Sprint summary">
+          <div class="metric">
+            <span class="metric-label">Open tasks</span>
+            <div class="metric-value-row">
+              <span class="metric-value">18</span>
+              <span class="metric-delta delta-flat">0 today</span>
+            </div>
+            <span class="metric-hint">Across 4 columns</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Completed this week</span>
+            <div class="metric-value-row">
+              <span class="metric-value">7</span>
+              <span class="metric-delta delta-up">+3 vs last</span>
+            </div>
+            <span class="metric-hint">Sprint goal: 12</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Cycle time</span>
+            <div class="metric-value-row">
+              <span class="metric-value">3.2d</span>
+              <span class="metric-delta delta-up">−0.4d</span>
+            </div>
+            <span class="metric-hint">Median to Done</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Blocked</span>
+            <div class="metric-value-row">
+              <span class="metric-value">2</span>
+              <span class="metric-delta delta-warn">Needs owner</span>
+            </div>
+            <span class="metric-hint">Checkout + SSO</span>
+          </div>
+        </div>
+        </div>
+
+        <div class="board-toolbar">
+          <h2>Kanban</h2>
+          <div class="seg" role="group" aria-label="Board view">
+            <button type="button" aria-pressed="true">Board</button>
+            <button type="button" aria-pressed="false">List</button>
+          </div>
+          <div class="filter-chips" role="group" aria-label="Quick filters">
+            <button type="button" class="chip" aria-pressed="true"><span class="chip-dot" style="background:var(--primary)" aria-hidden="true"></span>My tasks</button>
+            <button type="button" class="chip" aria-pressed="false"><span class="chip-dot" style="background:var(--error)" aria-hidden="true"></span>High priority</button>
+            <button type="button" class="chip" aria-pressed="false"><span class="chip-dot" style="background:var(--tertiary)" aria-hidden="true"></span>Due soon</button>
+          </div>
+        </div>
+
+        <div class="board-scroll">
+          <div class="board" data-ud-check="board" role="region" aria-label="Task columns">
+            <div class="board-track">
+            <!-- Backlog -->
+            <section class="column" aria-labelledby="col-backlog">
+              <div class="column-head">
+                <span class="status-pip pip-backlog" aria-hidden="true"></span>
+                <h3 class="column-title" id="col-backlog">Backlog</h3>
+                <span class="column-count" aria-label="5 tasks">5</span>
+                <button type="button" class="column-add" aria-label="Add task to Backlog">
+                  <svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="cards">
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-design">Design</span><span class="tag tag-priority">High</span></div>
+                  <h4 class="task-title">Map checkout empty states for guest cart expiry</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1842</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Elena Rossi"><span class="avatar avatar-sm av-elena" title="Elena Rossi">ER</span></div>
+                    <span class="due soon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 14</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span></div>
+                  <h4 class="task-title">Spike: stream webhook retries without duplicate invoices</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1837</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Sam Okonkwo"><span class="avatar avatar-sm av-sam" title="Sam Okonkwo">SO</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 20</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-content">Content</span></div>
+                  <h4 class="task-title">Rewrite onboarding tooltips for first workspace invite</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1829</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Priya Nair"><span class="avatar avatar-sm av-priya" title="Priya Nair">PN</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 22</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-qa">QA</span></div>
+                  <h4 class="task-title">Regression pack for locale switch mid-checkout</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1821</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Unassigned"><span class="avatar avatar-sm av-you" title="Unassigned">—</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 25</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span></div>
+                  <h4 class="task-title">Instrument board column latency for mobile Safari</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1814</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Jordan Blake"><span class="avatar avatar-sm av-jordan" title="Jordan Blake">JB</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 28</span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- In progress -->
+            <section class="column" aria-labelledby="col-progress">
+              <div class="column-head">
+                <span class="status-pip pip-progress" aria-hidden="true"></span>
+                <h3 class="column-title" id="col-progress">In progress</h3>
+                <span class="column-count" aria-label="4 tasks">4</span>
+                <button type="button" class="column-add" aria-label="Add task to In progress">
+                  <svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="cards">
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span><span class="tag tag-priority">High</span></div>
+                  <h4 class="task-title">Ship SSO fallback when IdP session expires mid-flow</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1808 · 2 comments</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Sam Okonkwo and Jordan Blake">
+                      <span class="avatar avatar-sm av-sam" title="Sam Okonkwo">SO</span>
+                      <span class="avatar avatar-sm av-jordan" title="Jordan Blake">JB</span>
+                    </div>
+                    <span class="due overdue"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 11</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-design">Design</span></div>
+                  <h4 class="task-title">Polish activity feed density for 1280px workstations</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1802</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Elena Rossi"><span class="avatar avatar-sm av-elena" title="Elena Rossi">ER</span></div>
+                    <span class="due soon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 13</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span></div>
+                  <h4 class="task-title">Migrate board filters to server-side query params</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1796</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Jordan Blake"><span class="avatar avatar-sm av-jordan" title="Jordan Blake">JB</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 15</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-content">Content</span></div>
+                  <h4 class="task-title">Draft release notes for Atlas Launch beta invite</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1788</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Priya Nair and Maya Chen">
+                      <span class="avatar avatar-sm av-priya" title="Priya Nair">PN</span>
+                      <span class="avatar avatar-sm av-maya" title="Maya Chen">MC</span>
+                    </div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 16</span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- Review — empty -->
+            <section class="column" aria-labelledby="col-review">
+              <div class="column-head">
+                <span class="status-pip pip-review" aria-hidden="true"></span>
+                <h3 class="column-title" id="col-review">Review</h3>
+                <span class="column-count" aria-label="0 tasks">0</span>
+                <button type="button" class="column-add" aria-label="Add task to Review">
+                  <svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="empty-column" role="status">
+                <div class="empty-icon" aria-hidden="true">
+                  <svg viewBox="0 0 18 18" fill="none"><path d="M4 9.5 7.2 12.5 14 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <p class="empty-title">Nothing waiting on review</p>
+                <p class="empty-copy">Move a finished card here when it needs a teammate pass before Done.</p>
+                <button type="button" class="empty-cta">Pull from In progress</button>
+              </div>
+            </section>
+
+            <!-- Done -->
+            <section class="column" aria-labelledby="col-done">
+              <div class="column-head">
+                <span class="status-pip pip-done" aria-hidden="true"></span>
+                <h3 class="column-title" id="col-done">Done</h3>
+                <span class="column-count" aria-label="4 tasks">4</span>
+                <button type="button" class="column-add" aria-label="Add task to Done">
+                  <svg viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="cards">
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span></div>
+                  <h4 class="task-title">Fix timezone drift on due-date chips</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1779</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Jordan Blake"><span class="avatar avatar-sm av-jordan" title="Jordan Blake">JB</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 10</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-design">Design</span></div>
+                  <h4 class="task-title">Align sidebar project dots with status tokens</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1771</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Elena Rossi"><span class="avatar avatar-sm av-elena" title="Elena Rossi">ER</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 9</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-qa">QA</span></div>
+                  <h4 class="task-title">Sign off keyboard path for board filters</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1764</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Priya Nair"><span class="avatar avatar-sm av-priya" title="Priya Nair">PN</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 8</span>
+                  </div>
+                </article>
+                <article class="task" tabindex="0">
+                  <div class="task-tags"><span class="tag tag-eng">Eng</span></div>
+                  <h4 class="task-title">Archive stale Atlas beta invites older than 30 days</h4>
+                  <div class="task-meta"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 4.5h9v7h-9zM4.5 2.5v2M9.5 2.5v2M2.5 6.5h9" stroke="currentColor" stroke-width="1.2"/></svg> TF-1758</div>
+                  <div class="task-foot">
+                    <div class="assignees" aria-label="Assigned to Sam Okonkwo"><span class="avatar avatar-sm av-sam" title="Sam Okonkwo">SO</span></div>
+                    <span class="due"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.8V6l1.4 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Aug 7</span>
+                  </div>
+                </article>
+              </div>
+            </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="activity" aria-label="Activity feed">
+        <div class="zone-activity" data-ud-check="activity-feed">
+        <div class="activity-head">
+          <h2>Activity</h2>
+          <button type="button" class="btn-ghost" style="min-height:44px;padding:0 12px;font-size:12px" aria-label="Refresh activity">Refresh</button>
+        </div>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-sam" aria-hidden="true">SO</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Sam Okonkwo</strong> moved <strong>SSO fallback</strong> to In progress</p>
+              <div class="activity-time">12 min ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-elena" aria-hidden="true">ER</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Elena Rossi</strong> commented on <strong>Activity feed density</strong></p>
+              <div class="activity-time">28 min ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-maya" aria-hidden="true">MC</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Maya Chen</strong> set priority High on <strong>Guest cart expiry</strong></p>
+              <div class="activity-time">1 hr ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-jordan" aria-hidden="true">JB</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Jordan Blake</strong> completed <strong>Timezone drift on due chips</strong></p>
+              <div class="activity-time">2 hr ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-priya" aria-hidden="true">PN</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Priya Nair</strong> attached release notes draft to <strong>Atlas beta invite</strong></p>
+              <div class="activity-time">3 hr ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-elena" aria-hidden="true">ER</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Elena Rossi</strong> marked <strong>Sidebar project dots</strong> Done</p>
+              <div class="activity-time">Yesterday · 4:18 PM</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-sam" aria-hidden="true">SO</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Sam Okonkwo</strong> archived 14 stale invites in <strong>Atlas Launch</strong></p>
+              <div class="activity-time">Yesterday · 11:02 AM</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <span class="avatar avatar-sm av-maya" aria-hidden="true">MC</span>
+            <div class="activity-body">
+              <p class="activity-text"><strong>Maya Chen</strong> opened Sprint 24 board for <strong>Atlas Launch</strong></p>
+              <div class="activity-time">Mon · 9:05 AM</div>
+            </div>
+          </li>
+        </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="status-bar">
+      <div class="zone-footer" data-ud-check="footer">
+      <span>Demo screen designed with the Ultimate Design agent skill · TaskFlow is a fictional product.</span>
+      <span class="status-live" aria-hidden="true"><i></i> Synced · Sprint 24</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script>
+(function () {
+  const body = document.body;
+  const toggle = document.getElementById("menuToggle");
+  const sidebar = document.getElementById("sidebar");
+  const scrim = document.getElementById("scrim");
+
+  function setSidebar(open) {
+    body.classList.toggle("sidebar-open", open);
+    if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (toggle) toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    if (sidebar) sidebar.setAttribute("aria-hidden", open ? "false" : String(window.matchMedia("(max-width: 1024px)").matches));
+    if (scrim) scrim.hidden = !open;
+  }
+
+  if (window.matchMedia("(max-width: 1024px)").matches && sidebar) {
+    sidebar.setAttribute("aria-hidden", "true");
+  }
+
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      setSidebar(!body.classList.contains("sidebar-open"));
+    });
+  }
+  if (scrim) {
+    scrim.addEventListener("click", function () { setSidebar(false); });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setSidebar(false);
+  });
+
+  document.querySelectorAll(".project-item").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".project-item").forEach(function (b) {
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.setAttribute("aria-pressed", "true");
+    });
+  });
+
+  document.querySelectorAll(".seg button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      btn.parentElement.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.setAttribute("aria-pressed", "true");
+    });
+  });
+
+  document.querySelectorAll(".filter-chips .chip").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var pressed = chip.getAttribute("aria-pressed") === "true";
+      chip.setAttribute("aria-pressed", pressed ? "false" : "true");
+    });
+  });
+})();
+</script>
+</body>
+</html>
