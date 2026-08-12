@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>街巷 · 创刊号</title>
+  <meta name="description" content="「街巷」创刊号：虚构独立城市观察刊物。报头、本期目录与三篇文章摘录。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary: #1A4B7C;
+      --color-secondary: #2A2A28;
+      --color-tertiary: #6B6B66;
+      --color-neutral: #C8C6BE;
+      --color-surface: #E8E6DF;
+      --color-on-surface: #161616;
+      --color-error: #8B2E2E;
+      --color-muted: #5C5C58;
+      --color-paper-deep: #DEDCD4;
+      --color-rule: rgba(22, 22, 22, 0.28);
+      --color-rule-strong: rgba(22, 22, 22, 0.72);
+      --font-serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --radius-full: 9999px;
+      --max: 1120px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--color-on-surface);
+      background:
+        linear-gradient(180deg, #EFEDE7 0%, var(--color-surface) 18%, var(--color-paper-deep) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+    }
+    a:hover { text-decoration-thickness: 2px; }
+    button, input { font: inherit; color: inherit; }
+    svg { max-width: 100%; display: block; }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      padding: 12px 16px;
+      z-index: 100;
+      min-height: 44px;
+      min-width: 44px;
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+    }
+
+    .page {
+      width: min(100% - 2 * var(--space-md), var(--max));
+      margin-inline: auto;
+      position: relative;
+      z-index: 1;
+      padding-block: var(--space-lg) var(--space-xl);
+    }
+
+    /* ——— Reveals ——— */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+    }
+    .reveal.is-in,
+    .reveal.is-forced {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+    @media print {
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* ——— Masthead ——— */
+    .masthead-shell {
+      margin-bottom: 48px;
+    }
+    .masthead {
+      padding: 20px 8px 28px;
+      position: relative;
+    }
+    .masthead-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-md);
+      border-bottom: 1px solid var(--color-rule-strong);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+    }
+    .masthead-top strong {
+      color: var(--color-primary);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+    .masthead-brand-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-md);
+      align-items: end;
+      border-bottom: 3px double var(--color-on-surface);
+      padding-bottom: 10px;
+    }
+    .brand-name {
+      margin: 0;
+      font-size: clamp(64px, 14vw, 120px);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: 0.06em;
+      color: var(--color-on-surface);
+    }
+    .brand-sub {
+      margin: 10px 0 0;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--color-muted);
+      max-width: 28em;
+    }
+    .vert-mark {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 15px;
+      letter-spacing: 0.35em;
+      color: var(--color-primary);
+      border-left: 1px solid var(--color-rule);
+      padding-left: 10px;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      min-height: 120px;
+    }
+    .issue-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--color-secondary);
+      letter-spacing: 0.04em;
+    }
+    .issue-line span::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--color-primary);
+      margin-right: 8px;
+      vertical-align: 2px;
+    }
+    .issue-line span:first-child::before { display: none; }
+
+    /* ——— TOC ——— */
+    .toc-shell {
+      margin-bottom: 48px;
+    }
+    .toc {
+      padding: 8px 4px 4px;
+    }
+    .section-kicker {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--color-primary);
+    }
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+    }
+    .toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--color-rule-strong);
+    }
+    .toc-list li {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      gap: 12px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-rule);
+      min-height: 44px;
+    }
+    .toc-num {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 0.06em;
+    }
+    .toc-main {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      align-items: baseline;
+    }
+    .toc-main a {
+      color: var(--color-on-surface);
+      font-weight: 600;
+      font-size: 17px;
+      text-decoration: none;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .toc-main a:hover { color: var(--color-primary); text-decoration: underline; }
+    .toc-col {
+      font-size: 13px;
+      color: var(--color-muted);
+    }
+    .toc-author {
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+    .toc-page {
+      font-size: 14px;
+      color: var(--color-secondary);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    /* ——— Articles ——— */
+    .article-shell {
+      margin-bottom: 48px;
+    }
+    .article {
+      padding: 4px 2px 8px;
+    }
+    .article + .article-shell {
+      border-top: none;
+    }
+    .article-rule {
+      height: 0;
+      border: 0;
+      border-top: 3px double var(--color-on-surface);
+      margin: 0 0 28px;
+    }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .col-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+    }
+    .article-title {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+    }
+    .byline {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+    .lede {
+      margin: 0 0 18px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--color-secondary);
+      max-width: 42em;
+    }
+    .article-body {
+      column-count: 3;
+      column-gap: 28px;
+      column-rule: 1px solid var(--color-rule);
+    }
+    .article-body p {
+      margin: 0 0 1em;
+      text-align: justify;
+      text-justify: inter-ideograph;
+      orphans: 2;
+      widows: 2;
+      word-break: break-word;
+    }
+    .article-body p:first-of-type::first-letter {
+      float: left;
+      font-size: 3.4em;
+      font-weight: 700;
+      line-height: 0.85;
+      padding: 0.08em 0.1em 0 0;
+      color: var(--color-on-surface);
+    }
+    .pullquote {
+      column-span: all;
+      margin: 22px 0 26px;
+      padding: 18px 0;
+      border-top: 1px solid var(--color-rule-strong);
+      border-bottom: 1px solid var(--color-rule-strong);
+      font-size: clamp(22px, 3.2vw, 28px);
+      font-weight: 600;
+      line-height: 1.45;
+      letter-spacing: 0.02em;
+      color: var(--color-on-surface);
+      text-align: center;
+      max-width: none;
+    }
+    .pullquote cite {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 400;
+      font-style: normal;
+      color: var(--color-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ——— Subscribe ——— */
+    .subscribe-shell {
+      margin-bottom: 48px;
+    }
+    .subscribe {
+      padding: 22px 18px 24px;
+      border-top: 3px double var(--color-on-surface);
+      border-bottom: 1px solid var(--color-rule-strong);
+      background: rgba(255, 255, 255, 0.28);
+    }
+    .subscribe-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-lg);
+      align-items: end;
+    }
+    .subscribe h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .subscribe p {
+      margin: 0;
+      color: var(--color-muted);
+      max-width: 34em;
+    }
+    .sub-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--color-secondary);
+      margin-bottom: 6px;
+    }
+    .field input[type="email"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--color-rule-strong);
+      border-radius: var(--radius-sm);
+      background: #F4F3EE;
+    }
+    .btn-primary {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 10px 18px;
+      border: 1px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      background: var(--color-primary);
+      color: #F4F3EE;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .form-status {
+      grid-column: 1 / -1;
+      min-height: 1.4em;
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: var(--color-primary);
+    }
+    .form-status[data-tone="error"] { color: var(--color-error); }
+
+    /* ——— Footer ——— */
+    .footer-shell { margin-bottom: 0; }
+    .site-footer {
+      padding: 18px 4px 8px;
+      border-top: 3px double var(--color-on-surface);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: var(--space-md);
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--color-rule);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--color-muted);
+    }
+    .footer-grid strong {
+      display: block;
+      color: var(--color-on-surface);
+      font-size: 14px;
+      margin-bottom: 6px;
+      letter-spacing: 0.06em;
+    }
+    .footer-demo {
+      margin: 14px 0 0;
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.5;
+    }
+
+    /* ——— Responsive ——— */
+    @media (max-width: 960px) {
+      .article-body { column-count: 2; }
+      .subscribe-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      .page { padding-block: var(--space-md) var(--space-lg); }
+      .brand-name { font-size: clamp(52px, 18vw, 72px); }
+      .vert-mark {
+        writing-mode: horizontal-tb;
+        border-left: 0;
+        border-top: 1px solid var(--color-rule);
+        padding-left: 0;
+        padding-top: 8px;
+        min-height: 0;
+        letter-spacing: 0.2em;
+        justify-content: flex-start;
+      }
+      .masthead-brand-row { grid-template-columns: 1fr; }
+      .toc-list li {
+        grid-template-columns: 44px 1fr;
+        grid-template-rows: auto auto;
+      }
+      .toc-page {
+        grid-column: 2;
+        justify-self: start;
+      }
+      .article-body {
+        column-count: 1;
+        column-rule: none;
+      }
+      .article-body p:first-of-type::first-letter {
+        font-size: 2.8em;
+        padding-right: 0.08em;
+      }
+      .sub-form { grid-template-columns: 1fr; }
+      .btn-primary { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .masthead-shell,
+      .toc-shell,
+      .article-shell,
+      .subscribe-shell { margin-bottom: 40px; }
+    }
+    @media (max-width: 380px) {
+      .brand-name { letter-spacing: 0.02em; }
+      .issue-line { font-size: 13px; gap: 6px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#toc">跳到本期目录</a>
+
+  <div class="page">
+    <header class="masthead-shell">
+      <div class="masthead" data-ud-check="masthead">
+        <div class="masthead-top">
+          <strong>独立城市观察</strong>
+          <span>创刊号 · Vol. 01</span>
+        </div>
+        <div class="masthead-brand-row">
+          <div>
+            <h1 class="brand-name">街巷</h1>
+            <p class="brand-sub">把城市读成一篇可以慢慢走完的文章。本期写早餐摊、末班车，以及楼下仍在值班的人。</p>
+          </div>
+          <div class="vert-mark" aria-hidden="true">观察城市</div>
+        </div>
+        <div class="issue-line">
+          <span>2026年3月号</span>
+          <span>刊号 JX-0001</span>
+          <span>定价 18 元</span>
+          <span>每月一刊</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="toc-shell" id="toc" aria-labelledby="toc-title">
+      <div class="toc reveal" data-ud-check="toc">
+        <p class="section-kicker">CONTENTS</p>
+        <h2 class="section-title" id="toc-title">本期目录</h2>
+        <ol class="toc-list">
+          <li>
+            <span class="toc-num">01</span>
+            <div class="toc-main">
+              <a href="#article-1">油条冒烟的十分钟</a>
+              <span class="toc-col">街角经济</span>
+              <span class="toc-author">林晚舟</span>
+            </div>
+            <span class="toc-page">p.06</span>
+          </li>
+          <li>
+            <span class="toc-num">02</span>
+            <div class="toc-main">
+              <a href="#article-2">末班车上的灯还亮着</a>
+              <span class="toc-col">夜间公交</span>
+              <span class="toc-author">何叙</span>
+            </div>
+            <span class="toc-page">p.14</span>
+          </li>
+          <li>
+            <span class="toc-num">03</span>
+            <div class="toc-main">
+              <a href="#article-3">传达室窗口朝向马路</a>
+              <span class="toc-col">楼下的人</span>
+              <span class="toc-author">周小满</span>
+            </div>
+            <span class="toc-page">p.22</span>
+          </li>
+          <li>
+            <span class="toc-num">04</span>
+            <div class="toc-main">
+              <a href="#subscribe">雨天的共享单车停哪儿</a>
+              <span class="toc-col">出行笔记</span>
+              <span class="toc-author">陈砚</span>
+            </div>
+            <span class="toc-page">p.30</span>
+          </li>
+          <li>
+            <span class="toc-num">05</span>
+            <div class="toc-main">
+              <a href="#subscribe">二手市场里的旧音箱</a>
+              <span class="toc-col">物的来路</span>
+              <span class="toc-author">顾青</span>
+            </div>
+            <span class="toc-page">p.36</span>
+          </li>
+          <li>
+            <span class="toc-num">06</span>
+            <div class="toc-main">
+              <a href="#subscribe">菜市场关门后的空位</a>
+              <span class="toc-col">收摊时刻</span>
+              <span class="toc-author">沈禾</span>
+            </div>
+            <span class="toc-page">p.42</span>
+          </li>
+          <li>
+            <span class="toc-num">07</span>
+            <div class="toc-main">
+              <a href="#subscribe">天桥底下的象棋局</a>
+              <span class="toc-col">公共角落</span>
+              <span class="toc-author">马远</span>
+            </div>
+            <span class="toc-page">p.48</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <article class="article-shell" id="article-1" aria-labelledby="a1-title">
+      <div class="article reveal" data-ud-check="article-1">
+        <hr class="article-rule" />
+        <div class="article-meta">
+          <span class="col-badge">01 · 街角经济</span>
+        </div>
+        <h2 class="article-title" id="a1-title">油条冒烟的十分钟</h2>
+        <p class="byline">文 / 林晚舟 · 摄影笔记略</p>
+        <p class="lede">早上六点四十分，十字路口东南角的铁皮车支起挡风板。油锅先热，豆浆后开。城市还没完全醒，但这条街已经有了第一批固定的人。</p>
+        <div class="article-body">
+          <p>摊主老宋把面粉袋压在木箱角上，用袖口擦一下额头。锅里的油刚起细泡，他便把面剂拉长、下锅，油条在翻涌里胀开，像一条急着站起来的路。旁边的不锈钢桶里，豆浆被勺子搅出一圈浅黄的旋涡，蒸汽贴着挡风板往上爬，很快被三月的风扯散。</p>
+          <p>来的人不多说话。穿制服的保安要两根油条、一碗甜豆浆；送快递的小伙子只要咸的，钱放在台面上就走。老宋认得他们的脸，却不一定记得名字。他更在意锅温：低了油条发粘，高了表皮焦黑。这十分钟里，街角像一台准时的小机器，把夜里攒下的冷气一点点吐干净。</p>
+          <blockquote class="pullquote">
+            「城的一天，往往不是从写字楼的电梯开始，而是从一口油锅的声音开始。」
+            <cite>— 林晚舟</cite>
+          </blockquote>
+          <p>七点刚过，车流变密。铁皮车侧面贴着一张手写价目：油条两元，豆浆三元，豆腐脑四元。字被油点子溅花了几个，仍看得清。老宋说，他不追求翻新招牌，只要常客看见那块铁皮还在，就会把自行车斜停在树下。街角经济很少写进规划图，却把早晨的节奏钉在了地面上。</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-shell" id="article-2" aria-labelledby="a2-title">
+      <div class="article reveal" data-ud-check="article-2">
+        <hr class="article-rule" />
+        <div class="article-meta">
+          <span class="col-badge">02 · 夜间公交</span>
+        </div>
+        <h2 class="article-title" id="a2-title">末班车上的灯还亮着</h2>
+        <p class="byline">文 / 何叙</p>
+        <p class="lede">二十二点五十，站牌电子屏跳成「末班已过」之前的那一班，车厢里只剩零散几个乘客。车窗外的霓虹被雨水拉成细线，司机把空调调低一档。</p>
+        <div class="article-body">
+          <p>我坐在后排靠窗。车过立交桥时，轮胎压过接缝，发出均匀的闷响。邻座的女孩把头盔抱在腿上，手机屏幕映出她的半张脸；前排一位大爷睡着了，头随着刹车轻轻点。夜间公交不像白天那样拥挤，却更像一次缓慢的清点：谁还要回家，谁还在加班回来的路上，谁只是想把城市再看一遍。</p>
+          <p>司机在每个站仍会把车门开足几秒。有人跑来敲玻璃，气喘吁吁地刷卡；也有人远远招手又放下，决定改走地铁。线路图在车顶灯下发黄，几处站名被贴纸遮住——那是近年改道留下的痕迹。末班车的意义，不只是「还能坐」，更是给迟归的人留一条不必解释的退路。</p>
+          <blockquote class="pullquote">
+            「城市的善意，有时只是一盏还没关的车厢灯。」
+            <cite>— 何叙</cite>
+          </blockquote>
+          <p>到终点站，司机把报站器关掉，整辆车忽然安静。乘客散开后，他拿出抹布擦驾驶台，动作不急。站场空地上，另一辆同线路的车熄了灯，像两只靠着休息的动物。我走下台阶，回头看：末班车的灯还亮着，把雨丝照成细细的白。</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-shell" id="article-3" aria-labelledby="a3-title">
+      <div class="article reveal" data-ud-check="article-3">
+        <hr class="article-rule" />
+        <div class="article-meta">
+          <span class="col-badge">03 · 楼下的人</span>
+        </div>
+        <h2 class="article-title" id="a3-title">传达室窗口朝向马路</h2>
+        <p class="byline">文 / 周小满</p>
+        <p class="lede">小区南门的传达室只有一扇横窗。窗台摆着登记本、一罐茶叶和半截用旧的圆珠笔。值班的人叫老关，五十多岁，口音像从城东搬来。</p>
+        <div class="article-body">
+          <p>白天他核对快递和访客，晚上则听得见楼道里的脚步。有人忘带门禁卡，隔着玻璃喊一声「关叔」，他便按下开关，同时在本子上画一道。本子并不严密，却让进出有了温度：不是系统的绿灯，而是熟人的回应。窗外马路车灯扫过，窗玻璃上偶尔映出他低头写字的侧影。</p>
+          <p>有段时间，物业换了人脸识别门禁。老关仍坐在原位，只是登记本翻得少了。新来的年轻人进门很快，老人却常在门口停顿，抬头等提示音。老关会起身走到门外，帮着按一次，或把卡借给忘带的人。他说，机器认得脸，不一定认得「刚下夜班、眼睛肿着」的那种累。</p>
+          <blockquote class="pullquote">
+            「楼下的人，往往比楼里的人更清楚这座楼怎么活着。」
+            <cite>— 周小满</cite>
+          </blockquote>
+          <p>夜里十一点后，传达室灯仍亮着一盏。老关泡茶，听广播里的交通路况，像守着一座很小的口岸。路过的人未必记得他的名字，却记得南门那扇朝向马路的窗：开着，就说明有人还在，城市的某一角还没有完全交给自动门。</p>
+        </div>
+      </div>
+    </article>
+
+    <section class="subscribe-shell" id="subscribe" aria-labelledby="sub-title">
+      <div class="subscribe reveal" data-ud-check="subscribe">
+        <div class="subscribe-grid">
+          <div>
+            <p class="section-kicker">SUBSCRIBE</p>
+            <h2 id="sub-title">订阅纸刊与电子摘录</h2>
+            <p>每月寄出一册，并附当月长文的纯文本摘录。演示页面不发送真实邮件，填写后仅作版式确认。</p>
+          </div>
+          <form class="sub-form" id="sub-form" novalidate>
+            <div class="field">
+              <label for="email">电子邮箱</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            </div>
+            <button class="btn-primary" type="submit">订阅创刊号提醒</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-shell">
+      <div class="site-footer" data-ud-check="footer">
+        <div class="footer-grid">
+          <div>
+            <strong>街巷 JIE XIANG</strong>
+            虚构独立城市观察刊物 · 创刊号<br />
+            编辑部通信：巷口三号（虚构地址）
+          </div>
+          <div>
+            <strong>版权声明</strong>
+            本页文案与刊名均为虚构演示。<br />
+            转载请注明出处（演示用途）。
+          </div>
+          <div>
+            <strong>本期印数</strong>
+            拟印 1,200 册 · 定价 18 元<br />
+            刊号 JX-0001 · 2026年3月
+          </div>
+        </div>
+        <p class="footer-demo">演示页面，由 Ultimate Design agent skill 设计 · 「街巷」为虚构刊物。</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById("sub-form");
+      var statusEl = document.getElementById("form-status");
+      var email = document.getElementById("email");
+
+      if (form && statusEl && email) {
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          var value = String(email.value || "").trim();
+          if (!value || value.indexOf("@") < 1) {
+            statusEl.dataset.tone = "error";
+            statusEl.textContent = "请填写有效的电子邮箱后再试。";
+            email.focus();
+            return;
+          }
+          statusEl.dataset.tone = "ok";
+          statusEl.textContent = "已记录（演示）：将不会发送真实邮件。";
+          form.reset();
+        });
+      }
+
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nodes = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+
+      function forceReveal() {
+        nodes.forEach(function (node) {
+          node.classList.add("is-forced");
+          node.classList.add("is-in");
+        });
+      }
+
+      if (reduce) {
+        forceReveal();
+        return;
+      }
+
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
+        );
+        nodes.forEach(function (node) {
+          observer.observe(node);
+        });
+      } else {
+        forceReveal();
+      }
+
+      window.setTimeout(forceReveal, 700);
+
+      if (typeof window.matchMedia === "function") {
+        window.addEventListener("beforeprint", forceReveal);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FIELD-7 · Norm Audio</title>
+  <meta name="description" content="FIELD-7 by Norm Audio — a fictional pocket synthesizer. Specs, accessories, and buy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary: #E85A1B;
+      --color-secondary: #5C5C58;
+      --color-tertiary: #C4C4BE;
+      --color-neutral: #E6E6E1;
+      --color-surface: #F5F5F2;
+      --color-on-surface: #1A1A18;
+      --color-error: #B42318;
+      --color-muted: #5C5C58;
+      --color-panel: #ECECE8;
+      --color-panel-2: #E0E0DB;
+      --color-ink: #1A1A18;
+      --color-rule: rgba(26, 26, 24, 0.18);
+      --color-rule-strong: rgba(26, 26, 24, 0.42);
+      --font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --radius-none: 0px;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --max: 1080px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --hairline: 1px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--color-on-surface);
+      background:
+        linear-gradient(180deg, #F8F8F5 0%, var(--color-surface) 40%, #EFEFEA 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.045;
+      background-image:
+        linear-gradient(var(--color-rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-rule) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    a { color: var(--color-on-surface); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+    a:hover { color: var(--color-primary); }
+    svg { max-width: 100%; height: auto; display: block; }
+    button { font: inherit; color: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: 0;
+      transform: translateY(-120%);
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      padding: 12px 16px;
+      z-index: 100;
+      min-height: 44px;
+    }
+    .skip-link:focus {
+      transform: translateY(12px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skip-link { transition: none; }
+    }
+
+    .wrap {
+      width: min(100% - 32px, var(--max));
+      margin-inline: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- Navigation --- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(245, 245, 242, 0.92);
+      border-bottom: var(--hairline) solid var(--color-rule);
+      backdrop-filter: blur(6px);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding: 12px 0;
+      min-height: 56px;
+    }
+    .brand-lockup {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-decoration: none;
+      color: inherit;
+      min-height: 44px;
+      justify-content: center;
+    }
+    .brand-lockup:hover { color: inherit; }
+    .brand-maker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .brand-product {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-on-surface);
+      border: var(--hairline) solid transparent;
+    }
+    .nav-links a:hover {
+      border-color: var(--color-rule-strong);
+      color: var(--color-on-surface);
+    }
+    .nav-links a.nav-buy {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+    .nav-links a.nav-buy:hover {
+      filter: brightness(0.95);
+      color: #fff;
+    }
+
+    /* --- Sections --- */
+    .section {
+      padding: var(--space-xl) 0;
+    }
+    .section + .section {
+      border-top: var(--hairline) solid var(--color-rule);
+    }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px 24px;
+      margin-bottom: var(--space-lg);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 0;
+    }
+    .section-title {
+      font-family: var(--font-sans);
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin: 8px 0 0;
+      letter-spacing: -0.02em;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 40px 0 56px;
+    }
+    .hero-inner {
+      display: grid;
+      gap: 28px;
+    }
+    .hero-copy {
+      max-width: 34rem;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin: 0 0 12px;
+    }
+    .hero-brand {
+      font-family: var(--font-mono);
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 600;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin: 0 0 16px;
+    }
+    .hero-pitch {
+      font-size: 18px;
+      line-height: 1.45;
+      margin: 0 0 24px;
+      color: var(--color-on-surface);
+      max-width: 36ch;
+    }
+    .hero-buy-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 24px;
+    }
+    .price {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .price span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 48px;
+      padding: 12px 22px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: var(--hairline) solid var(--color-on-surface);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      transition: background-color 180ms var(--ease), color 180ms var(--ease), border-color 180ms var(--ease);
+    }
+    .btn:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-on-surface);
+    }
+    .btn--ghost:hover {
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      border-color: var(--color-on-surface);
+    }
+    .btn--accent {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+    .btn--accent:hover {
+      filter: brightness(0.94);
+      color: #fff;
+    }
+
+    .schematic-panel {
+      background: var(--color-panel);
+      border: var(--hairline) solid var(--color-rule-strong);
+      padding: 20px 12px 12px;
+      position: relative;
+    }
+    .schematic-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 0 8px 8px;
+    }
+    .schematic-svg-wrap {
+      width: 100%;
+      overflow: hidden;
+    }
+    .schematic-svg-wrap svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .anno-mobile {
+      display: none;
+      margin-top: 16px;
+      padding: 0 8px 8px;
+    }
+    .anno-mobile h3 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 0 0 10px;
+      font-weight: 500;
+    }
+    .anno-mobile dl {
+      margin: 0;
+      display: grid;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .anno-mobile dt {
+      color: var(--color-primary);
+      font-weight: 600;
+      display: inline;
+    }
+    .anno-mobile dd {
+      display: inline;
+      margin: 0;
+      color: var(--color-on-surface);
+    }
+    .anno-mobile dd::after {
+      content: "";
+      display: block;
+      height: 0;
+    }
+
+    /* --- Features --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+    .feature {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 16px 0;
+      border-top: var(--hairline) solid var(--color-rule);
+    }
+    .feature:last-child {
+      border-bottom: var(--hairline) solid var(--color-rule);
+    }
+    .feature-mark {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      border: var(--hairline) solid var(--color-on-surface);
+      background: var(--color-surface);
+      color: var(--color-primary);
+    }
+    .feature h3 {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin: 0 0 6px;
+    }
+    .feature p {
+      margin: 0;
+      font-size: 15px;
+      color: var(--color-muted);
+      max-width: 48ch;
+    }
+
+    /* --- Knolling --- */
+    .knoll-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .knoll-item {
+      background: var(--color-panel);
+      border: var(--hairline) solid var(--color-rule);
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 180px;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .knoll-item svg {
+      width: 100%;
+      max-height: 110px;
+      margin: auto 0;
+    }
+    .knoll-cap {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: var(--hairline) solid var(--color-rule);
+      padding-top: 10px;
+      min-width: 0;
+    }
+    .knoll-cap strong {
+      color: var(--color-on-surface);
+      font-weight: 600;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    /* --- Specs --- */
+    .spec-table-wrap {
+      overflow-x: auto;
+      border: var(--hairline) solid var(--color-rule-strong);
+      background: var(--color-panel);
+      -webkit-overflow-scrolling: touch;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.4;
+      min-width: 280px;
+    }
+    .spec-table th,
+    .spec-table td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: var(--hairline) solid var(--color-rule);
+      vertical-align: top;
+    }
+    .spec-table tr:last-child th,
+    .spec-table tr:last-child td {
+      border-bottom: none;
+    }
+    .spec-table th {
+      width: 38%;
+      font-weight: 500;
+      color: var(--color-muted);
+      letter-spacing: 0.02em;
+    }
+    .spec-table td {
+      font-weight: 400;
+      color: var(--color-on-surface);
+    }
+    .spec-table tr:hover td,
+    .spec-table tr:hover th {
+      background: rgba(232, 90, 27, 0.04);
+    }
+
+    /* --- Buy / warranty --- */
+    .buy-panel {
+      display: grid;
+      gap: 24px;
+      background: var(--color-panel);
+      border: var(--hairline) solid var(--color-rule-strong);
+      padding: 28px 24px;
+    }
+    .buy-panel h2 {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      letter-spacing: 0.02em;
+    }
+    .buy-panel p {
+      margin: 0;
+      color: var(--color-muted);
+      font-size: 15px;
+      max-width: 52ch;
+    }
+    .buy-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .warranty-note {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--color-muted);
+      border-top: var(--hairline) solid var(--color-rule);
+      padding-top: 16px;
+      margin: 0;
+    }
+
+    /* --- Footer --- */
+    .site-footer {
+      padding: 40px 0 48px;
+      border-top: var(--hairline) solid var(--color-rule);
+    }
+    .footer-inner {
+      display: grid;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin: 0;
+    }
+    .footer-demo {
+      font-size: 13px;
+      color: var(--color-muted);
+      margin: 0;
+      max-width: 62ch;
+      line-height: 1.5;
+    }
+
+    /* --- Reveals --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 360ms var(--ease), transform 360ms var(--ease);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .reveal.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .btn { transition: none; }
+    }
+    @media print {
+      .reveal,
+      .reveal.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .site-header { position: static; }
+      body::before { display: none; }
+    }
+
+    /* --- Responsive --- */
+    @media (min-width: 720px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+        align-items: end;
+        gap: 40px;
+      }
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 40px;
+      }
+      .feature {
+        border-bottom: var(--hairline) solid var(--color-rule);
+      }
+      .knoll-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .knoll-item { min-height: 200px; }
+      .buy-panel {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        align-items: start;
+        padding: 36px 32px;
+      }
+      .schematic-panel { padding: 24px 20px 16px; }
+    }
+
+    @media (max-width: 719px) {
+      .nav-links .nav-hide-sm { display: none; }
+      .anno-desktop { display: none !important; }
+      .anno-mobile { display: block; }
+      .hero-brand { font-size: clamp(36px, 12vw, 52px); }
+      .section { padding: 48px 0; }
+    }
+
+    @media (max-width: 419px) {
+      .wrap { width: min(100% - 24px, var(--max)); }
+      .knoll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .knoll-item { min-height: 160px; padding: 14px 12px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav-inner" data-ud-check="navigation">
+        <a class="brand-lockup" href="#top" aria-label="Norm Audio FIELD-7 home">
+          <span class="brand-maker">Norm Audio</span>
+          <span class="brand-product">FIELD-7</span>
+        </a>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li class="nav-hide-sm"><a href="#features">Features</a></li>
+            <li class="nav-hide-sm"><a href="#accessories">Kit</a></li>
+            <li><a href="#specs">Specs</a></li>
+            <li><a class="nav-buy" href="#buy">Buy</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-brand">
+      <div class="wrap">
+        <div class="hero-inner" data-ud-check="hero-schematic">
+          <div class="hero-copy reveal">
+            <p class="hero-eyebrow">Pocket synthesizer · Norm Audio</p>
+            <h1 class="hero-brand" id="hero-brand">FIELD-7</h1>
+            <p class="hero-pitch">Sixteen pads, two knobs, and an engine that fits in a jacket pocket without asking permission.</p>
+            <div class="hero-buy-row">
+              <p class="price">$329 <span>USD · shipping calculated later</span></p>
+              <a class="btn btn--accent" href="#buy">Buy FIELD-7</a>
+            </div>
+          </div>
+
+          <div class="schematic-panel reveal" aria-label="FIELD-7 technical schematic">
+            <div class="schematic-meta">
+              <span>DWG · TOP VIEW</span>
+              <span>SCALE 1:2 · REV C</span>
+            </div>
+            <div class="schematic-svg-wrap">
+              <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="schematic-title schematic-desc">
+                <title id="schematic-title">FIELD-7 pocket synthesizer top-view schematic</title>
+                <desc id="schematic-desc">Technical line drawing showing a rectangular body with a sixteen-pad grid, two control knobs, a small display, and a speaker grille, with dimension annotations.</desc>
+
+                <!-- Sheet grid -->
+                <g stroke="#1A1A18" stroke-opacity="0.06" stroke-width="0.5" fill="none">
+                  <path d="M40 40 H680 M40 80 H680 M40 120 H680 M40 160 H680 M40 200 H680 M40 240 H680 M40 280 H680 M40 320 H680 M40 360 H680 M40 400 H680" />
+                  <path d="M40 40 V420 M80 40 V420 M120 40 V420 M160 40 V420 M200 40 V420 M240 40 V420 M280 40 V420 M320 40 V420 M360 40 V420 M400 40 V420 M440 40 V420 M480 40 V420 M520 40 V420 M560 40 V420 M600 40 V420 M640 40 V420 M680 40 V420" />
+                </g>
+
+                <!-- Dimension: width -->
+                <g class="anno-desktop" fill="none" stroke="#1A1A18" stroke-width="1">
+                  <path d="M148 52 H572" />
+                  <path d="M148 46 V58" />
+                  <path d="M572 46 V58" />
+                  <path d="M148 52 L156 48 M148 52 L156 56" />
+                  <path d="M572 52 L564 48 M572 52 L564 56" />
+                </g>
+                <text class="anno-desktop" x="360" y="44" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="#1A1A18">148.0 mm</text>
+
+                <!-- Dimension: depth -->
+                <g class="anno-desktop" fill="none" stroke="#1A1A18" stroke-width="1">
+                  <path d="M96 98 V362" />
+                  <path d="M90 98 H102" />
+                  <path d="M90 362 H102" />
+                  <path d="M96 98 L92 106 M96 98 L100 106" />
+                  <path d="M96 362 L92 354 M96 362 L100 354" />
+                </g>
+                <text class="anno-desktop" x="78" y="236" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="#1A1A18" transform="rotate(-90 78 236)">88.0 mm</text>
+
+                <!-- Device body -->
+                <g transform="translate(148,98)">
+                  <!-- Outer shell -->
+                  <rect x="0" y="0" width="424" height="264" rx="10" ry="10" fill="#F5F5F2" stroke="#1A1A18" stroke-width="2" />
+                  <rect x="8" y="8" width="408" height="248" rx="6" ry="6" fill="#ECECE8" stroke="#1A1A18" stroke-width="1" />
+
+                  <!-- Bezel panel -->
+                  <rect x="20" y="20" width="384" height="224" rx="4" ry="4" fill="#E6E6E1" stroke="#1A1A18" stroke-width="1" />
+
+                  <!-- Corner fasteners -->
+                  <g fill="none" stroke="#1A1A18" stroke-width="1">
+                    <circle cx="28" cy="28" r="3.5" />
+                    <circle cx="396" cy="28" r="3.5" />
+                    <circle cx="28" cy="236" r="3.5" />
+                    <circle cx="396" cy="236" r="3.5" />
+                    <circle cx="28" cy="28" r="1.2" fill="#1A1A18" stroke="none" />
+                    <circle cx="396" cy="28" r="1.2" fill="#1A1A18" stroke="none" />
+                    <circle cx="28" cy="236" r="1.2" fill="#1A1A18" stroke="none" />
+                    <circle cx="396" cy="236" r="1.2" fill="#1A1A18" stroke="none" />
+                  </g>
+
+                  <!-- Speaker grille (left) -->
+                  <g transform="translate(52,72)">
+                    <circle cx="40" cy="40" r="46" fill="#F5F5F2" stroke="#1A1A18" stroke-width="1.5" />
+                    <circle cx="40" cy="40" r="40" fill="none" stroke="#1A1A18" stroke-width="0.75" stroke-dasharray="2 3" />
+                    <!-- perforated holes -->
+                    <g fill="#1A1A18">
+                      <circle cx="40" cy="16" r="2.2" /><circle cx="40" cy="28" r="2.2" /><circle cx="40" cy="40" r="2.2" /><circle cx="40" cy="52" r="2.2" /><circle cx="40" cy="64" r="2.2" />
+                      <circle cx="28" cy="22" r="2.2" /><circle cx="28" cy="34" r="2.2" /><circle cx="28" cy="46" r="2.2" /><circle cx="28" cy="58" r="2.2" />
+                      <circle cx="52" cy="22" r="2.2" /><circle cx="52" cy="34" r="2.2" /><circle cx="52" cy="46" r="2.2" /><circle cx="52" cy="58" r="2.2" />
+                      <circle cx="16" cy="28" r="2.2" /><circle cx="16" cy="40" r="2.2" /><circle cx="16" cy="52" r="2.2" />
+                      <circle cx="64" cy="28" r="2.2" /><circle cx="64" cy="40" r="2.2" /><circle cx="64" cy="52" r="2.2" />
+                      <circle cx="22" cy="18" r="1.8" /><circle cx="58" cy="18" r="1.8" /><circle cx="22" cy="62" r="1.8" /><circle cx="58" cy="62" r="1.8" />
+                    </g>
+                    <!-- Callout D marker -->
+                    <g transform="translate(-8,-18)">
+                      <circle cx="0" cy="0" r="9" fill="#F5F5F2" stroke="#E85A1B" stroke-width="1.25" />
+                      <text x="0" y="3.5" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" font-weight="600" fill="#E85A1B">D</text>
+                    </g>
+                  </g>
+
+                  <!-- Display -->
+                  <g transform="translate(156,36)">
+                    <rect x="0" y="0" width="120" height="44" rx="2" ry="2" fill="#1A1A18" stroke="#1A1A18" stroke-width="1" />
+                    <rect x="4" y="4" width="112" height="36" fill="#2A2A28" />
+                    <text x="12" y="18" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9" fill="#E6E6E1">FIELD-7</text>
+                    <text x="12" y="32" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#E85A1B">PATCH 07 · 120.0</text>
+                    <!-- Callout C -->
+                    <g transform="translate(128,8)">
+                      <circle cx="0" cy="0" r="9" fill="#F5F5F2" stroke="#E85A1B" stroke-width="1.25" />
+                      <text x="0" y="3.5" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" font-weight="600" fill="#E85A1B">C</text>
+                    </g>
+                  </g>
+
+                  <!-- Power LED + switch -->
+                  <g transform="translate(300,44)">
+                    <circle cx="0" cy="8" r="4" fill="#E85A1B" stroke="#1A1A18" stroke-width="0.75" />
+                    <rect x="14" y="0" width="22" height="16" rx="2" fill="#F5F5F2" stroke="#1A1A18" stroke-width="1" />
+                    <rect x="17" y="3" width="8" height="10" fill="#1A1A18" />
+                    <text x="42" y="12" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="7" fill="#5C5C58">PWR</text>
+                  </g>
+
+                  <!-- Pad grid 4x4 -->
+                  <g transform="translate(156,96)">
+                    <!-- Callout A -->
+                    <g transform="translate(-18,-10)">
+                      <circle cx="0" cy="0" r="9" fill="#F5F5F2" stroke="#E85A1B" stroke-width="1.25" />
+                      <text x="0" y="3.5" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" font-weight="600" fill="#E85A1B">A</text>
+                    </g>
+                    <g fill="#F5F5F2" stroke="#1A1A18" stroke-width="1.15">
+                      <!-- row 1 -->
+                      <rect x="0" y="0" width="36" height="36" rx="3" /><rect x="44" y="0" width="36" height="36" rx="3" /><rect x="88" y="0" width="36" height="36" rx="3" /><rect x="132" y="0" width="36" height="36" rx="3" />
+                      <!-- row 2 -->
+                      <rect x="0" y="44" width="36" height="36" rx="3" /><rect x="44" y="44" width="36" height="36" rx="3" /><rect x="88" y="44" width="36" height="36" rx="3" /><rect x="132" y="44" width="36" height="36" rx="3" />
+                      <!-- row 3 -->
+                      <rect x="0" y="88" width="36" height="36" rx="3" /><rect x="44" y="88" width="36" height="36" rx="3" /><rect x="88" y="88" width="36" height="36" rx="3" /><rect x="132" y="88" width="36" height="36" rx="3" />
+                      <!-- row 4 -->
+                      <rect x="0" y="132" width="36" height="36" rx="3" /><rect x="44" y="132" width="36" height="36" rx="3" /><rect x="88" y="132" width="36" height="36" rx="3" /><rect x="132" y="132" width="36" height="36" rx="3" />
+                    </g>
+                    <!-- pad centers -->
+                    <g fill="#1A1A18" fill-opacity="0.18" stroke="none">
+                      <circle cx="18" cy="18" r="3" /><circle cx="62" cy="18" r="3" /><circle cx="106" cy="18" r="3" /><circle cx="150" cy="18" r="3" />
+                      <circle cx="18" cy="62" r="3" /><circle cx="62" cy="62" r="3" /><circle cx="106" cy="62" r="3" /><circle cx="150" cy="62" r="3" />
+                      <circle cx="18" cy="106" r="3" /><circle cx="62" cy="106" r="3" /><circle cx="106" cy="106" r="3" /><circle cx="150" cy="106" r="3" />
+                      <circle cx="18" cy="150" r="3" /><circle cx="62" cy="150" r="3" /><circle cx="106" cy="150" r="3" /><circle cx="150" cy="150" r="3" />
+                    </g>
+                    <!-- accent pads (row markers) -->
+                    <rect x="0" y="0" width="36" height="3" fill="#E85A1B" stroke="none" />
+                    <rect x="44" y="0" width="36" height="3" fill="#E85A1B" stroke="none" />
+                    <rect x="88" y="0" width="36" height="3" fill="#E85A1B" stroke="none" />
+                    <rect x="132" y="0" width="36" height="3" fill="#E85A1B" stroke="none" />
+                  </g>
+
+                  <!-- Two knobs -->
+                  <g transform="translate(348,118)">
+                    <!-- Callout B -->
+                    <g transform="translate(28,-16)">
+                      <circle cx="0" cy="0" r="9" fill="#F5F5F2" stroke="#E85A1B" stroke-width="1.25" />
+                      <text x="0" y="3.5" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" font-weight="600" fill="#E85A1B">B</text>
+                    </g>
+                    <!-- Knob 1 FILTER -->
+                    <g>
+                      <circle cx="28" cy="28" r="26" fill="#F5F5F2" stroke="#1A1A18" stroke-width="1.5" />
+                      <circle cx="28" cy="28" r="20" fill="#E0E0DB" stroke="#1A1A18" stroke-width="1" />
+                      <circle cx="28" cy="28" r="4" fill="#1A1A18" />
+                      <line x1="28" y1="28" x2="28" y2="12" stroke="#1A1A18" stroke-width="2" stroke-linecap="round" />
+                      <!-- tick marks -->
+                      <g stroke="#1A1A18" stroke-width="1" stroke-opacity="0.55">
+                        <line x1="28" y1="0" x2="28" y2="5" />
+                        <line x1="48" y1="8" x2="45" y2="12" />
+                        <line x1="56" y1="28" x2="51" y2="28" />
+                        <line x1="48" y1="48" x2="45" y2="44" />
+                        <line x1="28" y1="56" x2="28" y2="51" />
+                        <line x1="8" y1="48" x2="11" y2="44" />
+                        <line x1="0" y1="28" x2="5" y2="28" />
+                        <line x1="8" y1="8" x2="11" y2="12" />
+                      </g>
+                      <text x="28" y="68" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#5C5C58">FILTER</text>
+                    </g>
+                    <!-- Knob 2 LEVEL -->
+                    <g transform="translate(0,90)">
+                      <circle cx="28" cy="28" r="26" fill="#F5F5F2" stroke="#1A1A18" stroke-width="1.5" />
+                      <circle cx="28" cy="28" r="20" fill="#E0E0DB" stroke="#1A1A18" stroke-width="1" />
+                      <circle cx="28" cy="28" r="4" fill="#1A1A18" />
+                      <line x1="28" y1="28" x2="40" y2="16" stroke="#1A1A18" stroke-width="2" stroke-linecap="round" />
+                      <g stroke="#1A1A18" stroke-width="1" stroke-opacity="0.55">
+                        <line x1="28" y1="0" x2="28" y2="5" />
+                        <line x1="48" y1="8" x2="45" y2="12" />
+                        <line x1="56" y1="28" x2="51" y2="28" />
+                        <line x1="48" y1="48" x2="45" y2="44" />
+                        <line x1="28" y1="56" x2="28" y2="51" />
+                        <line x1="8" y1="48" x2="11" y2="44" />
+                        <line x1="0" y1="28" x2="5" y2="28" />
+                        <line x1="8" y1="8" x2="11" y2="12" />
+                      </g>
+                      <text x="28" y="68" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#5C5C58">LEVEL</text>
+                    </g>
+                  </g>
+
+                  <!-- Bottom I/O edge marks -->
+                  <g transform="translate(52,228)" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="7" fill="#5C5C58">
+                    <rect x="0" y="0" width="28" height="8" fill="#F5F5F2" stroke="#1A1A18" stroke-width="0.9" />
+                    <text x="14" y="20" text-anchor="middle">USB-C</text>
+                    <rect x="48" y="0" width="18" height="8" rx="4" fill="#F5F5F2" stroke="#1A1A18" stroke-width="0.9" />
+                    <text x="57" y="20" text-anchor="middle">OUT</text>
+                    <rect x="86" y="0" width="18" height="8" rx="4" fill="#F5F5F2" stroke="#1A1A18" stroke-width="0.9" />
+                    <text x="95" y="20" text-anchor="middle">SYNC</text>
+                  </g>
+
+                  <!-- Model stamp -->
+                  <text x="300" y="238" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#5C5C58" letter-spacing="1">NORM AUDIO · FIELD-7</text>
+                </g>
+
+                <!-- Height callout (side note) -->
+                <g class="anno-desktop" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="#1A1A18">
+                  <path d="M600 140 H640" stroke="#1A1A18" stroke-width="1" fill="none" />
+                  <path d="M640 140 V200" stroke="#1A1A18" stroke-width="1" fill="none" />
+                  <path d="M634 140 H646 M634 200 H646" stroke="#1A1A18" stroke-width="1" fill="none" />
+                  <text x="652" y="176">28.0 mm</text>
+                  <text x="600" y="128" fill="#5C5C58" font-size="9">H</text>
+                </g>
+
+                <!-- Legend -->
+                <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="#5C5C58">
+                  <text x="148" y="390">A PAD MATRIX  ·  B CONTROLS  ·  C OLED  ·  D SPEAKER</text>
+                  <text x="148" y="408" font-size="9">MATERIAL ALUMINUM / ABS  ·  FINISH MATTE GRAY  ·  MASS 312 g</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="anno-mobile">
+              <h3>Dimensions</h3>
+              <dl>
+                <div><dt>W </dt><dd>148.0 mm</dd></div>
+                <div><dt>D </dt><dd>88.0 mm</dd></div>
+                <div><dt>H </dt><dd>28.0 mm</dd></div>
+                <div><dt>Mass </dt><dd>312 g</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <div data-ud-check="features">
+          <div class="section-head reveal">
+            <div>
+              <p class="section-label">01 · Callouts</p>
+              <h2 class="section-title" id="features-title">Pinned to the drawing</h2>
+            </div>
+          </div>
+          <div class="features-grid">
+            <article class="feature reveal">
+              <div class="feature-mark" aria-hidden="true">A</div>
+              <div>
+                <h3>Pad matrix</h3>
+                <p>Sixteen velocity-sensitive pads in a 4 by 4 grid. Soft enough for thumbs, firm enough that you stop blaming the firmware.</p>
+              </div>
+            </article>
+            <article class="feature reveal">
+              <div class="feature-mark" aria-hidden="true">B</div>
+              <div>
+                <h3>Dual knobs</h3>
+                <p>Filter and level. Aluminum, detented just enough. No third knob for “vibe.”</p>
+              </div>
+            </article>
+            <article class="feature reveal">
+              <div class="feature-mark" aria-hidden="true">C</div>
+              <div>
+                <h3>OLED strip</h3>
+                <p>Patch name, BPM, battery. Monochrome on purpose. It is a meter, not a billboard.</p>
+              </div>
+            </article>
+            <article class="feature reveal">
+              <div class="feature-mark" aria-hidden="true">D</div>
+              <div>
+                <h3>Speaker grille</h3>
+                <p>Front-facing driver for desk checks. Quiet rooms will still notice. Headphones remain the adult option.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="accessories" aria-labelledby="kit-title">
+      <div class="wrap">
+        <div data-ud-check="knolling">
+          <div class="section-head reveal">
+            <div>
+              <p class="section-label">02 · In the box</p>
+              <h2 class="section-title" id="kit-title">Knolled kit</h2>
+            </div>
+          </div>
+          <div class="knoll-grid">
+            <figure class="knoll-item reveal">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="#1A1A18" stroke-width="1.25">
+                <path d="M18 28 H52" stroke-linecap="round" />
+                <rect x="52" y="22" width="18" height="12" rx="2" />
+                <path d="M70 28 C90 28 90 62 110 62 H138" stroke-linecap="round" />
+                <rect x="138" y="56" width="14" height="12" rx="2" />
+                <path d="M20 24 V32 M24 24 V32" />
+                <circle cx="145" cy="62" r="2.5" fill="#1A1A18" stroke="none" />
+              </svg>
+              <figcaption class="knoll-cap"><strong>USB-C cable</strong><span>1.2 m</span></figcaption>
+            </figure>
+            <figure class="knoll-item reveal">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="#1A1A18" stroke-width="1.25">
+                <rect x="36" y="18" width="88" height="54" rx="6" />
+                <rect x="44" y="26" width="72" height="38" rx="3" stroke-dasharray="3 2" />
+                <path d="M70 18 V12 H90 V18" />
+                <circle cx="116" cy="45" r="3" />
+              </svg>
+              <figcaption class="knoll-cap"><strong>Soft case</strong><span>Gray</span></figcaption>
+            </figure>
+            <figure class="knoll-item reveal">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="#1A1A18" stroke-width="1.25">
+                <path d="M40 70 C40 30 120 30 120 70" stroke-linecap="round" />
+                <rect x="34" y="66" width="14" height="10" rx="2" />
+                <rect x="112" y="66" width="14" height="10" rx="2" />
+                <circle cx="80" cy="38" r="4" />
+              </svg>
+              <figcaption class="knoll-cap"><strong>Neck strap</strong><span>Adjustable</span></figcaption>
+            </figure>
+            <figure class="knoll-item reveal">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="#1A1A18" stroke-width="1.25">
+                <rect x="48" y="22" width="64" height="46" rx="4" />
+                <rect x="56" y="30" width="48" height="22" rx="2" fill="#E6E6E1" />
+                <path d="M64 62 H96" />
+                <text x="80" y="45" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8" fill="#5C5C58" stroke="none">3.7V</text>
+              </svg>
+              <figcaption class="knoll-cap"><strong>Battery pack</strong><span>Spare</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="specs" aria-labelledby="specs-title">
+      <div class="wrap">
+        <div data-ud-check="specs">
+          <div class="section-head reveal">
+            <div>
+              <p class="section-label">03 · Specification</p>
+              <h2 class="section-title" id="specs-title">Engineering sheet</h2>
+            </div>
+          </div>
+          <div class="spec-table-wrap reveal" role="region" aria-label="FIELD-7 specifications" tabindex="0">
+            <table class="spec-table">
+              <tbody>
+                <tr><th scope="row">Model</th><td>FIELD-7 pocket synthesizer</td></tr>
+                <tr><th scope="row">Maker</th><td>Norm Audio (fictional)</td></tr>
+                <tr><th scope="row">Dimensions (W × D × H)</th><td>148.0 × 88.0 × 28.0 mm</td></tr>
+                <tr><th scope="row">Weight</th><td>312 g (with battery)</td></tr>
+                <tr><th scope="row">Battery</th><td>3.7 V 2200 mAh Li-ion · ~8 h typical play · USB-C charge</td></tr>
+                <tr><th scope="row">I/O</th><td>USB-C (MIDI + power) · 3.5 mm stereo out · 3.5 mm sync I/O</td></tr>
+                <tr><th scope="row">Controls</th><td>16 velocity pads · 2 continuous knobs · power switch</td></tr>
+                <tr><th scope="row">Display</th><td>128 × 32 monochrome OLED</td></tr>
+                <tr><th scope="row">Sound engines</th><td>4 oscillators · 2 LFOs · 1 multimode filter · 8-voice polyphony</td></tr>
+                <tr><th scope="row">Sequencer</th><td>64-step · 8 patterns · probability per step</td></tr>
+                <tr><th scope="row">Speaker</th><td>28 mm full-range · front grille</td></tr>
+                <tr><th scope="row">Finish</th><td>Matte panel gray · orange index marks</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="buy" aria-labelledby="buy-title">
+      <div class="wrap">
+        <div class="buy-panel reveal" data-ud-check="buy">
+          <div>
+            <h2 id="buy-title">Order FIELD-7</h2>
+            <p>Visual checkout only on this demo page. Price holds at $329 USD. Ships in a recycled pulp tray; no mystery foam peanuts.</p>
+            <div class="buy-actions" style="margin-top:20px">
+              <button type="button" class="btn btn--accent" id="buy-btn" aria-describedby="buy-status">Buy FIELD-7 — $329</button>
+              <a class="btn btn--ghost" href="#specs">Read specs</a>
+            </div>
+            <p id="buy-status" class="warranty-note" role="status" aria-live="polite" style="border:none;padding-top:12px;margin-top:8px">Demo control — no payment is collected.</p>
+          </div>
+          <div>
+            <p class="warranty-note">
+              Shipping: 5–9 business days within the continental fiction zone.<br /><br />
+              Warranty: 24 months parts and labor against manufacturing defects. Pads worn through from honest use are not defects — they are a resume.<br /><br />
+              Returns: 30 days, device and kit complete, no sticky labels on the OLED.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-inner" data-ud-check="footer">
+        <p class="footer-brand">Norm Audio · FIELD-7 · Rev C drawing</p>
+        <p class="footer-demo">Demo page designed with the Ultimate Design agent skill · FIELD-7 and Norm Audio are fictional.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nodes = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+      var io = null;
+
+      function revealAll(instant) {
+        nodes.forEach(function (el) {
+          if (instant) {
+            el.style.transition = "none";
+            el.style.transitionDelay = "0s";
+          }
+          el.classList.add("is-in");
+          if (io) {
+            try { io.unobserve(el); } catch (e) {}
+          }
+        });
+      }
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        revealAll(true);
+      } else {
+        io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+        );
+        nodes.forEach(function (el) { io.observe(el); });
+
+        requestAnimationFrame(function () {
+          document.querySelectorAll(".hero-inner .reveal").forEach(function (el) {
+            el.classList.add("is-in");
+            if (io) io.unobserve(el);
+          });
+        });
+
+        window.setTimeout(function () {
+          revealAll(true);
+        }, 700);
+      }
+
+      window.addEventListener("beforeprint", function () {
+        revealAll(true);
+      });
+
+      var buyBtn = document.getElementById("buy-btn");
+      var buyStatus = document.getElementById("buy-status");
+      if (buyBtn && buyStatus) {
+        buyBtn.addEventListener("click", function () {
+          buyStatus.textContent = "Demo only — checkout is visual. FIELD-7 stays on the page.";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

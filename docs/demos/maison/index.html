@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison Ombre · Eau de Parfum No.04</title>
+  <meta name="description" content="Maison Ombre Eau de Parfum No.04 — a quiet woody-amber fragrance. Fictional brand demo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary: #3D4538;
+      --color-secondary: #6B635A;
+      --color-tertiary: #4F5A48;
+      --color-neutral: #C9C2B6;
+      --color-surface: #E8E2D8;
+      --color-on-surface: #2A2F2A;
+      --color-error: #8F3D35;
+      --color-muted: #5A564E;
+      --color-bone-deep: #DDD6CB;
+      --color-rule: rgba(42, 47, 42, 0.16);
+      --color-light: rgba(255, 252, 246, 0.55);
+      --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --font-body: "Source Sans 3", "Source Sans Pro", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --measure: 36rem;
+      --max: 1120px;
+      --nav-h: 64px;
+      --purchase-h: 76px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-on-surface);
+      background:
+        radial-gradient(ellipse 90% 55% at 18% 8%, rgba(201, 194, 182, 0.55), transparent 58%),
+        radial-gradient(ellipse 70% 45% at 88% 18%, rgba(79, 90, 72, 0.08), transparent 50%),
+        linear-gradient(180deg, #EDE8DF 0%, var(--color-surface) 32%, #E2DCD2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--purchase-h) + 48px);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    }
+
+    a { color: var(--color-primary); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+    a:hover { color: var(--color-tertiary); }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    svg { max-width: 100%; display: block; }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--color-on-surface);
+      color: var(--color-surface);
+      padding: 12px 16px;
+    }
+    .skip-link:focus { left: 12px; top: 12px; }
+
+    .wrap {
+      width: min(100% - 2 * var(--space-md), var(--max));
+      margin-inline: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .narrow {
+      max-width: var(--measure);
+    }
+
+    /* ——— Nav ——— */
+    .site-nav {
+      position: relative;
+      z-index: 30;
+      border-bottom: 1px solid var(--color-rule);
+      background: rgba(232, 226, 216, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      min-height: var(--nav-h);
+      padding-block: var(--space-sm);
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding-inline: 4px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.25rem;
+      letter-spacing: 0.06em;
+      color: var(--color-on-surface);
+      text-decoration: none;
+    }
+    .brand-mark:hover { color: var(--color-primary); }
+    .nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+    .nav-list a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 12px;
+      color: var(--color-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .nav-list a:hover { color: var(--color-on-surface); }
+
+    /* ——— Hero ——— */
+    .hero {
+      padding-block: clamp(40px, 7vw, 80px) clamp(48px, 8vw, 96px);
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: clamp(32px, 5vw, 72px);
+      align-items: center;
+    }
+    .still-life {
+      position: relative;
+      isolation: isolate;
+      aspect-ratio: 5 / 6;
+      max-height: min(72vh, 640px);
+      margin-inline: auto;
+      width: 100%;
+      border-radius: var(--radius-sm);
+      background:
+        radial-gradient(ellipse 55% 40% at 48% 28%, rgba(255, 252, 246, 0.7), transparent 70%),
+        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(107, 99, 90, 0.18), transparent 65%),
+        linear-gradient(165deg, #D9D2C6 0%, #C8C0B2 48%, #B7AFA0 100%);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(42, 47, 42, 0.08);
+    }
+    .still-life__glow {
+      position: absolute;
+      width: 46%;
+      height: 38%;
+      left: 28%;
+      top: 18%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 252, 246, 0.85), transparent 70%);
+      filter: blur(8px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .still-life__stage {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      bottom: 10%;
+      height: 28%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(42, 47, 42, 0.14), transparent 70%);
+      z-index: 0;
+    }
+    .bottle {
+      position: relative;
+      z-index: 1;
+      width: min(58%, 220px);
+      margin: 12% auto 0;
+      animation: bottle-in 400ms var(--ease) both;
+    }
+    .hero-copy {
+      max-width: 28rem;
+    }
+    .kicker {
+      margin: 0 0 var(--space-md);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+    }
+    .hero-brand {
+      margin: 0 0 var(--space-sm);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      color: var(--color-on-surface);
+    }
+    .hero-product {
+      margin: 0 0 var(--space-md);
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+      line-height: 1.25;
+      color: var(--color-primary);
+    }
+    .hero-lead {
+      margin: 0 0 var(--space-lg);
+      color: var(--color-muted);
+      font-size: 1.0625rem;
+      max-width: 34ch;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md) var(--space-lg);
+      margin: 0 0 var(--space-lg);
+      padding: 0;
+      list-style: none;
+      font-size: 0.9375rem;
+      color: var(--color-muted);
+    }
+    .meta-row strong {
+      display: block;
+      font-weight: 600;
+      color: var(--color-on-surface);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background-color 200ms var(--ease), color 200ms var(--ease), border-color 200ms var(--ease);
+    }
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-surface);
+    }
+    .btn-primary:hover { background: #32392e; color: var(--color-surface); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-on-surface);
+      border-color: var(--color-rule);
+    }
+    .btn-ghost:hover {
+      border-color: var(--color-secondary);
+      color: var(--color-primary);
+    }
+
+    /* ——— Sections ——— */
+    .section {
+      padding-block: var(--space-xl);
+    }
+    .section + .section {
+      padding-top: 0;
+    }
+    .section-head {
+      margin: 0 0 var(--space-lg);
+    }
+    .section-head h2 {
+      margin: 0 0 var(--space-sm);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+    .section-head p {
+      margin: 0;
+      color: var(--color-muted);
+      max-width: 42ch;
+    }
+
+    .band {
+      margin-block: var(--space-xl);
+      padding-block: var(--space-xl);
+      background: linear-gradient(180deg, rgba(221, 214, 203, 0.55), rgba(232, 226, 216, 0.2));
+      border-block: 1px solid var(--color-rule);
+    }
+
+    /* ——— Accordion ——— */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: var(--measure);
+    }
+    .acc-item {
+      border-top: 1px solid var(--color-rule);
+      padding-top: var(--space-md);
+    }
+    .acc-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 4px;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-on-surface);
+    }
+    .acc-trigger span[aria-hidden] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--color-secondary);
+      flex-shrink: 0;
+      transition: transform 280ms var(--ease);
+    }
+    .acc-trigger[aria-expanded="true"] span[aria-hidden] {
+      transform: rotate(45deg);
+    }
+    .acc-panel {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 360ms var(--ease), opacity 280ms var(--ease), padding 280ms var(--ease);
+      padding: 0 4px;
+    }
+    .acc-panel.is-open {
+      max-height: 640px;
+      opacity: 1;
+      padding: 8px 4px 20px;
+    }
+    .acc-zone {
+      padding: 4px 0 8px;
+    }
+    .note-grid {
+      display: grid;
+      gap: var(--space-md);
+    }
+    .note-row {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: var(--space-md);
+      align-items: start;
+    }
+    .note-row dt {
+      margin: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      padding-top: 0.2em;
+    }
+    .note-row dd {
+      margin: 0;
+      color: var(--color-muted);
+    }
+    .prose {
+      margin: 0;
+      color: var(--color-muted);
+      max-width: 52ch;
+    }
+    .prose + .prose { margin-top: var(--space-md); }
+    .ingredient-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .ingredient-list li {
+      display: flex;
+      gap: var(--space-md);
+      align-items: baseline;
+      color: var(--color-muted);
+      border-bottom: 1px solid rgba(42, 47, 42, 0.08);
+      padding-bottom: 8px;
+    }
+    .ingredient-list strong {
+      flex: 0 0 7.5rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-on-surface);
+    }
+
+    /* ——— Cross-sell ——— */
+    .pairs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(24px, 4vw, 48px);
+      max-width: 52rem;
+    }
+    .pair {
+      display: grid;
+      gap: var(--space-md);
+      align-content: start;
+      text-decoration: none;
+      color: inherit;
+      min-height: 44px;
+      padding: 4px;
+    }
+    .pair:hover .pair-name { color: var(--color-primary); }
+    .pair-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-sm);
+      background:
+        radial-gradient(ellipse 50% 45% at 50% 40%, rgba(255, 252, 246, 0.65), transparent 70%),
+        linear-gradient(160deg, #D5CEC2, #B8B0A2);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px rgba(42, 47, 42, 0.08);
+    }
+    .pair-thumb svg { width: 42%; }
+    .pair-kicker {
+      margin: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+    }
+    .pair-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1.2;
+      transition: color 200ms var(--ease);
+    }
+    .pair-desc {
+      margin: 0;
+      color: var(--color-muted);
+      font-size: 0.975rem;
+      max-width: 32ch;
+    }
+
+    /* ——— Purchase bar ——— */
+    .purchase-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      background: rgba(232, 226, 216, 0.96);
+      border-top: 1px solid var(--color-rule);
+      backdrop-filter: blur(10px);
+    }
+    .purchase-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm) var(--space-md);
+      min-height: var(--purchase-h);
+      padding-block: 10px;
+    }
+    .purchase-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .purchase-info strong {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .purchase-info span {
+      font-size: 0.875rem;
+      color: var(--color-muted);
+    }
+    .purchase-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .size-group {
+      display: inline-flex;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+    .size-group legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .size-option {
+      position: relative;
+    }
+    .size-option input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+    .size-option label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 56px;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      background: transparent;
+      cursor: pointer;
+      transition: border-color 200ms var(--ease), color 200ms var(--ease), background-color 200ms var(--ease);
+    }
+    .size-option input:checked + label {
+      border-color: var(--color-primary);
+      color: var(--color-on-surface);
+      background: rgba(61, 69, 56, 0.08);
+    }
+    .size-option input:focus-visible + label {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+    .purchase-bar .btn-primary {
+      min-width: 148px;
+    }
+
+    /* ——— Footer ——— */
+    .site-footer {
+      padding-block: var(--space-xl) var(--space-lg);
+      border-top: 1px solid var(--color-rule);
+      margin-top: var(--space-xl);
+    }
+    .footer-inner {
+      display: grid;
+      gap: var(--space-md);
+      max-width: 48rem;
+    }
+    .footer-brand {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.125rem;
+      letter-spacing: 0.06em;
+    }
+    .footer-note {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      max-width: 62ch;
+      line-height: 1.6;
+    }
+    .scroll-end {
+      height: min(52vh, 420px);
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    /* ——— Reveal ——— */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes bottle-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .reveal.is-visible,
+      .bottle,
+      .acc-panel,
+      .acc-trigger span[aria-hidden],
+      .btn,
+      .pair-name {
+        transition: none !important;
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .acc-panel { max-height: none; }
+      .acc-panel:not(.is-open) {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      .acc-panel.is-open {
+        max-height: none;
+        opacity: 1;
+      }
+    }
+
+    @media print {
+      .reveal, .bottle {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+      .purchase-bar { position: static; }
+      body { padding-bottom: 0; }
+      .scroll-end { display: none; }
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        padding-block: 28px calc(var(--purchase-h) + 36px);
+      }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+      .still-life {
+        max-height: 240px;
+        aspect-ratio: 16 / 10;
+        width: min(100%, 420px);
+        margin-inline: 0;
+      }
+      .bottle {
+        width: min(36%, 120px);
+        margin-top: 4%;
+      }
+      .hero-copy { max-width: none; }
+      .hero-brand { font-size: clamp(2rem, 9vw, 2.75rem); }
+      .hero-lead { margin-bottom: var(--space-md); }
+      .meta-row { margin-bottom: var(--space-md); gap: var(--space-sm) var(--space-md); }
+      .pairs { grid-template-columns: 1fr; }
+      .purchase-inner { justify-content: center; gap: 8px; padding-block: 8px; min-height: 0; }
+      .purchase-info {
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: baseline;
+        gap: 8px;
+        text-align: center;
+      }
+      .purchase-info strong { font-size: 0.9rem; }
+      .purchase-info span { font-size: 0.8125rem; }
+      .purchase-controls { width: 100%; justify-content: center; }
+      .purchase-bar .btn-primary { min-width: 120px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-list a { padding-inline: 8px; letter-spacing: 0.02em; }
+      .still-life { max-height: 200px; }
+      .note-row { grid-template-columns: 1fr; gap: 4px; }
+      .ingredient-list li { flex-direction: column; gap: 2px; }
+      .ingredient-list strong { flex: none; }
+      .purchase-bar .btn-primary { flex: 1 1 140px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="wrap nav-inner" data-ud-check="navigation">
+      <a class="brand-mark" href="#top">Maison Ombre</a>
+      <nav aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="#composition">Composition</a></li>
+          <li><a href="#pairs">Pairs with</a></li>
+          <li><a href="#purchase">Purchase</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-brand">
+      <div class="wrap hero-inner">
+        <div class="still-life" aria-hidden="true">
+          <div class="still-life__glow"></div>
+          <div class="still-life__stage"></div>
+          <svg class="bottle" viewBox="0 0 200 420" role="presentation">
+            <defs>
+              <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4A5244"/>
+                <stop offset="42%" stop-color="#2F352E"/>
+                <stop offset="100%" stop-color="#1F241F"/>
+              </linearGradient>
+              <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#fff" stop-opacity="0.28"/>
+                <stop offset="55%" stop-color="#fff" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#A89F92"/>
+                <stop offset="100%" stop-color="#7A7268"/>
+              </linearGradient>
+            </defs>
+            <rect x="78" y="18" width="44" height="36" rx="3" fill="url(#cap)"/>
+            <rect x="88" y="52" width="24" height="28" rx="2" fill="#5A544C"/>
+            <path d="M62 92h76c8 0 14 6 14 14v248c0 22-18 40-40 40H88c-22 0-40-18-40-40V106c0-8 6-14 14-14z" fill="url(#glass)"/>
+            <path d="M76 108h18c3 0 5 2 5 5v220c0 3-2 5-5 5H76c-3 0-5-2-5-5V113c0-3 2-5 5-5z" fill="url(#shine)"/>
+            <rect x="74" y="168" width="52" height="78" rx="2" fill="rgba(232,226,216,0.08)" stroke="rgba(232,226,216,0.35)" stroke-width="1"/>
+            <text x="100" y="204" text-anchor="middle" fill="#E8E2D8" font-family="Georgia, serif" font-size="11" letter-spacing="1.5">OMBRE</text>
+            <text x="100" y="222" text-anchor="middle" fill="#C9C2B6" font-family="Georgia, serif" font-size="8" letter-spacing="2">NO.04</text>
+          </svg>
+        </div>
+        <div class="hero-copy">
+          <div data-ud-check="hero-product">
+            <p class="kicker">Eau de Parfum</p>
+            <h1 class="hero-brand" id="hero-brand">Maison Ombre</h1>
+            <p class="hero-product">No.04 — Bois de Veille</p>
+            <p class="hero-lead">A quiet woody-amber composition for evening rooms and cool stone. Slow to open, precise on skin.</p>
+          </div>
+          <ul class="meta-row">
+            <li><strong>Family</strong> Woody amber</li>
+            <li><strong>Concentration</strong> 18% eau de parfum</li>
+            <li><strong>Origin</strong> Compounded in Grasse</li>
+          </ul>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#purchase">Choose a size</a>
+            <a class="btn btn-ghost" href="#composition">Read the notes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="composition" aria-labelledby="composition-title">
+      <div class="wrap">
+        <div class="section-head narrow reveal">
+          <h2 id="composition-title">Composition</h2>
+          <p>Sensory detail in three layers. Open each panel for notes, materials, and wearing guidance.</p>
+        </div>
+
+        <div class="accordion" data-accordion>
+          <div class="acc-item reveal" data-ud-check="notes">
+            <h3>
+              <button
+                type="button"
+                class="acc-trigger"
+                id="acc-notes-btn"
+                aria-expanded="true"
+                aria-controls="acc-notes-panel"
+              >
+                Notes
+                <span aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="acc-panel is-open" id="acc-notes-panel" role="region" aria-labelledby="acc-notes-btn">
+              <div class="acc-zone">
+                <dl class="note-grid">
+                  <div class="note-row">
+                    <dt>Top</dt>
+                    <dd>Bergamot peel, crushed pink pepper, a cool breath of iris leaf</dd>
+                  </div>
+                  <div class="note-row">
+                    <dt>Heart</dt>
+                    <dd>Dried labdanum, violet absolute, pale incense smoke</dd>
+                  </div>
+                  <div class="note-row">
+                    <dt>Base</dt>
+                    <dd>Vetiver root, aged cedar, soft ambergris accord</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-ud-check="ingredients">
+            <h3>
+              <button
+                type="button"
+                class="acc-trigger"
+                id="acc-ing-btn"
+                aria-expanded="false"
+                aria-controls="acc-ing-panel"
+              >
+                Ingredients
+                <span aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="acc-panel" id="acc-ing-panel" role="region" aria-labelledby="acc-ing-btn" hidden>
+              <div class="acc-zone">
+                <ul class="ingredient-list">
+                  <li><strong>Alcohol denat.</strong> Carrier for the concentrate</li>
+                  <li><strong>Parfum</strong> Proprietary formula, 18%</li>
+                  <li><strong>Limonene</strong> From citrus peel oils</li>
+                  <li><strong>Linalool</strong> Trace from floral materials</li>
+                  <li><strong>Coumarin</strong> Soft hay facet in the drydown</li>
+                  <li><strong>Benzyl benzoate</strong> Stabilizer within EU limits</li>
+                </ul>
+                <p class="prose" style="margin-top:16px">Full INCI list ships with every bottle. Batch cards list distill dates for the vetiver and cedar.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-ud-check="how-to-wear">
+            <h3>
+              <button
+                type="button"
+                class="acc-trigger"
+                id="acc-wear-btn"
+                aria-expanded="false"
+                aria-controls="acc-wear-panel"
+              >
+                How to wear
+                <span aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="acc-panel" id="acc-wear-panel" role="region" aria-labelledby="acc-wear-btn" hidden>
+              <div class="acc-zone">
+                <p class="prose">Apply two sprays to pulse points after dressing. Avoid rubbing; let the top notes settle for three minutes before layering fabric.</p>
+                <p class="prose">No.04 holds closest to skin in cool air and opens wider in heated rooms. One application lasts through an evening; a third spray on a scarf extends the drydown without crowding the room.</p>
+                <p class="prose">Pairs cleanly with unscented moisturizer. Skip heavy vanilla or musk bases on the same day so the vetiver can remain legible.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pairs" aria-labelledby="pairs-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2 id="pairs-title">Pairs with</h2>
+          <p>Two companions from the same atelier. Editorial suggestions, not promotions.</p>
+        </div>
+        <div class="pairs reveal" data-ud-check="cross-sell">
+          <a class="pair" href="#purchase" aria-label="Huile Corps No.02, companion body oil">
+            <div class="pair-thumb" aria-hidden="true">
+              <svg viewBox="0 0 120 160" role="presentation">
+                <rect x="42" y="12" width="36" height="18" rx="2" fill="#8A7F72"/>
+                <rect x="48" y="30" width="24" height="14" fill="#6B635A"/>
+                <path d="M34 48h52c6 0 10 4 10 10v78c0 10-8 18-18 18H42c-10 0-18-8-18-18V58c0-6 4-10 10-10z" fill="#4F5A48"/>
+                <rect x="48" y="78" width="24" height="36" rx="1" fill="rgba(232,226,216,0.2)"/>
+              </svg>
+            </div>
+            <p class="pair-kicker">Body oil</p>
+            <p class="pair-name">Huile Corps No.02</p>
+            <p class="pair-desc">Squalane and frankincense. Softens skin so No.04 sits closer and lasts longer.</p>
+          </a>
+          <a class="pair" href="#purchase" aria-label="Bougie Chambre, companion candle">
+            <div class="pair-thumb" aria-hidden="true">
+              <svg viewBox="0 0 120 160" role="presentation">
+                <ellipse cx="60" cy="132" rx="38" ry="10" fill="rgba(42,47,42,0.12)"/>
+                <rect x="28" y="58" width="64" height="74" rx="4" fill="#C9C2B6"/>
+                <rect x="34" y="64" width="52" height="62" rx="2" fill="#E8E2D8"/>
+                <path d="M60 36c8 10 10 18 0 28-10-10-8-18 0-28z" fill="#A89F92"/>
+                <rect x="58" y="62" width="4" height="14" fill="#6B635A"/>
+              </svg>
+            </div>
+            <p class="pair-kicker">Candle</p>
+            <p class="pair-name">Bougie Chambre</p>
+            <p class="pair-desc">Cedar smoke and cool plaster. Sets a room note before you wear the parfum.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner" data-ud-check="footer">
+      <p class="footer-brand">Maison Ombre</p>
+      <p class="footer-note">Demo page designed with the Ultimate Design agent skill · Maison Ombre is a fictional brand.</p>
+    </div>
+  </footer>
+
+  <div class="scroll-end" aria-hidden="true"></div>
+
+  <aside class="purchase-bar" id="purchase" aria-label="Purchase options">
+    <div class="wrap purchase-inner" data-ud-check="purchase-bar">
+      <div class="purchase-info">
+        <strong>Eau de Parfum No.04</strong>
+        <span id="price-label">100 ml · 186 EUR</span>
+      </div>
+      <div class="purchase-controls">
+        <fieldset class="size-group">
+          <legend>Size</legend>
+          <div class="size-option">
+            <input type="radio" name="size" id="size-50" value="50" data-price="118" />
+            <label for="size-50">50 ml</label>
+          </div>
+          <div class="size-option">
+            <input type="radio" name="size" id="size-100" value="100" data-price="186" checked />
+            <label for="size-100">100 ml</label>
+          </div>
+        </fieldset>
+        <button type="button" class="btn btn-primary" id="add-to-cart">Add to cart</button>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function initAccordion() {
+        var root = document.querySelector("[data-accordion]");
+        if (!root) return;
+        var triggers = Array.prototype.slice.call(root.querySelectorAll(".acc-trigger"));
+
+        triggers.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var expanded = btn.getAttribute("aria-expanded") === "true";
+            var panel = document.getElementById(btn.getAttribute("aria-controls"));
+            if (!panel) return;
+
+            btn.setAttribute("aria-expanded", expanded ? "false" : "true");
+            if (expanded) {
+              panel.classList.remove("is-open");
+              panel.setAttribute("hidden", "");
+            } else {
+              panel.classList.add("is-open");
+              panel.removeAttribute("hidden");
+            }
+          });
+        });
+      }
+
+      function initPurchase() {
+        var price = document.getElementById("price-label");
+        var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="size"]'));
+        var cart = document.getElementById("add-to-cart");
+
+        function sync() {
+          var selected = radios.find(function (r) { return r.checked; });
+          if (!selected || !price) return;
+          price.textContent = selected.value + " ml · " + selected.getAttribute("data-price") + " EUR";
+        }
+
+        radios.forEach(function (r) {
+          r.addEventListener("change", sync);
+        });
+        sync();
+
+        if (cart) {
+          cart.addEventListener("click", function () {
+            var original = cart.textContent;
+            cart.textContent = "Added (demo)";
+            cart.disabled = true;
+            window.setTimeout(function () {
+              cart.textContent = original;
+              cart.disabled = false;
+            }, 1400);
+          });
+        }
+      }
+
+      function forceReveal() {
+        Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (el) {
+          el.classList.add("is-visible");
+        });
+      }
+
+      function initReveal() {
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+        if (!nodes.length) return;
+
+        if (reduce) {
+          forceReveal();
+          return;
+        }
+
+        if (!("IntersectionObserver" in window)) {
+          forceReveal();
+          return;
+        }
+
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
+        );
+
+        nodes.forEach(function (el) { io.observe(el); });
+        window.setTimeout(forceReveal, 700);
+      }
+
+      window.addEventListener("beforeprint", forceReveal);
+
+      initAccordion();
+      initPurchase();
+      initReveal();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拾光书房 · 2026 年度阅读报告</title>
+  <meta name="description" content="拾光书房虚构演示：2026 年度阅读报告数据故事页。全部数据为虚构。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #C0392B;
+      --color-secondary: #1F6F5B;
+      --color-tertiary: #B8751A;
+      --color-neutral: #8A847A;
+      --color-surface: #EFEBE3;
+      --color-surface-deep: #E4DED3;
+      --color-on-surface: #221E1A;
+      --color-muted: #5C564E;
+      --color-error: #A12828;
+      --color-rule: rgba(34, 30, 26, 0.14);
+      --color-ink-soft: rgba(34, 30, 26, 0.06);
+      --font-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+      --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      --text-headline-lg: 700 72px/1.02 var(--font-display);
+      --text-body-md: 400 17px/1.7 var(--font-body);
+      --text-label-md: 600 13px/1.25 var(--font-body);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --max: 720px;
+      --max-wide: 880px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 360ms;
+      --focus: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--color-secondary);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--color-surface); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      margin: 0;
+      font: var(--text-body-md);
+      color: var(--color-on-surface);
+      background:
+        radial-gradient(900px 520px at 88% -8%, rgba(184, 117, 26, 0.11), transparent 55%),
+        radial-gradient(720px 420px at 6% 12%, rgba(31, 111, 91, 0.08), transparent 50%),
+        linear-gradient(180deg, #F2EEE6 0%, var(--color-surface) 28%, #E8E2D7 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    :focus { outline: none; }
+    :focus-visible { box-shadow: var(--focus); border-radius: var(--radius-sm); }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--color-secondary);
+      color: #F7F4EE;
+      padding: 12px 16px;
+      font-weight: 600;
+    }
+    .skip:focus { left: var(--space-md); top: var(--space-md); }
+
+    .wrap {
+      width: min(100% - 2 * var(--space-md), var(--max));
+      margin-inline: auto;
+    }
+    .wrap--wide {
+      width: min(100% - 2 * var(--space-md), var(--max-wide));
+    }
+    @media (min-width: 768px) {
+      .wrap, .wrap--wide { width: min(100% - 2 * var(--space-lg), var(--max)); }
+      .wrap--wide { width: min(100% - 2 * var(--space-lg), var(--max-wide)); }
+    }
+
+    .site-header {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--color-rule);
+      background: rgba(239, 235, 227, 0.86);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .site-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      min-height: 44px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .brand__mark {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .year-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 14px;
+      font: var(--text-label-md);
+      color: var(--color-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .section {
+      padding: clamp(48px, 10vw, 96px) 0;
+    }
+    .section + .section {
+      border-top: 1px solid var(--color-rule);
+    }
+    .kicker {
+      font: var(--text-label-md);
+      color: var(--color-secondary);
+      letter-spacing: 0.12em;
+      margin-bottom: var(--space-sm);
+    }
+    .conclusion {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(26px, 4.5vw, 36px);
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+      max-width: 18em;
+      margin-bottom: var(--space-md);
+    }
+    .note {
+      color: var(--color-muted);
+      font-size: 16px;
+      line-height: 1.75;
+      max-width: 36em;
+    }
+    .note + .note { margin-top: var(--space-sm); }
+    .footnote {
+      margin-top: var(--space-lg);
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--color-neutral);
+      max-width: 42em;
+    }
+
+    /* Hero */
+    .hero {
+      padding: clamp(40px, 8vw, 72px) 0 clamp(56px, 12vw, 100px);
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 1px;
+      background: var(--color-rule);
+    }
+    .hero__panel {
+      padding: clamp(8px, 2vw, 16px) 0;
+    }
+    .hero__brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-sm);
+    }
+    .hero__sub {
+      font: var(--text-label-md);
+      color: var(--color-muted);
+      letter-spacing: 0.14em;
+      margin-bottom: var(--space-lg);
+    }
+    .hero__number-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: var(--space-md);
+    }
+    .hero__number {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(96px, 22vw, 168px);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--color-primary);
+      font-variant-numeric: tabular-nums;
+    }
+    .hero__unit {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(22px, 4vw, 32px);
+      line-height: 1.2;
+      padding-bottom: 0.35em;
+      color: var(--color-on-surface);
+    }
+    .hero__lead {
+      font-size: clamp(17px, 2.4vw, 20px);
+      line-height: 1.7;
+      color: var(--color-muted);
+      max-width: 28em;
+      margin-bottom: var(--space-lg);
+    }
+    .hero__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 0 22px;
+      border-radius: var(--radius-md);
+      background: var(--color-secondary);
+      color: #F7F4EE;
+      font: var(--text-label-md);
+      font-weight: 600;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+    .hero__cta:hover { transform: translateY(-1px); }
+    .hero__cta:active { transform: translateY(0); opacity: 0.92; }
+
+    /* Duration stats */
+    .stat-grid {
+      display: grid;
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .stat-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    }
+    .stat {
+      padding-top: var(--space-md);
+      border-top: 2px solid var(--color-on-surface);
+    }
+    .stat__value {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 7vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--color-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+    .stat__label {
+      margin-top: var(--space-sm);
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+
+    /* Category bars */
+    .bars {
+      margin-top: var(--space-xl);
+      display: grid;
+      gap: 18px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(72px, 5.5em) 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+    @media (max-width: 480px) {
+      .bar-row {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+      }
+      .bar-row__label { grid-column: 1; }
+      .bar-row__value { grid-column: 2; }
+      .bar-row__track { grid-column: 1 / -1; }
+    }
+    .bar-row__label {
+      font: var(--text-label-md);
+      color: var(--color-on-surface);
+    }
+    .bar-row__value {
+      font: var(--text-label-md);
+      color: var(--color-muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .bar-row__track {
+      height: 14px;
+      background: var(--color-ink-soft);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .bar-row__fill {
+      height: 100%;
+      width: var(--w, 0%);
+      background: var(--color-secondary);
+      border-radius: var(--radius-sm);
+      transform-origin: left center;
+      transition: transform var(--dur) var(--ease);
+    }
+    .reveal:not(.is-in) .bar-row__fill { transform: scaleX(0.08); }
+    .reveal.is-in .bar-row__fill { transform: scaleX(1); }
+    .bar-row:nth-child(2) .bar-row__fill { background: var(--color-primary); }
+    .bar-row:nth-child(3) .bar-row__fill { background: var(--color-tertiary); }
+    .bar-row:nth-child(4) .bar-row__fill { background: #3A6B8C; }
+    .bar-row:nth-child(5) .bar-row__fill { background: #6B5B7A; }
+
+    /* Donut */
+    .ring-layout {
+      margin-top: var(--space-xl);
+      display: grid;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+    @media (min-width: 720px) {
+      .ring-layout {
+        grid-template-columns: minmax(220px, 280px) 1fr;
+        gap: var(--space-xl);
+      }
+    }
+    .ring-wrap {
+      position: relative;
+      width: min(100%, 280px);
+      margin-inline: auto;
+      aspect-ratio: 1;
+    }
+    .ring-wrap svg { width: 100%; height: 100%; }
+    .ring-center {
+      position: absolute;
+      inset: 28%;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+    .ring-center__value {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--color-on-surface);
+    }
+    .ring-center__label {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+    .ring-legend {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+    .ring-legend li {
+      display: grid;
+      grid-template-columns: 14px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 44px;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+    }
+    .ring-legend__name { font: var(--text-label-md); }
+    .ring-legend__val {
+      font: var(--text-label-md);
+      color: var(--color-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .donut-seg {
+      transition: stroke-dashoffset var(--dur) var(--ease);
+    }
+
+    /* Heatmap */
+    .heat-scroll {
+      margin-top: var(--space-xl);
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: var(--space-sm);
+      max-width: 100%;
+    }
+    .heat-inner {
+      min-width: 640px;
+      width: 100%;
+    }
+    .heat-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: var(--space-md);
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+    .heat-legend__scale {
+      display: flex;
+      gap: 3px;
+    }
+    .heat-legend__cell {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* Top books */
+    .rank-list {
+      margin: var(--space-xl) 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0;
+    }
+    .rank-item {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: var(--space-md);
+      align-items: baseline;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--color-rule);
+      min-height: 64px;
+    }
+    .rank-item:first-child { border-top: 1px solid var(--color-rule); }
+    .rank-num {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--color-primary);
+      font-variant-numeric: tabular-nums;
+    }
+    .rank-title {
+      font-family: var(--font-display);
+      font-weight: 650;
+      font-size: clamp(18px, 2.8vw, 22px);
+      line-height: 1.35;
+    }
+    .rank-author {
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+    .rank-hours {
+      font: var(--text-label-md);
+      color: var(--color-secondary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    /* Closing */
+    .closing {
+      text-align: left;
+    }
+    .share-line {
+      margin-top: var(--space-lg);
+      padding: var(--space-lg) 0;
+      border-top: 1px solid var(--color-rule);
+      border-bottom: 1px solid var(--color-rule);
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.6vw, 22px);
+      line-height: 1.6;
+      color: var(--color-on-surface);
+      max-width: 22em;
+    }
+    .cta-row {
+      margin-top: var(--space-xl);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 0 24px;
+      border-radius: var(--radius-md);
+      background: var(--color-primary);
+      color: #FBF7F2;
+      font: var(--text-label-md);
+      font-weight: 700;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 0 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(34, 30, 26, 0.28);
+      color: var(--color-on-surface);
+      font: var(--text-label-md);
+      font-weight: 600;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+    .btn-ghost:hover { transform: translateY(-1px); }
+
+    .site-footer {
+      padding: var(--space-xl) 0 calc(var(--space-xl) + 8px);
+      border-top: 1px solid var(--color-rule);
+      background: var(--color-surface-deep);
+    }
+    .site-footer p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--color-muted);
+      max-width: 42em;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .reveal.is-in,
+      .bar-row__fill,
+      .donut-seg {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .reveal:not(.is-in) .bar-row__fill { transform: none !important; }
+      .hero__cta, .btn-primary, .btn-ghost { transition: none; }
+    }
+    @media print {
+      .reveal, .reveal.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .reveal:not(.is-in) .bar-row__fill { transform: none !important; }
+      body { background: #fff; }
+      .site-header { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="brand" href="#top" aria-label="拾光书房">
+        <svg class="brand__mark" viewBox="0 0 28 28" aria-hidden="true">
+          <rect x="3" y="5" width="8" height="18" rx="1" fill="#1F6F5B"/>
+          <rect x="12" y="3" width="7" height="20" rx="1" fill="#C0392B"/>
+          <rect x="20" y="7" width="5" height="16" rx="1" fill="#B8751A"/>
+        </svg>
+        拾光书房
+      </a>
+      <span class="year-chip">2026 年度报告</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-brand">
+      <div class="wrap">
+        <div class="hero__panel" data-ud-check="hero-number">
+          <p class="hero__brand" id="hero-brand">拾光书房</p>
+          <p class="hero__sub">2026 年度阅读报告</p>
+          <div class="hero__number-row">
+            <p class="hero__number" aria-label="全年总阅读时长一百八十六小时">186</p>
+            <p class="hero__unit">小时</p>
+          </div>
+          <p class="hero__lead">这一年，你把将近八天的时间留给了书页——不喧哗，只慢慢翻过去。</p>
+          <a class="hero__cta" href="#duration">查看完整故事</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="duration" aria-labelledby="duration-title">
+      <div class="wrap">
+        <div data-ud-check="duration" class="reveal">
+          <p class="kicker">时长与天数</p>
+          <h2 class="conclusion" id="duration-title">214 个有阅读的日子，平均每次约 52 分钟。</h2>
+          <p class="note">你没有追着打卡，却把阅读织进了日常：全年累计 186 小时 42 分，其中 68% 发生在连续三天以上的阅读波段。</p>
+          <p class="note">最长一次沉浸是 2 小时 18 分——那晚你读完了《灯火未歇》的后半部。</p>
+          <div class="stat-grid">
+            <div class="stat">
+              <p class="stat__value">186:42</p>
+              <p class="stat__label">全年累计阅读时长</p>
+            </div>
+            <div class="stat">
+              <p class="stat__value">214</p>
+              <p class="stat__label">有阅读记录的天数</p>
+            </div>
+            <div class="stat">
+              <p class="stat__value">52</p>
+              <p class="stat__label">有阅读日的平均分钟数</p>
+            </div>
+          </div>
+          <p class="footnote">脚注：时长按打开阅读器且进度推进计时；锁屏与空闲超过 3 分钟不计。数据为虚构演示。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="categories" aria-labelledby="categories-title">
+      <div class="wrap">
+        <div data-ud-check="categories" class="reveal">
+          <p class="kicker">类目偏好</p>
+          <h2 class="conclusion" id="categories-title">小说仍是主场，人文与历史紧随其后。</h2>
+          <p class="note">五类书合计占全年时长的 100%。小说贡献了最多小时，但人文社科的完读率更高。</p>
+          <div class="bars" role="img" aria-label="类目阅读时长横向条形图：小说 68 小时，人文社科 42 小时，历史 31 小时，科幻 24 小时，生活随笔 21 小时">
+            <div class="bar-row">
+              <span class="bar-row__label">小说</span>
+              <div class="bar-row__track" aria-hidden="true"><div class="bar-row__fill" style="--w:100%"></div></div>
+              <span class="bar-row__value">68 小时</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-row__label">人文社科</span>
+              <div class="bar-row__track" aria-hidden="true"><div class="bar-row__fill" style="--w:62%"></div></div>
+              <span class="bar-row__value">42 小时</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-row__label">历史</span>
+              <div class="bar-row__track" aria-hidden="true"><div class="bar-row__fill" style="--w:46%"></div></div>
+              <span class="bar-row__value">31 小时</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-row__label">科幻</span>
+              <div class="bar-row__track" aria-hidden="true"><div class="bar-row__fill" style="--w:35%"></div></div>
+              <span class="bar-row__value">24 小时</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-row__label">生活随笔</span>
+              <div class="bar-row__track" aria-hidden="true"><div class="bar-row__fill" style="--w:31%"></div></div>
+              <span class="bar-row__value">21 小时</span>
+            </div>
+          </div>
+          <p class="footnote">脚注：类目按书目标签归并；一本多标签时取主标签。条长相对「小说 68 小时」归一。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="time-ring" aria-labelledby="time-title">
+      <div class="wrap">
+        <div data-ud-check="time-ring" class="reveal">
+          <p class="kicker">阅读时段</p>
+          <h2 class="conclusion" id="time-title">傍晚占去三成以上——灯一亮，书就打开了。</h2>
+          <p class="note">深夜阅读稳定在四分之一；清晨最短，却更常用于短篇与随笔。</p>
+          <div class="ring-layout">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 200 200" role="img" aria-label="阅读时段环形图：清晨 18%，午间 22%，傍晚 35%，深夜 25%">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(34,30,26,0.08)" stroke-width="22"/>
+                <!-- circumference ≈ 439.8; segments from top, clockwise -->
+                <circle class="donut-seg" cx="100" cy="100" r="70" fill="none" stroke="#B8751A" stroke-width="22"
+                  stroke-dasharray="79.2 360.6" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                <circle class="donut-seg" cx="100" cy="100" r="70" fill="none" stroke="#3A6B8C" stroke-width="22"
+                  stroke-dasharray="96.8 343" stroke-dashoffset="-79.2" transform="rotate(-90 100 100)"/>
+                <circle class="donut-seg" cx="100" cy="100" r="70" fill="none" stroke="#C0392B" stroke-width="22"
+                  stroke-dasharray="154 285.8" stroke-dashoffset="-176" transform="rotate(-90 100 100)"/>
+                <circle class="donut-seg" cx="100" cy="100" r="70" fill="none" stroke="#1F6F5B" stroke-width="22"
+                  stroke-dasharray="110 329.8" stroke-dashoffset="-330" transform="rotate(-90 100 100)"/>
+              </svg>
+              <div class="ring-center">
+                <p class="ring-center__value">35%</p>
+                <p class="ring-center__label">傍晚最多</p>
+              </div>
+            </div>
+            <ul class="ring-legend">
+              <li>
+                <span class="swatch" style="background:#B8751A" aria-hidden="true"></span>
+                <span class="ring-legend__name">清晨 05:00–11:00</span>
+                <span class="ring-legend__val">18% · 34 小时</span>
+              </li>
+              <li>
+                <span class="swatch" style="background:#3A6B8C" aria-hidden="true"></span>
+                <span class="ring-legend__name">午间 11:00–17:00</span>
+                <span class="ring-legend__val">22% · 41 小时</span>
+              </li>
+              <li>
+                <span class="swatch" style="background:#C0392B" aria-hidden="true"></span>
+                <span class="ring-legend__name">傍晚 17:00–22:00</span>
+                <span class="ring-legend__val">35% · 65 小时</span>
+              </li>
+              <li>
+                <span class="swatch" style="background:#1F6F5B" aria-hidden="true"></span>
+                <span class="ring-legend__name">深夜 22:00–05:00</span>
+                <span class="ring-legend__val">25% · 47 小时</span>
+              </li>
+            </ul>
+          </div>
+          <p class="footnote">脚注：按时段开始时刻归类；跨时段会话按实际分钟拆分。占比四舍五入，合计约 100%。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="heatmap" aria-labelledby="heat-title">
+      <div class="wrap wrap--wide">
+        <div data-ud-check="heatmap" class="reveal">
+          <p class="kicker">夜读热力</p>
+          <h2 class="conclusion" id="heat-title">冬夜更深——12 月的格子几乎被点亮。</h2>
+          <p class="note">下图为 52 周 × 7 日的夜读强度（22:00 后）。颜色越深，当晚阅读越久。窄屏可在图内横向滑动。</p>
+          <div class="heat-scroll" tabindex="0" aria-label="夜读热力日历，可横向滚动">
+            <div class="heat-inner">
+              <svg id="heat-svg" viewBox="0 0 820 128" width="820" height="128" role="img" aria-label="52 周乘 7 日夜读热力格，颜色深浅表示当晚阅读强度"></svg>
+            </div>
+          </div>
+          <div class="heat-legend" aria-hidden="true">
+            <span>少</span>
+            <div class="heat-legend__scale">
+              <span class="heat-legend__cell" style="background:#E4DED3"></span>
+              <span class="heat-legend__cell" style="background:#C8D9D2"></span>
+              <span class="heat-legend__cell" style="background:#7AADA0"></span>
+              <span class="heat-legend__cell" style="background:#1F6F5B"></span>
+              <span class="heat-legend__cell" style="background:#C0392B"></span>
+            </div>
+            <span>多</span>
+          </div>
+          <p class="footnote">脚注：热力仅统计 22:00–05:00 的阅读分钟；空白日表示无夜读。演示数据由确定性种子生成，非真实用户记录。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="top-books" aria-labelledby="books-title">
+      <div class="wrap">
+        <div data-ud-check="top-books" class="reveal">
+          <p class="kicker">年度书单</p>
+          <h2 class="conclusion" id="books-title">五本书带走了你最多的夜晚。</h2>
+          <p class="note">按累计阅读时长排序。书名与作者均为虚构，用于演示排行榜结构。</p>
+          <ol class="rank-list">
+            <li class="rank-item">
+              <span class="rank-num" aria-hidden="true">01</span>
+              <div>
+                <p class="rank-title">《灯火未歇》</p>
+                <p class="rank-author">林晚晴 · 小说</p>
+              </div>
+              <span class="rank-hours">28 小时</span>
+            </li>
+            <li class="rank-item">
+              <span class="rank-num" aria-hidden="true">02</span>
+              <div>
+                <p class="rank-title">《北窗笔记》</p>
+                <p class="rank-author">沈予安 · 人文社科</p>
+              </div>
+              <span class="rank-hours">22 小时</span>
+            </li>
+            <li class="rank-item">
+              <span class="rank-num" aria-hidden="true">03</span>
+              <div>
+                <p class="rank-title">《潮汐与城》</p>
+                <p class="rank-author">方叙 · 历史</p>
+              </div>
+              <span class="rank-hours">19 小时</span>
+            </li>
+            <li class="rank-item">
+              <span class="rank-num" aria-hidden="true">04</span>
+              <div>
+                <p class="rank-title">《冬日书信》</p>
+                <p class="rank-author">顾清禾 · 生活随笔</p>
+              </div>
+              <span class="rank-hours">16 小时</span>
+            </li>
+            <li class="rank-item">
+              <span class="rank-num" aria-hidden="true">05</span>
+              <div>
+                <p class="rank-title">《星图手记》</p>
+                <p class="rank-author">叶知秋 · 科幻</p>
+              </div>
+              <span class="rank-hours">14 小时</span>
+            </li>
+          </ol>
+          <p class="footnote">脚注：同一本书的多次打开合并计时；试读不足 10 分钟不计入榜单。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="closing" aria-labelledby="closing-title">
+      <div class="wrap">
+        <div data-ud-check="closing" class="reveal closing">
+          <p class="kicker">结语</p>
+          <h2 class="conclusion" id="closing-title">书还在书架上，故事可以继续写下去。</h2>
+          <p class="note">这一年你读得不算迅猛，但足够诚实。把这份报告留给明年的自己，或者分享给也爱慢读的朋友。</p>
+          <blockquote class="share-line">
+            「2026，我在拾光书房读了 186 小时。灯下有字，就够了。」
+          </blockquote>
+          <div class="cta-row">
+            <a class="btn-primary" href="#top" aria-label="生成我的报告（演示）">生成我的报告</a>
+            <button type="button" class="btn-ghost" id="share-btn" aria-label="复制分享语">复制分享语</button>
+          </div>
+          <p class="footnote" id="share-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>演示页面，由 Ultimate Design agent skill 设计 · 「拾光书房」与全部数据均为虚构。</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function forceReveal() {
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          el.classList.add("is-in");
+        });
+      }
+
+      function buildHeatmap() {
+        var svg = document.getElementById("heat-svg");
+        if (!svg) return;
+        var ns = "http://www.w3.org/2000/svg";
+        var cell = 12;
+        var gap = 3;
+        var left = 28;
+        var top = 18;
+        var colors = ["#E4DED3", "#C8D9D2", "#7AADA0", "#1F6F5B", "#C0392B"];
+        var days = ["一", "二", "三", "四", "五", "六", "日"];
+
+        function seeded(i) {
+          var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453;
+          return x - Math.floor(x);
+        }
+
+        days.forEach(function (label, i) {
+          if (i % 2 === 1) return;
+          var t = document.createElementNS(ns, "text");
+          t.setAttribute("x", 0);
+          t.setAttribute("y", top + i * (cell + gap) + cell - 2);
+          t.setAttribute("fill", "#5C564E");
+          t.setAttribute("font-size", "10");
+          t.setAttribute("font-family", "Noto Sans SC, sans-serif");
+          t.textContent = label;
+          svg.appendChild(t);
+        });
+
+        for (var w = 0; w < 52; w++) {
+          if (w % 4 === 0) {
+            var m = document.createElementNS(ns, "text");
+            m.setAttribute("x", left + w * (cell + gap));
+            m.setAttribute("y", 10);
+            m.setAttribute("fill", "#8A847A");
+            m.setAttribute("font-size", "9");
+            m.setAttribute("font-family", "Noto Sans SC, sans-serif");
+            m.textContent = String(Math.floor(w / 4) + 1) + "月";
+            svg.appendChild(m);
+          }
+          for (var d = 0; d < 7; d++) {
+            var idx = w * 7 + d;
+            var r = seeded(idx + 7);
+            var level = 0;
+            if (r > 0.22) level = 1;
+            if (r > 0.45) level = 2;
+            if (r > 0.68) level = 3;
+            if (r > 0.86) level = 4;
+            if (w >= 44) level = Math.min(4, level + 1);
+            if (d < 4 && r < 0.35) level = Math.max(0, level - 1);
+            var rect = document.createElementNS(ns, "rect");
+            rect.setAttribute("x", left + w * (cell + gap));
+            rect.setAttribute("y", top + d * (cell + gap));
+            rect.setAttribute("width", cell);
+            rect.setAttribute("height", cell);
+            rect.setAttribute("rx", 2);
+            rect.setAttribute("fill", colors[level]);
+            var title = document.createElementNS(ns, "title");
+            title.textContent = "第 " + (w + 1) + " 周 · 周" + days[d] + " · 强度 " + level;
+            rect.appendChild(title);
+            svg.appendChild(rect);
+          }
+        }
+      }
+
+      buildHeatmap();
+
+      if (reduce) {
+        forceReveal();
+      } else {
+        var nodes = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+          nodes.forEach(function (el) { io.observe(el); });
+        } else {
+          forceReveal();
+        }
+        window.setTimeout(forceReveal, 700);
+      }
+
+      window.addEventListener("beforeprint", forceReveal);
+
+      var shareBtn = document.getElementById("share-btn");
+      var statusEl = document.getElementById("share-status");
+      var shareText = "2026，我在拾光书房读了 186 小时。灯下有字，就够了。";
+      if (shareBtn) {
+        shareBtn.addEventListener("click", function () {
+          function ok() {
+            if (statusEl) statusEl.textContent = "分享语已复制（演示）。";
+          }
+          function fail() {
+            if (statusEl) statusEl.textContent = "无法自动复制，请手动选中分享语。";
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareText).then(ok).catch(fail);
+          } else {
+            try {
+              var ta = document.createElement("textarea");
+              ta.value = shareText;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              document.body.removeChild(ta);
+              ok();
+            } catch (e) {
+              fail();
+            }
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
