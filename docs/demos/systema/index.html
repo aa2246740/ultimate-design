@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SYSTEMA 2026 — Design Systems Conference</title>
+  <meta name="description" content="SYSTEMA 2026 is a one-day conference on design systems. 16 October 2026, Meridian Hall. Speakers, schedule, and registration.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #E30613;
+      --secondary: #000000;
+      --tertiary: #5A5A5A;
+      --neutral: #D0D0D0;
+      --surface: #FFFFFF;
+      --on-surface: #000000;
+      --error: #B00020;
+      --mute: #5A5A5A;
+      --rule: #000000;
+      --rule-soft: rgba(0, 0, 0, 0.18);
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --max: 1120px;
+      --pad: clamp(16px, 4vw, 40px);
+      --cols: 12;
+      --gutter: 0px;
+      --focus: 3px solid var(--primary);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 16px;
+      min-height: 44px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .skip:focus { left: 16px; top: 16px; }
+
+    .wrap {
+      width: min(100% - (var(--pad) * 2), var(--max));
+      margin-inline: auto;
+    }
+
+    /* Visible modular grid backdrop on major sections */
+    .grid-shell {
+      position: relative;
+    }
+    .grid-shell::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        repeating-linear-gradient(
+          to right,
+          transparent 0,
+          transparent calc((100% / 12) - 1px),
+          var(--rule-soft) calc((100% / 12) - 1px),
+          var(--rule-soft) calc(100% / 12)
+        );
+      opacity: 1;
+    }
+    .grid-shell > * { position: relative; z-index: 1; }
+
+    /* Navigation */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-shell {
+      padding-block: 8px;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      min-height: 48px;
+    }
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 4px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--primary); }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .nav-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .nav-cta {
+      background: var(--primary);
+      color: #fff !important;
+      text-decoration: none !important;
+    }
+    .nav-cta:hover { filter: brightness(0.92); }
+
+    /* Hero poster */
+    .hero {
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .hero-shell {
+      padding-block: clamp(40px, 7vw, 72px) clamp(48px, 8vw, 88px);
+    }
+    .hero-inner {
+      min-height: min(70vh, 700px);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      align-content: start;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+    .hero-meta strong {
+      color: var(--on-surface);
+      font-weight: 700;
+    }
+    .hero-brand {
+      margin: 0;
+      font-size: clamp(64px, 14vw, 148px);
+      font-weight: 700;
+      line-height: 0.86;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      max-width: 12ch;
+      text-wrap: balance;
+    }
+    .hero-brand .year {
+      color: var(--primary);
+      display: inline-block;
+    }
+    .hero-lead {
+      margin: 0;
+      max-width: 36ch;
+      font-size: clamp(18px, 2.2vw, 22px);
+      line-height: 1.35;
+      font-weight: 500;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 48px;
+      padding: 12px 22px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+      color: var(--on-surface);
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { filter: brightness(0.93); }
+    .btn-ghost:hover { background: #111; color: #fff; }
+
+    .hero-poster {
+      position: relative;
+      margin-top: clamp(8px, 2vw, 24px);
+      min-height: 140px;
+    }
+    .diagonal {
+      position: absolute;
+      left: 0;
+      top: 12px;
+      transform: rotate(-12deg);
+      transform-origin: left center;
+      max-width: min(92vw, 520px);
+      padding: 10px 14px;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+      font-size: clamp(14px, 2.4vw, 20px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .diagonal em {
+      font-style: normal;
+      color: var(--primary);
+    }
+
+    @media (min-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        align-items: end;
+        column-gap: 32px;
+      }
+      .hero-copy { grid-column: 1; }
+      .hero-poster {
+        grid-column: 2;
+        grid-row: 1 / span 4;
+        align-self: center;
+        min-height: 280px;
+        margin-top: 0;
+      }
+      .diagonal {
+        left: 8%;
+        top: 28%;
+        max-width: 100%;
+      }
+    }
+
+    /* Section chrome */
+    .section {
+      border-bottom: 1px solid var(--rule);
+    }
+    .section-shell {
+      padding-block: clamp(48px, 8vw, 88px);
+    }
+    .section-inner {
+      /* marked content only — padding lives on .section-shell */
+    }
+    .section-head {
+      display: grid;
+      gap: 12px;
+      margin-bottom: clamp(28px, 5vw, 48px);
+      max-width: 48ch;
+    }
+    .section-kicker {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .section-title {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+    .section-lead {
+      margin: 0;
+      color: var(--mute);
+      font-size: 17px;
+      max-width: 42ch;
+    }
+
+    /* Speakers — modular index, not cards */
+    .speaker-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+    .speaker {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .speaker-name {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .speaker-role {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mute);
+      letter-spacing: 0.02em;
+    }
+    .speaker-talk {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      max-width: 40ch;
+    }
+    .speaker-talk::before {
+      content: "";
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 10px;
+      background: var(--primary);
+      vertical-align: -1px;
+    }
+    @media (min-width: 720px) {
+      .speaker {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        align-items: baseline;
+        padding: 24px 0;
+      }
+      .speaker-meta { grid-column: 1; }
+      .speaker-talk { grid-column: 2; }
+    }
+
+    /* Schedule table */
+    .schedule-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--rule);
+      background:
+        linear-gradient(to right, var(--surface) 70%, transparent) left center / 32px 100% no-repeat local,
+        linear-gradient(to left, var(--surface) 70%, transparent) right center / 32px 100% no-repeat local;
+    }
+    .schedule-scroll::-webkit-scrollbar { height: 8px; }
+    .schedule-scroll::-webkit-scrollbar-thumb { background: var(--neutral); }
+    .schedule-hint {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+    @media (min-width: 720px) {
+      .schedule-hint { display: none; }
+    }
+    table.schedule {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    .schedule th,
+    .schedule td {
+      padding: 16px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--rule);
+    }
+    .schedule thead th {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--rule);
+      background: var(--surface);
+    }
+    .schedule tbody tr:last-child td { border-bottom: 0; }
+    .schedule .time {
+      width: 7.5rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .schedule .session { font-weight: 600; }
+    .schedule .speaker-cell { color: var(--mute); font-weight: 500; }
+    .schedule tr.is-break td {
+      background: #f5f5f5;
+      font-weight: 500;
+      color: var(--mute);
+    }
+    .schedule tr.is-keynote .session::after {
+      content: " · Keynote";
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    /* Venue */
+    .venue-grid {
+      display: grid;
+      gap: 28px;
+    }
+    @media (min-width: 800px) {
+      .venue-grid {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+    }
+    .venue-block h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .venue-block p {
+      margin: 0 0 12px;
+      max-width: 42ch;
+    }
+    .venue-address {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+    .map-mark {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 4 / 3;
+      border: 1px solid var(--rule);
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 23px, var(--rule-soft) 23px, var(--rule-soft) 24px),
+        repeating-linear-gradient(90deg, transparent, transparent 23px, var(--rule-soft) 23px, var(--rule-soft) 24px);
+      position: relative;
+    }
+    .map-mark svg {
+      position: absolute;
+      inset: 18%;
+      width: 64%;
+      height: 64%;
+    }
+
+    /* Register */
+    .register {
+      background: var(--secondary);
+      color: #fff;
+      border-bottom: 1px solid var(--rule);
+    }
+    .register .section-kicker { color: var(--primary); }
+    .register .section-title { color: #fff; }
+    .register .section-lead { color: rgba(255, 255, 255, 0.72); }
+    .register-shell {
+      padding-block: clamp(56px, 9vw, 96px);
+    }
+    .register-inner {
+      display: grid;
+      gap: 28px;
+      max-width: 40rem;
+    }
+    .register .btn-primary {
+      justify-self: start;
+      min-width: 220px;
+    }
+    .register-note {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 40ch;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 0;
+    }
+    .footer-shell {
+      padding-block: 36px 48px;
+    }
+    .footer-inner {
+      display: grid;
+      gap: 16px;
+    }
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 28px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-brand {
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .footer-demo {
+      margin: 0;
+      font-size: 13px;
+      color: var(--mute);
+      max-width: 72ch;
+      line-height: 1.45;
+    }
+
+    /* Motion reveals */
+    .rise {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+    .rise.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    .rise-d1 { transition-delay: 60ms; }
+    .rise-d2 { transition-delay: 120ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rise {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      .rise {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .site-header { position: static; }
+      .diagonal { transform: none; position: static; white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap nav-shell">
+      <div class="nav-inner" data-ud-check="navigation">
+        <a class="nav-brand" href="#top">Systema <span>2026</span></a>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#speakers">Speakers</a></li>
+            <li><a href="#schedule">Schedule</a></li>
+            <li><a href="#venue">Venue</a></li>
+            <li><a class="nav-cta" href="#register">Register</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero grid-shell" id="top" aria-labelledby="hero-brand">
+      <div class="wrap hero-shell">
+      <div class="hero-inner" data-ud-check="hero">
+        <div class="hero-copy">
+          <p class="hero-meta rise" data-motion="hero">
+            <strong>16 Oct 2026</strong>
+            <span>Meridian Hall</span>
+            <span>One day</span>
+          </p>
+          <h1 class="hero-brand rise rise-d1" id="hero-brand" data-motion="hero">
+            Systema <span class="year">2026</span>
+          </h1>
+          <p class="hero-lead rise rise-d2" data-motion="hero">
+            A one-day conference on the systems that keep products coherent — tokens, components, governance, and the people who ship them.
+          </p>
+          <div class="hero-actions rise rise-d2" data-motion="hero">
+            <a class="btn btn-primary" href="#register">Register for SYSTEMA</a>
+            <a class="btn btn-ghost" href="#schedule">View the schedule</a>
+          </div>
+        </div>
+        <div class="hero-poster" aria-hidden="true">
+          <p class="diagonal rise rise-d1" data-motion="hero">Design systems · <em>in public</em></p>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section grid-shell" id="speakers" aria-labelledby="speakers-title">
+      <div class="wrap section-shell">
+      <div class="section-inner" data-ud-check="speakers">
+        <header class="section-head rise" data-motion="section">
+          <p class="section-kicker">01 — Speakers</p>
+          <h2 class="section-title" id="speakers-title">Eight voices on systems work</h2>
+          <p class="section-lead">Practitioners who build libraries, write the rules, and keep teams honest when the product ships weekly.</p>
+        </header>
+        <div class="speaker-list" role="list">
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Mira Keller</h3>
+              <p class="speaker-role">Design Systems Lead, Northline</p>
+            </div>
+            <p class="speaker-talk">Tokens as Contracts</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Elias Vogt</h3>
+              <p class="speaker-role">Product Design Director, Atlas Bank</p>
+            </div>
+            <p class="speaker-talk">Governance Without Bureaucracy</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Jun Park</h3>
+              <p class="speaker-role">Staff Engineer, Lattice UI</p>
+            </div>
+            <p class="speaker-talk">The Component Boundary Problem</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Sofia Mendes</h3>
+              <p class="speaker-role">Brand Systems Lead, Meridian Press</p>
+            </div>
+            <p class="speaker-talk">Type as Infrastructure</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Owen Brandt</h3>
+              <p class="speaker-role">Accessibility Lead, CivicStack</p>
+            </div>
+            <p class="speaker-talk">Contrast Is a System</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Amina Okoro</h3>
+              <p class="speaker-role">Design Ops Manager, Fieldwork</p>
+            </div>
+            <p class="speaker-talk">Shipping the Library</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Theo Rinaldi</h3>
+              <p class="speaker-role">Research Lead, Signal Lab</p>
+            </div>
+            <p class="speaker-talk">Measuring Consistency</p>
+          </article>
+          <article class="speaker rise" data-motion="section" role="listitem">
+            <div class="speaker-meta">
+              <h3 class="speaker-name">Lena Hartmann</h3>
+              <p class="speaker-role">Principal Designer, Form &amp; Co</p>
+            </div>
+            <p class="speaker-talk">Diagramming Decisions</p>
+          </article>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule" aria-labelledby="schedule-title">
+      <div class="wrap section-shell">
+      <div class="section-inner" data-ud-check="schedule">
+        <header class="section-head rise" data-motion="section">
+          <p class="section-kicker">02 — Schedule</p>
+          <h2 class="section-title" id="schedule-title">Friday, 16 October 2026</h2>
+          <p class="section-lead">One hall. One track. From doors at 09:00 to a short reception after the closing talk.</p>
+        </header>
+        <p class="schedule-hint" aria-hidden="true">Scroll sideways to read the full table</p>
+        <div class="schedule-scroll rise" data-motion="section" role="region" aria-label="Full-day schedule" tabindex="0">
+          <table class="schedule">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Session</th>
+                <th scope="col">Speaker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-break">
+                <td class="time">09:00</td>
+                <td class="session" colspan="2">Doors open · Badge pickup · Coffee</td>
+              </tr>
+              <tr class="is-keynote">
+                <td class="time">09:30</td>
+                <td class="session">Tokens as Contracts</td>
+                <td class="speaker-cell">Mira Keller</td>
+              </tr>
+              <tr>
+                <td class="time">10:15</td>
+                <td class="session">Governance Without Bureaucracy</td>
+                <td class="speaker-cell">Elias Vogt</td>
+              </tr>
+              <tr class="is-break">
+                <td class="time">11:00</td>
+                <td class="session" colspan="2">Break · 20 minutes</td>
+              </tr>
+              <tr>
+                <td class="time">11:20</td>
+                <td class="session">The Component Boundary Problem</td>
+                <td class="speaker-cell">Jun Park</td>
+              </tr>
+              <tr class="is-break">
+                <td class="time">12:05</td>
+                <td class="session" colspan="2">Lunch · Meridian Hall lobby</td>
+              </tr>
+              <tr>
+                <td class="time">13:15</td>
+                <td class="session">Type as Infrastructure</td>
+                <td class="speaker-cell">Sofia Mendes</td>
+              </tr>
+              <tr>
+                <td class="time">14:00</td>
+                <td class="session">Contrast Is a System</td>
+                <td class="speaker-cell">Owen Brandt</td>
+              </tr>
+              <tr class="is-break">
+                <td class="time">14:45</td>
+                <td class="session" colspan="2">Break · 20 minutes</td>
+              </tr>
+              <tr>
+                <td class="time">15:05</td>
+                <td class="session">Shipping the Library</td>
+                <td class="speaker-cell">Amina Okoro</td>
+              </tr>
+              <tr>
+                <td class="time">15:50</td>
+                <td class="session">Measuring Consistency</td>
+                <td class="speaker-cell">Theo Rinaldi</td>
+              </tr>
+              <tr>
+                <td class="time">16:35</td>
+                <td class="session">Diagramming Decisions</td>
+                <td class="speaker-cell">Lena Hartmann</td>
+              </tr>
+              <tr class="is-break">
+                <td class="time">17:15</td>
+                <td class="session" colspan="2">Reception · Ends 18:30</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section grid-shell" id="venue" aria-labelledby="venue-title">
+      <div class="wrap section-shell">
+      <div class="section-inner" data-ud-check="venue">
+        <header class="section-head rise" data-motion="section">
+          <p class="section-kicker">03 — Venue</p>
+          <h2 class="section-title" id="venue-title">Meridian Hall</h2>
+          <p class="section-lead">A single auditorium with clear sightlines, working Wi-Fi, and room enough for hallway debates between talks.</p>
+        </header>
+        <div class="venue-grid rise" data-motion="section">
+          <div class="venue-block">
+            <h3>Address</h3>
+            <p class="venue-address">Meridian Hall<br>400 Grid Avenue<br>Meridian Hall District</p>
+            <h3>Travel</h3>
+            <p>Arrive via Line B to Grid Station (6-minute walk) or park in Lot M under the hall. Doors open at 09:00; badge pickup closes at 09:25. Bring a laptop if you want to sketch during workshops — power strips sit on every other row.</p>
+            <h3>Access</h3>
+            <p>Step-free entry on the west side. Hearing loop available in the main hall. Request assistance at register@systema.example before 9 October.</p>
+          </div>
+          <div class="venue-block">
+            <h3>Site plan</h3>
+            <div class="map-mark" role="img" aria-label="Schematic plan of Meridian Hall: entrance at south, auditorium center, lobby north">
+              <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="20" y="20" width="160" height="110" stroke="#000" stroke-width="1.5"/>
+                <rect x="70" y="40" width="60" height="50" stroke="#E30613" stroke-width="2"/>
+                <path d="M100 90 V130" stroke="#000" stroke-width="1.5"/>
+                <path d="M85 130 H115" stroke="#000" stroke-width="1.5"/>
+                <text x="100" y="68" text-anchor="middle" fill="#000" font-family="Helvetica Neue, Arial, sans-serif" font-size="10" font-weight="700">HALL</text>
+                <text x="100" y="122" text-anchor="middle" fill="#000" font-family="Helvetica Neue, Arial, sans-serif" font-size="9" font-weight="600">ENTRY</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="register" id="register" aria-labelledby="register-title">
+      <div class="wrap register-shell">
+      <div class="register-inner" data-ud-check="register">
+        <p class="section-kicker rise" data-motion="section">04 — Register</p>
+        <h2 class="section-title rise" id="register-title" data-motion="section">Reserve a seat</h2>
+        <p class="section-lead rise" data-motion="section">
+          General admission is CHF 180. Includes lunch, the reception, and the printed schedule poster. Capacity is capped at 220.
+        </p>
+        <a class="btn btn-primary rise" data-motion="section" href="mailto:register@systema.example?subject=SYSTEMA%202026%20registration">
+          Request registration
+        </a>
+        <p class="register-note rise" data-motion="section">
+          Visual demo only — the mailto opens a draft to a fictional address. No payment is collected on this page.
+        </p>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-shell">
+    <div class="footer-inner" data-ud-check="footer">
+      <div class="footer-row">
+        <p class="footer-brand">SYSTEMA 2026 · Meridian Hall · 16 Oct</p>
+        <ul class="footer-links">
+          <li><a href="#speakers">Speakers</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#venue">Venue</a></li>
+          <li><a href="mailto:register@systema.example">Contact</a></li>
+        </ul>
+      </div>
+      <p class="footer-demo">Demo page designed with the Ultimate Design agent skill · SYSTEMA is a fictional event.</p>
+    </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nodes = Array.prototype.slice.call(document.querySelectorAll(".rise, [data-motion]"));
+      var io = null;
+
+      function revealAll(instant) {
+        nodes.forEach(function (el) {
+          if (instant) {
+            el.style.transition = "none";
+            el.style.transitionDelay = "0s";
+          }
+          el.classList.add("is-in");
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          if (io) {
+            try { io.unobserve(el); } catch (e) {}
+          }
+        });
+      }
+
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce || !("IntersectionObserver" in window)) {
+        revealAll(true);
+        return;
+      }
+
+      io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      );
+
+      nodes.forEach(function (el) { io.observe(el); });
+
+      requestAnimationFrame(function () {
+        document.querySelectorAll('[data-motion="hero"]').forEach(function (el) {
+          el.classList.add("is-in");
+          if (io) io.unobserve(el);
+        });
+      });
+
+      window.setTimeout(function () { revealAll(true); }, 700);
+
+      window.addEventListener("beforeprint", function () { revealAll(true); });
+    })();
+  </script>
+</body>
+</html>

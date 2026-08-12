@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>形式与功能：包豪斯百年 — 新厅美术馆</title>
+  <meta name="description" content="新厅美术馆展览「形式与功能：包豪斯百年」。海报式几何构成、三展区导视与票务。虚构演示页。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #E30613;
+      --yellow: #FFD100;
+      --blue: #0057B8;
+      --ink: #111111;
+      --paper: #FFFFFF;
+      --neutral: #E6E6E6;
+      --mute: #4A4A4A;
+      --primary: #E30613;
+      --secondary: #FFD100;
+      --tertiary: #0057B8;
+      --surface: #FFFFFF;
+      --on-surface: #111111;
+      --error: #B00020;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 64px;
+      --font-display: "Space Grotesk", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      --max: 1120px;
+      --radius: 0px;
+      --focus: 3px solid var(--blue);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--yellow);
+      color: var(--ink);
+      padding: 12px 16px;
+      font-weight: 700;
+      min-height: 44px;
+    }
+    .skip:focus { left: 12px; top: 12px; }
+
+    .wrap {
+      width: min(100% - 32px, var(--max));
+      margin-inline: auto;
+    }
+
+    /* —— Navigation —— */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--paper);
+      border-bottom: 3px solid var(--ink);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      min-height: 56px;
+    }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 4px 0;
+      white-space: nowrap;
+    }
+    .nav-brand span {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: var(--red);
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border: 2px solid transparent;
+    }
+    .nav-links a:hover {
+      border-color: var(--ink);
+      background: var(--yellow);
+    }
+
+    /* —— Poster hero —— */
+    .poster {
+      position: relative;
+      background: var(--paper);
+      border-bottom: 3px solid var(--ink);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .poster-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(17,17,17,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17,17,17,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .poster-inner {
+      position: relative;
+      z-index: 2;
+      margin-top: 40px;
+      padding: 28px 0 48px;
+      min-height: min(88vh, 820px);
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: end;
+    }
+    .poster-copy { position: relative; z-index: 3; max-width: 38rem; }
+    .poster-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 6.5vw, 72px);
+      line-height: 1.02;
+      margin: 0 0 16px;
+      letter-spacing: -0.03em;
+    }
+    .poster-kicker .mark {
+      width: clamp(28px, 4vw, 44px);
+      height: clamp(28px, 4vw, 44px);
+      background: var(--blue);
+      flex-shrink: 0;
+    }
+    .poster-title {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+    .poster-title em {
+      font-style: normal;
+      color: var(--red);
+    }
+    .poster-sub {
+      margin: 0 0 28px;
+      font-size: clamp(16px, 2.2vw, 22px);
+      font-weight: 700;
+      line-height: 1.35;
+      max-width: 28ch;
+    }
+    .poster-sub .yr {
+      font-family: var(--font-display);
+      font-weight: 700;
+      background: var(--yellow);
+      color: var(--ink);
+      padding: 2px 8px;
+      display: inline-block;
+    }
+    .poster-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 48px;
+      padding: 12px 20px;
+      border: 3px solid var(--ink);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      background: var(--ink);
+      color: var(--paper);
+      transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+    }
+    .btn:hover { background: var(--red); border-color: var(--ink); }
+    .btn-alt {
+      background: var(--yellow);
+      color: var(--ink);
+    }
+    .btn-alt:hover { background: var(--blue); color: var(--paper); }
+
+    .poster-art {
+      position: relative;
+      z-index: 2;
+      min-height: 320px;
+      align-self: stretch;
+      display: grid;
+      place-items: center;
+    }
+    .poster-stage {
+      position: relative;
+      width: min(100%, 420px);
+      aspect-ratio: 1;
+      max-height: 420px;
+    }
+    .geo {
+      position: absolute;
+      border: 3px solid var(--ink);
+    }
+    .geo-circle {
+      width: 58%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--red);
+      top: 8%;
+      left: 6%;
+      z-index: 1;
+    }
+    .geo-tri-svg {
+      position: absolute;
+      top: 14%;
+      right: 2%;
+      z-index: 2;
+      width: 48%;
+      height: auto;
+      overflow: visible;
+    }
+    .geo-square {
+      width: 42%;
+      aspect-ratio: 1;
+      background: var(--blue);
+      bottom: 6%;
+      right: 14%;
+      z-index: 3;
+      transform: rotate(12deg);
+    }
+    .geo-bar {
+      width: 18%;
+      height: 70%;
+      background: var(--ink);
+      left: 42%;
+      bottom: 0;
+      z-index: 0;
+      border: none;
+    }
+    .date-mega {
+      position: absolute;
+      left: -4%;
+      bottom: -2%;
+      z-index: 4;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(72px, 14vw, 128px);
+      line-height: 0.8;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      user-select: none;
+    }
+    .date-mega span {
+      display: block;
+      color: var(--red);
+    }
+
+    /* Rotating text strip — clipped so rotation stays in-bounds */
+    .strip-clip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 38%;
+      height: 52px;
+      overflow: hidden;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .strip {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      width: max-content;
+      min-height: 48px;
+      padding: 10px 28px;
+      background: var(--ink);
+      color: var(--yellow);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transform: rotate(-6deg) translateX(-1%);
+      transform-origin: center center;
+    }
+    .strip b { color: var(--paper); font-weight: 700; }
+
+    /* —— Sections —— */
+    section.block {
+      padding: 56px 0;
+      border-bottom: 3px solid var(--ink);
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px 20px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+    .section-mark {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      flex-shrink: 0;
+    }
+    .section-mark.circle { border-radius: 50%; background: var(--red); }
+    .section-mark.tri {
+      width: 0;
+      height: 0;
+      border: none;
+      border-left: 24px solid transparent;
+      border-right: 24px solid transparent;
+      border-bottom: 42px solid var(--yellow);
+      background: transparent;
+    }
+    .section-mark.sq { background: var(--blue); }
+    .section-mark.bar { background: var(--ink); width: 16px; }
+    .section-label {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+    .section-title {
+      margin: 4px 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .lede {
+      margin: 0;
+      max-width: 42rem;
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink);
+    }
+
+    /* Intro */
+    .intro-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+      gap: 32px;
+      align-items: start;
+    }
+    .intro-meta {
+      border: 3px solid var(--ink);
+      padding: 20px;
+      background: var(--neutral);
+      display: grid;
+      gap: 14px;
+    }
+    .intro-meta dt {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+    .intro-meta dd {
+      margin: 4px 0 0;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .intro-meta .hl {
+      background: var(--yellow);
+      color: var(--ink);
+      display: inline-block;
+      padding: 2px 6px;
+    }
+
+    /* Halls */
+    .halls-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .hall {
+      border: 3px solid var(--ink);
+      padding: 24px 20px 28px;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--paper);
+      transition: transform 220ms ease;
+    }
+    .hall:hover { transform: translateY(-2px); }
+    .hall-icon {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border: 3px solid var(--ink);
+      flex-shrink: 0;
+    }
+    .hall-icon svg { display: block; }
+    .hall[data-shape="circle"] .hall-icon { background: var(--red); }
+    .hall[data-shape="triangle"] .hall-icon { background: var(--yellow); }
+    .hall[data-shape="square"] .hall-icon { background: var(--blue); }
+    .hall-num {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--mute);
+    }
+    .hall h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .hall p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+    .hall-way {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 2px solid var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* Visit */
+    .visit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .visit-item {
+      border-top: 3px solid var(--ink);
+      padding-top: 16px;
+    }
+    .visit-item h3 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .visit-item p, .visit-item ul {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .visit-item ul {
+      padding-left: 1.1em;
+    }
+    .visit-item li { margin-bottom: 4px; }
+    .visit-band {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      align-items: center;
+      border: 3px solid var(--ink);
+      background: var(--blue);
+      color: var(--paper);
+      padding: 16px 20px;
+    }
+    .visit-band .dot {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--yellow);
+      border: 3px solid var(--ink);
+    }
+    .visit-band p {
+      margin: 0;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--paper);
+    }
+
+    /* Tickets */
+    .tickets-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .ticket {
+      position: relative;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 220px;
+      overflow: hidden;
+    }
+    .ticket-head {
+      padding: 16px 18px 12px;
+      border-bottom: 2px dashed var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      background: var(--neutral);
+    }
+    .ticket[data-tier="general"] .ticket-head { background: var(--red); color: var(--paper); }
+    .ticket[data-tier="student"] .ticket-head { background: var(--yellow); color: var(--ink); }
+    .ticket[data-tier="member"] .ticket-head { background: var(--blue); color: var(--paper); }
+    .ticket-head h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .ticket-head .code {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      opacity: 0.9;
+    }
+    .ticket-body {
+      padding: 18px;
+    }
+    .ticket-body p {
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .ticket-price {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .ticket-price small {
+      font-size: 16px;
+      font-weight: 700;
+      margin-left: 2px;
+    }
+    .ticket-foot {
+      position: relative;
+      padding: 14px 18px 18px;
+      border-top: 2px dashed var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background:
+        radial-gradient(circle at 0 50%, transparent 10px, var(--paper) 10.5px) left center / 12px 100% no-repeat,
+        radial-gradient(circle at 100% 50%, transparent 10px, var(--paper) 10.5px) right center / 12px 100% no-repeat,
+        var(--paper);
+    }
+    .ticket-foot::before,
+    .ticket-foot::after {
+      content: "";
+      position: absolute;
+      top: -11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      box-sizing: border-box;
+    }
+    .ticket-foot::before { left: -13px; }
+    .ticket-foot::after { right: -13px; }
+    .ticket-note {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--mute);
+    }
+    .ticket .btn {
+      padding: 10px 14px;
+      min-height: 44px;
+      font-size: 13px;
+    }
+    .ticket[data-tier="student"] .btn {
+      background: var(--ink);
+      color: var(--yellow);
+    }
+    .ticket[data-tier="student"] .btn:hover {
+      background: var(--blue);
+      color: var(--paper);
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 40px 0 48px;
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .footer-inner {
+      display: grid;
+      gap: 20px;
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-brand .trio {
+      display: flex;
+      gap: 4px;
+    }
+    .footer-brand .trio i {
+      display: block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--paper);
+    }
+    .footer-brand .trio i:nth-child(1) { border-radius: 50%; background: var(--red); }
+    .footer-brand .trio i:nth-child(2) {
+      width: 0; height: 0; border: none;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 12px solid var(--yellow);
+      background: transparent;
+    }
+    .footer-brand .trio i:nth-child(3) { background: var(--blue); }
+    .footer-meta {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.82);
+      max-width: 48rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      color: var(--yellow);
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 360ms ease, transform 360ms ease;
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media print {
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .site-nav { position: static; }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .poster-inner {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 28px 0 40px;
+        gap: 20px;
+      }
+      .poster-art { min-height: 280px; order: -1; }
+      .poster-stage { width: min(100%, 340px); }
+      .intro-panel,
+      .halls-grid,
+      .visit-grid,
+      .tickets-grid {
+        grid-template-columns: 1fr;
+      }
+      .strip-clip { top: 28%; }
+      .date-mega { font-size: clamp(64px, 18vw, 96px); }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 24px, var(--max)); }
+      .nav-inner { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .nav-links { width: 100%; justify-content: flex-start; }
+      .geo-circle { width: 52%; }
+      .geo-tri-svg { width: 52%; right: 4%; }
+      .geo-square { width: 38%; }
+      .visit-band { grid-template-columns: 1fr; }
+      .ticket-foot { flex-wrap: wrap; }
+      section.block { padding: 44px 0; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+
+  <header class="site-nav">
+    <div class="wrap">
+      <div class="nav-inner" data-ud-check="navigation">
+        <a class="nav-brand" href="#top"><span aria-hidden="true"></span>新厅美术馆</a>
+        <ul class="nav-links">
+          <li><a href="#intro">展览</a></li>
+          <li><a href="#halls">展区</a></li>
+          <li><a href="#visit">参观</a></li>
+          <li><a href="#tickets">票务</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="poster" id="top" aria-label="展览海报">
+      <div class="poster-grid" aria-hidden="true"></div>
+      <div class="strip-clip" aria-hidden="true">
+        <div class="strip">
+          <span>展期 <b>2026.03.15 — 2026.09.15</b></span>
+          <span>形式追随功能</span>
+          <span>FORM FOLLOWS FUNCTION</span>
+          <span>新厅美术馆 · NEUE HALLE</span>
+          <span>展期 <b>2026.03.15 — 2026.09.15</b></span>
+          <span>形式追随功能</span>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="poster-inner" data-ud-check="poster-hero">
+          <div class="poster-copy">
+            <p class="poster-kicker"><span class="mark" aria-hidden="true"></span>新厅美术馆</p>
+            <h1 class="poster-title">形式<em>与</em>功能</h1>
+            <p class="poster-sub">包豪斯百年 · <span class="yr">1926–2026</span><br>一次关于材料、舞台与课堂的构成重读</p>
+            <div class="poster-cta">
+              <a class="btn" href="#halls">进入三个展区</a>
+              <a class="btn btn-alt" href="#tickets">查看票价</a>
+            </div>
+          </div>
+          <div class="poster-art" aria-hidden="true">
+            <div class="poster-stage">
+              <div class="geo geo-bar"></div>
+              <div class="geo geo-circle"></div>
+              <svg class="geo-tri-svg" viewBox="0 0 160 140" width="160" height="140" focusable="false">
+                <polygon points="80,8 152,132 8,132" fill="#FFD100" stroke="#111111" stroke-width="6" stroke-linejoin="miter"/>
+              </svg>
+              <div class="geo geo-square"></div>
+              <div class="date-mega">2026<span>03</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="intro">
+      <div class="wrap">
+        <div class="reveal" data-ud-check="intro">
+          <div class="section-head">
+            <div class="section-mark bar" aria-hidden="true"></div>
+            <div>
+              <p class="section-label">Exhibition</p>
+              <h2 class="section-title">展览介绍</h2>
+            </div>
+          </div>
+          <div class="intro-panel">
+            <p class="lede">「形式与功能」回望包豪斯百年：不是复刻一张海报，而是把圆、三角、方重新当作思考工具。展览串联工坊的材料实验、舞台的光与身体、课堂基础课的遗产，邀请观众在严格的色彩预算与网格秩序里，看见现代设计如何把日常物变成可被理解、可被制造、可被共享的形式。</p>
+            <dl class="intro-meta">
+              <div>
+                <dt>展期</dt>
+                <dd><span class="hl">2026.03.15 — 2026.09.15</span></dd>
+              </div>
+              <div>
+                <dt>策展</dt>
+                <dd>新厅美术馆展览部</dd>
+              </div>
+              <div>
+                <dt>关键词</dt>
+                <dd>构成 · 材料 · 教学</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="halls" style="background:#FAFAFA;">
+      <div class="wrap">
+        <div class="reveal" data-ud-check="halls">
+          <div class="section-head">
+            <div class="section-mark circle" aria-hidden="true"></div>
+            <div>
+              <p class="section-label">Three Halls</p>
+              <h2 class="section-title">三个展区</h2>
+            </div>
+          </div>
+          <div class="halls-grid">
+            <article class="hall" data-shape="circle">
+              <div class="hall-icon" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="14" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
+                </svg>
+              </div>
+              <p class="hall-num">01 · 圆</p>
+              <h3>工坊：材料与制造</h3>
+              <p>金属、织物、家具与印刷工坊如何把实验变成可复制的标准。材料不是装饰，而是功能的起点。</p>
+              <p>从手作到量产，圆形象征连续工序与可扩展的模块。</p>
+              <p class="hall-way">导视：红色圆 · 二层西翼</p>
+            </article>
+            <article class="hall" data-shape="triangle">
+              <div class="hall-icon" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <path d="M18 6 L32 30 H4 Z" fill="#111111" stroke="#111111" stroke-width="2" stroke-linejoin="miter"/>
+                </svg>
+              </div>
+              <p class="hall-num">02 · 三角</p>
+              <h3>舞台：光与身体</h3>
+              <p>戏剧、舞蹈与灯光设计把空间切成可被身体穿越的向量。三角指向运动、张力与视线。</p>
+              <p>展览还原舞台装置的几何骨架，让观众站进光的夹角里。</p>
+              <p class="hall-way">导视：黄色三角 · 一层中庭</p>
+            </article>
+            <article class="hall" data-shape="square">
+              <div class="hall-icon" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <rect x="6" y="6" width="24" height="24" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
+                </svg>
+              </div>
+              <p class="hall-num">03 · 方</p>
+              <h3>课堂：基础课的遗产</h3>
+              <p>色彩、材料与构成基础课如何塑造一代设计师的眼睛。方是网格、练习纸与可检验的秩序。</p>
+              <p>展区呈现作业、教具与教学笔记，说明「看见」本身可以被训练。</p>
+              <p class="hall-way">导视：蓝色方 · 三层东厅</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="visit">
+      <div class="wrap">
+        <div class="reveal" data-ud-check="visit">
+          <div class="section-head">
+            <div class="section-mark tri" aria-hidden="true"></div>
+            <div>
+              <p class="section-label">Visit</p>
+              <h2 class="section-title">参观信息</h2>
+            </div>
+          </div>
+          <div class="visit-grid">
+            <div class="visit-item">
+              <h3>开放时间</h3>
+              <ul>
+                <li>周二至周五 10:00–18:00</li>
+                <li>周六、周日 10:00–20:00</li>
+                <li>周一闭馆（法定节假日除外）</li>
+                <li>停止入场：闭馆前 30 分钟</li>
+              </ul>
+            </div>
+            <div class="visit-item">
+              <h3>地址</h3>
+              <p>虚构市河西新区构成大道 100 号<br>新厅美术馆 · 主馆</p>
+              <p style="margin-top:12px;">问询电话（演示）：000-0000-1926</p>
+            </div>
+            <div class="visit-item">
+              <h3>交通</h3>
+              <ul>
+                <li>地铁 3 号线「构成站」B 口步行 6 分钟</li>
+                <li>公交 12 / 26 / 100 路「新厅馆」站</li>
+                <li>地下车库入口：构成大道辅路</li>
+              </ul>
+            </div>
+          </div>
+          <div class="visit-band" role="note">
+            <div class="dot" aria-hidden="true"></div>
+            <p>参观提示：展厅内请勿触摸展品。摄影可用于个人非商业用途；三脚架与闪光灯需事先申请。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="tickets" style="background:#FAFAFA;">
+      <div class="wrap">
+        <div class="reveal" data-ud-check="tickets">
+          <div class="section-head">
+            <div class="section-mark sq" aria-hidden="true"></div>
+            <div>
+              <p class="section-label">Tickets</p>
+              <h2 class="section-title">票务</h2>
+            </div>
+          </div>
+          <div class="tickets-grid">
+            <article class="ticket" data-tier="general">
+              <div class="ticket-head">
+                <h3>普通票</h3>
+                <span class="code">NH-A</span>
+              </div>
+              <div class="ticket-body">
+                <p>全日通用，含三个展区导览册（纸质）。</p>
+                <p class="ticket-price">68<small>元</small></p>
+              </div>
+              <div class="ticket-foot">
+                <span class="ticket-note">现场 / 线上</span>
+                <a class="btn" href="#tickets">选择普通票</a>
+              </div>
+            </article>
+            <article class="ticket" data-tier="student">
+              <div class="ticket-head">
+                <h3>学生票</h3>
+                <span class="code">NH-S</span>
+              </div>
+              <div class="ticket-body">
+                <p>凭有效学生证；含基础课工作单复印件一份。</p>
+                <p class="ticket-price">38<small>元</small></p>
+              </div>
+              <div class="ticket-foot">
+                <span class="ticket-note">需核验证件</span>
+                <a class="btn" href="#tickets">选择学生票</a>
+              </div>
+            </article>
+            <article class="ticket" data-tier="member">
+              <div class="ticket-head">
+                <h3>会员票</h3>
+                <span class="code">NH-M</span>
+              </div>
+              <div class="ticket-body">
+                <p>新厅会员免费入场；可预约闭馆后导览一场。</p>
+                <p class="ticket-price">0<small>元</small></p>
+              </div>
+              <div class="ticket-foot">
+                <span class="ticket-note">会员通道</span>
+                <a class="btn" href="#tickets">会员入场</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-inner" data-ud-check="footer">
+        <div class="footer-brand">
+          <span class="trio" aria-hidden="true"><i></i><i></i><i></i></span>
+          新厅美术馆
+        </div>
+        <p class="footer-meta">演示页面，由 Ultimate Design agent skill 设计 · 「新厅美术馆」为虚构机构。</p>
+        <ul class="footer-links">
+          <li><a href="#top">回到海报</a></li>
+          <li><a href="#halls">展区导视</a></li>
+          <li><a href="#tickets">票务</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+      function forceReveal() {
+        reveals.forEach(function (el) { el.classList.add("is-in"); });
+      }
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        forceReveal();
+        return;
+      }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+        reveals.forEach(function (el) { io.observe(el); });
+      } else {
+        forceReveal();
+      }
+      window.setTimeout(forceReveal, 700);
+      window.addEventListener("beforeprint", forceReveal);
+    })();
+  </script>
+</body>
+</html>
