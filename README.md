@@ -1,57 +1,44 @@
 # Ultimate Design
 
-**Turn your coding agent into a disciplined designer-builder.**
+[中文](README.md) · [English](README.en.md)
 
 [![npm](https://img.shields.io/npm/v/ultimate-design-skill)](https://www.npmjs.com/package/ultimate-design-skill)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![OKF BundleDex](https://bundledex.net/static-badge.svg)](https://bundledex.net)
 
-Most AI design stops at a screenshot that looks finished. The requirements behind it are gone, and the next person cannot tell which choices were deliberate. Ultimate Design keeps that reasoning with the work: it anchors the request, writes the design contract, builds the artifact, critiques it, and checks the rendered result in a browser before delivery.
+**把设计做出来，也把判断留下来。**
 
-**Live showcase: [aa2246740.github.io/ultimate-design](https://aa2246740.github.io/ultimate-design/)**
-The site was designed and built by agents running this skill. Every demo on it links to the `DESIGN.md` contract that produced it, so you can check the claims against the work.
+给编码 Agent 用的 OKF 设计工作流：先钉住这次要解决什么，写出 `DESIGN.md` 契约，做成真实制品，对着浏览器渲染结果批判、修复、再交付。
 
-## What a run leaves behind
+## 先看成品
 
-Every run produces three things you can keep using:
+公开面是技能自己做出来的展示站：
 
-- **Request Anchor** — what this run must solve, for whom, and what must not be lost.
-- **`DESIGN.md` contract** — tokens, direction, assumptions, and open questions, written so the next agent (or human) can continue without reverse-engineering.
-- **Rendered review** — the real page, screenshots, and browser-measured audits.
+**https://aa2246740.github.io/ultimate-design/**
 
-## What's inside
+十二个完整案例。每个案例都能打开对应的 `DESIGN.md`。
 
-| Capability | Details |
-|---|---|
-| **Operational design knowledge** | 35 concept files across 7 domains — layout, typography, color systems, motion language, content models, accessibility, governance. A concept is loaded on demand and stays active only while it changes a concrete decision. |
-| **19 branch playbooks** | Marketing sites, product UI, presentation decks, graphic/print, brand systems, motion audits, reference study, audit & polish, and more. |
-| **11 bundled validators & tools** | Contract validation, OKF-usage validation, a pinned-Chromium **rendered UI audit** (overflow, clipping, occlusion, target sizes), motion-contract validation, agent-handoff checks. |
-| **4 task routes** | Build / Audit / Redesign / Study. Audit and Study stop at findings instead of rebuilding what already works. |
-| **Multi-agent native** | Portable Specialist mode: an Integrator routes work orders, specialists return packets, one writer owns the final artifact. Ships with the templates. |
-| **12 complete demos** | Twelve pages in twelve deliberately different design languages, each designed end-to-end by an agent running this skill, each with its own contract. |
+![官网首页](docs/screenshots/site-home.png)
 
-## The demo gallery
+*https://aa2246740.github.io/ultimate-design/ — Chrome 打开的线上首页。顶栏写着 Ultimate Design，下面是标题、hero 和五阶段卡片。*
 
-Every demo below is a complete, self-contained page. Click through, copy the prompt that produced it, and read its contract — [all twelve in the gallery](https://aa2246740.github.io/ultimate-design/#gallery).
+![案例画廊](docs/screenshots/site-gallery.png)
 
-| Demo | Surface | Design language |
-|---|---|---|
-| [Finlytics](https://aa2246740.github.io/ultimate-design/demos/finlytics/) | SaaS marketing page | Dark data console |
-| [山声茶事](https://aa2246740.github.io/ultimate-design/demos/teahouse/) | Brand site | Eastern editorial paper |
-| [TaskFlow](https://aa2246740.github.io/ultimate-design/demos/taskflow/) | Product dashboard | Quiet daylight system UI |
-| [毛茸茸研究所](https://aa2246740.github.io/ultimate-design/demos/petcare/) | Booking landing page | Cream-lab playful |
-| [墨记 Q2 复盘](https://aa2246740.github.io/ultimate-design/demos/deck-q2/) | HTML slide deck | Mineral-paper report |
-| [GRID&NOISE](https://aa2246740.github.io/ultimate-design/demos/gridnoise/) | Studio portfolio | Neo-brutalism |
-| [SYSTEMA 2026](https://aa2246740.github.io/ultimate-design/demos/systema/) | Conference site | Swiss International Style |
-| [Maison Ombre](https://aa2246740.github.io/ultimate-design/demos/maison/) | E-commerce product page | Quiet luxury |
-| [FIELD-7](https://aa2246740.github.io/ultimate-design/demos/field7/) | Hardware product page | Industrial functionalism |
-| [街巷](https://aa2246740.github.io/ultimate-design/demos/jiexiang/) | Independent publication | Newsprint editorial |
-| [拾光书房](https://aa2246740.github.io/ultimate-design/demos/shuguang/) | Annual data report | Data storytelling |
-| [新厅美术馆](https://aa2246740.github.io/ultimate-design/demos/neuehalle/) | Exhibition page | Bauhaus geometry |
+*同一站点滚到 `#gallery`。第一排是 Finlytics、山声茶事、TaskFlow 的真实卡片，不是另外做的站。*
 
-All brands are fictional. The newer styles come from the skill's Study route, which extracts transferable mechanisms from strong reference work without copying any site's signature.
+![成品和契约](docs/screenshots/demo-plus-contract.png)
 
-## Install
+*左：山声茶事成品页 `…/demos/teahouse/`。右：同案例的 `DESIGN.md`（画廊「看契约」打开的那份仓库文件）。GitHub Pages 上 `…/demos/teahouse/DESIGN.md` 是 404，所以契约看仓库，不看第二套站点。*
+
+![契约特写](docs/screenshots/demo-contract.png)
+
+*同一份 `DESIGN.md` 的特写：`docs/demos/teahouse/DESIGN.md`，色板和字体写在成品旁边。*
+
+![从首页点进案例](docs/screenshots/site-to-demo.gif)
+
+*从官网首页点山声茶事的「查看页面」，落到 `…/demos/teahouse/`。同源：`aa2246740.github.io`。*
+
+## 安装
 
 ```bash
 npx ultimate-design-skill@latest --target codex
@@ -59,76 +46,84 @@ npx ultimate-design-skill@latest --target claude-code
 npx ultimate-design-skill@latest --target pi-agent
 ```
 
-Project-scoped, shared, and manual installation: [integrations/README.md](integrations/README.md).
+项目内、共享目录、手动安装：见 [integrations/README.md](integrations/README.md)。
 
-## Use
+## 十二个案例
 
-Describe the outcome you want:
+每个案例都是完整独立页。打开页面、复制当时的 Prompt、读它的契约——[十二个都在画廊里](https://aa2246740.github.io/ultimate-design/#gallery)。
+
+| 案例 | 表面 | 设计语言 |
+|---|---|---|
+| [Finlytics](https://aa2246740.github.io/ultimate-design/demos/finlytics/) | SaaS 营销页 | 深色数据控制台 |
+| [山声茶事](https://aa2246740.github.io/ultimate-design/demos/teahouse/) | 品牌官网 | 东方编辑纸感 |
+| [TaskFlow](https://aa2246740.github.io/ultimate-design/demos/taskflow/) | 产品看板 | 安静日光系统界面 |
+| [毛茸茸研究所](https://aa2246740.github.io/ultimate-design/demos/petcare/) | 预约落地页 | 奶油实验室、活泼 |
+| [墨记 Q2 复盘](https://aa2246740.github.io/ultimate-design/demos/deck-q2/) | HTML 幻灯 | 矿物纸报告 |
+| [GRID&NOISE](https://aa2246740.github.io/ultimate-design/demos/gridnoise/) | 工作室作品集 | 新粗野主义 |
+| [SYSTEMA 2026](https://aa2246740.github.io/ultimate-design/demos/systema/) | 会议站 | 瑞士国际主义 |
+| [Maison Ombre](https://aa2246740.github.io/ultimate-design/demos/maison/) | 电商产品页 | 静奢 |
+| [FIELD-7](https://aa2246740.github.io/ultimate-design/demos/field7/) | 硬件产品页 | 工业功能主义 |
+| [街巷](https://aa2246740.github.io/ultimate-design/demos/jiexiang/) | 独立刊物 | 新闻纸编辑 |
+| [拾光书房](https://aa2246740.github.io/ultimate-design/demos/shuguang/) | 年度数据报告 | 数据叙事 |
+| [新厅美术馆](https://aa2246740.github.io/ultimate-design/demos/neuehalle/) | 展览页 | 包豪斯几何 |
+
+品牌都是虚构的。较新的风格来自技能的 Study 路线：从强参考里抽出可迁移的机制，不抄任何站点的签名。
+
+## 一次运行留下什么
+
+- **Request Anchor** — 这次要解决什么、给谁用、什么不能丢。
+- **`DESIGN.md` 契约** — 色板、字体、方向、假设和待确认项，写给下一个 Agent 或人接着做，不用靠猜。
+- **渲染复查** — 真实页面、截图、浏览器里量过的审计。
+
+## 里面有什么
+
+| 能力 | 内容 |
+|---|---|
+| **可操作的设计知识** | 35 个概念文件，7 个知识域：版式、字体、色彩、动效语言、内容模型、无障碍、治理。概念按需加载，只在它改掉一个具体决定时保持激活。 |
+| **19 份分支参考** | 营销站、产品界面、演示 Deck、图形印刷、品牌系统、动效审计、参考研究、审计打磨等。 |
+| **11 个随包校验与工具** | 契约校验、OKF 使用校验、固定版 Chromium **渲染界面审计**（溢出、裁切、遮挡、点击目标）、动效契约校验、Agent 交接检查。 |
+| **4 条任务路线** | Build / Audit / Redesign / Study。Audit 和 Study 停在发现，不重做已经成立的东西。 |
+| **多 Agent 可用** | Portable Specialist：Integrator 派工单，专家回包，一个写作者收口。模板随包。 |
+| **12 个完整案例** | 十二页、十二种故意不同的设计语言，每个都由跑本技能的 Agent 做完，每个有自己的契约。 |
+
+## 怎么用
+
+说要的结果：
 
 ```text
-Use $ultimate-design to turn this report into a clear visual web page. Create DESIGN.md if needed, make the page, critique it, repair it, and verify the rendered result.
+用 $ultimate-design 把这份报告做成一张能看清的网页。需要的话先写 DESIGN.md，做出页面，批判，修好，再核对渲染结果。
 ```
 
-To settle the important choices together before it builds, add `--pro`:
+关键选择想先对齐再动手，加上 `--pro`：
 
 ```text
 $ultimate-design --pro
-I need a product site for investors. Align with me on audience, message hierarchy, brand posture, and acceptance criteria before implementing.
+我要做一个给投资人看的产品站。先对齐受众、信息层级、品牌姿态和验收标准，再实现。
 ```
 
-For multi-domain, high-risk work, ask for **Portable Specialist mode**: an Integrator routes Narrative / Visual / Interaction work orders on a file blackboard and stays the sole final writer. Details: `skill/ultimate-design/references/multi-agent-mode.md`.
+多域、高风险的工作，可以要求 **Portable Specialist 模式**：Integrator 在文件黑板上派 Narrative / Visual / Interaction 工单，自己当唯一终稿作者。细节：`skill/ultimate-design/references/multi-agent-mode.md`。
 
-## How a run moves
+## 一次运行怎么走
 
-1. **Anchor the request** — original ask, latest overrides, acceptance criteria.
-2. **Shape the content** — message hierarchy before layout.
-3. **Load only relevant knowledge** — every active concept must change a real decision.
-4. **Choose a direction and build** — taste dials, anti-default locks, semantic zone markers.
-5. **Critique, repair, verify** — rendered UI audit in a real browser; fix what fails.
-6. **Govern** — leave a contract the next agent can continue from.
+1. **钉住需求** — 原始请求、最新覆盖、验收标准。
+2. **理清内容** — 先排信息层级，再谈版式。
+3. **只加载用得上的知识** — 每个激活的概念必须改掉一个真实决定。
+4. **选定方向并做出来** — taste dials、反默认锁、语义区标记。
+5. **批判、修复、核验** — 真实浏览器里做渲染界面审计，失败的修掉。
+6. **留下治理** — 下一任能接着做的契约。
 
-## Built-in verification
+## 内置校验
 
-Visual work gets rendered and reviewed before delivery. The skill ships deterministic tools for it:
+视觉工作在交付前会渲染并复查。技能自带确定性工具：
 
 ```bash
-npm run flow-check            # skill flow integrity
-npm run okf-graph-check       # knowledge graph consistency
-npm run agent-handoff-check   # multi-agent handoff schema
-npm run check-integrations    # host integration health
+npm run flow-check            # 技能流程完整性
+npm run okf-graph-check       # 知识图一致性
+npm run agent-handoff-check   # 多 Agent 交接 schema
+npm run check-integrations    # 宿主集成健康
 ```
 
-The rendered UI audit (`validate_html_visual.mjs`) measures marked semantic zones in a pinned Chromium: horizontal overflow, clipping, occlusion, spacing, and interactive target sizes. The showcase site and all twelve demos pass it with zero failures.
-
----
-
-## 中文简介
-
-**Ultimate Design 是给 AI Agent 用的设计工作流技能:把设计做出来,也把判断留下来。**
-
-大多数 AI 设计止步于一张"看起来完成"的截图。Ultimate Design 让 Agent 像职业设计师一样工作:先理顺需求和内容,再落成真实制品,对着浏览器渲染结果批判、修复、验证,最后把 `DESIGN.md` 契约留给下一位接手的人。
-
-每次运行留下三件东西:**Request Anchor**(这次要解决什么、给谁用、什么不能丢)、**`DESIGN.md` 契约**(内容顺序、视觉方向、假设与待确认项)、**渲染复查**(真实页面、截图与浏览器实测审计)。
-
-随包携带:35 个知识概念文件(7 大知识域,按需加载、绑定到具体决策)、19 份分支参考(官网、产品界面、Deck、图形印刷、品牌系统、动效审计……)、11 个内置校验脚本(契约校验、知识使用校验、固定版 Chromium 渲染审计、动效契约校验),以及多 Agent 协作的 Portable Specialist 模式。
-
-**[官网展示站](https://aa2246740.github.io/ultimate-design/)由本技能自举完成**:12 个完整案例覆盖 12 种设计语言(瑞士国际主义、静奢极简、工业功能主义、新闻纸编辑、数据叙事、包豪斯几何、新粗野主义、东方编辑感……),每个案例都附带自己的设计契约和可复现的 Prompt,全部通过渲染审计。
-
-安装(三选一):
-
-```bash
-npx ultimate-design-skill@latest --target codex
-npx ultimate-design-skill@latest --target claude-code
-npx ultimate-design-skill@latest --target pi-agent
-```
-
-普通用法(说结果,不用背流程):
-
-```text
-$ultimate-design 帮我把这份研究做成一个便于阅读的网页。先处理内容和设计方向,再实现、复查并修掉明显问题。
-```
-
-关键选择想先对齐再动手,用 `--pro`;多域高风险工作可要求 Portable Specialist 模式。
+渲染界面审计（`validate_html_visual.mjs`）用固定版 Chromium 测量标过的语义区：横向溢出、裁切、遮挡、间距、可点目标尺寸。展示站和十二个案例都通过，零失败。
 
 ## License
 
