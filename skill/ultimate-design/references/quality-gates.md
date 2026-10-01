@@ -45,6 +45,8 @@ Apply when Portable Specialist mode is on, or whenever multiple independent deci
 - Major choices pass necessity, replacement, move, justification, care, material honesty, and scene-fit tests when polished judgment matters.
 - Delight emerges from clarity, agency, craft, and coherence; it is not an added flourish that competes with the task.
 - At least one owned visual feature remains recognizable without the logo when distinction matters.
+- The rendered result was scanned against `slop-fingerprints.md`: fewer than three distinct fingerprints in the first viewport and fewer than six on the page, or each remaining one has a recorded content reason.
+- The `craft-core.md` details pass on the render: shared edges, clean heading wraps, correct punctuation for the script, no clipped text, and no dead half-sections.
 
 ## Typography
 
@@ -69,6 +71,9 @@ Apply when Portable Specialist mode is on, or whenever multiple independent deci
 - The full set was inspected for overlap, occlusion, clipping, awkward wraps, density, hidden controls, misleading depth, and first/last-frame problems.
 - Generated HTML uses sparse `data-ud-check` markers at one intentional hierarchy level.
 - `scripts/validate_html_visual.mjs` has no active fail findings when browser measurement is available.
+- `scripts/detect_slop.mjs` has no fail-level defects (text at the viewport edge, clipped or overlapping text, contrast below 3:1, and for `[data-canvas]` pieces wrong size, undersized text, safe-margin or overflow failures) for generated HTML; its warnings are repaired or accepted with a reason.
+- Pages built on a generated style pass `detect_slop.mjs --style` without off-system failures, and `DESIGN.md` records the style spec with a reason per dimension.
+- Canvas deliverables are exported with `scripts/export_canvas.mjs` and every PNG was looked at.
 - Intentional overlaps use documented `data-ud-allow` allowances with reason, owner, and expiry rather than disappearing from evidence.
 - A passing DOM or bounds check never substitutes for screenshot/contact-sheet inspection of the final pixels.
 

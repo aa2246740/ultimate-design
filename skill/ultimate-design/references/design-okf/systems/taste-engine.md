@@ -95,6 +95,7 @@ Dial guidance:
 - Motion above static, and any motion used as a memory feature, must load `motion-language.md`, define a Motion Strategy, be implemented rather than only described, and honor reduced motion.
 - High variance must collapse to simple, stable mobile structures.
 - Type expressiveness should rise only when it helps memory, voice, or identity; it should fall when the user needs dense reading, operation, comparison, or trust.
+- Brand distinction comes first from specific content and one well-executed move (`references/craft-core.md` §6). A high distinction dial is not a license to add a second and third memory feature or a style costume.
 
 # Typography And Type Personality
 
@@ -140,6 +141,8 @@ Common defaults to reject unless the brief explicitly justifies them:
 - Generic names, fake quotes, fake logos, and invented proof when real proof is absent.
 
 Anti-defaults are not universal bans. They are locks against lazy first choices. If a locked pattern fits the brief, record the reason and execute it deliberately.
+
+The full, current catalog of generated-page patterns lives in `references/slop-fingerprints.md`. Lock against the fingerprints, not just the colors: replacing a purple gradient with an amber glow on the same hero formula keeps the template.
 
 # Composition Search Input
 

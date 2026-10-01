@@ -1,0 +1,151 @@
+/* Ultimate Design canvases: fixed-size digital pieces (social cards, carousels, posters, slides).
+   Load after base.css, with a style.css generated for the canvas:
+     node scripts/make_style.mjs --preset P06 --canvas xhs --out ./   (xhs | square | story | poster | slide)
+   One .canvas[data-canvas] element = one exported image. Put all cards of a set on one page inside .canvas-sheet,
+   then export: node scripts/export_canvas.mjs --input cards.html --out ./png
+   Every size below is a token: the generator already scaled type and space for the canvas. */
+
+.canvas-sheet { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 64px; padding: 64px; background: var(--bg-alt); min-height: 100vh; }
+.canvas-sheet--column { flex-direction: column; }
+
+.canvas {
+  position: relative; flex: none; box-sizing: border-box;
+  width: var(--canvas-w); height: var(--canvas-h); padding: var(--safe);
+  display: flex; flex-direction: column; gap: var(--sp-5);
+  overflow: hidden; background: var(--bg); color: var(--ink);
+  font-family: var(--font-text); font-size: var(--fs-base); line-height: 1.5;
+  outline: 1px solid var(--line);
+  text-wrap: pretty;
+  --chart-fs: var(--fs-xs);
+}
+.canvas :where(h1, h2, h3, p, ol, ul, figure, blockquote) { margin: 0; }
+.canvas--alt { background: var(--bg-alt); }
+/* band and accent grounds re-point the ink roles, so every child stays legible without new colors */
+.canvas--band { background: var(--band); --ink: var(--on-band); --ink-2: var(--band-ink-2); --ink-3: var(--band-ink-2); --line: var(--band-ink-2); --line-strong: var(--on-band);
+  --accent: var(--on-band); --on-accent: var(--band); --accent-ink: var(--on-band); --accent-soft: transparent; color: var(--ink); }
+/* accent ground: copy the two colors first, then swap them one level down (a same-element swap would be a var() cycle) */
+.canvas--accent { background: var(--accent); color: var(--on-accent); --_a: var(--accent); --_oa: var(--on-accent); }
+.canvas--accent > * { --ink: var(--_oa); --ink-2: var(--_oa); --ink-3: var(--_oa); --line: var(--_oa); --line-strong: var(--_oa);
+  --accent: var(--_oa); --on-accent: var(--_a); --accent-ink: var(--_oa); --accent-soft: transparent; }
+
+/* ---------- regions: head (series + page), body (one idea), foot (source, handle) ---------- */
+.cv-head, .cv-foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-4); font-size: var(--fs-xs); color: var(--ink-2); flex: none; }
+.cv-head { padding-bottom: var(--sp-3); border-bottom: 2px solid var(--line); }
+/* optional: drop the rule and let the head float, so chrome does not make every card look the same */
+.cv-head--float { border-bottom: 0; padding-bottom: 0; }
+.cv-head--bare { border-bottom: 0; padding-bottom: 0; }
+.cv-foot { margin-top: auto; }
+/* the body grows with its content: too much content pushes the foot off the canvas, which the gate reports */
+.cv-body { flex: 1 0 auto; display: flex; flex-direction: column; gap: var(--sp-5); }
+.cv-body--low { justify-content: flex-end; }
+.cv-body--center { justify-content: center; }
+.cv-body--spread { justify-content: space-between; }
+/* fill: the last list/steps/rows/compare block takes the remaining height and shares it equally between items */
+.cv-body--fill > :last-child { flex: 1; }
+.cv-body--fill > :is(.cv-list, .cv-steps, .cv-rows, .cv-check):last-child { grid-auto-rows: 1fr; }
+.cv-body--fill > :is(.cv-list, .cv-steps):last-child > li { align-content: start; }
+.cv-body--fill > .cv-compare:last-child > div { align-content: center; }
+.cv-body--fill > .cv-compare:last-child p { font-size: var(--fs-base); }
+.cv-pager { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.cv-series { font-weight: var(--fw-strong); color: var(--ink); }
+
+/* ---------- type roles ---------- */
+.cv-kicker { font-size: var(--fs-sm); font-weight: var(--fw-strong); color: var(--accent-ink); letter-spacing: 0.04em; }
+.cv-title { font-family: var(--font-display); font-weight: var(--fw-display); font-stretch: var(--display-stretch); font-size: var(--fs-2xl); line-height: 1.1; letter-spacing: var(--tracking-display); text-wrap: balance; }
+.cv-title--xl { font-size: var(--fs-3xl); line-height: 1.04; }
+.cv-title--md { font-size: var(--fs-xl); line-height: 1.16; }
+.cv-title--sm { font-size: var(--fs-lg); line-height: 1.25; }
+:lang(zh) .cv-title, .cv-title:lang(zh) { letter-spacing: 0; line-height: 1.22; }
+.cv-sub { font-size: var(--fs-md); line-height: 1.45; color: var(--ink-2); max-width: 24em; text-wrap: pretty; }
+.cv-text { font-size: var(--fs-base); line-height: 1.7; max-width: 26em; text-wrap: pretty; }
+.cv-text + .cv-text { margin-top: calc(-1 * var(--sp-2)); }
+.cv-note { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.5; }
+.cv-accent { color: var(--accent-ink); }
+.cv-mark { background: linear-gradient(transparent 58%, var(--accent-soft) 0); padding-inline: 0.08em; }
+.cv-hand { font-family: var(--font-accent, var(--font-display)); }
+.cv-rule { flex: none; width: calc(var(--sp-8) * 1.5); height: var(--sp-2); background: var(--accent); }
+
+/* ---------- the big figure: one number carries the card ---------- */
+.cv-figure { display: grid; gap: var(--sp-3); }
+.cv-num { font-family: var(--font-display); font-weight: var(--fw-display); font-stretch: var(--display-stretch); font-size: var(--fs-display); line-height: 0.92; letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; color: var(--accent-ink); }
+.cv-num small { font-size: var(--fs-lg); letter-spacing: 0; margin-left: 0.12em; }
+.cv-figure__label { font-size: var(--fs-md); font-weight: var(--fw-strong); max-width: 20em; }
+.cv-figure__source { font-size: var(--fs-xs); color: var(--ink-3); }
+
+/* ---------- list: numbered points, one line of title + one of detail ---------- */
+.cv-list { list-style: none; padding: 0; display: grid; gap: 0; counter-reset: cv; }
+.cv-list > li { counter-increment: cv; display: grid; grid-template-columns: 2.2em 1fr; column-gap: var(--sp-4); padding-block: var(--sp-4); border-top: 2px solid var(--line); }
+.cv-list > li:last-child { border-bottom: 2px solid var(--line); }
+.cv-list > li::before { content: counter(cv, decimal-leading-zero); grid-row: span 2; font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-lg); line-height: 1.1; color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.cv-list--plain > li::before { content: none; }
+.cv-list--plain > li { grid-template-columns: 1fr; }
+.cv-list b, .cv-list strong { display: block; font-size: var(--fs-md); line-height: 1.3; font-weight: var(--fw-strong); }
+.cv-list span, .cv-list p { font-size: var(--fs-base); color: var(--ink-2); line-height: 1.55; margin-top: var(--sp-2); }
+
+/* ---------- steps: a sequence with a spine ---------- */
+.cv-steps { list-style: none; padding: 0; display: grid; gap: var(--sp-5); counter-reset: st; }
+.cv-steps > li { counter-increment: st; position: relative; display: grid; grid-template-columns: var(--sp-8) 1fr; column-gap: var(--sp-4); }
+.cv-steps > li::before { content: counter(st); display: grid; place-items: center; width: var(--sp-8); height: var(--sp-8); border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: var(--fw-strong); font-size: var(--fs-md); grid-row: span 2; }
+.cv-steps > li:not(:last-child)::after { content: ""; position: absolute; left: calc(var(--sp-8) / 2 - 1px); top: calc(var(--sp-8) + var(--sp-2)); bottom: calc(-1 * var(--sp-5) + var(--sp-2)); width: 2px; background: var(--line); }
+.cv-steps b { font-size: var(--fs-md); line-height: 1.3; align-self: center; }
+.cv-steps span { font-size: var(--fs-base); color: var(--ink-2); line-height: 1.55; }
+
+/* ---------- compare: before / after, wrong / right ---------- */
+.cv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); }
+.cv-compare > div { display: grid; align-content: start; gap: var(--sp-3); padding: var(--sp-5); background: var(--card-bg); border: var(--card-border); border-radius: var(--card-radius); }
+.cv-compare h3 { font-size: var(--fs-sm); font-weight: var(--fw-strong); letter-spacing: 0.04em; }
+.cv-compare .is-no h3 { color: var(--danger-ink); }
+.cv-compare .is-yes h3 { color: var(--positive-ink); }
+.cv-compare .is-yes { outline: 3px solid var(--accent); outline-offset: -3px; }
+.cv-compare p { font-size: var(--fs-sm); line-height: 1.55; }
+
+/* ---------- checklist ---------- */
+.cv-check { list-style: none; padding: 0; display: grid; gap: var(--sp-4); }
+.cv-check > li { display: grid; grid-template-columns: 1.2em 1fr; gap: var(--sp-3); font-size: var(--fs-md); line-height: 1.4; }
+.cv-check > li::before { content: ""; width: 0.9em; height: 0.9em; margin-top: 0.22em; border: 3px solid var(--accent); border-radius: calc(var(--radius-control) / 3); }
+.cv-check > li.is-done::before { background: var(--accent); }
+
+/* ---------- quote ---------- */
+.cv-quote { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-xl); line-height: 1.3; text-wrap: balance; }
+.cv-quote { border-left: var(--sp-2) solid var(--accent); padding-left: var(--sp-5); }
+.cv-cite { font-size: var(--fs-sm); color: var(--ink-2); }
+
+/* ---------- key-value rows and small tables ---------- */
+.cv-rows { display: grid; }
+.cv-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-4); padding-block: var(--sp-4); border-bottom: 2px solid var(--line); font-size: var(--fs-base); }
+.cv-rows dt, .cv-rows .k { color: var(--ink-2); }
+.cv-rows dd, .cv-rows .v { margin: 0; font-weight: var(--fw-strong); font-variant-numeric: tabular-nums; text-align: right; }
+.cv-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.cv-table th { text-align: left; font-weight: var(--fw-strong); color: var(--ink-2); padding: var(--sp-3) var(--sp-3) var(--sp-3) 0; border-bottom: 2px solid var(--line-strong); }
+.cv-table td { padding: var(--sp-3) var(--sp-3) var(--sp-3) 0; border-bottom: 2px solid var(--line); }
+.cv-table .num { text-align: right; }
+[data-canvas="slide"] .cv-table, [data-canvas="poster"] .cv-table { font-size: var(--fs-base); }
+[data-canvas="slide"] .cv-table :is(td, th), [data-canvas="poster"] .cv-table :is(td, th) { padding-block: var(--sp-5); }
+.cv-table tr.is-hl td { color: var(--accent-ink); font-weight: var(--fw-strong); }
+
+/* ---------- grids for slides and posters ---------- */
+.cv-split { display: grid; grid-template-columns: 5fr 7fr; gap: var(--sp-7); align-items: start; flex: 1; min-height: 0; }
+.cv-split--even { grid-template-columns: 1fr 1fr; }
+.cv-split--wide { grid-template-columns: 4fr 8fr; }
+.cv-cols { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: var(--sp-6); }
+.cv-cell { display: grid; align-content: start; gap: var(--sp-3); padding-top: var(--sp-4); border-top: 3px solid var(--line-strong); }
+.cv-cell b { font-size: var(--fs-md); line-height: 1.3; }
+.cv-cell__num { font-family: var(--font-display); font-weight: var(--fw-display); font-size: var(--fs-2xl); line-height: 1; color: var(--accent-ink); font-variant-numeric: tabular-nums lining-nums; }
+.cv-cell span { font-size: var(--fs-base); color: var(--ink-2); line-height: 1.55; }
+.cv-chart { width: 100%; }
+.canvas .segs { gap: var(--sp-3); }
+.canvas .segs__bar { height: calc(var(--fs-base) * 1.6); }
+/* a drawing takes the space the text leaves: it grows to fill and scales down, never pushing text off the card */
+.cv-art { display: block; width: 100%; flex: 1 1 0; min-height: 0; }
+
+/* ---------- imagery: real photos crop to fill; a missing photo stays small and honest ---------- */
+.cv-photo { position: relative; overflow: hidden; border-radius: var(--card-radius); background: var(--bg-alt); }
+.cv-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cv-photo--bleed { margin-inline: calc(-1 * var(--safe)); border-radius: 0; }
+.cv-slot { display: grid; place-items: center; text-align: center; padding: var(--sp-4); background: var(--bg-alt); border: 2px dashed var(--line-strong); border-radius: var(--card-radius); color: var(--ink-3); font-size: var(--fs-xs); aspect-ratio: var(--ratio, 4 / 3); max-width: 45%; }
+
+/* ---------- a graphic anchor when there is no photo: a solid shape in the accent ---------- */
+.cv-block { background: var(--accent); color: var(--on-accent); padding: var(--sp-6); border-radius: var(--card-radius);
+  --ink: var(--on-accent); --ink-2: var(--on-accent); --ink-3: var(--on-accent); --accent-ink: var(--on-accent); --line: var(--on-accent); }
+.cv-block--soft { background: var(--accent-soft); color: var(--ink); }
+.cv-stamp { display: inline-grid; place-items: center; align-self: flex-start; padding: var(--sp-2) var(--sp-4); border: 3px solid currentColor; color: var(--accent-ink); font-weight: var(--fw-strong); font-size: var(--fs-sm); transform: rotate(-3deg); }

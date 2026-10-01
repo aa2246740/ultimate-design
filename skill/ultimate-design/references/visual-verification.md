@@ -43,6 +43,8 @@ Use `data-ud-allow="<rule-id>"` with `data-ud-allow-reason`, `data-ud-allow-owne
 3. Inspect the full screenshot set once as a human visual pass. Look for collisions, too-tight spacing, hidden controls, clipped text, awkward line breaks, and density mismatch.
 4. Run available deterministic checks for the artifact type:
    - HTML/HTML deck: use `scripts/validate_html_visual.mjs` when a compatible pinned Playwright runtime is available. This bundled implementation never launches the user's system Chrome as a headless fallback. If the runtime is unavailable, use the host Agent's approved browser, renderer, screenshot, or accessibility capability for the visible-review path below. It must be recorded separately from deterministic audit facts.
+   - HTML craft and slop scan: use `scripts/detect_slop.mjs`. It scrolls slowly so reveals fire, saves desktop and phone screenshots, fails on text at the viewport edge, text cut by a clipping container, text drawn over other text, and contrast below 3:1, and warns on contrast below WCAG AA, phone tables that hide columns behind a sideways scroll, figures missing from the phone layout, a missing first-screen action on pitch pages, heading orphans, heading edge drift, dead half-sections, ASCII punctuation in Chinese text, and type or radius sprawl. It also lists slop fingerprints from `slop-fingerprints.md` with a density verdict; fingerprints inform the critique and never replace it. Pass `--style <dir>` for pages built on a generated style to flag off-system colors, sizes, and fonts.
+   - Fixed canvases (social cards, posters, HTML slides): mark each piece `[data-canvas="xhs|square|story|poster|slide"]`. `detect_slop.mjs` then checks every canvas at its exact size (minimum text size, safe margin, overflow, overload, empty bands), and `scripts/export_canvas.mjs` writes one PNG per canvas. Inspect every exported PNG at full size and at feed-thumbnail size (about a quarter scale) before delivery.
    - Motion contracts: use `scripts/validate_motion_contract.mjs` when the artifact claims scroll-linked SVG drawing, reveal no-flash behavior, or reduced-motion animation behavior. It samples rendered motion state in a browser and writes a motion-validation report.
    - PPT/PDF: render every slide/page with the relevant presentation/PDF tools and scan the image set.
    - Static image/graphic: inspect the final bitmap at intended output size.
@@ -199,7 +201,7 @@ The checker can prove rendered facts; it cannot prove the artifact is strategica
 - Whether color, mood, and type personality match the brand or audience.
 - Whether the composition feels balanced beyond measurable alignment and spacing.
 
-For these, inspect the screenshot set or contact sheet and record the judgment.
+For these, inspect the screenshot set or contact sheet and record the judgment. Use the describe-before-judging sequence in `craft-core.md` §8: write one literal line per view (what sits top-left, what is largest, where the left edges fall, what is empty) before evaluating, so the review reports the pixels rather than the intent.
 
 Accessibility engines such as axe-core, Pa11y, or Lighthouse and screenshot diff tools such as Playwright baselines, BackstopJS, Percy, or Chromatic may enrich the report later when dependencies and failure policy are explicitly declared. They are optional enrichment, not the default Ultimate Design hard gate.
 

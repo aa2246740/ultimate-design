@@ -11,3 +11,7 @@ ultimate-design-visual-check/
 __pycache__/
 **/__pycache__/
 *.py[cod]
+
+# local eval workspace and promo build artifacts
+skill/ultimate-design-workspace/
+promo-video/build/

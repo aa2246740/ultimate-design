@@ -1,0 +1,33 @@
+{
+  "note": "Proven combinations of catalog options. A preset is a worked example, not a template: change the seed to the client's brand color, swap any single dimension when the brief calls for it, and always build the centerpiece from the brief's own facts.",
+  "presets": {
+    "P01": { "name": "炉火手作 Hearth craft", "type": "T02", "color": { "strategy": "C01", "seed": "#B4532A" }, "surface": "S01", "density": "regular",
+      "layout": "L03", "moves": ["M03", "M07", "M12"], "for": "roasteries, bakeries, small food makers, craft studios" },
+    "P02": { "name": "港口工程 Harbor engineering", "type": "T03", "color": { "strategy": "C02", "seed": "#0F7B8A" }, "surface": "S01", "density": "regular",
+      "layout": "L03", "moves": ["M01", "M05", "M09"], "for": "developer tools, infrastructure, security, open source" },
+    "P03": { "name": "晨报编辑 Morning edition", "type": "T17", "color": { "strategy": "C01", "seed": "#1E4FA0" }, "surface": "S01", "density": "regular",
+      "layout": "L01", "moves": ["M02", "M08", "M11"], "for": "media, newsletters, content platforms, annual reports" },
+    "P04": { "name": "夜航控制台 Night console", "type": "T13", "color": { "strategy": "C05", "seed": "#3FB68B" }, "surface": "S02", "density": "dense",
+      "layout": "L05", "moves": ["M05", "M09", "M16"], "for": "monitoring, trading, ops dashboards, developer consoles" },
+    "P05": { "name": "东方纸墨 Ink and silk", "type": "T09", "color": { "strategy": "C07", "seed": "#8C3B2E" }, "surface": "S05", "density": "airy",
+      "layout": "L02", "moves": ["M13", "M08", "M18"], "for": "tea, culture, heritage crafts, museums, Chinese brands" },
+    "P06": { "name": "明快市集 Market pop", "type": "T07", "color": { "strategy": "C08", "seed": "#E0452B" }, "surface": "S04", "density": "regular",
+      "layout": "L06", "moves": ["M04", "M14", "M10"], "for": "events, festivals, youth brands, social campaigns" },
+    "P07": { "name": "研究报告 Research brief", "type": "T15", "color": { "strategy": "C09", "seed": "#1F4E8C" }, "surface": "S01", "density": "regular",
+      "layout": "L02", "moves": ["M02", "M11", "M15"], "for": "research, policy, NGOs, explainers, long reports" },
+    "P08": { "name": "安静产品 Quiet product", "type": "T12", "color": { "strategy": "C02", "seed": "#2F5BD3" }, "surface": "S03", "density": "dense",
+      "layout": "L05", "moves": ["M09", "M16", "M17"], "for": "SaaS settings, admin, internal tools, product screens" },
+    "P09": { "name": "发布大字 Launch day", "type": "T16", "color": { "strategy": "C03", "seed": "#2340E8" }, "surface": "S02", "density": "airy",
+      "layout": "L06", "moves": ["M04", "M01", "M19"], "for": "hardware launches, tech events, product reveals" },
+    "P10": { "name": "田野自然 Field notes", "type": "T01", "color": { "strategy": "C07", "seed": "#4F6B2F" }, "surface": "S01", "density": "regular",
+      "layout": "L01", "moves": ["M05", "M08", "M12"], "for": "outdoor, science tools, sustainability, agriculture" },
+    "P11": { "name": "柔软日常 Soft everyday", "type": "T08", "color": { "strategy": "C04", "seed": "#E58A6B" }, "surface": "S06", "density": "regular",
+      "layout": "L03", "moves": ["M07", "M10", "M17"], "for": "pets, kids, desserts, family and neighborhood services" },
+    "P12": { "name": "精品静奢 Quiet luxe", "type": "T19", "color": { "strategy": "C10", "seed": "#C8A15A" }, "surface": "S05", "density": "airy",
+      "layout": "L02", "moves": ["M18", "M08", "M20"], "for": "hotels, beauty, jewelry, design studios" },
+    "P13": { "name": "街区招牌 Neighborhood sign", "type": "T18", "color": { "strategy": "C06", "seed": "#D2552D", "second": "#1D5C63" }, "surface": "S02", "density": "regular",
+      "layout": "L03", "moves": ["M07", "M12", "M03"], "for": "restaurants, laundries, local services, markets" },
+    "P14": { "name": "理性机构 Civic modern", "type": "T04", "color": { "strategy": "C03", "seed": "#0B6E4F" }, "surface": "S01", "density": "regular",
+      "layout": "L01", "moves": ["M02", "M06", "M11"], "for": "public institutions, exhibitions, conferences, education" }
+  }
+}

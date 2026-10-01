@@ -8,6 +8,8 @@ The OKF bundle is descriptive knowledge, not runtime truth. It informs design de
 
 Start here:
 
+- `craft-core.md` for every visible artifact: the working design judgment (content-first order, small strict system, content shape to layout, direction without costume, crafted details, and render critique). Pair it with `slop-fingerprints.md` when judging whether a result reads as generated.
+
 - `design-okf/index.md` for the bundle map.
 - `design-okf/methods/senior-design-process.md` when creating a new `DESIGN.md` or design direction from scratch.
 - `design-okf/methods/product-sense.md` only when product problem, user outcome, success signal, scope, prioritization, business/user tradeoff, or validation remains unresolved enough to change the design. Product UI alone is not a trigger.

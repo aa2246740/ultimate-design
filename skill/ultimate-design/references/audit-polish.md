@@ -22,7 +22,7 @@ Use this loop after creating a design and before final delivery:
 5. Check requirement fit: deliverable, core job to be done, success criteria, non-goals, must-preserve constraints, and latest user override.
 6. Check theme fit: color, typography, imagery, and tone match the audience, product, and desired emotion.
 7. Check IA: primary message, primary task, first-screen clarity, navigation, and content hierarchy.
-8. Check craft: composition, visual hierarchy, spacing, alignment, component states, motion, and anti-slop issues.
+8. Check craft: composition, visual hierarchy, spacing, alignment, component states, motion, and anti-slop issues. Use the details list in `craft-core.md` §7 and scan the screenshots against `slop-fingerprints.md`.
 9. Check necessary judgment for polished visible artifacts: delete, replace, move, justification, care, material honesty, and scene fit using `design-okf/foundations/necessary-design-judgment.md` when senior taste, fake minimalism, overdecoration, or template-like styling is a risk.
 10. Check taste for visible artifacts: design read, taste dials when style freedom exists, anti-default locks, layout-family audit, asset credibility, type personality, visual memory feature, and whether the artifact still serves the Request Anchor.
 11. Check production: accessibility, responsive behavior, performance risk, slide/PDF export, print/export, i18n, legal/licensing, and data-viz rules when relevant.
@@ -65,18 +65,12 @@ Apply polish in this order:
 
 ## Anti-Slop Checks
 
-Reject and rewrite:
+Scan the rendered screenshots, not the code, against `slop-fingerprints.md` (structure, type, color and surface, components, imagery, copy, motion). Describe each view literally before judging it. For generated HTML, run `scripts/detect_slop.mjs` as well and treat its fail-level defects as findings.
 
-- Gradient text used as decoration.
-- Generic glass cards.
-- Identical icon-card grids.
-- Decorative side stripes.
-- Over-rounded cards or inputs.
-- Huge soft shadows paired with borders.
-- Generic blobs, orbs, stripes, or stock-like placeholders.
-- Tiny uppercase eyebrows repeated above every section.
-- Numbered section markers where order carries no meaning.
-- Copy that sounds impressive but says nothing specific.
+- Report each hit with its fingerprint ID, location, whether a content reason exists, and the fix.
+- Three or more distinct fingerprints in the first viewport, or six or more on the page, means the artifact reads as a template: a P1 structural finding. Recoloring the same structure does not clear it.
+- A fingerprint with a stated content reason may stay; its default execution usually still needs repair.
+- Also check the anti-template signals the catalog cannot count: decorative side stripes, huge soft shadows paired with borders, and copy that sounds impressive but says nothing specific.
 
 ## Evidence-Owned Checks
 

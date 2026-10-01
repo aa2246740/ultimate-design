@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Design kit · slides (1920×1080)</title>
+<!-- 1) tokens: node scripts/make_style.mjs --preset P03 --canvas slide --out demo-slide   2) the kit   3) canvas layer   4) charts -->
+<link rel="stylesheet" href="demo-slide/style.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="canvas.css">
+<script src="chart.js"></script>
+</head>
+<body>
+<!--
+  SLIDES. Each slide's title is its conclusion, written as a sentence; the body is the evidence for that sentence.
+  Sample content: a fictional bakery's quarterly review. Replace it with the brief's facts.
+  - One claim per slide. The chart highlights the bar or line the title talks about; everything else is muted.
+  - Same head (deck name + page) and foot (source) on every content slide.
+  - Export: node scripts/export_canvas.mjs --input canvas-slide.html --out png
+-->
+<main class="canvas-sheet canvas-sheet--column">
+
+<!-- SLIDE: title (the whole deck's conclusion, not a topic label) -->
+<section class="canvas canvas--band" data-canvas="slide" data-name="title">
+  <div class="cv-head cv-head--bare"><span class="cv-series">北巷面包房 · 第三季度复盘</span><span>2026 年 10 月</span></div>
+  <div class="cv-body cv-body--low">
+    <p class="cv-kicker">一句话结论</p>
+    <h1 class="cv-title cv-title--xl">改成前一晚预订后，<br>报废从 18% 降到 7%</h1>
+    <p class="cv-sub">同样两炉，多卖出的面包来自少扔掉的那部分。</p>
+  </div>
+  <div class="cv-foot"><span>店务会 · 内部</span><span>1 / 4</span></div>
+</section>
+
+<!-- SLIDE: claim + chart (left: the sentence and the two numbers that prove it; right: the chart) -->
+<section class="canvas" data-canvas="slide" data-name="waste">
+  <div class="cv-head"><span class="cv-series">第三季度复盘</span><span class="cv-pager">2 / 4</span></div>
+  <div class="cv-split">
+    <div class="cv-body">
+      <h2 class="cv-title cv-title--sm">预订上线的第 5 周起，每周报废稳定在一成以下</h2>
+      <dl class="cv-rows">
+        <div><dt>上线前 4 周平均</dt><dd>18%</dd></div>
+        <div><dt>最近 4 周平均</dt><dd class="cv-accent">7%</dd></div>
+      </dl>
+    </div>
+    <div class="cv-chart" id="waste-chart"></div>
+  </div>
+  <div class="cv-foot"><span>报废率 = 当日未售出并处理的面包 / 当日出炉总数</span><span>来源：店内日结表</span></div>
+</section>
+
+<!-- SLIDE: decisions (numbered rows share the height: the decision on the left of each row, the reason under it) -->
+<section class="canvas" data-canvas="slide" data-name="decisions">
+  <div class="cv-head"><span class="cv-series">第三季度复盘</span><span class="cv-pager">3 / 4</span></div>
+  <div class="cv-body cv-body--fill">
+    <h2 class="cv-title cv-title--sm">第四季度要店主拍板的三件事</h2>
+    <ol class="cv-list">
+      <li><b>预订截止从 20 点改到 21 点</b><span>20 点以后发来的预订留言，占了被拒预订的四成。</span></li>
+      <li><b>周三下午那一炉减半</b><span>连续八周，周三下午炉平均剩下 31%。</span></li>
+      <li><b>黑麦面包停做</b><span>单价最高，但每周只卖出六个，报废 24%。</span></li>
+    </ol>
+  </div>
+  <div class="cv-foot"><span>需要在 10 月 20 日前决定</span><span>数据：7–9 月日结表</span></div>
+</section>
+
+<!-- SLIDE: table (full width under the claim; the row the title talks about is highlighted) -->
+<section class="canvas" data-canvas="slide" data-name="products">
+  <div class="cv-head"><span class="cv-series">第三季度复盘</span><span class="cv-pager">4 / 4</span></div>
+  <div class="cv-body">
+    <h2 class="cv-title cv-title--sm">乡村酸种一款占了预订的一半，报废也降得最多</h2>
+    <table class="cv-table">
+      <thead><tr><th>品类</th><th class="num">预订占比</th><th class="num">报废率（上线前）</th><th class="num">报废率（上线后）</th></tr></thead>
+      <tbody>
+        <tr class="is-hl"><td>乡村酸种</td><td class="num">51%</td><td class="num">22%</td><td class="num">6%</td></tr>
+        <tr><td>全麦吐司</td><td class="num">23%</td><td class="num">15%</td><td class="num">8%</td></tr>
+        <tr><td>可颂</td><td class="num">17%</td><td class="num">19%</td><td class="num">9%</td></tr>
+        <tr><td>黑麦面包</td><td class="num">9%</td><td class="num">31%</td><td class="num">24%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cv-foot"><span>7 月 1 日至 9 月 30 日</span><span>来源：预订后台、日结表</span></div>
+</section>
+
+</main>
+<script>
+  UDChart.line(document.getElementById("waste-chart"), {
+    labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10", "W11", "W12"],
+    series: [{ name: "每周报废率", values: [19, 17, 18, 18, 11, 9, 8, 7, 7, 6, 8, 7] }],
+    unit: "%", threshold: { value: 10, label: "目标 10%" },
+    annotate: { index: 4, text: "第 5 周：预订上线" }, height: 560,
+  });
+</script>
+</body>
+</html>

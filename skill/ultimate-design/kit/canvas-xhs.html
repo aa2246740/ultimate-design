@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Design kit · social card set (xhs 1080×1440)</title>
+<!-- 1) tokens: node scripts/make_style.mjs --preset P11 --canvas xhs --out demo-xhs   2) the kit   3) canvas layer -->
+<link rel="stylesheet" href="demo-xhs/style.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="canvas.css">
+</head>
+<body>
+<!--
+  SOCIAL CARD SET. A carousel is one argument told across cards: the cover makes a promise, each inner card
+  delivers one piece of it, the last card is the part people save. Sample content: a fictional balcony-herb
+  account. Replace every word with the brief's facts; keep the structure only where the content has that shape.
+  - One idea per card. If a card needs more than the canvas character limit, split it.
+  - The cover must read at thumbnail size (about 1/4 scale in the feed): one big title, one anchor (number,
+    photo, or solid shape), nothing else competing.
+  - Same head and foot on every inner card, so the set reads as one piece.
+  - Fill the card: .cv-body--fill shares the remaining height between list rows or steps; .cv-body--spread
+    pins the title to the top and the evidence to the bottom. A card whose lower third is empty looks unfinished.
+  - Quantities become labeled data graphics (card 4's segment bars); nothing is drawn for decoration.
+    Never reuse this set's order of cards; plan your own storyboard.
+  - Export: node scripts/export_canvas.mjs --input canvas-xhs.html --out png
+-->
+<main class="canvas-sheet">
+
+<!-- CARD: cover (account identity + one promise set large, in reading order; no decorative drawing) -->
+<section class="canvas canvas--alt" data-canvas="xhs" data-name="cover">
+  <div class="cv-head cv-head--bare"><span class="cv-series">阳台小田 · 第 3 期</span><span class="cv-pager">1 / 6</span></div>
+  <div class="cv-body cv-body--low">
+    <p class="cv-num">11<small>盆</small></p>
+    <h1 class="cv-title">一年种死<br>十一盆香草，<br>我才搞懂<span class="cv-mark">浇水</span></h1>
+    <p class="cv-sub">新手养罗勒、薄荷、迷迭香<br>最常犯的五个错</p>
+  </div>
+  <div class="cv-foot"><span>@阳台小田</span><span>往后翻 →</span></div>
+</section>
+
+<!-- CARD: list (a title that states the point + up to three numbered items) -->
+<section class="canvas" data-canvas="xhs" data-name="water">
+  <div class="cv-head"><span class="cv-series">阳台小田</span><span class="cv-pager">2 / 6</span></div>
+  <div class="cv-body cv-body--fill">
+    <h2 class="cv-title cv-title--md">浇水看土，<br>不看日历</h2>
+    <ol class="cv-list">
+      <li><b>每天浇一点</b><span>表土一直湿，根会烂。</span></li>
+      <li><b>用没有孔的盆</b><span>水全积在盆底，买盆先看底。</span></li>
+      <li><b>下雨天也放在外面</b><span>连淋三天，迷迭香先黄叶。</span></li>
+    </ol>
+  </div>
+  <div class="cv-foot"><span>错误 1–3 · 水</span><span>@阳台小田</span></div>
+</section>
+
+<!-- CARD: compare (wrong vs right, the right one outlined) -->
+<section class="canvas" data-canvas="xhs" data-name="mint">
+  <div class="cv-head"><span class="cv-series">阳台小田</span><span class="cv-pager">3 / 6</span></div>
+  <div class="cv-body cv-body--fill">
+    <h2 class="cv-title cv-title--md">薄荷一定要<br>单独一盆</h2>
+    <p class="cv-text">薄荷靠地下茎横着长，<br>同一盆的香草抢不过它。</p>
+    <div class="cv-compare">
+      <div class="is-no"><h3>✕ 混在一起</h3><p>两个月后，<br>薄荷的根占满整盆</p></div>
+      <div class="is-yes"><h3>✓ 分开种</h3><p>薄荷单独用深盆，<br>罗勒占最亮的位置</p></div>
+    </div>
+  </div>
+  <div class="cv-foot"><span>错误 4 · 混种</span><span>@阳台小田</span></div>
+</section>
+
+<!-- CARD: drawn comparison (segment bars show the fact before any sentence does) -->
+<section class="canvas" data-canvas="xhs" data-name="light">
+  <div class="cv-head"><span class="cv-series">阳台小田</span><span class="cv-pager">4 / 6</span></div>
+  <div class="cv-body cv-body--spread">
+    <h2 class="cv-title cv-title--md">罗勒要晒 6 小时，<br>朝北阳台只有 2</h2>
+    <div class="cv-chart" id="sun"></div>
+  </div>
+  <div class="cv-foot"><span>光不够，先种薄荷和香菜</span><span>@阳台小田</span></div>
+</section>
+
+<!-- CARD: steps (a sequence with a spine) -->
+<section class="canvas" data-canvas="xhs" data-name="first-week">
+  <div class="cv-head"><span class="cv-series">阳台小田</span><span class="cv-pager">5 / 6</span></div>
+  <div class="cv-body cv-body--fill">
+    <h2 class="cv-title cv-title--md">买回来的第一周</h2>
+    <ol class="cv-steps">
+      <li><b>当天换盆</b><span>换到直径 15 厘米以上、底部有孔的盆。</span></li>
+      <li><b>半阴处放三天</b><span>新根还没长稳，别直接暴晒。</span></li>
+      <li><b>第七天剪顶</b><span>剪掉顶上一对叶子，侧枝才会长。</span></li>
+    </ol>
+  </div>
+  <div class="cv-foot"><span>新手流程</span><span>@阳台小田</span></div>
+</section>
+
+<!-- CARD: end (the part people save) -->
+<section class="canvas canvas--band" data-canvas="xhs" data-name="checklist">
+  <div class="cv-head"><span class="cv-series">阳台小田</span><span class="cv-pager">6 / 6</span></div>
+  <div class="cv-body cv-body--center">
+    <h2 class="cv-title cv-title--md">浇水前<br>先过这四条</h2>
+    <ul class="cv-check">
+      <li>手指插进土里两厘米，还湿就不浇</li>
+      <li>盆底有孔，托盘里不留积水</li>
+      <li>薄荷自己一盆</li>
+      <li>罗勒、迷迭香每天晒够六小时</li>
+    </ul>
+  </div>
+  <div class="cv-foot"><span>存这一张就够</span><span>@阳台小田</span></div>
+</section>
+
+</main>
+<script src="chart.js"></script>
+<script>
+  UDChart.segments(document.getElementById("sun"), {
+    legend: [{ tone: "accent", text: "每天需要的直射光" }, { tone: "soft", text: "不够的部分" }],
+    rows: [
+      { label: "罗勒", note: "6 小时", parts: [{ value: 6, tone: "accent", text: "6h" }] },
+      { label: "迷迭香", note: "6 小时", parts: [{ value: 6, tone: "accent", text: "6h" }] },
+      { label: "薄荷、香菜", note: "3–4 小时", parts: [{ value: 3.5, tone: "accent", text: "3.5h" }] },
+      { label: "朝北阳台", note: "只有 2 小时", parts: [{ value: 2, tone: "danger" }, { value: 4, tone: "soft" }] },
+    ],
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Design kit · digital poster (1200×1600)</title>
+<!-- 1) tokens: node scripts/make_style.mjs --preset P14 --canvas poster --out demo-poster   2) the kit   3) canvas layer -->
+<link rel="stylesheet" href="demo-poster/style.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="canvas.css">
+</head>
+<body>
+<!--
+  DIGITAL POSTER. Read in three distances: the title from across the room (or the feed thumbnail), the when/where
+  at arm's length, the details up close. Sample content: a fictional book-swap day. Replace it with the brief's facts.
+  - The title is the event, in the fewest words; the date is the second-largest thing on the poster.
+  - When, where, cost, and how to join are facts in rows, never prose.
+  - Export: node scripts/export_canvas.mjs --input canvas-poster.html --out png
+-->
+<main class="canvas-sheet">
+
+<section class="canvas" data-canvas="poster" data-name="book-swap">
+  <div class="cv-head cv-head--bare"><span class="cv-series">青石街道社区中心</span><span>免费 · 不用报名</span></div>
+  <div class="cv-body cv-body--spread">
+    <div class="cv-figure">
+      <h1 class="cv-title cv-title--xl">旧书<br>交换日</h1>
+      <p class="cv-sub">带一本读完的书来，换一本没读过的走。</p>
+    </div>
+    <div class="cv-block">
+      <p class="cv-num">11.16</p>
+      <p class="cv-figure__label">周日 10:00–16:00</p>
+    </div>
+    <dl class="cv-rows">
+      <div><dt>地点</dt><dd>社区中心一楼活动室</dd></div>
+      <div><dt>怎么换</dt><dd>一本换一本，现场登记书名</dd></div>
+      <div><dt>不收</dt><dd>教辅、杂志、缺页的书</dd></div>
+    </dl>
+  </div>
+  <div class="cv-foot"><span>剩下的书会捐给街道图书角</span><span>咨询：前台 8:30–17:30</span></div>
+</section>
+
+</main>
+</body>
+</html>
